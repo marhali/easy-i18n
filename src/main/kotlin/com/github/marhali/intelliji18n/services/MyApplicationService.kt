@@ -1,6 +1,6 @@
-package org.jetbrains.plugins.template.services
+package com.github.marhali.intelliji18n.services
 
-import org.jetbrains.plugins.template.MyBundle
+import com.github.marhali.intelliji18n.MyBundle
 
 class MyApplicationService {
 
