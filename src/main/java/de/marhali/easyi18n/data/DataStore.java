@@ -10,10 +10,12 @@ import de.marhali.easyi18n.model.TranslationDelete;
 import de.marhali.easyi18n.model.TranslationUpdate;
 import de.marhali.easyi18n.util.IOUtil;
 import de.marhali.easyi18n.util.TranslationsUtil;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * Singleton service to manage localized messages.
@@ -51,14 +53,19 @@ public class DataStore {
 
         } else {
             TranslatorIO io = IOUtil.determineFormat(localesPath);
-            translations = io.read(localesPath);
-        }
 
-        // Propagate changes
-        synchronizer.forEach(synchronizer -> synchronizer.synchronize(translations, searchQuery));
+            io.read(localesPath, (translations) -> {
+                if(translations != null) { // Read was successful
+                    this.translations = translations;
+
+                    // Propagate changes
+                    synchronizer.forEach(synchronizer -> synchronizer.synchronize(translations, searchQuery));
+                }
+            });
+        }
     }
 
-    public void saveToDisk() {
+    public void saveToDisk(@NotNull Consumer<Boolean> callback) {
         String localesPath = SettingsService.getInstance(project).getState().getLocalesPath();
 
         if(localesPath == null || localesPath.isEmpty()) { // Cannot save without valid path
@@ -66,7 +73,7 @@ public class DataStore {
         }
 
         TranslatorIO io = IOUtil.determineFormat(localesPath);
-        io.save(translations);
+        io.save(translations, localesPath, callback);
     }
 
     public void searchBeyKey(String fullPath) {
@@ -105,9 +112,12 @@ public class DataStore {
             node.setValue(update.getChange().getTranslations());
         }
 
-        // Propagate changes and save them
-        synchronizer.forEach(synchronizer -> synchronizer.synchronize(translations, searchQuery));
-        saveToDisk();
+        // Persist changes and propagate them on success
+        saveToDisk(success -> {
+            if(success) {
+                synchronizer.forEach(synchronizer -> synchronizer.synchronize(translations, searchQuery));
+            }
+        });
     }
 
     public Translations getTranslations() {
