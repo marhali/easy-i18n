@@ -2,7 +2,7 @@
 
 # easy-i18n Changelog
 
-## [1.0] - 2021-03-14 (release)
+## [Unreleased] - 2021-03-14 (release)
 ### Added
 - Support for JSON and Resource-Bundle(Properties) based locale files
 - UI Tool Window with Table- and Tree-View representation
