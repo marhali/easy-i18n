@@ -1,9 +1,6 @@
 package de.marhali.easyi18n.io.translator;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.google.gson.JsonPrimitive;
+import com.google.gson.*;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -59,6 +56,8 @@ public class JsonTranslatorIO implements TranslatorIO {
 
     @Override
     public void save(@NotNull Translations translations, @NotNull String directoryPath, @NotNull Consumer<Boolean> callback) {
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
         ApplicationManager.getApplication().runWriteAction(() -> {
             for(String locale : translations.getLocales()) {
                 JsonElement content = writeTree(locale, new JsonObject(), translations.getNodes());
@@ -67,7 +66,7 @@ public class JsonTranslatorIO implements TranslatorIO {
                 VirtualFile file = LocalFileSystem.getInstance().findFileByIoFile(new File(fullPath));
 
                 try {
-                    file.setBinaryContent(content.toString().getBytes());
+                    file.setBinaryContent(gson.toJson(content).getBytes());
                     callback.accept(true);
 
                 } catch (IOException e) {
