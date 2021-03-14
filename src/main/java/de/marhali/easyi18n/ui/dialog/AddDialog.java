@@ -16,6 +16,7 @@ import javax.swing.border.EtchedBorder;
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 /**
  * Create translation dialog.
@@ -64,7 +65,7 @@ public class AddDialog {
         rootPanel.setLayout(new BoxLayout(rootPanel, BoxLayout.PAGE_AXIS));
 
         JPanel keyPanel = new JPanel(new GridLayout(0, 1, 2, 2));
-        JBLabel keyLabel = new JBLabel("Key");
+        JBLabel keyLabel = new JBLabel(ResourceBundle.getBundle("messages").getString("translation.key"));
         keyTextField = new JBTextField(this.preKey);
         keyLabel.setLabelFor(keyTextField);
         keyPanel.add(keyLabel);
@@ -85,11 +86,12 @@ public class AddDialog {
         }
 
         JBScrollPane valuePane = new JBScrollPane(valuePanel);
-        valuePane.setBorder(BorderFactory.createTitledBorder(new EtchedBorder(), "Locales"));
+        valuePane.setBorder(BorderFactory.createTitledBorder(new EtchedBorder(),
+                ResourceBundle.getBundle("messages").getString("translation.locales")));
         rootPanel.add(valuePane);
 
         DialogBuilder builder = new DialogBuilder();
-        builder.setTitle("Add Translation");
+        builder.setTitle(ResourceBundle.getBundle("messages").getString("action.add"));
         builder.removeAllActions();
         builder.addOkAction();
         builder.addCancelAction();

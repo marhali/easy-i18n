@@ -28,6 +28,7 @@ import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 import java.awt.event.MouseEvent;
+import java.util.ResourceBundle;
 
 /**
  * Show translation state as tree.
@@ -49,7 +50,7 @@ public class TreeView implements DataSynchronizer {
         tree = new Tree();
         tree.setCellRenderer(new TreeRenderer());
         tree.setRootVisible(false);
-        tree.getEmptyText().setText("Empty");
+        tree.getEmptyText().setText(ResourceBundle.getBundle("messages").getString("view.empty"));
         tree.addMouseListener(new PopupClickListener(this::handlePopup));
         tree.addKeyListener(new DeleteKeyListener(handleDeleteKey()));
 

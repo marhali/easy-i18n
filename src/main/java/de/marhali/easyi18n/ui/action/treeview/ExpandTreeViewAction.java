@@ -5,6 +5,8 @@ import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ResourceBundle;
+
 /**
  * Action to expand the entire tree (open all nodes with children).
  * @author marhali
@@ -14,7 +16,9 @@ public class ExpandTreeViewAction extends AnAction {
     private final Runnable expandRunnable;
 
     public ExpandTreeViewAction(Runnable expandRunnable) {
-        super("Expand Tree", null, AllIcons.Actions.Expandall);
+        super(ResourceBundle.getBundle("messages").getString("view.tree.expand"),
+                null, AllIcons.Actions.Expandall);
+
         this.expandRunnable = expandRunnable;
     }
 

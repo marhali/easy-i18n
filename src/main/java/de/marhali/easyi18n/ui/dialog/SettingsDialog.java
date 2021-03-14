@@ -13,6 +13,7 @@ import de.marhali.easyi18n.service.DataStore;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ResourceBundle;
 
 /**
  * Plugin configuration dialog.
@@ -45,17 +46,17 @@ public class SettingsDialog {
     private DialogBuilder prepare(String localesPath, String previewLocale) {
         JPanel rootPanel = new JPanel(new GridLayout(0, 1, 2, 2));
 
-        JBLabel pathLabel = new JBLabel("Locales directory");
+        JBLabel pathLabel = new JBLabel(ResourceBundle.getBundle("messages").getString("settings.path.text"));
         pathText = new TextFieldWithBrowseButton(new JTextField(localesPath));
 
         pathLabel.setLabelFor(pathText);
-        pathText.addBrowseFolderListener("Locales Directory", null, project, new FileChooserDescriptor(
+        pathText.addBrowseFolderListener(ResourceBundle.getBundle("messages").getString("settings.path.title"), null, project, new FileChooserDescriptor(
                 false, true, false, false, false, false));
 
         rootPanel.add(pathLabel);
         rootPanel.add(pathText);
 
-        JBLabel previewLabel = new JBLabel("Preview locale");
+        JBLabel previewLabel = new JBLabel(ResourceBundle.getBundle("messages").getString("settings.preview"));
         previewText = new JBTextField(previewLocale);
         previewLabel.setLabelFor(previewText);
 
@@ -63,7 +64,7 @@ public class SettingsDialog {
         rootPanel.add(previewText);
 
         DialogBuilder builder = new DialogBuilder();
-        builder.setTitle("Settings");
+        builder.setTitle(ResourceBundle.getBundle("messages").getString("action.settings"));
         builder.removeAllActions();
         builder.addCancelAction();
         builder.addOkAction();

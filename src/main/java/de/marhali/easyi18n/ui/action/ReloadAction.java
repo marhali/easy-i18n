@@ -8,6 +8,8 @@ import de.marhali.easyi18n.service.DataStore;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ResourceBundle;
+
 /**
  * Reload translations action.
  * @author marhali
@@ -15,7 +17,8 @@ import org.jetbrains.annotations.NotNull;
 public class ReloadAction extends AnAction {
 
     public ReloadAction() {
-        super("Reload From Disk", null, AllIcons.Actions.Refresh);
+        super(ResourceBundle.getBundle("messages").getString("action.reload"),
+                null, AllIcons.Actions.Refresh);
     }
 
     @Override

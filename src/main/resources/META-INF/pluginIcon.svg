@@ -1,45 +1,46 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="81" height="80" viewBox="0 0 81 80">
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="0 0 81 80" width="81" height="80" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <linearGradient id="pluginsdk_80-a" x1="-.031%" x2="100.053%" y1="49.963%" y2="49.963%">
-      <stop offset="25.81%" stop-color="#F97A12"/>
-      <stop offset="45.91%" stop-color="#B07B58"/>
-      <stop offset="72.41%" stop-color="#577BAE"/>
-      <stop offset="91.05%" stop-color="#1E7CE5"/>
-      <stop offset="100%" stop-color="#087CFA"/>
+      <stop offset="0.2581" stop-color="#F97A12"/>
+      <stop offset="0.4591" stop-color="#B07B58"/>
+      <stop offset="0.7241" stop-color="#577BAE"/>
+      <stop offset="0.9105" stop-color="#1E7CE5"/>
+      <stop offset="1" stop-color="#087CFA"/>
     </linearGradient>
     <linearGradient id="pluginsdk_80-b" x1="27.55%" x2="82.223%" y1="34.514%" y2="77.605%">
-      <stop offset="0%" stop-color="#F97A12"/>
-      <stop offset="7.18%" stop-color="#CB7A3E"/>
-      <stop offset="15.41%" stop-color="#9E7B6A"/>
-      <stop offset="24.2%" stop-color="#757B91"/>
-      <stop offset="33.44%" stop-color="#537BB1"/>
-      <stop offset="43.24%" stop-color="#387CCC"/>
-      <stop offset="53.81%" stop-color="#237CE0"/>
-      <stop offset="65.52%" stop-color="#147CEF"/>
-      <stop offset="79.25%" stop-color="#0B7CF7"/>
-      <stop offset="100%" stop-color="#087CFA"/>
+      <stop offset="0" stop-color="#F97A12"/>
+      <stop offset="0.0718" stop-color="#CB7A3E"/>
+      <stop offset="0.1541" stop-color="#9E7B6A"/>
+      <stop offset="0.242" stop-color="#757B91"/>
+      <stop offset="0.3344" stop-color="#537BB1"/>
+      <stop offset="0.4324" stop-color="#387CCC"/>
+      <stop offset="0.5381" stop-color="#237CE0"/>
+      <stop offset="0.6552" stop-color="#147CEF"/>
+      <stop offset="0.7925" stop-color="#0B7CF7"/>
+      <stop offset="1" stop-color="#087CFA"/>
     </linearGradient>
     <linearGradient id="pluginsdk_80-c" x1="63.121%" x2="40.793%" y1="97.699%" y2="-6.587%">
-      <stop offset="0%" stop-color="#FE315D"/>
-      <stop offset="7.84%" stop-color="#CB417E"/>
-      <stop offset="16.01%" stop-color="#9E4E9B"/>
-      <stop offset="24.74%" stop-color="#755BB4"/>
-      <stop offset="33.92%" stop-color="#5365CA"/>
-      <stop offset="43.65%" stop-color="#386DDB"/>
-      <stop offset="54.14%" stop-color="#2374E9"/>
-      <stop offset="65.76%" stop-color="#1478F3"/>
-      <stop offset="79.4%" stop-color="#0B7BF8"/>
-      <stop offset="100%" stop-color="#087CFA"/>
+      <stop offset="0" stop-color="#FE315D"/>
+      <stop offset="0.0784" stop-color="#CB417E"/>
+      <stop offset="0.1601" stop-color="#9E4E9B"/>
+      <stop offset="0.2474" stop-color="#755BB4"/>
+      <stop offset="0.3392" stop-color="#5365CA"/>
+      <stop offset="0.4365" stop-color="#386DDB"/>
+      <stop offset="0.5414" stop-color="#2374E9"/>
+      <stop offset="0.6576" stop-color="#1478F3"/>
+      <stop offset="0.794" stop-color="#0B7BF8"/>
+      <stop offset="1" stop-color="#087CFA"/>
     </linearGradient>
     <linearGradient id="pluginsdk_80-d" x1="25.331%" x2="93.854%" y1="24.119%" y2="132.621%">
-      <stop offset="0%" stop-color="#FE315D"/>
-      <stop offset="4.023%" stop-color="#F63462"/>
-      <stop offset="10.37%" stop-color="#DF3A71"/>
-      <stop offset="16.67%" stop-color="#C24383"/>
-      <stop offset="29.12%" stop-color="#AD4A91"/>
-      <stop offset="54.98%" stop-color="#755BB4"/>
-      <stop offset="91.75%" stop-color="#1D76ED"/>
-      <stop offset="100%" stop-color="#087CFA"/>
+      <stop offset="0" stop-color="#FE315D"/>
+      <stop offset="0.0402" stop-color="#F63462"/>
+      <stop offset="0.1037" stop-color="#DF3A71"/>
+      <stop offset="0.1667" stop-color="#C24383"/>
+      <stop offset="0.2912" stop-color="#AD4A91"/>
+      <stop offset="0.5498" stop-color="#755BB4"/>
+      <stop offset="0.9175" stop-color="#1D76ED"/>
+      <stop offset="1" stop-color="#087CFA"/>
     </linearGradient>
   </defs>
   <g fill="none" fill-rule="evenodd">
@@ -52,7 +53,10 @@
     <g fill-rule="nonzero" transform="translate(12 12)">
       <rect width="56" height="56" fill="#000"/>
       <rect width="22" height="4" x="4" y="46" fill="#FFFEFE"/>
-      <path fill="#FFFEFE" d="M11.128,25.28 C8.584,25.28 6.016,24.392 4,22.592 L6.184,19.976 C7.696,21.224 9.28,22.016 11.2,22.016 C12.712,22.016 13.624,21.416 13.624,20.432 L13.624,20.384 C13.624,19.448 13.048,18.968 10.24,18.248 C6.856,17.384 4.672,16.448 4.672,13.112 L4.672,13.064 C4.672,10.016 7.12,8 10.552,8 C13,8 15.088,8.768 16.792,10.136 L14.872,12.92 C13.384,11.888 11.92,11.264 10.504,11.264 C9.088,11.264 8.344,11.912 8.344,12.728 L8.344,12.776 C8.344,13.88 9.064,14.24 11.968,14.984 C15.376,15.872 17.296,17.096 17.296,20.024 L17.296,20.072 C17.296,23.408 14.752,25.28 11.128,25.28 Z M19.512,25.04 L19.512,8.24 L26.064,8.24 C31.344,8.24 34.992,11.864 34.992,16.592 L34.992,16.64 C34.992,21.368 31.344,25.04 26.064,25.04 L19.512,25.04 Z M26.064,11.576 L23.208,11.576 L23.208,21.704 L26.064,21.704 C29.088,21.704 31.128,19.664 31.128,16.688 L31.128,16.64 C31.128,13.664 29.088,11.576 26.064,11.576 Z M37.28,25.04 L37.28,8.24 L40.976,8.24 L40.976,15.584 L47.744,8.24 L52.28,8.24 L45.416,15.368 L52.568,25.04 L48.128,25.04 L42.92,17.888 L40.976,19.904 L40.976,25.04 L37.28,25.04 Z"/>
     </g>
   </g>
+  <text style="fill: rgb(255, 254, 254); white-space: pre;" x="34.104" y="20.751" dx="-18.382" dy="8.786">easy
+</text>
+  <text x="21.965" y="47.919" style="white-space: pre; fill: rgb(255, 254, 254); font-size: 15px;">i18n
+</text>
 </svg>

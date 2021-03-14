@@ -5,6 +5,8 @@ import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ResourceBundle;
+
 /**
  * Action to collapse all tree nodes with children.
  * @author marhali
@@ -14,7 +16,9 @@ public class CollapseTreeViewAction extends AnAction {
     private final Runnable collapseRunnable;
 
     public CollapseTreeViewAction(Runnable collapseRunnable) {
-        super("Collapse Tree", null, AllIcons.Actions.Collapseall);
+        super(ResourceBundle.getBundle("messages").getString("view.tree.collapse"),
+                null, AllIcons.Actions.Collapseall);
+
         this.collapseRunnable = collapseRunnable;
     }
 

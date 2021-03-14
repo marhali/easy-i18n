@@ -11,6 +11,7 @@ import de.marhali.easyi18n.util.TreeUtil;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.tree.TreePath;
+import java.util.ResourceBundle;
 
 /**
  * Add translation action.
@@ -19,7 +20,8 @@ import javax.swing.tree.TreePath;
 public class AddAction extends AnAction {
 
     public AddAction() {
-        super("Add Translation", null, AllIcons.General.Add);
+        super(ResourceBundle.getBundle("messages").getString("action.add"),
+                null, AllIcons.General.Add);
     }
 
     @Override
@@ -34,7 +36,8 @@ public class AddAction extends AnAction {
             return null;
         }
 
-        if(manager.getToolWindow().getContentManager().getSelectedContent().getDisplayName().equals("TreeView")) {
+        if(manager.getToolWindow().getContentManager().getSelectedContent()
+                .getDisplayName().equals(ResourceBundle.getBundle("messages").getString("view.tree.title"))) {
 
             TreePath path = manager.getTreeView().getTree().getSelectionPath();
 

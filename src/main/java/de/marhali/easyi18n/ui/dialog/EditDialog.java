@@ -17,6 +17,7 @@ import javax.swing.border.EtchedBorder;
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 /**
  * Edit translation dialog.
@@ -63,7 +64,7 @@ public class EditDialog {
         rootPanel.setLayout(new BoxLayout(rootPanel, BoxLayout.PAGE_AXIS));
 
         JPanel keyPanel = new JPanel(new GridLayout(0, 1, 2,2));
-        JBLabel keyLabel = new JBLabel("Key");
+        JBLabel keyLabel = new JBLabel(ResourceBundle.getBundle("messages").getString("translation.key"));
         keyTextField = new JBTextField(this.origin.getKey());
         keyLabel.setLabelFor(keyTextField);
         keyPanel.add(keyLabel);
@@ -84,11 +85,12 @@ public class EditDialog {
         }
 
         JBScrollPane valuePane = new JBScrollPane(valuePanel);
-        valuePane.setBorder(BorderFactory.createTitledBorder(new EtchedBorder(), "Locales"));
+        valuePane.setBorder(BorderFactory.createTitledBorder(new EtchedBorder(),
+                ResourceBundle.getBundle("messages").getString("translation.locales")));
         rootPanel.add(valuePane);
 
         DialogBuilder builder = new DialogBuilder();
-        builder.setTitle("Edit Translation");
+        builder.setTitle(ResourceBundle.getBundle("messages").getString("action.edit"));
         builder.removeAllActions();
         builder.addCancelAction();
         builder.addActionDescriptor(new DeleteActionDescriptor());

@@ -5,6 +5,7 @@ import com.intellij.openapi.ui.DialogWrapper;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
+import java.util.ResourceBundle;
 
 /**
  * Delete action which represents the delete button on the edit translation dialog.
@@ -18,7 +19,7 @@ public class DeleteActionDescriptor extends AbstractAction implements DialogBuil
     private DialogWrapper dialogWrapper;
 
     public DeleteActionDescriptor() {
-        super("Delete");
+        super(ResourceBundle.getBundle("messages").getString("action.delete"));
     }
 
     @Override

@@ -17,6 +17,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 /**
  * Tool window factory which will represent the entire ui for this plugin.
@@ -30,12 +31,16 @@ public class TranslatorToolWindowFactory implements ToolWindowFactory {
 
         // Translations tree view
         TreeView treeView = new TreeView(project);
-        Content treeContent = contentFactory.createContent(treeView.getRootPanel(),"TreeView", false);
+        Content treeContent = contentFactory.createContent(treeView.getRootPanel(),
+                ResourceBundle.getBundle("messages").getString("view.tree.title"), false);
+
         toolWindow.getContentManager().addContent(treeContent);
 
         // Translations table view
         TableView tableView = new TableView(project);
-        Content tableContent = contentFactory.createContent(tableView.getRootPanel(), "TableView", false);
+        Content tableContent = contentFactory.createContent(tableView.getRootPanel(),
+                ResourceBundle.getBundle("messages").getString("view.table.title"), false);
+
         toolWindow.getContentManager().addContent(tableContent);
 
         // ToolWindow Actions (Can be used for every view)

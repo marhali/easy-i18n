@@ -21,6 +21,7 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.event.MouseEvent;
+import java.util.ResourceBundle;
 
 /**
  * Shows translation state as table.
@@ -39,7 +40,7 @@ public class TableView implements DataSynchronizer {
         this.project = project;
 
         table = new JBTable();
-        table.getEmptyText().setText("Empty");
+        table.getEmptyText().setText(ResourceBundle.getBundle("messages").getString("view.empty"));
         table.addMouseListener(new PopupClickListener(this::handlePopup));
         table.addKeyListener(new DeleteKeyListener(handleDeleteKey()));
         table.setDefaultRenderer(String.class, new TableRenderer());

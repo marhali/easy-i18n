@@ -14,6 +14,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.ResourceBundle;
 import java.util.function.Consumer;
 
 /**
@@ -26,7 +27,7 @@ public class SearchAction extends AnAction implements CustomComponentAction {
     private JBTextField textField;
 
     public SearchAction(@NotNull Consumer<String> searchCallback) {
-        super("Search");
+        super(ResourceBundle.getBundle("messages").getString("action.search"));
         this.searchCallback = searchCallback;
     }
 
@@ -41,7 +42,7 @@ public class SearchAction extends AnAction implements CustomComponentAction {
     public @NotNull JComponent createCustomComponent(@NotNull Presentation presentation, @NotNull String place) {
         textField = new JBTextField();
         textField.setPreferredSize(new Dimension(160, 25));
-        PromptSupport.setPrompt("Search Key...", textField);
+        PromptSupport.setPrompt(ResourceBundle.getBundle("messages").getString("action.search"), textField);
 
         textField.addKeyListener(handleKeyListener());
         textField.setBorder(JBUI.Borders.empty());
