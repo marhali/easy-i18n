@@ -1,9 +1,10 @@
-package de.marhali.easyi18n.data;
+package de.marhali.easyi18n.model;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
+ * Represents the persistent settings which can be configured.
  * @author marhali
  */
 public class SettingsState {

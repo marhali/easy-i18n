@@ -1,11 +1,11 @@
-package de.marhali.easyi18n;
+package de.marhali.easyi18n.service;
 
 import com.intellij.openapi.components.PersistentStateComponent;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.components.State;
 import com.intellij.openapi.project.Project;
 
-import de.marhali.easyi18n.data.SettingsState;
+import de.marhali.easyi18n.model.SettingsState;
 
 import org.jetbrains.annotations.NotNull;
 

@@ -1,4 +1,4 @@
-package de.marhali.easyi18n.data;
+package de.marhali.easyi18n.model;
 
 import de.marhali.easyi18n.util.MapUtil;
 

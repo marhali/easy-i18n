@@ -1,4 +1,4 @@
-package de.marhali.easyi18n.ui.panel;
+package de.marhali.easyi18n.ui.renderer;
 
 import com.intellij.ui.JBColor;
 

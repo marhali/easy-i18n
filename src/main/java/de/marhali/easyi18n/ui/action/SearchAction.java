@@ -16,6 +16,10 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.function.Consumer;
 
+/**
+ * Search translations by key action.
+ * @author marhali
+ */
 public class SearchAction extends AnAction implements CustomComponentAction {
 
     private final Consumer<String> searchCallback;

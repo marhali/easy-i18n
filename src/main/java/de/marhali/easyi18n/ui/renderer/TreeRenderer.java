@@ -1,4 +1,4 @@
-package de.marhali.easyi18n.ui.panel;
+package de.marhali.easyi18n.ui.renderer;
 
 import com.intellij.ide.util.treeView.NodeRenderer;
 import com.intellij.navigation.ItemPresentation;
@@ -11,6 +11,11 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeCellRenderer;
 import java.awt.*;
 
+/**
+ * Similar to {@link NodeRenderer} but will will override {@link #getPresentation(Object)} to
+ * make {@link ItemPresentation} visible.
+ * @author marhali
+ */
 public class TreeRenderer extends NodeRenderer {
 
     @Override

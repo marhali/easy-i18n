@@ -1,9 +1,9 @@
 package de.marhali.easyi18n.model.table;
 
-import de.marhali.easyi18n.data.LocalizedNode;
+import de.marhali.easyi18n.model.LocalizedNode;
 import de.marhali.easyi18n.model.KeyedTranslation;
 import de.marhali.easyi18n.model.TranslationUpdate;
-import de.marhali.easyi18n.data.Translations;
+import de.marhali.easyi18n.model.Translations;
 
 import org.jetbrains.annotations.Nls;
 

@@ -1,11 +1,12 @@
-package de.marhali.easyi18n.io.translator;
+package de.marhali.easyi18n.io.implementation;
 
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 
-import de.marhali.easyi18n.data.LocalizedNode;
-import de.marhali.easyi18n.data.Translations;
+import de.marhali.easyi18n.io.TranslatorIO;
+import de.marhali.easyi18n.model.LocalizedNode;
+import de.marhali.easyi18n.model.Translations;
 import de.marhali.easyi18n.util.TranslationsUtil;
 
 import org.jetbrains.annotations.NotNull;

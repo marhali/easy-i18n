@@ -1,24 +1,31 @@
-package de.marhali.easyi18n.ui.panel;
+package de.marhali.easyi18n.ui.tabs;
 
 import com.intellij.openapi.project.Project;
 import com.intellij.ui.components.JBScrollPane;
 import com.intellij.ui.table.JBTable;
-import de.marhali.easyi18n.data.DataStore;
-import de.marhali.easyi18n.data.LocalizedNode;
+
+import de.marhali.easyi18n.service.DataStore;
+import de.marhali.easyi18n.model.LocalizedNode;
 import de.marhali.easyi18n.model.DataSynchronizer;
-import de.marhali.easyi18n.data.Translations;
+import de.marhali.easyi18n.model.Translations;
 import de.marhali.easyi18n.model.KeyedTranslation;
 import de.marhali.easyi18n.model.TranslationDelete;
 import de.marhali.easyi18n.model.table.TableModelTranslator;
 import de.marhali.easyi18n.ui.dialog.EditDialog;
 import de.marhali.easyi18n.ui.listener.DeleteKeyListener;
 import de.marhali.easyi18n.ui.listener.PopupClickListener;
+import de.marhali.easyi18n.ui.renderer.TableRenderer;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.event.MouseEvent;
 
+/**
+ * Shows translation state as table.
+ * @author marhali
+ */
 public class TableView implements DataSynchronizer {
 
     private final Project project;

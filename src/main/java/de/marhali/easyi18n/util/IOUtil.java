@@ -2,9 +2,9 @@ package de.marhali.easyi18n.util;
 
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
-import de.marhali.easyi18n.io.translator.JsonTranslatorIO;
-import de.marhali.easyi18n.io.translator.PropertiesTranslatorIO;
-import de.marhali.easyi18n.io.translator.TranslatorIO;
+import de.marhali.easyi18n.io.implementation.JsonTranslatorIO;
+import de.marhali.easyi18n.io.implementation.PropertiesTranslatorIO;
+import de.marhali.easyi18n.io.TranslatorIO;
 
 import org.jetbrains.annotations.NotNull;
 

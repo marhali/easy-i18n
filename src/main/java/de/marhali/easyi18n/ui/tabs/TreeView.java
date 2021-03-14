@@ -1,4 +1,4 @@
-package de.marhali.easyi18n.ui.panel;
+package de.marhali.easyi18n.ui.tabs;
 
 import com.intellij.ide.projectView.PresentationData;
 import com.intellij.openapi.actionSystem.ActionManager;
@@ -6,18 +6,19 @@ import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import com.intellij.openapi.project.Project;
 import com.intellij.ui.treeStructure.Tree;
 
-import de.marhali.easyi18n.data.DataStore;
-import de.marhali.easyi18n.data.LocalizedNode;
+import de.marhali.easyi18n.service.DataStore;
+import de.marhali.easyi18n.model.LocalizedNode;
 import de.marhali.easyi18n.model.DataSynchronizer;
-import de.marhali.easyi18n.data.Translations;
+import de.marhali.easyi18n.model.Translations;
 import de.marhali.easyi18n.model.KeyedTranslation;
 import de.marhali.easyi18n.model.TranslationDelete;
 import de.marhali.easyi18n.model.tree.TreeModelTranslator;
-import de.marhali.easyi18n.ui.action.CollapseTreeViewAction;
-import de.marhali.easyi18n.ui.action.ExpandTreeViewAction;
+import de.marhali.easyi18n.ui.action.treeview.CollapseTreeViewAction;
+import de.marhali.easyi18n.ui.action.treeview.ExpandTreeViewAction;
 import de.marhali.easyi18n.ui.dialog.EditDialog;
 import de.marhali.easyi18n.ui.listener.DeleteKeyListener;
 import de.marhali.easyi18n.ui.listener.PopupClickListener;
+import de.marhali.easyi18n.ui.renderer.TreeRenderer;
 import de.marhali.easyi18n.util.TreeUtil;
 
 import org.jetbrains.annotations.NotNull;
@@ -28,6 +29,10 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 import java.awt.event.MouseEvent;
 
+/**
+ * Show translation state as tree.
+ * @author marhali
+ */
 public class TreeView implements DataSynchronizer {
 
     private final Project project;

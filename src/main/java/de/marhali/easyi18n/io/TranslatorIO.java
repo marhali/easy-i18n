@@ -1,6 +1,6 @@
-package de.marhali.easyi18n.io.translator;
+package de.marhali.easyi18n.io;
 
-import de.marhali.easyi18n.data.Translations;
+import de.marhali.easyi18n.model.Translations;
 
 import org.jetbrains.annotations.NotNull;
 

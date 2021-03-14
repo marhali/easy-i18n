@@ -1,7 +1,5 @@
 package de.marhali.easyi18n.model;
 
-import de.marhali.easyi18n.data.Translations;
-
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

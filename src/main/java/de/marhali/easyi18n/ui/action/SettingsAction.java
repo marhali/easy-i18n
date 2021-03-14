@@ -6,6 +6,10 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import de.marhali.easyi18n.ui.dialog.SettingsDialog;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Plugin settings action.
+ * @author marhali
+ */
 public class SettingsAction extends AnAction {
 
     public SettingsAction() {

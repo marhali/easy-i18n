@@ -7,18 +7,21 @@ import com.intellij.openapi.wm.ToolWindowFactory;
 import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
 
-import de.marhali.easyi18n.data.DataStore;
+import de.marhali.easyi18n.service.DataStore;
+import de.marhali.easyi18n.service.WindowManager;
 import de.marhali.easyi18n.ui.action.*;
-import de.marhali.easyi18n.ui.panel.TableView;
-import de.marhali.easyi18n.ui.panel.TreeView;
+import de.marhali.easyi18n.ui.tabs.TableView;
+import de.marhali.easyi18n.ui.tabs.TreeView;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Tool window factory which will represent the entire ui for this plugin.
+ * @author marhali
+ */
 public class TranslatorToolWindowFactory implements ToolWindowFactory {
 
     @Override
@@ -51,10 +54,6 @@ public class TranslatorToolWindowFactory implements ToolWindowFactory {
         store.addSynchronizer(treeView);
         store.addSynchronizer(tableView);
 
-        try {
-            store.reloadFromDisk();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        store.reloadFromDisk();
     }
 }

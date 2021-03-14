@@ -1,18 +1,20 @@
-package de.marhali.easyi18n.data;
+package de.marhali.easyi18n.service;
 
 import com.intellij.openapi.project.Project;
 
-import de.marhali.easyi18n.SettingsService;
-import de.marhali.easyi18n.io.translator.TranslatorIO;
+import de.marhali.easyi18n.model.LocalizedNode;
+import de.marhali.easyi18n.model.Translations;
+import de.marhali.easyi18n.io.TranslatorIO;
 import de.marhali.easyi18n.model.DataSynchronizer;
 import de.marhali.easyi18n.model.KeyedTranslation;
 import de.marhali.easyi18n.model.TranslationDelete;
 import de.marhali.easyi18n.model.TranslationUpdate;
 import de.marhali.easyi18n.util.IOUtil;
 import de.marhali.easyi18n.util.TranslationsUtil;
-import org.jetbrains.annotations.NotNull;
 
-import java.io.IOException;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -40,11 +42,18 @@ public class DataStore {
         this.synchronizer = new ArrayList<>();
     }
 
+    /**
+     * Registers a new synchronizer which will receive {@link #translations} updates.
+     * @param synchronizer Synchronizer. See {@link DataSynchronizer}
+     */
     public void addSynchronizer(DataSynchronizer synchronizer) {
         this.synchronizer.add(synchronizer);
     }
 
-    public void reloadFromDisk() throws IOException {
+    /**
+     * Loads all translations from disk and overrides current {@link #translations} state.
+     */
+    public void reloadFromDisk() {
         String localesPath = SettingsService.getInstance(project).getState().getLocalesPath();
 
         if(localesPath == null || localesPath.isEmpty()) {
@@ -60,11 +69,20 @@ public class DataStore {
 
                     // Propagate changes
                     synchronizer.forEach(synchronizer -> synchronizer.synchronize(translations, searchQuery));
+
+                } else {
+                    // If state cannot be loaded from disk, show empty instance
+                    this.translations = new Translations(new ArrayList<>(),
+                            new LocalizedNode(LocalizedNode.ROOT_KEY, new ArrayList<>()));
                 }
             });
         }
     }
 
+    /**
+     * Saves the current translation state to disk. See {@link TranslatorIO#save(Translations, String, Consumer)}
+     * @param callback Complete callback. Indicates if operation was successful(true) or not
+     */
     public void saveToDisk(@NotNull Consumer<Boolean> callback) {
         String localesPath = SettingsService.getInstance(project).getState().getLocalesPath();
 
@@ -76,11 +94,19 @@ public class DataStore {
         io.save(translations, localesPath, callback);
     }
 
-    public void searchBeyKey(String fullPath) {
+    /**
+     * Propagates provided search string to all synchronizer to display only relevant keys
+     * @param fullPath Full i18n key (e.g. user.username.title). Can be null to display all keys
+     */
+    public void searchBeyKey(@Nullable String fullPath) {
         // Use synchronizer to propagate search instance to all views
         synchronizer.forEach(synchronizer -> synchronizer.synchronize(translations, this.searchQuery = fullPath));
     }
 
+    /**
+     * Processes the provided update. Updates translation instance and propagates changes. See {@link DataSynchronizer}
+     * @param update The update to process. For more information see {@link TranslationUpdate}
+     */
     public void processUpdate(TranslationUpdate update) {
         if(update.isDeletion() || update.isKeyChange()) { // Delete origin i18n key
             String originKey = update.getOrigin().getKey();
@@ -120,6 +146,9 @@ public class DataStore {
         });
     }
 
+    /**
+     * @return Current translation state
+     */
     public Translations getTranslations() {
         return translations;
     }

@@ -7,7 +7,7 @@ import com.intellij.ui.components.JBLabel;
 import com.intellij.ui.components.JBScrollPane;
 import com.intellij.ui.components.JBTextField;
 
-import de.marhali.easyi18n.data.DataStore;
+import de.marhali.easyi18n.service.DataStore;
 import de.marhali.easyi18n.model.KeyedTranslation;
 import de.marhali.easyi18n.model.TranslationCreate;
 
@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- *
+ * Create translation dialog.
  * @author marhali
  */
 public class AddDialog {

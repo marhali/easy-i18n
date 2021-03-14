@@ -1,4 +1,4 @@
-package de.marhali.easyi18n.data;
+package de.marhali.easyi18n.model;
 
 import de.marhali.easyi18n.util.TranslationsUtil;
 
@@ -14,8 +14,11 @@ import java.util.List;
  */
 public class Translations {
 
-    private @NotNull List<String> locales;
-    private @NotNull LocalizedNode nodes;
+    @NotNull
+    private final List<String> locales;
+
+    @NotNull
+    private final LocalizedNode nodes;
 
     /**
      * Constructs a new translation state instance.

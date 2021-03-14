@@ -8,12 +8,11 @@ import com.intellij.openapi.ui.TextFieldWithBrowseButton;
 import com.intellij.ui.components.JBLabel;
 import com.intellij.ui.components.JBTextField;
 
-import de.marhali.easyi18n.SettingsService;
-import de.marhali.easyi18n.data.DataStore;
+import de.marhali.easyi18n.service.SettingsService;
+import de.marhali.easyi18n.service.DataStore;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.IOException;
 
 /**
  * Plugin configuration dialog.
@@ -39,11 +38,7 @@ public class SettingsDialog {
             SettingsService.getInstance(project).getState().setPreviewLocale(previewText.getText());
 
             // Reload instance
-            try {
-                DataStore.getInstance(project).reloadFromDisk();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            DataStore.getInstance(project).reloadFromDisk();
         }
     }
 

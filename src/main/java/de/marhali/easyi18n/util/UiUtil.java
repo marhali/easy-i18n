@@ -8,6 +8,11 @@ import java.util.Map;
  */
 public class UiUtil {
 
+    /**
+     * Generates a html compliant string which shows all defined translations
+     * @param messages Contains locales with desired translation
+     * @return String with html format
+     */
     public static String generateHtmlTooltip(Map<String, String> messages) {
         StringBuilder builder = new StringBuilder();
 
