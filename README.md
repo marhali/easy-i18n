@@ -14,11 +14,32 @@
 - [ ] Click the <kbd>Watch</kbd> button on the top of the [IntelliJ Platform Plugin Template][template] to be notified about releases containing new features and fixes.
 
 <!-- Plugin description -->
-This Fancy IntelliJ Platform Plugin is going to be your implementation of the brilliant ideas that you have.
+This is an easy plugin to manage internationalization for JSON or Resource-Bundle(Properties) based locale files.
+Most common use case is for translating Webapps or simple Java Applications.
 
-This specific section is a source for the [plugin.xml](/src/main/resources/META-INF/plugin.xml) file which will be extracted by the [Gradle](/build.gradle.kts) during the build process.
+![Tree View](https://github.com/marhali/easy-i18n/tree/example/images/TreeView.PNG "Tree View")
+![Table View](https://github.com/marhali/easy-i18n/tree/example/images/TableView.PNG "Table View")
 
-To keep everything working, do not remove `<!-- ... -->` sections. 
+## Use Cases
+- Webapps: [Vue](https://vuejs.org/) with [vue-i18n](https://kazupon.github.io/vue-i18n/) or any other JSON translation file based technology
+- Java based Resource-Bundle
+
+## Features
+- UI Tool Window with Table- and Tree-View representation
+- Easily Add / Edit / Delete translations
+- Filter / Search function to hide irrelevant keys
+- Configurable locales directory & preferred locale for ui presentation 
+- Translation keys with missing definition for any locale will be displayed red
+- Quick edit any translation by right-click (IntelliJ Popup Action)
+- Quick delete any translation via <kbd>DEL</kbd>-Key
+
+## Configuration
+- Install plugin. See **Installation** section
+- Create a directory which will hold the locale files
+- Create a file for each required locale (e.g de.json, en.json) Note: Each json file must at least define an empty section (e.g. **{}**)
+- Click on the **Settings** Action inside the Easy I18n Tool Window
+- Select the created directory (optional: define the preferred locale to view) and press Ok
+- Translations can now be created / edited or deleted
 <!-- Plugin description end -->
 
 ## Installation
