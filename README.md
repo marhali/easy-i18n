@@ -17,8 +17,8 @@
 This is an easy plugin to manage internationalization for JSON or Resource-Bundle(Properties) based locale files.
 Most common use case is for translating Webapps or simple Java Applications.
 
-![Tree View](https://github.com/marhali/easy-i18n/tree/example/images/TreeView.PNG "Tree View")
-![Table View](https://github.com/marhali/easy-i18n/tree/example/images/TableView.PNG "Table View")
+![Tree View](https://raw.githubusercontent.com/marhali/easy-i18n/main/example/images/TreeView.PNG "Tree View")
+![Table View](https://raw.githubusercontent.com/marhali/easy-i18n/main/example/images/TableView.PNG "Table View")
 
 ## Use Cases
 - Webapps: [Vue](https://vuejs.org/) with [vue-i18n](https://kazupon.github.io/vue-i18n/) or any other JSON translation file based technology
