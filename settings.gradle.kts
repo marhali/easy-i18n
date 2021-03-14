@@ -1,1 +1,1 @@
-rootProject.name = "intellij-i18n"
+rootProject.name = "easy-i18n"

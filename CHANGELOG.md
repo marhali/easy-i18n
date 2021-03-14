@@ -1,6 +1,6 @@
 <!-- Keep a Changelog guide -> https://keepachangelog.com -->
 
-# intellij-i18n Changelog
+# easy-i18n Changelog
 
 ## [Unreleased]
 ### Added
