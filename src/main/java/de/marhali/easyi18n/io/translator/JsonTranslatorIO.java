@@ -26,6 +26,8 @@ public class JsonTranslatorIO implements TranslatorIO {
 
     @Override
     public void read(@NotNull String directoryPath, @NotNull Consumer<Translations> callback) {
+        ApplicationManager.getApplication().saveAll(); // Save opened files (required if new locales were added)
+
         ApplicationManager.getApplication().runReadAction(() -> {
             VirtualFile directory = LocalFileSystem.getInstance().findFileByIoFile(new File(directoryPath));
 
@@ -59,40 +61,47 @@ public class JsonTranslatorIO implements TranslatorIO {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
         ApplicationManager.getApplication().runWriteAction(() -> {
-            for(String locale : translations.getLocales()) {
-                JsonElement content = writeTree(locale, new JsonObject(), translations.getNodes());
+            try {
+                for(String locale : translations.getLocales()) {
+                    JsonObject content = new JsonObject();
+                    writeTree(locale, content, translations.getNodes());
+                    //JsonElement content = writeTree(locale, new JsonObject(), translations.getNodes());
 
-                String fullPath = directoryPath + "/" + locale + "." + FILE_EXTENSION;
-                VirtualFile file = LocalFileSystem.getInstance().findFileByIoFile(new File(fullPath));
+                    String fullPath = directoryPath + "/" + locale + "." + FILE_EXTENSION;
+                    VirtualFile file = LocalFileSystem.getInstance().findFileByIoFile(new File(fullPath));
 
-                try {
                     file.setBinaryContent(gson.toJson(content).getBytes());
-                    callback.accept(true);
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    callback.accept(false);
                 }
+
+                // Successfully saved
+                callback.accept(true);
+
+            } catch(IOException e) {
+                e.printStackTrace();
+                callback.accept(false);
             }
         });
     }
 
-    private JsonElement writeTree(String locale, JsonObject parent, LocalizedNode data) {
-        if(data.isLeaf() && !data.getKey().equals(LocalizedNode.ROOT_KEY)) {
-            if(data.getValue().get(locale) != null) { // Translation is defined - track it
-                return new JsonPrimitive(data.getValue().get(locale));
+    private void writeTree(String locale, JsonObject parent, LocalizedNode node) {
+        if(node.isLeaf() && !node.getKey().equals(LocalizedNode.ROOT_KEY)) {
+            if(node.getValue().get(locale) != null) {
+                parent.add(node.getKey(), new JsonPrimitive(node.getValue().get(locale)));
             }
 
         } else {
-            for(LocalizedNode children : data.getChildren()) {
-                JsonObject childrenObject = new JsonObject();
-                parent.add(children.getKey(), childrenObject);
-
-                parent.add(children.getKey(), writeTree(locale, childrenObject, children));
+            for(LocalizedNode children : node.getChildren()) {
+                if(children.isLeaf()) {
+                    writeTree(locale, parent, children);
+                } else {
+                    JsonObject childrenJson = new JsonObject();
+                    writeTree(locale, childrenJson, children);
+                    if(childrenJson.size() > 0) {
+                        parent.add(children.getKey(), childrenJson);
+                    }
+                }
             }
         }
-
-        return parent;
     }
 
     private void readTree(String locale, JsonObject json, LocalizedNode data) {
