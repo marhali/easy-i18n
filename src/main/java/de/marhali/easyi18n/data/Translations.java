@@ -8,17 +8,26 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents translation state instance. IO operations will be based on this file.
+ * @author marhali
+ */
 public class Translations {
 
-    private List<String> locales;
-    private LocalizedNode nodes;
+    private @NotNull List<String> locales;
+    private @NotNull LocalizedNode nodes;
 
-    public Translations(List<String> locales, LocalizedNode nodes) {
+    /**
+     * Constructs a new translation state instance.
+     * @param locales List of all locales which are used for create / edit I18n-Key operations
+     * @param nodes Represents the translation state. Internally handled as a tree. See {@link LocalizedNode}
+     */
+    public Translations(@NotNull List<String> locales, @NotNull LocalizedNode nodes) {
         this.locales = locales;
         this.nodes = nodes;
     }
 
-    public List<String> getLocales() {
+    public @NotNull List<String> getLocales() {
         return locales;
     }
 
@@ -60,7 +69,7 @@ public class Translations {
         return node;
     }
 
-    public List<String> getFullKeys() {
+    public @NotNull List<String> getFullKeys() {
         List<String> keys = new ArrayList<>();
 
         if(nodes.isLeaf()) { // Root has no children
@@ -74,7 +83,7 @@ public class Translations {
         return keys;
     }
 
-    public List<String> getFullKeys(String parentFullPath, LocalizedNode localizedNode) {
+    public @NotNull List<String> getFullKeys(String parentFullPath, LocalizedNode localizedNode) {
         List<String> keys = new ArrayList<>();
 
         if(localizedNode.isLeaf()) {
