@@ -1,6 +1,6 @@
-<idea-plugin>
+<idea-plugin url="https://github.com/marhali/easy-i18n">
     <id>de.marhali.easyi18n</id>
-    <name>Easy-I18n</name>
+    <name>Easy I18n</name>
     <vendor>marhali</vendor>
 
     <!-- Product and plugin compatibility requirements -->
