@@ -2,6 +2,8 @@
 
 # easy-i18n Changelog
 
+## [Unreleased]
+
 ## [1.0.0] - 2021-15-03 (release)
 ### Added
 - Support for JSON and Resource-Bundle(Properties) based locale files
