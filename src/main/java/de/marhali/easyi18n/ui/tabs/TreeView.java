@@ -4,6 +4,7 @@ import com.intellij.ide.projectView.PresentationData;
 import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import com.intellij.openapi.project.Project;
+import com.intellij.ui.components.JBScrollPane;
 import com.intellij.ui.treeStructure.Tree;
 
 import de.marhali.easyi18n.service.DataStore;
@@ -54,7 +55,7 @@ public class TreeView implements DataSynchronizer {
         tree.addMouseListener(new PopupClickListener(this::handlePopup));
         tree.addKeyListener(new DeleteKeyListener(handleDeleteKey()));
 
-        containerPanel.add(tree);
+        containerPanel.add(new JBScrollPane(tree));
         placeActions();
     }
 
