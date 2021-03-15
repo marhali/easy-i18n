@@ -44,7 +44,7 @@ public class JsonTranslatorIO implements TranslatorIO {
             try {
                 for(VirtualFile file : files) {
                     locales.add(file.getNameWithoutExtension());
-                    JsonObject tree = JsonParser.parseReader(new InputStreamReader(file.getInputStream())).getAsJsonObject();
+                    JsonObject tree = JsonParser.parseReader(new InputStreamReader(file.getInputStream(), file.getCharset())).getAsJsonObject();
                     readTree(file.getNameWithoutExtension(), tree, nodes);
                 }
 
@@ -71,7 +71,7 @@ public class JsonTranslatorIO implements TranslatorIO {
                     String fullPath = directoryPath + "/" + locale + "." + FILE_EXTENSION;
                     VirtualFile file = LocalFileSystem.getInstance().findFileByIoFile(new File(fullPath));
 
-                    file.setBinaryContent(gson.toJson(content).getBytes());
+                    file.setBinaryContent(gson.toJson(content).getBytes(file.getCharset()));
                 }
 
                 // Successfully saved
@@ -133,8 +133,6 @@ public class JsonTranslatorIO implements TranslatorIO {
                 Map<String, String> messages = leafNode.getValue();
                 messages.put(locale, entry.getValue().getAsString());
                 leafNode.setValue(messages);
-
-                System.out.println("updated key + " + key + "de locale: " + messages.get("locale-de"));
             }
         }
     }

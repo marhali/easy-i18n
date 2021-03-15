@@ -46,7 +46,7 @@ public class PropertiesTranslatorIO implements TranslatorIO {
                 for (VirtualFile file : files) {
                     locales.add(file.getNameWithoutExtension());
                     Properties properties = new Properties();
-                    properties.load(new InputStreamReader(file.getInputStream()));;
+                    properties.load(new InputStreamReader(file.getInputStream(), file.getCharset()));;
                     readProperties(file.getNameWithoutExtension(), properties, nodes);
                 }
 
@@ -72,7 +72,7 @@ public class PropertiesTranslatorIO implements TranslatorIO {
 
                     ByteArrayOutputStream content = new ByteArrayOutputStream();
                     properties.store(content, "I18n " + locale + " keys");
-                    file.setBinaryContent(content.toByteArray());
+                    file.setBinaryContent(content.toString().getBytes(file.getCharset()));
                 }
 
                 // Successfully saved
