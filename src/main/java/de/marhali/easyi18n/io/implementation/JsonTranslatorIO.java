@@ -113,8 +113,13 @@ public class JsonTranslatorIO implements TranslatorIO {
                 // Try to go one level deeper
                 JsonObject childObject = entry.getValue().getAsJsonObject();
 
-                LocalizedNode childrenNode = new LocalizedNode(key, new ArrayList<>());
-                data.addChildren(childrenNode);
+                LocalizedNode childrenNode = data.getChildren(key);
+
+                if(childrenNode == null) {
+                    childrenNode = new LocalizedNode(key, new ArrayList<>());
+                    data.addChildren(childrenNode);
+                }
+
                 readTree(locale, childObject, childrenNode);
 
             } catch(IllegalStateException e) { // Reached end for this node
@@ -128,6 +133,8 @@ public class JsonTranslatorIO implements TranslatorIO {
                 Map<String, String> messages = leafNode.getValue();
                 messages.put(locale, entry.getValue().getAsString());
                 leafNode.setValue(messages);
+
+                System.out.println("updated key + " + key + "de locale: " + messages.get("locale-de"));
             }
         }
     }
