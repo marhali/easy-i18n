@@ -1,5 +1,6 @@
 package de.marhali.easyi18n;
 
+import com.intellij.icons.AllIcons;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindow;
@@ -28,6 +29,8 @@ public class TranslatorToolWindowFactory implements ToolWindowFactory {
     @Override
     public void createToolWindowContent(@NotNull Project project, @NotNull ToolWindow toolWindow) {
         ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
+
+        toolWindow.setIcon(AllIcons.Actions.InlayGlobe);
 
         // Translations tree view
         TreeView treeView = new TreeView(project);
