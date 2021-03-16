@@ -4,7 +4,11 @@
 
 ## [Unreleased]
 
-## [1.0.0] - 2021-15-03 (release)
+## [1.0.1] - 2021-03-16
+### Changed
+- Modified plugin icon to meet IntelliJ guidelines
+
+## [1.0.0] - 2021-03-15 (release)
 ### Added
 - Support for JSON and Resource-Bundle(Properties) based locale files
 - UI Tool Window with Table- and Tree-View representation
