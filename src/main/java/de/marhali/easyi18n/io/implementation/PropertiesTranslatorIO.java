@@ -11,10 +11,7 @@ import de.marhali.easyi18n.util.TranslationsUtil;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.*;
 import java.util.function.Consumer;
 
@@ -46,7 +43,7 @@ public class PropertiesTranslatorIO implements TranslatorIO {
                 for (VirtualFile file : files) {
                     locales.add(file.getNameWithoutExtension());
                     Properties properties = new Properties();
-                    properties.load(new InputStreamReader(file.getInputStream(), file.getCharset()));;
+                    properties.load(new InputStreamReader(file.getInputStream(), file.getCharset()));
                     readProperties(file.getNameWithoutExtension(), properties, nodes);
                 }
 
@@ -70,8 +67,9 @@ public class PropertiesTranslatorIO implements TranslatorIO {
                     String fullPath = directoryPath + "/" + locale + "." + FILE_EXTENSION;
                     VirtualFile file = LocalFileSystem.getInstance().findFileByIoFile(new File(fullPath));
 
-                    ByteArrayOutputStream content = new ByteArrayOutputStream();
+                    StringWriter content = new StringWriter();
                     properties.store(content, "I18n " + locale + " keys");
+
                     file.setBinaryContent(content.toString().getBytes(file.getCharset()));
                 }
 
