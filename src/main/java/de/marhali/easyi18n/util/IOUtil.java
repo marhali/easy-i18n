@@ -3,6 +3,7 @@ package de.marhali.easyi18n.util;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 import de.marhali.easyi18n.io.implementation.JsonTranslatorIO;
+import de.marhali.easyi18n.io.implementation.ModularizedJsonTranslatorIO;
 import de.marhali.easyi18n.io.implementation.PropertiesTranslatorIO;
 import de.marhali.easyi18n.io.TranslatorIO;
 
@@ -34,6 +35,11 @@ public class IOUtil {
 
         if(!any.isPresent()) {
             throw new IllegalStateException("Could not determine i18n format. At least one locale file must be defined");
+        }
+
+        // Split files - Should be always JSON
+        if(any.get().isDirectory()) {
+            return new ModularizedJsonTranslatorIO();
         }
 
         switch (any.get().getFileType().getDefaultExtension().toLowerCase()) {

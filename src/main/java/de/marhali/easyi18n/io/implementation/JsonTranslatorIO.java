@@ -8,6 +8,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import de.marhali.easyi18n.io.TranslatorIO;
 import de.marhali.easyi18n.model.LocalizedNode;
 import de.marhali.easyi18n.model.Translations;
+import de.marhali.easyi18n.util.JsonUtil;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -44,8 +45,11 @@ public class JsonTranslatorIO implements TranslatorIO {
             try {
                 for(VirtualFile file : files) {
                     locales.add(file.getNameWithoutExtension());
-                    JsonObject tree = JsonParser.parseReader(new InputStreamReader(file.getInputStream(), file.getCharset())).getAsJsonObject();
-                    readTree(file.getNameWithoutExtension(), tree, nodes);
+
+                    JsonObject tree = JsonParser.parseReader(new InputStreamReader(file.getInputStream(),
+                            file.getCharset())).getAsJsonObject();
+
+                    JsonUtil.readTree(file.getNameWithoutExtension(), tree, nodes);
                 }
 
                 callback.accept(new Translations(locales, nodes));
@@ -65,13 +69,16 @@ public class JsonTranslatorIO implements TranslatorIO {
             try {
                 for(String locale : translations.getLocales()) {
                     JsonObject content = new JsonObject();
-                    writeTree(locale, content, translations.getNodes());
-                    //JsonElement content = writeTree(locale, new JsonObject(), translations.getNodes());
+                    JsonUtil.writeTree(locale, content, translations.getNodes());
 
                     String fullPath = directoryPath + "/" + locale + "." + FILE_EXTENSION;
-                    VirtualFile file = LocalFileSystem.getInstance().findFileByIoFile(new File(fullPath));
+                    File file = new File(fullPath);
+                    boolean created = file.createNewFile();
 
-                    file.setBinaryContent(gson.toJson(content).getBytes(file.getCharset()));
+                    VirtualFile vf = created ? LocalFileSystem.getInstance().refreshAndFindFileByIoFile(file)
+                            : LocalFileSystem.getInstance().findFileByIoFile(file);
+
+                    vf.setBinaryContent(gson.toJson(content).getBytes(vf.getCharset()));
                 }
 
                 // Successfully saved
@@ -82,58 +89,5 @@ public class JsonTranslatorIO implements TranslatorIO {
                 callback.accept(false);
             }
         });
-    }
-
-    private void writeTree(String locale, JsonObject parent, LocalizedNode node) {
-        if(node.isLeaf() && !node.getKey().equals(LocalizedNode.ROOT_KEY)) {
-            if(node.getValue().get(locale) != null) {
-                parent.add(node.getKey(), new JsonPrimitive(node.getValue().get(locale)));
-            }
-
-        } else {
-            for(LocalizedNode children : node.getChildren()) {
-                if(children.isLeaf()) {
-                    writeTree(locale, parent, children);
-                } else {
-                    JsonObject childrenJson = new JsonObject();
-                    writeTree(locale, childrenJson, children);
-                    if(childrenJson.size() > 0) {
-                        parent.add(children.getKey(), childrenJson);
-                    }
-                }
-            }
-        }
-    }
-
-    private void readTree(String locale, JsonObject json, LocalizedNode data) {
-        for(Map.Entry<String, JsonElement> entry : json.entrySet()) {
-            String key = entry.getKey();
-
-            try {
-                // Try to go one level deeper
-                JsonObject childObject = entry.getValue().getAsJsonObject();
-
-                LocalizedNode childrenNode = data.getChildren(key);
-
-                if(childrenNode == null) {
-                    childrenNode = new LocalizedNode(key, new ArrayList<>());
-                    data.addChildren(childrenNode);
-                }
-
-                readTree(locale, childObject, childrenNode);
-
-            } catch(IllegalStateException e) { // Reached end for this node
-                LocalizedNode leafNode = data.getChildren(key);
-
-                if(leafNode == null) {
-                    leafNode = new LocalizedNode(key, new HashMap<>());
-                    data.addChildren(leafNode);
-                }
-
-                Map<String, String> messages = leafNode.getValue();
-                messages.put(locale, entry.getValue().getAsString());
-                leafNode.setValue(messages);
-            }
-        }
     }
 }
