@@ -10,8 +10,10 @@ import org.jetbrains.annotations.Nullable;
 public class SettingsState {
 
     public static final String DEFAULT_PREVIEW_LOCALE = "en";
+    public static final String DEFAULT_FILE_PATTERN = ".*";
 
     private String localesPath;
+    private String filePattern;
     private String previewLocale;
 
     public SettingsState() {}
@@ -22,6 +24,14 @@ public class SettingsState {
 
     public void setLocalesPath(String localesPath) {
         this.localesPath = localesPath;
+    }
+
+    public @NotNull String getFilePattern() {
+        return filePattern != null ? filePattern : DEFAULT_FILE_PATTERN;
+    }
+
+    public void setFilePattern(String filePattern) {
+        this.filePattern = filePattern;
     }
 
     public @NotNull String getPreviewLocale() {

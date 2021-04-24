@@ -24,6 +24,7 @@ public class SettingsDialog {
     private final Project project;
 
     private TextFieldWithBrowseButton pathText;
+    private JBTextField filePatternText;
     private JBTextField previewText;
 
     public SettingsDialog(Project project) {
@@ -32,10 +33,12 @@ public class SettingsDialog {
 
     public void showAndHandle() {
         String localesPath = SettingsService.getInstance(project).getState().getLocalesPath();
+        String filePattern = SettingsService.getInstance(project).getState().getFilePattern();
         String previewLocale = SettingsService.getInstance(project).getState().getPreviewLocale();
 
-        if(prepare(localesPath, previewLocale).show() == DialogWrapper.OK_EXIT_CODE) { // Save changes
+        if(prepare(localesPath, filePattern, previewLocale).show() == DialogWrapper.OK_EXIT_CODE) { // Save changes
             SettingsService.getInstance(project).getState().setLocalesPath(pathText.getText());
+            SettingsService.getInstance(project).getState().setFilePattern(filePatternText.getText());
             SettingsService.getInstance(project).getState().setPreviewLocale(previewText.getText());
 
             // Reload instance
@@ -43,7 +46,7 @@ public class SettingsDialog {
         }
     }
 
-    private DialogBuilder prepare(String localesPath, String previewLocale) {
+    private DialogBuilder prepare(String localesPath, String filePattern, String previewLocale) {
         JPanel rootPanel = new JPanel(new GridLayout(0, 1, 2, 2));
 
         JBLabel pathLabel = new JBLabel(ResourceBundle.getBundle("messages").getString("settings.path.text"));
@@ -55,6 +58,13 @@ public class SettingsDialog {
 
         rootPanel.add(pathLabel);
         rootPanel.add(pathText);
+
+        JBLabel filePatternLabel = new JBLabel(ResourceBundle.getBundle("messages").getString("settings.path.file-pattern"));
+        filePatternText = new JBTextField(filePattern);
+
+        rootPanel.add(filePatternLabel);
+        rootPanel.add(filePatternText);
+
 
         JBLabel previewLabel = new JBLabel(ResourceBundle.getBundle("messages").getString("settings.preview"));
         previewText = new JBTextField(previewLocale);

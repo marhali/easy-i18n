@@ -1,12 +1,14 @@
 package de.marhali.easyi18n.io.implementation;
 
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 
 import de.marhali.easyi18n.io.TranslatorIO;
 import de.marhali.easyi18n.model.LocalizedNode;
 import de.marhali.easyi18n.model.Translations;
+import de.marhali.easyi18n.util.IOUtil;
 import de.marhali.easyi18n.util.TranslationsUtil;
 
 import org.jetbrains.annotations.NotNull;
@@ -24,7 +26,7 @@ public class PropertiesTranslatorIO implements TranslatorIO {
     public static final String FILE_EXTENSION = "properties";
 
     @Override
-    public void read(@NotNull String directoryPath, @NotNull Consumer<Translations> callback) {
+    public void read(@NotNull Project project, @NotNull String directoryPath, @NotNull Consumer<Translations> callback) {
         ApplicationManager.getApplication().saveAll(); // Save opened files (required if new locales were added)
 
         ApplicationManager.getApplication().runReadAction(() -> {
@@ -41,6 +43,11 @@ public class PropertiesTranslatorIO implements TranslatorIO {
 
             try {
                 for (VirtualFile file : files) {
+
+                    if(!IOUtil.isFileRelevant(project, file)) { // File does not matches pattern
+                        continue;
+                    }
+
                     locales.add(file.getNameWithoutExtension());
                     Properties properties = new Properties();
                     properties.load(new InputStreamReader(file.getInputStream(), file.getCharset()));
@@ -57,7 +64,9 @@ public class PropertiesTranslatorIO implements TranslatorIO {
     }
 
     @Override
-    public void save(@NotNull Translations translations, @NotNull String directoryPath, @NotNull Consumer<Boolean> callback) {
+    public void save(@NotNull Project project, @NotNull Translations translations,
+                     @NotNull String directoryPath, @NotNull Consumer<Boolean> callback) {
+
         ApplicationManager.getApplication().runWriteAction(() -> {
             try {
                 for(String locale : translations.getLocales()) {

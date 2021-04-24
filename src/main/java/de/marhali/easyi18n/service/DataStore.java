@@ -63,7 +63,7 @@ public class DataStore {
         } else {
             TranslatorIO io = IOUtil.determineFormat(localesPath);
 
-            io.read(localesPath, (translations) -> {
+            io.read(project, localesPath, (translations) -> {
                 if(translations != null) { // Read was successful
                     this.translations = translations;
 
@@ -80,7 +80,7 @@ public class DataStore {
     }
 
     /**
-     * Saves the current translation state to disk. See {@link TranslatorIO#save(Translations, String, Consumer)}
+     * Saves the current translation state to disk. See {@link TranslatorIO#save(Project, Translations, String, Consumer)}
      * @param callback Complete callback. Indicates if operation was successful(true) or not
      */
     public void saveToDisk(@NotNull Consumer<Boolean> callback) {
@@ -91,7 +91,7 @@ public class DataStore {
         }
 
         TranslatorIO io = IOUtil.determineFormat(localesPath);
-        io.save(translations, localesPath, callback);
+        io.save(project, translations, localesPath, callback);
     }
 
     /**

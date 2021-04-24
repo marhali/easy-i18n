@@ -5,12 +5,14 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 
 import de.marhali.easyi18n.io.TranslatorIO;
 import de.marhali.easyi18n.model.LocalizedNode;
 import de.marhali.easyi18n.model.Translations;
+import de.marhali.easyi18n.util.IOUtil;
 import de.marhali.easyi18n.util.JsonUtil;
 
 import org.jetbrains.annotations.NotNull;
@@ -31,7 +33,7 @@ public class ModularizedJsonTranslatorIO implements TranslatorIO {
     private static final String FILE_EXTENSION = "json";
 
     @Override
-    public void read(@NotNull String directoryPath, @NotNull Consumer<Translations> callback) {
+    public void read(@NotNull Project project, @NotNull String directoryPath, @NotNull Consumer<Translations> callback) {
         ApplicationManager.getApplication().saveAll(); // Save opened files (required if new locales were added)
 
         ApplicationManager.getApplication().runReadAction(() -> {
@@ -53,6 +55,11 @@ public class ModularizedJsonTranslatorIO implements TranslatorIO {
 
                     // Read all json modules
                     for(VirtualFile module : localeDir.getChildren()) {
+
+                        if(!IOUtil.isFileRelevant(project, module)) { // File does not matches pattern
+                            continue;
+                        }
+
                         JsonObject tree = JsonParser.parseReader(new InputStreamReader(module.getInputStream(),
                                 module.getCharset())).getAsJsonObject();
 
@@ -78,7 +85,9 @@ public class ModularizedJsonTranslatorIO implements TranslatorIO {
     }
 
     @Override
-    public void save(@NotNull Translations translations, @NotNull String directoryPath, @NotNull Consumer<Boolean> callback) {
+    public void save(@NotNull Project project, @NotNull Translations translations,
+                     @NotNull String directoryPath, @NotNull Consumer<Boolean> callback) {
+
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
         ApplicationManager.getApplication().runWriteAction(() -> {
