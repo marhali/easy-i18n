@@ -4,6 +4,19 @@
 
 ## [Unreleased]
 
+## [1.1.0] - 2021-04-25
+### Added
+- Filter option for translation files via regex / issue #5
+- Support for splitted / modularized json files per locale / issue #4
+- Basic translation key completion inside editor
+- I18n key annotation inside editor
+
+### Changed
+- Tree view will be expanded if search function has been used
+
+### Fixed
+- Encoding for properties files / issue #6
+
 ## [1.0.1] - 2021-03-16
 ### Changed
 - Modified plugin icon to meet IntelliJ guidelines
