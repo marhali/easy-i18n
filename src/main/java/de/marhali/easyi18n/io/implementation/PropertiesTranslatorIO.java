@@ -1,20 +1,19 @@
 package de.marhali.easyi18n.io.implementation;
 
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 
 import de.marhali.easyi18n.io.TranslatorIO;
 import de.marhali.easyi18n.model.LocalizedNode;
 import de.marhali.easyi18n.model.Translations;
+import de.marhali.easyi18n.util.IOUtil;
 import de.marhali.easyi18n.util.TranslationsUtil;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.*;
 import java.util.function.Consumer;
 
@@ -27,7 +26,7 @@ public class PropertiesTranslatorIO implements TranslatorIO {
     public static final String FILE_EXTENSION = "properties";
 
     @Override
-    public void read(@NotNull String directoryPath, @NotNull Consumer<Translations> callback) {
+    public void read(@NotNull Project project, @NotNull String directoryPath, @NotNull Consumer<Translations> callback) {
         ApplicationManager.getApplication().saveAll(); // Save opened files (required if new locales were added)
 
         ApplicationManager.getApplication().runReadAction(() -> {
@@ -44,9 +43,14 @@ public class PropertiesTranslatorIO implements TranslatorIO {
 
             try {
                 for (VirtualFile file : files) {
+
+                    if(!IOUtil.isFileRelevant(project, file)) { // File does not matches pattern
+                        continue;
+                    }
+
                     locales.add(file.getNameWithoutExtension());
                     Properties properties = new Properties();
-                    properties.load(new InputStreamReader(file.getInputStream(), file.getCharset()));;
+                    properties.load(new InputStreamReader(file.getInputStream(), file.getCharset()));
                     readProperties(file.getNameWithoutExtension(), properties, nodes);
                 }
 
@@ -60,7 +64,9 @@ public class PropertiesTranslatorIO implements TranslatorIO {
     }
 
     @Override
-    public void save(@NotNull Translations translations, @NotNull String directoryPath, @NotNull Consumer<Boolean> callback) {
+    public void save(@NotNull Project project, @NotNull Translations translations,
+                     @NotNull String directoryPath, @NotNull Consumer<Boolean> callback) {
+
         ApplicationManager.getApplication().runWriteAction(() -> {
             try {
                 for(String locale : translations.getLocales()) {
@@ -70,8 +76,9 @@ public class PropertiesTranslatorIO implements TranslatorIO {
                     String fullPath = directoryPath + "/" + locale + "." + FILE_EXTENSION;
                     VirtualFile file = LocalFileSystem.getInstance().findFileByIoFile(new File(fullPath));
 
-                    ByteArrayOutputStream content = new ByteArrayOutputStream();
+                    StringWriter content = new StringWriter();
                     properties.store(content, "I18n " + locale + " keys");
+
                     file.setBinaryContent(content.toString().getBytes(file.getCharset()));
                 }
 

@@ -1,11 +1,14 @@
 package de.marhali.easyi18n.util;
 
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 import de.marhali.easyi18n.io.implementation.JsonTranslatorIO;
+import de.marhali.easyi18n.io.implementation.ModularizedJsonTranslatorIO;
 import de.marhali.easyi18n.io.implementation.PropertiesTranslatorIO;
 import de.marhali.easyi18n.io.TranslatorIO;
 
+import de.marhali.easyi18n.service.SettingsService;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -36,6 +39,11 @@ public class IOUtil {
             throw new IllegalStateException("Could not determine i18n format. At least one locale file must be defined");
         }
 
+        // Split files - Should be always JSON
+        if(any.get().isDirectory()) {
+            return new ModularizedJsonTranslatorIO();
+        }
+
         switch (any.get().getFileType().getDefaultExtension().toLowerCase()) {
             case "json":
                 return new JsonTranslatorIO();
@@ -47,5 +55,16 @@ public class IOUtil {
                 throw new UnsupportedOperationException("Unsupported i18n locale file format: " +
                         any.get().getFileType().getDefaultExtension());
         }
+    }
+
+    /**
+     * Checks if the provided file matches the file pattern specified by configuration
+     * @param project Current intellij project
+     * @param file File to check
+     * @return True if relevant otherwise false
+     */
+    public static boolean isFileRelevant(Project project, VirtualFile file) {
+        String pattern = SettingsService.getInstance(project).getState().getFilePattern();
+        return file.getName().matches(pattern);
     }
 }

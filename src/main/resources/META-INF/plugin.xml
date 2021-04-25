@@ -10,5 +10,10 @@
     <extensions defaultExtensionNs="com.intellij">
         <toolWindow id="Easy I18n" anchor="bottom" factoryClass="de.marhali.easyi18n.TranslatorToolWindowFactory" />
         <projectService serviceImplementation="de.marhali.easyi18n.service.SettingsService" />
+
+        <completion.contributor language="any"
+                                implementationClass="de.marhali.easyi18n.ui.editor.I18nCompletionContributor" />
+
+        <annotator language="" implementationClass="de.marhali.easyi18n.ui.editor.I18nKeyAnnotator" />
     </extensions>
 </idea-plugin>
