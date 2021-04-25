@@ -77,6 +77,10 @@ public class TreeView implements DataSynchronizer {
     @Override
     public void synchronize(@NotNull Translations translations, @Nullable String searchQuery) {
         tree.setModel(new TreeModelTranslator(project, translations, searchQuery));
+
+        if(searchQuery != null && !searchQuery.isEmpty()) {
+            expandAll().run();
+        }
     }
 
     private void handlePopup(MouseEvent e) {
