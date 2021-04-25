@@ -3,6 +3,7 @@
 # easy-i18n Changelog
 
 ## [Unreleased]
+## [1.1.0]
 
 ## [1.1.0] - 2021-04-25
 ### Added
