@@ -5,6 +5,10 @@ import com.intellij.codeInsight.completion.CompletionType;
 import com.intellij.patterns.*;
 import com.intellij.psi.PsiLiteralValue;
 
+/**
+ * Show i18n key completion for literal values.
+ * @author marhali
+ */
 public class I18nCompletionContributor extends CompletionContributor {
 
     public I18nCompletionContributor() {
