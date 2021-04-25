@@ -48,7 +48,9 @@ public class I18nKeyAnnotator implements Annotator {
             return;
         }
 
-        holder.newAnnotation(HighlightSeverity.INFORMATION,
-                "I18n(" + previewLocale + ": " + node.getValue().get(previewLocale) + ")").create();
+        String tooltip = node.isLeaf() ? "I18n(" + previewLocale + ": " + node.getValue().get(previewLocale) + ")"
+                : "I18n ([])";
+
+        holder.newAnnotation(HighlightSeverity.INFORMATION, tooltip).create();
     }
 }
