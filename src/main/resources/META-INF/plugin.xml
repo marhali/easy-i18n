@@ -13,5 +13,7 @@
 
         <completion.contributor language="any"
                                 implementationClass="de.marhali.easyi18n.ui.editor.I18nCompletionContributor" />
+
+        <annotator language="" implementationClass="de.marhali.easyi18n.ui.editor.I18nKeyAnnotator" />
     </extensions>
 </idea-plugin>
