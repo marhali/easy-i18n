@@ -18,6 +18,7 @@ Most common use case is for translating Webapps or simple Java Applications. Tra
 - Filter / Search function to hide irrelevant keys
 - Key completion and annotation inside editor
 - Configurable locales directory & preferred locale for ui presentation 
+- Supports modularized (splitted) json files
 - Translation keys with missing definition for any locale will be displayed red
 - Quick edit any translation by right-click (IntelliJ Popup Action)
 - Quick delete any translation via <kbd>DEL</kbd>-Key
