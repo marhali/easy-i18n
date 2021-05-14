@@ -3,7 +3,14 @@
 # easy-i18n Changelog
 
 ## [Unreleased]
-## [1.1.0]
+### Added
+- Support for IntelliJ 2021.1
+
+### Changed
+- Updated dependencies
+
+### Fixed
+- Exception during i18n key completion / annotation
 
 ## [1.1.0] - 2021-04-25
 ### Added
