@@ -27,7 +27,7 @@ Most common use case is for translating Webapps or simple Java Applications. Tra
 ## Screenshots
 ![Tree View](https://raw.githubusercontent.com/marhali/easy-i18n/main/example/images/TreeView.PNG "Tree View")
 ![Table View](https://raw.githubusercontent.com/marhali/easy-i18n/main/example/images/TableView.PNG "Table View")
-
+![Key Completion](https://raw.githubusercontent.com/marhali/easy-i18n/main/example/images/Completion.PNG "Key Completion")
 
 ## Installation
 - Using IDE built-in plugin system:
