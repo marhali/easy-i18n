@@ -4,8 +4,6 @@ import com.intellij.codeInsight.completion.CompletionParameters;
 import com.intellij.codeInsight.completion.CompletionProvider;
 import com.intellij.codeInsight.completion.CompletionResultSet;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
-import com.intellij.ide.DataManager;
-import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.project.Project;
 import com.intellij.util.ProcessingContext;
 
@@ -24,18 +22,11 @@ import java.util.List;
  */
 public class I18nCompletionProvider extends CompletionProvider<CompletionParameters> {
 
-    private Project project;
-    private String previewLocale;
-
-    public I18nCompletionProvider() {
-        DataManager.getInstance().getDataContextFromFocusAsync().onSuccess(data -> {
-           project = PlatformDataKeys.PROJECT.getData(data);
-           previewLocale = SettingsService.getInstance(project).getState().getPreviewLocale();
-        });
-    }
-
     @Override
     protected void addCompletions(@NotNull CompletionParameters parameters, @NotNull ProcessingContext context, @NotNull CompletionResultSet result) {
+        Project project = parameters.getEditor().getProject();
+        String previewLocale = SettingsService.getInstance(project).getState().getPreviewLocale();
+
         String query = result.getPrefixMatcher().getPrefix();
         List<String> sections = TranslationsUtil.getSections(query);
         String lastSection = null;
@@ -54,12 +45,13 @@ public class I18nCompletionProvider extends CompletionProvider<CompletionParamet
                 // Construct full key path / Fore nested objects add '.' to indicate deeper level
                 String fullKey = (path.isEmpty() ? children.getKey() : path + "." + children.getKey()) + (children.isLeaf() ? "" : ".");
 
-                result.addElement(LookupElementBuilder.create(fullKey).appendTailText(getTailText(children), true));
+                result.addElement(LookupElementBuilder.create(fullKey)
+                        .appendTailText(getTailText(children, previewLocale), true));
             }
         }
     }
 
-    private String getTailText(LocalizedNode node) {
+    private String getTailText(LocalizedNode node, String previewLocale) {
         return !node.isLeaf() ? " I18n([])"
                 : " I18n(" + previewLocale + ": " + node.getValue().get(previewLocale) + ")";
     }
