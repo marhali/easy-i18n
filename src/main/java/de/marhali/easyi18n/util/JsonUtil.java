@@ -6,6 +6,8 @@ import com.google.gson.JsonPrimitive;
 
 import de.marhali.easyi18n.model.LocalizedNode;
 
+import org.apache.commons.lang.StringEscapeUtils;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,7 +27,8 @@ public class JsonUtil {
     public static void writeTree(String locale, JsonObject parent, LocalizedNode node) {
         if(node.isLeaf() && !node.getKey().equals(LocalizedNode.ROOT_KEY)) {
             if(node.getValue().get(locale) != null) {
-                parent.add(node.getKey(), new JsonPrimitive(node.getValue().get(locale)));
+                String value = StringEscapeUtils.unescapeJava(node.getValue().get(locale));
+                parent.add(node.getKey(), new JsonPrimitive(value));
             }
 
         } else {
@@ -75,7 +78,8 @@ public class JsonUtil {
                 }
 
                 Map<String, String> messages = leafNode.getValue();
-                messages.put(locale, entry.getValue().getAsString());
+                String value = StringUtil.escapeControls(entry.getValue().getAsString(), true);
+                messages.put(locale, value);
                 leafNode.setValue(messages);
             }
         }
