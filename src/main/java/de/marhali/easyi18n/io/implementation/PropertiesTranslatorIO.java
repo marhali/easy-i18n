@@ -9,8 +9,11 @@ import de.marhali.easyi18n.io.TranslatorIO;
 import de.marhali.easyi18n.model.LocalizedNode;
 import de.marhali.easyi18n.model.Translations;
 import de.marhali.easyi18n.util.IOUtil;
+import de.marhali.easyi18n.util.SortedProperties;
+import de.marhali.easyi18n.util.StringUtil;
 import de.marhali.easyi18n.util.TranslationsUtil;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
@@ -49,7 +52,7 @@ public class PropertiesTranslatorIO implements TranslatorIO {
                     }
 
                     locales.add(file.getNameWithoutExtension());
-                    Properties properties = new Properties();
+                    SortedProperties properties = new SortedProperties();
                     properties.load(new InputStreamReader(file.getInputStream(), file.getCharset()));
                     readProperties(file.getNameWithoutExtension(), properties, nodes);
                 }
@@ -70,7 +73,7 @@ public class PropertiesTranslatorIO implements TranslatorIO {
         ApplicationManager.getApplication().runWriteAction(() -> {
             try {
                 for(String locale : translations.getLocales()) {
-                    Properties properties = new Properties();
+                    SortedProperties properties = new SortedProperties();
                     writeProperties(locale, properties, translations.getNodes(), "");
 
                     String fullPath = directoryPath + "/" + locale + "." + FILE_EXTENSION;
@@ -95,7 +98,8 @@ public class PropertiesTranslatorIO implements TranslatorIO {
     private void writeProperties(String locale, Properties props, LocalizedNode node, String parentPath) {
         if(node.isLeaf() && !node.getKey().equals(LocalizedNode.ROOT_KEY)) {
             if(node.getValue().get(locale) != null) { // Translation is defined - track it
-                props.setProperty(parentPath, node.getValue().get(locale));
+                String value = StringEscapeUtils.unescapeJava(node.getValue().get(locale));
+                props.setProperty(parentPath, value);
             }
 
         } else {
@@ -124,7 +128,8 @@ public class PropertiesTranslatorIO implements TranslatorIO {
             }
 
             Map<String, String> messages = node.getValue();
-            messages.put(locale, String.valueOf(value));
+            String escapedValue = StringUtil.escapeControls(String.valueOf(value), true);
+            messages.put(locale, escapedValue);
             node.setValue(messages);
         });
     }

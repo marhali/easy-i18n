@@ -27,6 +27,7 @@ import java.util.function.Consumer;
 public class JsonTranslatorIO implements TranslatorIO {
 
     private static final String FILE_EXTENSION = "json";
+    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
 
     @Override
     public void read(@NotNull Project project, @NotNull String directoryPath, @NotNull Consumer<Translations> callback) {
@@ -53,8 +54,8 @@ public class JsonTranslatorIO implements TranslatorIO {
 
                     locales.add(file.getNameWithoutExtension());
 
-                    JsonObject tree = JsonParser.parseReader(new InputStreamReader(file.getInputStream(),
-                            file.getCharset())).getAsJsonObject();
+                    JsonObject tree = GSON.fromJson(new InputStreamReader(file.getInputStream(),
+                            file.getCharset()), JsonObject.class);
 
                     JsonUtil.readTree(file.getNameWithoutExtension(), tree, nodes);
                 }
@@ -71,9 +72,6 @@ public class JsonTranslatorIO implements TranslatorIO {
     @Override
     public void save(@NotNull Project project, @NotNull Translations translations,
                      @NotNull String directoryPath, @NotNull Consumer<Boolean> callback) {
-
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-
         ApplicationManager.getApplication().runWriteAction(() -> {
             try {
                 for(String locale : translations.getLocales()) {
@@ -87,7 +85,7 @@ public class JsonTranslatorIO implements TranslatorIO {
                     VirtualFile vf = created ? LocalFileSystem.getInstance().refreshAndFindFileByIoFile(file)
                             : LocalFileSystem.getInstance().findFileByIoFile(file);
 
-                    vf.setBinaryContent(gson.toJson(content).getBytes(vf.getCharset()));
+                    vf.setBinaryContent(GSON.toJson(content).getBytes(vf.getCharset()));
                 }
 
                 // Successfully saved

@@ -3,6 +3,12 @@
 # easy-i18n Changelog
 
 ## [Unreleased]
+### Added
+- Sorting for properties files
+
+### Fixed
+- Unexpected character escaping for json/properties files / issue #10
+
 ## [1.1.1]
 ### Added
 - Support for IntelliJ 2021.1
