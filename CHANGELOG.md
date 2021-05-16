@@ -3,6 +3,7 @@
 # easy-i18n Changelog
 
 ## [Unreleased]
+## [1.2.0]
 ### Added
 - Sorting for properties files
 
