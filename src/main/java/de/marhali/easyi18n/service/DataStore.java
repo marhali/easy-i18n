@@ -60,6 +60,9 @@ public class DataStore {
             translations = new Translations(new ArrayList<>(),
                     new LocalizedNode(LocalizedNode.ROOT_KEY, new ArrayList<>()));
 
+            // Propagate changes
+            synchronizer.forEach(synchronizer -> synchronizer.synchronize(translations, searchQuery));
+
         } else {
             TranslatorIO io = IOUtil.determineFormat(localesPath);
 
@@ -74,6 +77,9 @@ public class DataStore {
                     // If state cannot be loaded from disk, show empty instance
                     this.translations = new Translations(new ArrayList<>(),
                             new LocalizedNode(LocalizedNode.ROOT_KEY, new ArrayList<>()));
+
+                    // Propagate changes
+                    synchronizer.forEach(synchronizer -> synchronizer.synchronize(translations, searchQuery));
                 }
             });
         }
