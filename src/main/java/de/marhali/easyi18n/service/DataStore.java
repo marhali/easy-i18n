@@ -71,7 +71,7 @@ public class DataStore {
                     this.translations = translations;
 
                     // Propagate changes
-                    synchronizer.forEach(synchronizer -> synchronizer.synchronize(translations, searchQuery));
+                    synchronizer.forEach(synchronizer -> synchronizer.synchronize(this.translations, searchQuery));
 
                 } else {
                     // If state cannot be loaded from disk, show empty instance
@@ -79,7 +79,7 @@ public class DataStore {
                             new LocalizedNode(LocalizedNode.ROOT_KEY, new ArrayList<>()));
 
                     // Propagate changes
-                    synchronizer.forEach(synchronizer -> synchronizer.synchronize(translations, searchQuery));
+                    synchronizer.forEach(synchronizer -> synchronizer.synchronize(this.translations, searchQuery));
                 }
             });
         }
