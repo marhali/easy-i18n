@@ -33,11 +33,11 @@ public class DataStore {
     private Translations translations;
     private String searchQuery;
 
-    public static DataStore getInstance(Project project) {
+    public static DataStore getInstance(@NotNull Project project) {
         return INSTANCE == null ? INSTANCE = new DataStore(project) : INSTANCE;
     }
 
-    private DataStore(Project project) {
+    private DataStore(@NotNull Project project) {
         this.project = project;
         this.synchronizer = new ArrayList<>();
     }
