@@ -20,6 +20,7 @@ import de.marhali.easyi18n.ui.dialog.EditDialog;
 import de.marhali.easyi18n.ui.listener.DeleteKeyListener;
 import de.marhali.easyi18n.ui.listener.PopupClickListener;
 import de.marhali.easyi18n.ui.renderer.TreeRenderer;
+import de.marhali.easyi18n.util.TranslationsUtil;
 import de.marhali.easyi18n.util.TreeUtil;
 
 import org.jetbrains.annotations.NotNull;
@@ -75,11 +76,18 @@ public class TreeView implements DataSynchronizer {
     }
 
     @Override
-    public void synchronize(@NotNull Translations translations, @Nullable String searchQuery) {
-        tree.setModel(new TreeModelTranslator(project, translations, searchQuery));
+    public void synchronize(@NotNull Translations translations,
+                            @Nullable String searchQuery, @Nullable String scrollTo) {
+
+        TreeModelTranslator model = new TreeModelTranslator(project, translations, searchQuery);
+        tree.setModel(model);
 
         if(searchQuery != null && !searchQuery.isEmpty()) {
             expandAll().run();
+        }
+
+        if(scrollTo != null) {
+            tree.scrollPathToVisible(model.findTreePath(scrollTo));
         }
     }
 

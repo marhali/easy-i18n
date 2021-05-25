@@ -20,6 +20,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.ResourceBundle;
 
@@ -73,9 +74,26 @@ public class TableView implements DataSynchronizer {
     }
 
     @Override
-    public void synchronize(@NotNull Translations translations, @Nullable String searchQuery) {
+    public void synchronize(@NotNull Translations translations,
+                            @Nullable String searchQuery, @Nullable String scrollTo) {
+
         table.setModel(new TableModelTranslator(translations, searchQuery, update ->
                 DataStore.getInstance(project).processUpdate(update)));
+
+        if(scrollTo != null) {
+            int row = -1;
+
+            for (int i = 0; i < table.getRowCount(); i++) {
+                if (String.valueOf(table.getValueAt(i, 0)).equals(scrollTo)) {
+                    row = i;
+                }
+            }
+
+            if (row > -1) { // Matched @scrollTo
+                table.scrollRectToVisible(
+                        new Rectangle(0, (row * table.getRowHeight()) + table.getHeight(), 0, 0));
+            }
+        }
     }
 
     public JPanel getRootPanel() {

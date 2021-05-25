@@ -61,7 +61,7 @@ public class DataStore {
                     new LocalizedNode(LocalizedNode.ROOT_KEY, new ArrayList<>()));
 
             // Propagate changes
-            synchronizer.forEach(synchronizer -> synchronizer.synchronize(translations, searchQuery));
+            synchronizer.forEach(synchronizer -> synchronizer.synchronize(translations, searchQuery, null));
 
         } else {
             TranslatorIO io = IOUtil.determineFormat(localesPath);
@@ -71,7 +71,8 @@ public class DataStore {
                     this.translations = translations;
 
                     // Propagate changes
-                    synchronizer.forEach(synchronizer -> synchronizer.synchronize(this.translations, searchQuery));
+                    synchronizer.forEach(synchronizer ->
+                            synchronizer.synchronize(this.translations, searchQuery, null));
 
                 } else {
                     // If state cannot be loaded from disk, show empty instance
@@ -79,7 +80,8 @@ public class DataStore {
                             new LocalizedNode(LocalizedNode.ROOT_KEY, new ArrayList<>()));
 
                     // Propagate changes
-                    synchronizer.forEach(synchronizer -> synchronizer.synchronize(this.translations, searchQuery));
+                    synchronizer.forEach(synchronizer ->
+                            synchronizer.synchronize(this.translations, searchQuery, null));
                 }
             });
         }
@@ -106,7 +108,8 @@ public class DataStore {
      */
     public void searchBeyKey(@Nullable String fullPath) {
         // Use synchronizer to propagate search instance to all views
-        synchronizer.forEach(synchronizer -> synchronizer.synchronize(translations, this.searchQuery = fullPath));
+        synchronizer.forEach(synchronizer ->
+                synchronizer.synchronize(translations, this.searchQuery = fullPath, null));
     }
 
     /**
@@ -139,6 +142,8 @@ public class DataStore {
             }
         }
 
+        String scrollTo = update.isDeletion() ? null : update.getChange().getKey();
+
         if(!update.isDeletion()) { // Recreate with changed val / create
             LocalizedNode node = translations.getOrCreateNode(update.getChange().getKey());
             node.setValue(update.getChange().getTranslations());
@@ -147,7 +152,7 @@ public class DataStore {
         // Persist changes and propagate them on success
         saveToDisk(success -> {
             if(success) {
-                synchronizer.forEach(synchronizer -> synchronizer.synchronize(translations, searchQuery));
+                synchronizer.forEach(synchronizer -> synchronizer.synchronize(translations, searchQuery, scrollTo));
             }
         });
     }

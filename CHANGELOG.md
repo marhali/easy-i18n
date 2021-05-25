@@ -3,8 +3,14 @@
 # easy-i18n Changelog
 
 ## [Unreleased]
+### Added
+- Scroll to created / edited translation inside Tree-/Table-View
+
 ### Changed
 - Updated dependencies
+
+### Fixed
+- Always synchronize ui with loaded state by reloadFromDisk function
 
 ## [1.2.0]
 ### Added

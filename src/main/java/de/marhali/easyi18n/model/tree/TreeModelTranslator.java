@@ -91,4 +91,42 @@ public class TreeModelTranslator extends DefaultTreeModel {
             }
         }
     }
+
+    public TreePath findTreePath(@NotNull String fullPath) {
+        List<String> sections = TranslationsUtil.getSections(fullPath);
+        Object[] nodes = new Object[sections.size() + 1];
+
+        int pos = 0;
+        TreeNode currentNode = (TreeNode) this.getRoot();
+        nodes[pos] = currentNode;
+
+        for(String section : sections) {
+            pos++;
+            currentNode = findNode(currentNode, section);
+            nodes[pos] = currentNode;
+        }
+
+        return new TreePath(nodes);
+    }
+
+    public @Nullable DefaultMutableTreeNode findNode(@NotNull TreeNode parent, @NotNull String key) {
+        for(int i = 0; i < parent.getChildCount(); i++) {
+            TreeNode child = parent.getChildAt(i);
+
+            if(child instanceof DefaultMutableTreeNode) {
+                DefaultMutableTreeNode mutableChild = (DefaultMutableTreeNode) child;
+                String childKey = mutableChild.getUserObject().toString();
+
+                if(mutableChild.getUserObject() instanceof PresentationData) {
+                    childKey = ((PresentationData) mutableChild.getUserObject()).getPresentableText();
+                }
+
+                if(childKey != null && childKey.equals(key)) {
+                    return mutableChild;
+                }
+            }
+        }
+
+        throw new NullPointerException("Cannot find node by key: " + key);
+    }
 }
