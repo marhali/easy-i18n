@@ -40,6 +40,8 @@ public class DataStore {
     private DataStore(@NotNull Project project) {
         this.project = project;
         this.synchronizer = new ArrayList<>();
+
+        reloadFromDisk();
     }
 
     /**
@@ -160,7 +162,7 @@ public class DataStore {
     /**
      * @return Current translation state
      */
-    public Translations getTranslations() {
+    public @NotNull Translations getTranslations() {
         return translations;
     }
 }
