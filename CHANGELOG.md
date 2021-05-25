@@ -3,6 +3,9 @@
 # easy-i18n Changelog
 
 ## [Unreleased]
+### Changed
+- Updated dependencies
+
 ## [1.2.0]
 ### Added
 - Sorting for properties files
