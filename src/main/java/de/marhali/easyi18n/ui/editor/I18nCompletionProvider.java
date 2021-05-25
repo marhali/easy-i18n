@@ -24,7 +24,7 @@ public class I18nCompletionProvider extends CompletionProvider<CompletionParamet
 
     @Override
     protected void addCompletions(@NotNull CompletionParameters parameters, @NotNull ProcessingContext context, @NotNull CompletionResultSet result) {
-        Project project = parameters.getEditor().getProject();
+        Project project = parameters.getOriginalFile().getProject();
         String previewLocale = SettingsService.getInstance(project).getState().getPreviewLocale();
 
         String query = result.getPrefixMatcher().getPrefix();
@@ -39,6 +39,10 @@ public class I18nCompletionProvider extends CompletionProvider<CompletionParamet
 
         LocalizedNode node = sections.isEmpty() ? DataStore.getInstance(project).getTranslations().getNodes()
                 : DataStore.getInstance(project).getTranslations().getNode(path);
+
+        if(node == null) { // Unknown translation
+            return;
+        }
 
         for(LocalizedNode children : node.getChildren()) {
             if(lastSection == null || children.getKey().startsWith(lastSection)) {
