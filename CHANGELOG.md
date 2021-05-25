@@ -10,6 +10,7 @@
 - Updated dependencies
 
 ### Fixed
+- NullPointerException's on translation annotation / completion inside editor
 - Always synchronize ui with loaded state by reloadFromDisk function
 
 ## [1.2.0]
