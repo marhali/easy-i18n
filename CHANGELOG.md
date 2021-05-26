@@ -8,6 +8,7 @@
 
 ### Changed
 - Updated dependencies
+- Load translations even if ui tool window is not opened
 
 ### Fixed
 - NullPointerException's on translation annotation / completion inside editor

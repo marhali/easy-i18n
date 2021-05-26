@@ -1,5 +1,7 @@
 package de.marhali.easyi18n.service;
 
+import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.application.ModalityState;
 import com.intellij.openapi.project.Project;
 
 import de.marhali.easyi18n.model.LocalizedNode;
@@ -40,8 +42,10 @@ public class DataStore {
     private DataStore(@NotNull Project project) {
         this.project = project;
         this.synchronizer = new ArrayList<>();
+        this.translations = Translations.empty();
 
-        reloadFromDisk();
+        // Load data after first initialization
+        ApplicationManager.getApplication().invokeLater(this::reloadFromDisk, ModalityState.NON_MODAL);
     }
 
     /**
@@ -59,10 +63,8 @@ public class DataStore {
         String localesPath = SettingsService.getInstance(project).getState().getLocalesPath();
 
         if(localesPath == null || localesPath.isEmpty()) {
-            translations = new Translations(new ArrayList<>(),
-                    new LocalizedNode(LocalizedNode.ROOT_KEY, new ArrayList<>()));
-
-            // Propagate changes
+            // Propagate empty state
+            translations = Translations.empty();
             synchronizer.forEach(synchronizer -> synchronizer.synchronize(translations, searchQuery, null));
 
         } else {
@@ -78,8 +80,7 @@ public class DataStore {
 
                 } else {
                     // If state cannot be loaded from disk, show empty instance
-                    this.translations = new Translations(new ArrayList<>(),
-                            new LocalizedNode(LocalizedNode.ROOT_KEY, new ArrayList<>()));
+                    this.translations = Translations.empty();
 
                     // Propagate changes
                     synchronizer.forEach(synchronizer ->
@@ -87,6 +88,8 @@ public class DataStore {
                 }
             });
         }
+
+        System.out.println("reloadFromDisk()");
     }
 
     /**

@@ -54,11 +54,9 @@ public class TranslatorToolWindowFactory implements ToolWindowFactory {
         // Initialize Window Manager
         WindowManager.getInstance().initialize(toolWindow, treeView, tableView);
 
-        // Initialize data store and load from disk
+        // Synchronize ui with underlying data
         DataStore store = DataStore.getInstance(project);
         store.addSynchronizer(treeView);
         store.addSynchronizer(tableView);
-
-        store.reloadFromDisk();
     }
 }
