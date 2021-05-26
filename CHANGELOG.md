@@ -5,6 +5,7 @@
 ## [Unreleased]
 ### Added
 - Scroll to created / edited translation inside Tree-/Table-View
+- Support for working with multiple projects at once
 
 ### Changed
 - Updated dependencies

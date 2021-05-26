@@ -19,15 +19,17 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.WeakHashMap;
 import java.util.function.Consumer;
 
 /**
- * Singleton service to manage localized messages.
+ * Factory service to manage localized messages for multiple projects at once.
  * @author marhali
  */
 public class DataStore {
 
-    private static DataStore INSTANCE;
+    private static final Map<Project, DataStore> INSTANCES = new WeakHashMap<>();
 
     private final Project project;
     private final List<DataSynchronizer> synchronizer;
@@ -36,7 +38,14 @@ public class DataStore {
     private String searchQuery;
 
     public static DataStore getInstance(@NotNull Project project) {
-        return INSTANCE == null ? INSTANCE = new DataStore(project) : INSTANCE;
+        DataStore store = INSTANCES.get(project);
+
+        if(store == null) {
+            store = new DataStore(project);
+            INSTANCES.put(project, store);
+        }
+
+        return store;
     }
 
     private DataStore(@NotNull Project project) {
@@ -64,32 +73,17 @@ public class DataStore {
 
         if(localesPath == null || localesPath.isEmpty()) {
             // Propagate empty state
-            translations = Translations.empty();
-            synchronizer.forEach(synchronizer -> synchronizer.synchronize(translations, searchQuery, null));
+            this.translations = Translations.empty();
+            synchronize(searchQuery, null);
 
         } else {
             TranslatorIO io = IOUtil.determineFormat(localesPath);
 
-            io.read(project, localesPath, (translations) -> {
-                if(translations != null) { // Read was successful
-                    this.translations = translations;
-
-                    // Propagate changes
-                    synchronizer.forEach(synchronizer ->
-                            synchronizer.synchronize(this.translations, searchQuery, null));
-
-                } else {
-                    // If state cannot be loaded from disk, show empty instance
-                    this.translations = Translations.empty();
-
-                    // Propagate changes
-                    synchronizer.forEach(synchronizer ->
-                            synchronizer.synchronize(this.translations, searchQuery, null));
-                }
+            io.read(project, localesPath, (loadedTranslations) -> {
+                this.translations = loadedTranslations == null ? Translations.empty() : loadedTranslations;
+                synchronize(searchQuery, null);
             });
         }
-
-        System.out.println("reloadFromDisk()");
     }
 
     /**
@@ -113,8 +107,7 @@ public class DataStore {
      */
     public void searchBeyKey(@Nullable String fullPath) {
         // Use synchronizer to propagate search instance to all views
-        synchronizer.forEach(synchronizer ->
-                synchronizer.synchronize(translations, this.searchQuery = fullPath, null));
+        synchronize(this.searchQuery = fullPath, null);
     }
 
     /**
@@ -157,7 +150,7 @@ public class DataStore {
         // Persist changes and propagate them on success
         saveToDisk(success -> {
             if(success) {
-                synchronizer.forEach(synchronizer -> synchronizer.synchronize(translations, searchQuery, scrollTo));
+                synchronize(searchQuery, scrollTo);
             }
         });
     }
@@ -167,5 +160,14 @@ public class DataStore {
      */
     public @NotNull Translations getTranslations() {
         return translations;
+    }
+
+    /**
+     * Synchronizes current translation's state to all connected subscribers.
+     * @param searchQuery Optional search by full key filter (ui view)
+     * @param scrollTo Optional scroll to full key (ui view)
+     */
+    public void synchronize(@Nullable String searchQuery, @Nullable String scrollTo) {
+        synchronizer.forEach(subscriber -> subscriber.synchronize(this.translations, searchQuery, scrollTo));
     }
 }
