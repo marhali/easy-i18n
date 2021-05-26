@@ -3,6 +3,7 @@
 # easy-i18n Changelog
 
 ## [Unreleased]
+## [1.3.0]
 ### Added
 - Scroll to created / edited translation inside Tree-/Table-View
 - Support for working with multiple projects at once
