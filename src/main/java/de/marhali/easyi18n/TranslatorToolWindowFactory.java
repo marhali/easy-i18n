@@ -58,5 +58,6 @@ public class TranslatorToolWindowFactory implements ToolWindowFactory {
         DataStore store = DataStore.getInstance(project);
         store.addSynchronizer(treeView);
         store.addSynchronizer(tableView);
+        store.synchronize(null, null);
     }
 }
