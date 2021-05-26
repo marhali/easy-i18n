@@ -1,5 +1,7 @@
 package de.marhali.easyi18n.service;
 
+import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.application.ModalityState;
 import com.intellij.openapi.project.Project;
 
 import de.marhali.easyi18n.model.LocalizedNode;
@@ -17,15 +19,17 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.WeakHashMap;
 import java.util.function.Consumer;
 
 /**
- * Singleton service to manage localized messages.
+ * Factory service to manage localized messages for multiple projects at once.
  * @author marhali
  */
 public class DataStore {
 
-    private static DataStore INSTANCE;
+    private static final Map<Project, DataStore> INSTANCES = new WeakHashMap<>();
 
     private final Project project;
     private final List<DataSynchronizer> synchronizer;
@@ -33,13 +37,24 @@ public class DataStore {
     private Translations translations;
     private String searchQuery;
 
-    public static DataStore getInstance(Project project) {
-        return INSTANCE == null ? INSTANCE = new DataStore(project) : INSTANCE;
+    public static DataStore getInstance(@NotNull Project project) {
+        DataStore store = INSTANCES.get(project);
+
+        if(store == null) {
+            store = new DataStore(project);
+            INSTANCES.put(project, store);
+        }
+
+        return store;
     }
 
-    private DataStore(Project project) {
+    private DataStore(@NotNull Project project) {
         this.project = project;
         this.synchronizer = new ArrayList<>();
+        this.translations = Translations.empty();
+
+        // Load data after first initialization
+        ApplicationManager.getApplication().invokeLater(this::reloadFromDisk, ModalityState.NON_MODAL);
     }
 
     /**
@@ -57,24 +72,16 @@ public class DataStore {
         String localesPath = SettingsService.getInstance(project).getState().getLocalesPath();
 
         if(localesPath == null || localesPath.isEmpty()) {
-            translations = new Translations(new ArrayList<>(),
-                    new LocalizedNode(LocalizedNode.ROOT_KEY, new ArrayList<>()));
+            // Propagate empty state
+            this.translations = Translations.empty();
+            synchronize(searchQuery, null);
 
         } else {
             TranslatorIO io = IOUtil.determineFormat(localesPath);
 
-            io.read(project, localesPath, (translations) -> {
-                if(translations != null) { // Read was successful
-                    this.translations = translations;
-
-                    // Propagate changes
-                    synchronizer.forEach(synchronizer -> synchronizer.synchronize(translations, searchQuery));
-
-                } else {
-                    // If state cannot be loaded from disk, show empty instance
-                    this.translations = new Translations(new ArrayList<>(),
-                            new LocalizedNode(LocalizedNode.ROOT_KEY, new ArrayList<>()));
-                }
+            io.read(project, localesPath, (loadedTranslations) -> {
+                this.translations = loadedTranslations == null ? Translations.empty() : loadedTranslations;
+                synchronize(searchQuery, null);
             });
         }
     }
@@ -100,7 +107,7 @@ public class DataStore {
      */
     public void searchBeyKey(@Nullable String fullPath) {
         // Use synchronizer to propagate search instance to all views
-        synchronizer.forEach(synchronizer -> synchronizer.synchronize(translations, this.searchQuery = fullPath));
+        synchronize(this.searchQuery = fullPath, null);
     }
 
     /**
@@ -133,6 +140,8 @@ public class DataStore {
             }
         }
 
+        String scrollTo = update.isDeletion() ? null : update.getChange().getKey();
+
         if(!update.isDeletion()) { // Recreate with changed val / create
             LocalizedNode node = translations.getOrCreateNode(update.getChange().getKey());
             node.setValue(update.getChange().getTranslations());
@@ -141,7 +150,7 @@ public class DataStore {
         // Persist changes and propagate them on success
         saveToDisk(success -> {
             if(success) {
-                synchronizer.forEach(synchronizer -> synchronizer.synchronize(translations, searchQuery));
+                synchronize(searchQuery, scrollTo);
             }
         });
     }
@@ -149,7 +158,16 @@ public class DataStore {
     /**
      * @return Current translation state
      */
-    public Translations getTranslations() {
+    public @NotNull Translations getTranslations() {
         return translations;
+    }
+
+    /**
+     * Synchronizes current translation's state to all connected subscribers.
+     * @param searchQuery Optional search by full key filter (ui view)
+     * @param scrollTo Optional scroll to full key (ui view)
+     */
+    public void synchronize(@Nullable String searchQuery, @Nullable String scrollTo) {
+        synchronizer.forEach(subscriber -> subscriber.synchronize(this.translations, searchQuery, scrollTo));
     }
 }

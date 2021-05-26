@@ -14,6 +14,10 @@ import java.util.List;
  */
 public class Translations {
 
+    public static Translations empty() {
+        return new Translations(new ArrayList<>(), new LocalizedNode(LocalizedNode.ROOT_KEY, new ArrayList<>()));
+    }
+
     @NotNull
     private final List<String> locales;
 
@@ -34,7 +38,7 @@ public class Translations {
         return locales;
     }
 
-    public LocalizedNode getNodes() {
+    public @NotNull LocalizedNode getNodes() {
         return nodes;
     }
 

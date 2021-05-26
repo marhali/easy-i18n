@@ -3,6 +3,18 @@
 # easy-i18n Changelog
 
 ## [Unreleased]
+### Added
+- Scroll to created / edited translation inside Tree-/Table-View
+- Support for working with multiple projects at once
+
+### Changed
+- Updated dependencies
+- Load translations even if ui tool window is not opened
+
+### Fixed
+- NullPointerException's on translation annotation / completion inside editor
+- Always synchronize ui with loaded state by reloadFromDisk function
+
 ## [1.2.0]
 ### Added
 - Sorting for properties files
