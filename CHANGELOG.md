@@ -3,6 +3,9 @@
 # easy-i18n Changelog
 
 ## [Unreleased]
+### Added
+- Kotlin support for key completion and annotation
+
 ### Changed
 - Update dependencies
 - Migrate gradle build script
