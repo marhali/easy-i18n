@@ -11,7 +11,7 @@ import de.marhali.easyi18n.service.SettingsService;
 import org.jetbrains.annotations.NotNull;
 
 /**
- *
+ * Superclass for managing key annotations.
  * @author marhali
  */
 public class KeyAnnotator {
