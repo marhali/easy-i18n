@@ -4,6 +4,7 @@
 
 ## [Unreleased]
 ### Added
+- Settings option to opt-out code assistance inside editor
 - Kotlin support for key completion and annotation
 
 ### Changed
