@@ -1,4 +1,4 @@
-package de.marhali.easyi18n.ui.renderer;
+package de.marhali.easyi18n.renderer;
 
 import com.intellij.ide.util.treeView.NodeRenderer;
 import com.intellij.navigation.ItemPresentation;
@@ -7,9 +7,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
-import javax.swing.tree.DefaultTreeCellRenderer;
-import javax.swing.tree.TreeCellRenderer;
-import java.awt.*;
 
 /**
  * Similar to {@link NodeRenderer} but will will override {@link #getPresentation(Object)} to

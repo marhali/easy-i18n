@@ -9,9 +9,9 @@ import com.intellij.ui.content.ContentFactory;
 
 import de.marhali.easyi18n.service.DataStore;
 import de.marhali.easyi18n.service.WindowManager;
-import de.marhali.easyi18n.ui.action.*;
-import de.marhali.easyi18n.ui.tabs.TableView;
-import de.marhali.easyi18n.ui.tabs.TreeView;
+import de.marhali.easyi18n.action.*;
+import de.marhali.easyi18n.tabs.TableView;
+import de.marhali.easyi18n.tabs.TreeView;
 
 import org.jetbrains.annotations.NotNull;
 

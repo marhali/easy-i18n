@@ -1,4 +1,4 @@
-package de.marhali.easyi18n.ui.dialog;
+package de.marhali.easyi18n.dialog;
 
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogBuilder;

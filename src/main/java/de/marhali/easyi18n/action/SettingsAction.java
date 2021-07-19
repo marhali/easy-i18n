@@ -1,9 +1,9 @@
-package de.marhali.easyi18n.ui.action;
+package de.marhali.easyi18n.action;
 
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
-import de.marhali.easyi18n.ui.dialog.SettingsDialog;
+import de.marhali.easyi18n.dialog.SettingsDialog;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ResourceBundle;

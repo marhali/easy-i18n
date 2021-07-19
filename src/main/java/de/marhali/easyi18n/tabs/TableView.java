@@ -1,4 +1,4 @@
-package de.marhali.easyi18n.ui.tabs;
+package de.marhali.easyi18n.tabs;
 
 import com.intellij.openapi.project.Project;
 import com.intellij.ui.components.JBScrollPane;
@@ -11,10 +11,10 @@ import de.marhali.easyi18n.model.Translations;
 import de.marhali.easyi18n.model.KeyedTranslation;
 import de.marhali.easyi18n.model.TranslationDelete;
 import de.marhali.easyi18n.model.table.TableModelTranslator;
-import de.marhali.easyi18n.ui.dialog.EditDialog;
-import de.marhali.easyi18n.ui.listener.DeleteKeyListener;
-import de.marhali.easyi18n.ui.listener.PopupClickListener;
-import de.marhali.easyi18n.ui.renderer.TableRenderer;
+import de.marhali.easyi18n.dialog.EditDialog;
+import de.marhali.easyi18n.listener.DeleteKeyListener;
+import de.marhali.easyi18n.listener.PopupClickListener;
+import de.marhali.easyi18n.renderer.TableRenderer;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

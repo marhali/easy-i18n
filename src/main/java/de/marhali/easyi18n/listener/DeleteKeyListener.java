@@ -1,4 +1,4 @@
-package de.marhali.easyi18n.ui.listener;
+package de.marhali.easyi18n.listener;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;

@@ -2,8 +2,8 @@ package de.marhali.easyi18n.service;
 
 import com.intellij.openapi.wm.ToolWindow;
 
-import de.marhali.easyi18n.ui.tabs.TableView;
-import de.marhali.easyi18n.ui.tabs.TreeView;
+import de.marhali.easyi18n.tabs.TableView;
+import de.marhali.easyi18n.tabs.TreeView;
 
 public class WindowManager {
 

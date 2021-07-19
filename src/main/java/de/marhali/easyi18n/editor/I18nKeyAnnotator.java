@@ -1,4 +1,4 @@
-package de.marhali.easyi18n.ui.editor;
+package de.marhali.easyi18n.editor;
 
 import com.intellij.lang.annotation.AnnotationHolder;
 import com.intellij.lang.annotation.Annotator;

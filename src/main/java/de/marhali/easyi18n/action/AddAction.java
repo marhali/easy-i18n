@@ -1,11 +1,11 @@
-package de.marhali.easyi18n.ui.action;
+package de.marhali.easyi18n.action;
 
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 
 import de.marhali.easyi18n.service.WindowManager;
-import de.marhali.easyi18n.ui.dialog.AddDialog;
+import de.marhali.easyi18n.dialog.AddDialog;
 import de.marhali.easyi18n.util.TreeUtil;
 
 import org.jetbrains.annotations.NotNull;

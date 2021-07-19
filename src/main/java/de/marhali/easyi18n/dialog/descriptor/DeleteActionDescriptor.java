@@ -1,4 +1,4 @@
-package de.marhali.easyi18n.ui.dialog.descriptor;
+package de.marhali.easyi18n.dialog.descriptor;
 
 import com.intellij.openapi.ui.DialogBuilder;
 import com.intellij.openapi.ui.DialogWrapper;

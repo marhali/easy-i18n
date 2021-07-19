@@ -14,8 +14,8 @@
         <projectService serviceImplementation="de.marhali.easyi18n.service.SettingsService" />
 
         <completion.contributor language="any"
-                                implementationClass="de.marhali.easyi18n.ui.editor.I18nCompletionContributor" />
+                                implementationClass="de.marhali.easyi18n.editor.I18nCompletionContributor" />
 
-        <annotator language="" implementationClass="de.marhali.easyi18n.ui.editor.I18nKeyAnnotator" />
+        <annotator language="" implementationClass="de.marhali.easyi18n.editor.I18nKeyAnnotator" />
     </extensions>
 </idea-plugin>

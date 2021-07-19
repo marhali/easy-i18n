@@ -1,4 +1,4 @@
-package de.marhali.easyi18n.ui.action;
+package de.marhali.easyi18n.action;
 
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.actionSystem.AnAction;

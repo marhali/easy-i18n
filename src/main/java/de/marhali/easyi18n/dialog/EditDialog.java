@@ -1,4 +1,4 @@
-package de.marhali.easyi18n.ui.dialog;
+package de.marhali.easyi18n.dialog;
 
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogBuilder;
@@ -10,7 +10,7 @@ import de.marhali.easyi18n.service.DataStore;
 import de.marhali.easyi18n.model.KeyedTranslation;
 import de.marhali.easyi18n.model.TranslationDelete;
 import de.marhali.easyi18n.model.TranslationUpdate;
-import de.marhali.easyi18n.ui.dialog.descriptor.DeleteActionDescriptor;
+import de.marhali.easyi18n.dialog.descriptor.DeleteActionDescriptor;
 
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;

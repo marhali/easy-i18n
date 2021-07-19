@@ -1,4 +1,4 @@
-package de.marhali.easyi18n.ui.editor;
+package de.marhali.easyi18n.editor;
 
 import com.intellij.codeInsight.completion.CompletionParameters;
 import com.intellij.codeInsight.completion.CompletionProvider;

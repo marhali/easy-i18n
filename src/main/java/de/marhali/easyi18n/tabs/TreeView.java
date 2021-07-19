@@ -1,4 +1,4 @@
-package de.marhali.easyi18n.ui.tabs;
+package de.marhali.easyi18n.tabs;
 
 import com.intellij.ide.projectView.PresentationData;
 import com.intellij.openapi.actionSystem.ActionManager;
@@ -14,13 +14,12 @@ import de.marhali.easyi18n.model.Translations;
 import de.marhali.easyi18n.model.KeyedTranslation;
 import de.marhali.easyi18n.model.TranslationDelete;
 import de.marhali.easyi18n.model.tree.TreeModelTranslator;
-import de.marhali.easyi18n.ui.action.treeview.CollapseTreeViewAction;
-import de.marhali.easyi18n.ui.action.treeview.ExpandTreeViewAction;
-import de.marhali.easyi18n.ui.dialog.EditDialog;
-import de.marhali.easyi18n.ui.listener.DeleteKeyListener;
-import de.marhali.easyi18n.ui.listener.PopupClickListener;
-import de.marhali.easyi18n.ui.renderer.TreeRenderer;
-import de.marhali.easyi18n.util.TranslationsUtil;
+import de.marhali.easyi18n.action.treeview.CollapseTreeViewAction;
+import de.marhali.easyi18n.action.treeview.ExpandTreeViewAction;
+import de.marhali.easyi18n.dialog.EditDialog;
+import de.marhali.easyi18n.listener.DeleteKeyListener;
+import de.marhali.easyi18n.listener.PopupClickListener;
+import de.marhali.easyi18n.renderer.TreeRenderer;
 import de.marhali.easyi18n.util.TreeUtil;
 
 import org.jetbrains.annotations.NotNull;
