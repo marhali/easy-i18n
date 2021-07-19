@@ -3,13 +3,17 @@
 # easy-i18n Changelog
 
 ## [Unreleased]
+### Changed
+- Update dependencies
+- Migrate gradle build script
+
 ## [1.3.0]
 ### Added
 - Scroll to created / edited translation inside Tree-/Table-View
 - Support for working with multiple projects at once
 
 ### Changed
-- Updated dependencies
+- Update dependencies
 - Load translations even if ui tool window is not opened
 
 ### Fixed
@@ -28,7 +32,7 @@
 - Support for IntelliJ 2021.1
 
 ### Changed
-- Updated dependencies
+- Update dependencies
 
 ### Fixed
 - Exception during i18n key completion / annotation
