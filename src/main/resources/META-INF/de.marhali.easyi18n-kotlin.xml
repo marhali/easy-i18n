@@ -1,0 +1,5 @@
+<idea-plugin>
+    <extensions defaultExtensionNs="com.intellij">
+        <annotator language="kotlin" implementationClass="de.marhali.easyi18n.editor.kotlin.KotlinKeyAnnotator" />
+    </extensions>
+</idea-plugin>
