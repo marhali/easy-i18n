@@ -5,6 +5,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogBuilder;
 import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.ui.TextFieldWithBrowseButton;
+import com.intellij.ui.components.JBCheckBox;
 import com.intellij.ui.components.JBLabel;
 import com.intellij.ui.components.JBTextField;
 
@@ -26,6 +27,7 @@ public class SettingsDialog {
     private TextFieldWithBrowseButton pathText;
     private JBTextField filePatternText;
     private JBTextField previewText;
+    private JBCheckBox codeAssistanceCheckbox;
 
     public SettingsDialog(Project project) {
         this.project = project;
@@ -35,18 +37,20 @@ public class SettingsDialog {
         String localesPath = SettingsService.getInstance(project).getState().getLocalesPath();
         String filePattern = SettingsService.getInstance(project).getState().getFilePattern();
         String previewLocale = SettingsService.getInstance(project).getState().getPreviewLocale();
+        boolean codeAssistance = SettingsService.getInstance(project).getState().isCodeAssistance();
 
-        if(prepare(localesPath, filePattern, previewLocale).show() == DialogWrapper.OK_EXIT_CODE) { // Save changes
+        if(prepare(localesPath, filePattern, previewLocale, codeAssistance).show() == DialogWrapper.OK_EXIT_CODE) { // Save changes
             SettingsService.getInstance(project).getState().setLocalesPath(pathText.getText());
             SettingsService.getInstance(project).getState().setFilePattern(filePatternText.getText());
             SettingsService.getInstance(project).getState().setPreviewLocale(previewText.getText());
+            SettingsService.getInstance(project).getState().setCodeAssistance(codeAssistanceCheckbox.isSelected());
 
             // Reload instance
             DataStore.getInstance(project).reloadFromDisk();
         }
     }
 
-    private DialogBuilder prepare(String localesPath, String filePattern, String previewLocale) {
+    private DialogBuilder prepare(String localesPath, String filePattern, String previewLocale, boolean codeAssistance) {
         JPanel rootPanel = new JPanel(new GridLayout(0, 1, 2, 2));
 
         JBLabel pathLabel = new JBLabel(ResourceBundle.getBundle("messages").getString("settings.path.text"));
@@ -72,6 +76,11 @@ public class SettingsDialog {
 
         rootPanel.add(previewLabel);
         rootPanel.add(previewText);
+
+        codeAssistanceCheckbox = new JBCheckBox(ResourceBundle.getBundle("messages").getString("settings.editor.assistance"));
+        codeAssistanceCheckbox.setSelected(codeAssistance);
+
+        rootPanel.add(codeAssistanceCheckbox);
 
         DialogBuilder builder = new DialogBuilder();
         builder.setTitle(ResourceBundle.getBundle("messages").getString("action.settings"));

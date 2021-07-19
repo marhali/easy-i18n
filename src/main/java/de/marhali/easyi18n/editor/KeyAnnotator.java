@@ -23,6 +23,11 @@ public class KeyAnnotator {
      * @param holder Annotation holder
      */
     protected void annotate(@NotNull String key, @NotNull Project project, @NotNull AnnotationHolder holder) {
+        // Do not annotate keys if service is disabled
+        if(!SettingsService.getInstance(project).getState().isCodeAssistance()) {
+            return;
+        }
+
         String previewLocale = SettingsService.getInstance(project).getState().getPreviewLocale();
         LocalizedNode node = DataStore.getInstance(project).getTranslations().getNode(key);
 

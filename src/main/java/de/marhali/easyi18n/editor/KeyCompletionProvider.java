@@ -27,6 +27,12 @@ public class KeyCompletionProvider extends CompletionProvider<CompletionParamete
                                   @NotNull ProcessingContext context, @NotNull CompletionResultSet result) {
 
         Project project = parameters.getOriginalFile().getProject();
+
+        // Do not annotate keys if service is disabled
+        if(!SettingsService.getInstance(project).getState().isCodeAssistance()) {
+            return;
+        }
+
         String previewLocale = SettingsService.getInstance(project).getState().getPreviewLocale();
 
         String query = result.getPrefixMatcher().getPrefix();
