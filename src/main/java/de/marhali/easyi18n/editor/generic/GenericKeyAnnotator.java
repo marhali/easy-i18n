@@ -10,7 +10,7 @@ import de.marhali.easyi18n.editor.KeyAnnotator;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Translation key annotator.
+ * Translation key annotator for generic languages which support {@link PsiLiteralValue}.
  * @author marhali
  */
 public class GenericKeyAnnotator extends KeyAnnotator implements Annotator {

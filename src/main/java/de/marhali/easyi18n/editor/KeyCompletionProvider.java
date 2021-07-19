@@ -20,10 +20,12 @@ import java.util.List;
  * I18n translation key completion provider.
  * @author marhali
  */
-public class I18nCompletionProvider extends CompletionProvider<CompletionParameters> {
+public class KeyCompletionProvider extends CompletionProvider<CompletionParameters> {
 
     @Override
-    protected void addCompletions(@NotNull CompletionParameters parameters, @NotNull ProcessingContext context, @NotNull CompletionResultSet result) {
+    protected void addCompletions(@NotNull CompletionParameters parameters,
+                                  @NotNull ProcessingContext context, @NotNull CompletionResultSet result) {
+
         Project project = parameters.getOriginalFile().getProject();
         String previewLocale = SettingsService.getInstance(project).getState().getPreviewLocale();
 
