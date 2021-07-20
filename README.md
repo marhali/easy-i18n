@@ -48,6 +48,8 @@ Most common use case is for translating Webapps or simple Java Applications. Tra
 - Select the created directory (optional: define the preferred locale to view) and press Ok
 - Translations can now be created / edited or deleted
 
+Examples for the configuration can be found in the [/example](https://github.com/marhali/easy-i18n/tree/main/example) folder.
+
 ---
 Plugin based on the [IntelliJ Platform Plugin Template][template].
 

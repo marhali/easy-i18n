@@ -7,6 +7,7 @@
 - Basic support for json array values
 - Settings option to opt-out code assistance inside editor
 - Support key completion and annotation for Kotlin language
+- Example locale files for all configuration options
 
 ### Changed
 - Update dependencies
