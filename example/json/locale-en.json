@@ -1,0 +1,26 @@
+{
+  "alpha": {
+    "first": "example translation",
+    "second": "another translation"
+  },
+  "beta": {
+    "title": "some title",
+    "nested": {
+      "title": "some nested title"
+    }
+  },
+  "gamma": {
+    "title": "gamma title",
+    "array": {
+      "simple": [
+        "first element",
+        "second element"
+      ],
+      "escaped": [
+        "first;element",
+        "second element",
+        "third;element"
+      ]
+    }
+  }
+}

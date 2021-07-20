@@ -5,15 +5,17 @@
 
     <!-- Product and plugin compatibility requirements -->
     <!-- https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
+    <depends>com.intellij.modules.platform</depends>
     <depends>com.intellij.modules.lang</depends>
+    <depends optional="true" config-file="de.marhali.easyi18n-kotlin.xml">org.jetbrains.kotlin</depends>
 
     <extensions defaultExtensionNs="com.intellij">
         <toolWindow id="Easy I18n" anchor="bottom" factoryClass="de.marhali.easyi18n.TranslatorToolWindowFactory" />
         <projectService serviceImplementation="de.marhali.easyi18n.service.SettingsService" />
 
         <completion.contributor language="any"
-                                implementationClass="de.marhali.easyi18n.ui.editor.I18nCompletionContributor" />
+                                implementationClass="de.marhali.easyi18n.editor.generic.GenericKeyCompletionContributor" />
 
-        <annotator language="" implementationClass="de.marhali.easyi18n.ui.editor.I18nKeyAnnotator" />
+        <annotator language="" implementationClass="de.marhali.easyi18n.editor.generic.GenericKeyAnnotator" />
     </extensions>
 </idea-plugin>

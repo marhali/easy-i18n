@@ -1,0 +1,26 @@
+{
+  "alpha": {
+    "first": "Beispiel Übersetzung",
+    "second": "Andere Übersetzung"
+  },
+  "beta": {
+    "title": "Ein Titel",
+    "nested": {
+      "title": "Ein verschachtelter Titel"
+    }
+  },
+  "gamma": {
+    "title": "Gamma Titel",
+    "array": {
+      "simple": [
+        "Erstes Element",
+        "Zweites Element"
+      ],
+      "escaped": [
+        "Erstes;Element",
+        "Zweites Element",
+        "Drittes;Element"
+      ]
+    }
+  }
+}

@@ -27,8 +27,13 @@ public class JsonUtil {
     public static void writeTree(String locale, JsonObject parent, LocalizedNode node) {
         if(node.isLeaf() && !node.getKey().equals(LocalizedNode.ROOT_KEY)) {
             if(node.getValue().get(locale) != null) {
-                String value = StringEscapeUtils.unescapeJava(node.getValue().get(locale));
-                parent.add(node.getKey(), new JsonPrimitive(value));
+
+                if(JsonArrayUtil.isArray(node.getValue().get(locale))) {
+                    parent.add(node.getKey(), JsonArrayUtil.write(node.getValue().get(locale)));
+                } else {
+                    String value = StringEscapeUtils.unescapeJava(node.getValue().get(locale));
+                    parent.add(node.getKey(), new JsonPrimitive(value));
+                }
             }
 
         } else {
@@ -78,7 +83,11 @@ public class JsonUtil {
                 }
 
                 Map<String, String> messages = leafNode.getValue();
-                String value = StringUtil.escapeControls(entry.getValue().getAsString(), true);
+
+                String value = entry.getValue().isJsonArray()
+                        ? JsonArrayUtil.read(entry.getValue().getAsJsonArray())
+                        : StringUtil.escapeControls(entry.getValue().getAsString(), true);
+
                 messages.put(locale, value);
                 leafNode.setValue(messages);
             }

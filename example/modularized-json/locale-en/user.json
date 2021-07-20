@@ -1,0 +1,10 @@
+{
+  "username": "Username",
+  "email": "Email Address",
+  "address": {
+    "zip": "ZIP code",
+    "city": "City",
+    "street": "Street",
+    "number": "House number"
+  }
+}

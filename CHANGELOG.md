@@ -3,13 +3,26 @@
 # easy-i18n Changelog
 
 ## [Unreleased]
+### THANKS FOR OVER 1000 DOWNLOADS SO FAR!
+
+### Added
+- Basic support for json array values
+- Settings option to opt-out code assistance inside editor
+- Support key completion and annotation for Kotlin language
+- Example locale files for all configuration options
+- Donation links on GitHub to support development
+
+### Changed
+- Update dependencies
+- Migrate gradle build script
+
 ## [1.3.0]
 ### Added
 - Scroll to created / edited translation inside Tree-/Table-View
 - Support for working with multiple projects at once
 
 ### Changed
-- Updated dependencies
+- Update dependencies
 - Load translations even if ui tool window is not opened
 
 ### Fixed
@@ -28,7 +41,7 @@
 - Support for IntelliJ 2021.1
 
 ### Changed
-- Updated dependencies
+- Update dependencies
 
 ### Fixed
 - Exception during i18n key completion / annotation
