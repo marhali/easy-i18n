@@ -3,7 +3,7 @@
 # easy-i18n Changelog
 
 ## [Unreleased]
-THANKS FOR OVER 1000 DOWNLOADS SO FAR!
+### THANKS FOR OVER 1000 DOWNLOADS SO FAR!
 
 ### Added
 - Basic support for json array values
