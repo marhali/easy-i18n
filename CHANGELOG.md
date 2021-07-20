@@ -6,7 +6,7 @@
 ### Added
 - Basic support for json array values
 - Settings option to opt-out code assistance inside editor
-- Kotlin support for key completion and annotation
+- Support key completion and annotation for Kotlin language
 
 ### Changed
 - Update dependencies
