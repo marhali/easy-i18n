@@ -10,6 +10,7 @@
 - Settings option to opt-out code assistance inside editor
 - Support key completion and annotation for Kotlin language
 - Example locale files for all configuration options
+- Donation links on GitHub to support development
 
 ### Changed
 - Update dependencies

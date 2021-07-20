@@ -3,6 +3,7 @@
 ![Build](https://github.com/marhali/easy-i18n/workflows/Build/badge.svg)
 [![Version](https://img.shields.io/jetbrains/plugin/v/16316.svg)](https://plugins.jetbrains.com/plugin/16316)
 [![Downloads](https://img.shields.io/jetbrains/plugin/d/16316.svg)](https://plugins.jetbrains.com/plugin/16316)
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://paypal.me/marhalide)
 
 <!-- Plugin description -->
 This is an easy plugin to manage internationalization for JSON or Resource-Bundle(Properties) based locale files.
@@ -49,6 +50,9 @@ Most common use case is for translating Webapps or simple Java Applications. Tra
 - Translations can now be created / edited or deleted
 
 Examples for the configuration can be found in the [/example](https://github.com/marhali/easy-i18n/tree/main/example) folder.
+
+## Donation
+If the project helps you to reduce development time, you can give me a [cup of coffee](https://paypal.me/marhalide) :) 
 
 ---
 Plugin based on the [IntelliJ Platform Plugin Template][template].
