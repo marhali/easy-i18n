@@ -3,6 +3,8 @@
 # easy-i18n Changelog
 
 ## [Unreleased]
+THANKS FOR OVER 1000 DOWNLOADS SO FAR!
+
 ### Added
 - Basic support for json array values
 - Settings option to opt-out code assistance inside editor
