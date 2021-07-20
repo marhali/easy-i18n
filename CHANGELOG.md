@@ -3,6 +3,7 @@
 # easy-i18n Changelog
 
 ## [Unreleased]
+## [1.4.0]
 ### THANKS FOR OVER 1000 DOWNLOADS SO FAR!
 
 ### Added
