@@ -9,6 +9,9 @@
 ### Changed
 - Replace deprecated api methods
 
+### Fixed
+- Warning for unset target element inside tree-view toolbar
+
 ## [1.4.0]
 ### THANKS FOR OVER 1000 DOWNLOADS SO FAR!
 

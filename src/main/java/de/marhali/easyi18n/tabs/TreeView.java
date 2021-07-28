@@ -2,6 +2,7 @@ package de.marhali.easyi18n.tabs;
 
 import com.intellij.ide.projectView.PresentationData;
 import com.intellij.openapi.actionSystem.ActionManager;
+import com.intellij.openapi.actionSystem.ActionToolbar;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import com.intellij.openapi.project.Project;
 import com.intellij.ui.components.JBScrollPane;
@@ -68,10 +69,11 @@ public class TreeView implements DataSynchronizer {
         group.add(collapse);
         group.add(expand);
 
-        JComponent actionToolbar = ActionManager.getInstance()
-                .createActionToolbar("TranslationsActions", group, false).getComponent();
+        ActionToolbar actionToolbar = ActionManager.getInstance()
+                .createActionToolbar("TranslationsActions", group, false);
 
-        toolBarPanel.add(actionToolbar);
+        toolBarPanel.add(actionToolbar.getComponent());
+        actionToolbar.setTargetComponent(toolBarPanel);
     }
 
     @Override
