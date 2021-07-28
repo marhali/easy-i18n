@@ -72,8 +72,8 @@ public class TreeView implements DataSynchronizer {
         ActionToolbar actionToolbar = ActionManager.getInstance()
                 .createActionToolbar("TranslationsActions", group, false);
 
-        toolBarPanel.add(actionToolbar.getComponent());
         actionToolbar.setTargetComponent(toolBarPanel);
+        toolBarPanel.add(actionToolbar.getComponent());
     }
 
     @Override
