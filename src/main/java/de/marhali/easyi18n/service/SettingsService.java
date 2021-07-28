@@ -1,10 +1,10 @@
 package de.marhali.easyi18n.service;
 
 import com.intellij.openapi.components.PersistentStateComponent;
-import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.components.State;
 import com.intellij.openapi.project.Project;
 
+import com.intellij.util.xmlb.XmlSerializerUtil;
 import de.marhali.easyi18n.model.SettingsState;
 
 import org.jetbrains.annotations.NotNull;
@@ -17,8 +17,7 @@ import org.jetbrains.annotations.NotNull;
 public class SettingsService implements PersistentStateComponent<SettingsState> {
 
     public static SettingsService getInstance(Project project) {
-        ServiceManager.getService(project, SettingsService.class).initializeComponent();
-        return ServiceManager.getService(project, SettingsService.class);
+        return project.getService(SettingsService.class);
     }
 
     private SettingsState state;

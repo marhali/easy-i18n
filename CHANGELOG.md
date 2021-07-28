@@ -3,6 +3,15 @@
 # easy-i18n Changelog
 
 ## [Unreleased]
+### Added
+- Support for IntelliJ 2021.2
+
+### Changed
+- Replace deprecated api methods
+
+### Fixed
+- Warning for unset target element inside tree-view toolbar
+
 ## [1.4.0]
 ### THANKS FOR OVER 1000 DOWNLOADS SO FAR!
 
