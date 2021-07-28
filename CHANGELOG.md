@@ -3,6 +3,7 @@
 # easy-i18n Changelog
 
 ## [Unreleased]
+## [1.4.1]
 ### Added
 - Support for IntelliJ 2021.2
 
