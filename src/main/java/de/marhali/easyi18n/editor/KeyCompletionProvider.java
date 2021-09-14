@@ -32,10 +32,6 @@ public class KeyCompletionProvider extends CompletionProvider<CompletionParamete
 
         String path = result.getPrefixMatcher().getPrefix();
 
-        if (path.endsWith(".")) {
-            path = path.substring(0, path.length() - 1);
-        }
-
         DataStore instance = DataStore.getInstance(project);
         Map<String, String> map = new HashMap<>();
         collect(map, instance.getTranslations().getNodes(), null, previewLocale, prefix);
