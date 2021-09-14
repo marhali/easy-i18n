@@ -13,7 +13,8 @@ import de.marhali.easyi18n.editor.KeyCompletionProvider;
 public class GenericKeyCompletionContributor extends CompletionContributor {
 
     public GenericKeyCompletionContributor() {
-        extend(CompletionType.BASIC, PlatformPatterns.psiElement().inside(PsiLiteralValue.class),
-                new KeyCompletionProvider());
+//        extend(CompletionType.BASIC, PlatformPatterns.psiElement().inside(PsiLiteralValue.class),
+//                new KeyCompletionProvider());
+        extend(CompletionType.BASIC, PlatformPatterns.psiElement(), new KeyCompletionProvider());
     }
 }

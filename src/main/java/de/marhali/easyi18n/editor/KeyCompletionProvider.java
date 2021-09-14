@@ -1,20 +1,14 @@
 package de.marhali.easyi18n.editor;
 
-import com.intellij.codeInsight.completion.CompletionParameters;
-import com.intellij.codeInsight.completion.CompletionProvider;
-import com.intellij.codeInsight.completion.CompletionResultSet;
-import com.intellij.codeInsight.lookup.LookupElementBuilder;
-import com.intellij.openapi.project.Project;
-import com.intellij.util.ProcessingContext;
+import com.intellij.codeInsight.completion.*;
+import com.intellij.codeInsight.lookup.*;
+import com.intellij.openapi.project.*;
+import com.intellij.util.*;
+import de.marhali.easyi18n.model.*;
+import de.marhali.easyi18n.service.*;
+import org.jetbrains.annotations.*;
 
-import de.marhali.easyi18n.model.LocalizedNode;
-import de.marhali.easyi18n.service.DataStore;
-import de.marhali.easyi18n.service.SettingsService;
-import de.marhali.easyi18n.util.TranslationsUtil;
-
-import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
+import java.util.*;
 
 /**
  * I18n translation key completion provider.
@@ -36,56 +30,46 @@ public class KeyCompletionProvider extends CompletionProvider<CompletionParamete
         String previewLocale = SettingsService.getInstance(project).getState().getPreviewLocale();
         String prefix = SettingsService.getInstance(project).getState().getPrefix();
 
-        String query = result.getPrefixMatcher().getPrefix();
-        List<String> sections = TranslationsUtil.getSections(query);
+        String path = result.getPrefixMatcher().getPrefix();
 
-        String path = TranslationsUtil.sectionsToFullPath(sections);
-        if (prefix != null && path.startsWith(prefix)) {
-            path = path.substring(prefix.length());
-            if (path.startsWith(".")) {
-                path = path.substring(1);
+        if (path.endsWith(".")) {
+            path = path.substring(0, path.length() - 1);
+        }
+
+        DataStore instance = DataStore.getInstance(project);
+        Map<String, String> map = new HashMap<>();
+        collect(map, instance.getTranslations().getNodes(), null, previewLocale, prefix);
+        Map<String, String> containedPath = new HashMap<>();
+        StringBuilder prefixedKey = new StringBuilder();
+        while (containedPath.isEmpty()) {
+            for (Map.Entry<String, String> e : map.entrySet()) {
+                if (e.getKey().startsWith(path)) {
+                    containedPath.put(e.getKey(), e.getValue());
+                }
             }
+            if (path.isEmpty()) break;
+            if (containedPath.isEmpty()) {
+                prefixedKey.append(path.charAt(0));
+            }
+            path = path.substring(1);
         }
-
-        LocalizedNode node = sections.isEmpty() ? DataStore.getInstance(project).getTranslations().getNodes()
-                : DataStore.getInstance(project).getTranslations().getNode(path);
-
-        if(node == null) { // Unknown translation
-            return;
-        }
-
-        append(node, previewLocale, path, prefix, result);
-//        for(LocalizedNode children : node.getChildren()) {
-//            if(lastSection == null || children.getKey().startsWith(lastSection)) {
-//                // Construct full key path / Fore nested objects add '.' to indicate deeper level
-//                String fullKey = (path.isEmpty() ? children.getKey() : path + "." + children.getKey()) + (children.isLeaf() ? "" : ".");
-//
-//                if (prefix != null && !fullKey.isEmpty()) {
-//                    fullKey = prefix + "." + fullKey;
-//                }
-//
-//                result.addElement(LookupElementBuilder.create(fullKey)
-//                        .appendTailText(getTailText(children, previewLocale), true));
-//            }
-//        }
+        containedPath.forEach((key, value) -> {
+            result.addElement(LookupElementBuilder.create(prefixedKey + key).appendTailText(" I18n("+previewLocale+": "+value+")", true));
+        });
     }
 
-    private void append(LocalizedNode node, String locale, String path, String prefix, CompletionResultSet result) {
+    private void collect(Map<String, String> map, LocalizedNode node, String path, String locale, String prefix) {
         if (node.isLeaf() && !node.getKey().equals(LocalizedNode.ROOT_KEY)) {
+            String value = node.getValue().get(locale);
+            map.put(path, value);
             if (prefix != null) {
-                path = prefix + "." + path;
+                map.put(prefix + "." + path, value);
             }
-            result.addElement(LookupElementBuilder.create(path)
-                    .appendTailText(getTailText(node, locale), true));
         } else {
-            for (LocalizedNode children : node.getChildren()) {
-                append(children, locale, path == null || path.isEmpty() ? children.getKey() : path + "." + children.getKey(), prefix, result);
+            for (LocalizedNode child : node.getChildren()) {
+                collect(map, child, path == null || path.isEmpty() ? child.getKey() : path + "." + child.getKey(), locale, prefix);
             }
         }
     }
 
-    private String getTailText(LocalizedNode node, String previewLocale) {
-        return !node.isLeaf() ? " I18n([])"
-                : " I18n(" + previewLocale + ": " + node.getValue().get(previewLocale) + ")";
-    }
 }
