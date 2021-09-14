@@ -62,7 +62,7 @@ public class KeyCompletionProvider extends CompletionProvider<CompletionParamete
         if (node.isLeaf() && !node.getKey().equals(LocalizedNode.ROOT_KEY)) {
             String value = node.getValue().get(locale);
             map.put(path, value);
-            if (prefix != null) {
+            if (prefix != null && !prefix.isEmpty()) {
                 map.put(prefix + "." + path, value);
             }
         } else {
