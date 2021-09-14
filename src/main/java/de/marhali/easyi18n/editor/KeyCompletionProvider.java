@@ -37,7 +37,8 @@ public class KeyCompletionProvider extends CompletionProvider<CompletionParamete
         collect(map, instance.getTranslations().getNodes(), null, previewLocale, prefix);
         Map<String, String> containedPath = new HashMap<>();
         StringBuilder prefixedKey = new StringBuilder();
-        while (containedPath.isEmpty()) {
+        int maxPrefixLookUpLength = 5;
+        while (containedPath.isEmpty() && maxPrefixLookUpLength-- > 0) {
             for (Map.Entry<String, String> e : map.entrySet()) {
                 if (e.getKey().startsWith(path)) {
                     containedPath.put(e.getKey(), e.getValue());
