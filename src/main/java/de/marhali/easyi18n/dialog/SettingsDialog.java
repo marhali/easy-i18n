@@ -27,6 +27,7 @@ public class SettingsDialog {
     private TextFieldWithBrowseButton pathText;
     private JBTextField filePatternText;
     private JBTextField previewText;
+    private JBTextField prefixText;
     private JBCheckBox codeAssistanceCheckbox;
 
     public SettingsDialog(Project project) {
@@ -37,20 +38,22 @@ public class SettingsDialog {
         String localesPath = SettingsService.getInstance(project).getState().getLocalesPath();
         String filePattern = SettingsService.getInstance(project).getState().getFilePattern();
         String previewLocale = SettingsService.getInstance(project).getState().getPreviewLocale();
+        String prefixLocale = SettingsService.getInstance(project).getState().getPrefix();
         boolean codeAssistance = SettingsService.getInstance(project).getState().isCodeAssistance();
 
-        if(prepare(localesPath, filePattern, previewLocale, codeAssistance).show() == DialogWrapper.OK_EXIT_CODE) { // Save changes
+        if(prepare(localesPath, filePattern, previewLocale, prefixLocale, codeAssistance).show() == DialogWrapper.OK_EXIT_CODE) { // Save changes
             SettingsService.getInstance(project).getState().setLocalesPath(pathText.getText());
             SettingsService.getInstance(project).getState().setFilePattern(filePatternText.getText());
             SettingsService.getInstance(project).getState().setPreviewLocale(previewText.getText());
             SettingsService.getInstance(project).getState().setCodeAssistance(codeAssistanceCheckbox.isSelected());
+            SettingsService.getInstance(project).getState().setPrefix(prefixText.getText());
 
             // Reload instance
             DataStore.getInstance(project).reloadFromDisk();
         }
     }
 
-    private DialogBuilder prepare(String localesPath, String filePattern, String previewLocale, boolean codeAssistance) {
+    private DialogBuilder prepare(String localesPath, String filePattern, String previewLocale, String prefixLocale, boolean codeAssistance) {
         JPanel rootPanel = new JPanel(new GridLayout(0, 1, 2, 2));
 
         JBLabel pathLabel = new JBLabel(ResourceBundle.getBundle("messages").getString("settings.path.text"));
@@ -79,6 +82,11 @@ public class SettingsDialog {
 
         codeAssistanceCheckbox = new JBCheckBox(ResourceBundle.getBundle("messages").getString("settings.editor.assistance"));
         codeAssistanceCheckbox.setSelected(codeAssistance);
+
+        JBLabel prefixLabel = new JBLabel(ResourceBundle.getBundle("messages").getString("settings.path.prefix"));
+        prefixText = new JBTextField(prefixLocale);
+        rootPanel.add(prefixLabel);
+        rootPanel.add(prefixText);
 
         rootPanel.add(codeAssistanceCheckbox);
 

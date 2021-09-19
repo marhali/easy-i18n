@@ -3,9 +3,7 @@ package de.marhali.easyi18n.util;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
-import de.marhali.easyi18n.io.implementation.JsonTranslatorIO;
-import de.marhali.easyi18n.io.implementation.ModularizedJsonTranslatorIO;
-import de.marhali.easyi18n.io.implementation.PropertiesTranslatorIO;
+import de.marhali.easyi18n.io.implementation.*;
 import de.marhali.easyi18n.io.TranslatorIO;
 
 import de.marhali.easyi18n.service.SettingsService;
@@ -50,7 +48,8 @@ public class IOUtil {
 
             case "properties":
                 return new PropertiesTranslatorIO();
-
+            case "yml":
+                return new YamlTranslatorIO();
             default:
                 throw new UnsupportedOperationException("Unsupported i18n locale file format: " +
                         any.get().getFileType().getDefaultExtension());
