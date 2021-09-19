@@ -16,7 +16,7 @@ public class SettingsState {
     private String localesPath;
     private String filePattern;
     private String previewLocale;
-    private String prefix;
+    private String pathPrefix;
     private Boolean codeAssistance;
 
     public SettingsState() {}
@@ -53,11 +53,11 @@ public class SettingsState {
         this.codeAssistance = codeAssistance;
     }
 
-    public void setPrefix(String prefix) {
-        this.prefix = prefix;
+    public void setPathPrefix(String pathPrefix) {
+        this.pathPrefix = pathPrefix;
     }
 
-    public String getPrefix() {
-        return prefix;
+    public String getPathPrefix() {
+        return pathPrefix;
     }
 }

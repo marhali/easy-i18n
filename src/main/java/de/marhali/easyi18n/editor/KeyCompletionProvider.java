@@ -28,13 +28,13 @@ public class KeyCompletionProvider extends CompletionProvider<CompletionParamete
         }
 
         String previewLocale = SettingsService.getInstance(project).getState().getPreviewLocale();
-        String prefix = SettingsService.getInstance(project).getState().getPrefix();
+        String pathPrefix = SettingsService.getInstance(project).getState().getPathPrefix();
 
         String path = result.getPrefixMatcher().getPrefix();
 
         DataStore instance = DataStore.getInstance(project);
         Map<String, String> map = new HashMap<>();
-        collect(map, instance.getTranslations().getNodes(), null, previewLocale, prefix);
+        collect(map, instance.getTranslations().getNodes(), null, previewLocale, pathPrefix);
         Map<String, String> containedPath = new HashMap<>();
         StringBuilder prefixedKey = new StringBuilder();
         int maxPrefixLookUpLength = 5;
@@ -55,16 +55,16 @@ public class KeyCompletionProvider extends CompletionProvider<CompletionParamete
         });
     }
 
-    private void collect(Map<String, String> map, LocalizedNode node, String path, String locale, String prefix) {
+    private void collect(Map<String, String> map, LocalizedNode node, String path, String locale, String pathPrefix) {
         if (node.isLeaf() && !node.getKey().equals(LocalizedNode.ROOT_KEY)) {
             String value = node.getValue().get(locale);
             map.put(path, value);
-            if (prefix != null && !prefix.isEmpty()) {
-                map.put(prefix + "." + path, value);
+            if (pathPrefix != null && !pathPrefix.isEmpty()) {
+                map.put(pathPrefix + "." + path, value);
             }
         } else {
             for (LocalizedNode child : node.getChildren()) {
-                collect(map, child, path == null || path.isEmpty() ? child.getKey() : path + "." + child.getKey(), locale, prefix);
+                collect(map, child, path == null || path.isEmpty() ? child.getKey() : path + "." + child.getKey(), locale, pathPrefix);
             }
         }
     }

@@ -2,7 +2,6 @@ package de.marhali.easyi18n.editor.generic;
 
 import com.intellij.codeInsight.completion.CompletionContributor;
 import com.intellij.codeInsight.completion.CompletionType;
-import com.intellij.lang.*;
 import com.intellij.patterns.*;
 import com.intellij.psi.*;
 import com.intellij.psi.xml.*;
