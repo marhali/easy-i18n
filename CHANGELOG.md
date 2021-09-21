@@ -3,6 +3,13 @@
 # easy-i18n Changelog
 
 ## [Unreleased]
+### Added
+- Support for YAML locale files. Thanks to @sunarya-thito
+- Optional path-prefix for translations
+
+### Changed
+- Optimized i18n key completion
+
 ## [1.4.1]
 ### Added
 - Support for IntelliJ 2021.2
