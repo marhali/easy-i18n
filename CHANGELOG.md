@@ -10,6 +10,9 @@
 ### Changed
 - Optimized i18n key completion
 
+### Fixed
+- Locale file pattern configuration
+
 ## [1.4.1]
 ### Added
 - Support for IntelliJ 2021.2

@@ -10,8 +10,6 @@ import de.marhali.easyi18n.service.SettingsService;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.Optional;
 
 /**
  * IO operations utility.
@@ -21,39 +19,43 @@ public class IOUtil {
 
     /**
      * Determines the {@link TranslatorIO} which should be used for the specified directoryPath
+     * @param project Current intellij project
      * @param directoryPath The full path to the parent directory which holds the translation files
      * @return IO handler to use for file operations
      */
-    public static TranslatorIO determineFormat(@NotNull String directoryPath) {
+    public static TranslatorIO determineFormat(@NotNull Project project, @NotNull String directoryPath) {
         VirtualFile directory = LocalFileSystem.getInstance().findFileByIoFile(new File(directoryPath));
 
         if(directory == null || directory.getChildren() == null) {
             throw new IllegalArgumentException("Specified folder is invalid (" + directoryPath + ")");
         }
 
-        Optional<VirtualFile> any = Arrays.stream(directory.getChildren()).findAny();
+        VirtualFile[] children = directory.getChildren();
 
-        if(!any.isPresent()) {
-            throw new IllegalStateException("Could not determine i18n format. At least one locale file must be defined");
+        for(VirtualFile file : children) {
+            if(file.isDirectory()) { // Modularized locale files
+                // ATM we only support modularized JSON files
+                return new ModularizedJsonTranslatorIO();
+            }
+
+            if(!isFileRelevant(project, file)) {
+                continue;
+            }
+
+            switch(file.getFileType().getDefaultExtension().toLowerCase()) {
+                case "json":
+                    return new JsonTranslatorIO();
+                case "properties":
+                    return new PropertiesTranslatorIO();
+                case "yml":
+                    return new YamlTranslatorIO();
+                default:
+                    System.err.println("Unsupported i18n locale file format: "
+                            + file.getFileType().getDefaultExtension());
+            }
         }
 
-        // Split files - Should be always JSON
-        if(any.get().isDirectory()) {
-            return new ModularizedJsonTranslatorIO();
-        }
-
-        switch (any.get().getFileType().getDefaultExtension().toLowerCase()) {
-            case "json":
-                return new JsonTranslatorIO();
-
-            case "properties":
-                return new PropertiesTranslatorIO();
-            case "yml":
-                return new YamlTranslatorIO();
-            default:
-                throw new UnsupportedOperationException("Unsupported i18n locale file format: " +
-                        any.get().getFileType().getDefaultExtension());
-        }
+        throw new IllegalStateException("Could not determine i18n format. At least one locale file must be defined");
     }
 
     /**
@@ -62,7 +64,7 @@ public class IOUtil {
      * @param file File to check
      * @return True if relevant otherwise false
      */
-    public static boolean isFileRelevant(Project project, VirtualFile file) {
+    public static boolean isFileRelevant(@NotNull Project project, @NotNull VirtualFile file) {
         String pattern = SettingsService.getInstance(project).getState().getFilePattern();
         return file.getName().matches(pattern);
     }

@@ -77,7 +77,7 @@ public class DataStore {
             synchronize(searchQuery, null);
 
         } else {
-            TranslatorIO io = IOUtil.determineFormat(localesPath);
+            TranslatorIO io = IOUtil.determineFormat(project, localesPath);
 
             io.read(project, localesPath, (loadedTranslations) -> {
                 this.translations = loadedTranslations == null ? Translations.empty() : loadedTranslations;
@@ -97,7 +97,7 @@ public class DataStore {
             return;
         }
 
-        TranslatorIO io = IOUtil.determineFormat(localesPath);
+        TranslatorIO io = IOUtil.determineFormat(project, localesPath);
         io.save(project, translations, localesPath, callback);
     }
 
