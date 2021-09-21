@@ -1,13 +1,16 @@
 package de.marhali.easyi18n.io.implementation;
 
-import com.google.gson.*;
 import com.intellij.openapi.application.*;
 import com.intellij.openapi.project.*;
 import com.intellij.openapi.vfs.*;
+
 import de.marhali.easyi18n.io.*;
 import de.marhali.easyi18n.model.*;
 import de.marhali.easyi18n.util.*;
+import de.marhali.easyi18n.util.array.YamlArrayUtil;
+
 import org.jetbrains.annotations.*;
+
 import thito.nodeflow.config.*;
 
 import java.io.*;
@@ -68,9 +71,14 @@ public class YamlTranslatorIO implements TranslatorIO {
                 if (map != null) {
                     load(locale, finalChild, map);
                 } else {
-                    String value = section.getString(key).orElse(null);
-                    if (value != null) {
-                        child.getValue().put(locale, value);
+
+                    if(section.isList(key) && section.getList(key).isPresent()) {
+                        child.getValue().put(locale, YamlArrayUtil.read(section.getList(key).get()));
+                    } else {
+                        String value = section.getString(key).orElse(null);
+                        if (value != null) {
+                            child.getValue().put(locale, value);
+                        }
                     }
                 }
             }
@@ -81,7 +89,7 @@ public class YamlTranslatorIO implements TranslatorIO {
         if (node.isLeaf() && !node.getKey().equals(LocalizedNode.ROOT_KEY)) {
             String value = node.getValue().get(locale);
             if (value != null) {
-                section.set(path, value);
+                section.set(path, YamlArrayUtil.isArray(value) ? YamlArrayUtil.write(value) : value);
             }
         } else {
             for (LocalizedNode child : node.getChildren()) {

@@ -197,6 +197,12 @@ public interface Section {
             return null;
         });
     }
+
+    default boolean isList(String path) {
+        Optional<?> o = getObject(path);
+        return o.isPresent() && o.get() instanceof List;
+    }
+
     default Optional<ListSection> getList(String path) {
         return getObject(path).map(o -> {
             if (o instanceof List) {
