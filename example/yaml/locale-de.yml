@@ -1,0 +1,17 @@
+alpha:
+  spacing: ' führendes Leerzeichen'
+  first: Beispiel Übersetzung
+beta:
+  title: Titel
+  nested:
+    title: Ein verschachtelter Titel
+gamma:
+  array:
+    escaped:
+      - Erstes;Element
+      - Zweites Element
+      - Drittes;Element
+    simple:
+      - Erstes Element
+      - Zweites Element
+  title: Gamma Titel

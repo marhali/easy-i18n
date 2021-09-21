@@ -4,7 +4,6 @@ import com.intellij.openapi.components.PersistentStateComponent;
 import com.intellij.openapi.components.State;
 import com.intellij.openapi.project.Project;
 
-import com.intellij.util.xmlb.XmlSerializerUtil;
 import de.marhali.easyi18n.model.SettingsState;
 
 import org.jetbrains.annotations.NotNull;

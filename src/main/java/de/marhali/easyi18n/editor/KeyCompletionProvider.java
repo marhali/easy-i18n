@@ -1,20 +1,16 @@
 package de.marhali.easyi18n.editor;
 
-import com.intellij.codeInsight.completion.CompletionParameters;
-import com.intellij.codeInsight.completion.CompletionProvider;
-import com.intellij.codeInsight.completion.CompletionResultSet;
-import com.intellij.codeInsight.lookup.LookupElementBuilder;
-import com.intellij.openapi.project.Project;
-import com.intellij.util.ProcessingContext;
-
-import de.marhali.easyi18n.model.LocalizedNode;
-import de.marhali.easyi18n.service.DataStore;
-import de.marhali.easyi18n.service.SettingsService;
+import com.intellij.codeInsight.completion.*;
+import com.intellij.codeInsight.lookup.*;
+import com.intellij.icons.AllIcons;
+import com.intellij.openapi.project.*;
+import com.intellij.util.*;
+import de.marhali.easyi18n.model.*;
+import de.marhali.easyi18n.service.*;
 import de.marhali.easyi18n.util.TranslationsUtil;
+import org.jetbrains.annotations.*;
 
-import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
+import java.util.*;
 
 /**
  * I18n translation key completion provider.
@@ -33,38 +29,58 @@ public class KeyCompletionProvider extends CompletionProvider<CompletionParamete
             return;
         }
 
+        DataStore store = DataStore.getInstance(project);
         String previewLocale = SettingsService.getInstance(project).getState().getPreviewLocale();
+        String pathPrefix = SettingsService.getInstance(project).getState().getPathPrefix();
 
-        String query = result.getPrefixMatcher().getPrefix();
-        List<String> sections = TranslationsUtil.getSections(query);
-        String lastSection = null;
+        String path = result.getPrefixMatcher().getPrefix();
 
-        if(!sections.isEmpty() && !query.endsWith(".")) {
-            lastSection = sections.remove(sections.size() - 1);
+        if(pathPrefix == null) {
+            pathPrefix = "";
         }
 
-        String path = TranslationsUtil.sectionsToFullPath(sections);
+        if(path.startsWith(pathPrefix)) {
+            path = path.substring(pathPrefix.length());
 
-        LocalizedNode node = sections.isEmpty() ? DataStore.getInstance(project).getTranslations().getNodes()
-                : DataStore.getInstance(project).getTranslations().getNode(path);
+            if(path.startsWith(".")) { // Remove leading dot
+                path = path.substring(1);
+            }
 
-        if(node == null) { // Unknown translation
-            return;
+        } else {
+            path = ""; // Show suggestions for root view
         }
 
-        for(LocalizedNode children : node.getChildren()) {
-            if(lastSection == null || children.getKey().startsWith(lastSection)) {
-                // Construct full key path / Fore nested objects add '.' to indicate deeper level
-                String fullKey = (path.isEmpty() ? children.getKey() : path + "." + children.getKey()) + (children.isLeaf() ? "" : ".");
+        if(pathPrefix.length() > 0 && !pathPrefix.endsWith(".")) {
+            pathPrefix += ".";
+        }
 
-                result.addElement(LookupElementBuilder.create(fullKey)
-                        .appendTailText(getTailText(children, previewLocale), true));
+        List<String> fullKeys = store.getTranslations().getFullKeys();
+
+        int sections = path.split("\\.").length;
+        int maxSectionForwardLookup = 5;
+
+        for(String key : fullKeys) {
+            // Path matches
+            if(key.startsWith(path)) {
+                String[] keySections = key.split("\\.");
+
+                if(keySections.length > sections + maxSectionForwardLookup) { // Key is too deep nested
+                    String shrinkKey = TranslationsUtil.sectionsToFullPath(Arrays.asList(
+                            Arrays.copyOf(keySections, sections + maxSectionForwardLookup)));
+
+                    result.addElement(LookupElementBuilder.create(pathPrefix + shrinkKey)
+                        .appendTailText(" I18n([])", true));
+
+                } else {
+                    LocalizedNode node = store.getTranslations().getNode(key);
+                    String translation = node != null ? node.getValue().get(previewLocale) : null;
+
+                    result.addElement(LookupElementBuilder.create(pathPrefix + key)
+                            .withIcon(AllIcons.Actions.PreserveCaseHover)
+                            .appendTailText(" I18n(" + previewLocale + ": " + translation + ")", true)
+                    );
+                }
             }
         }
-    }
-
-    private String getTailText(LocalizedNode node, String previewLocale) {
-        return !node.isLeaf() ? " I18n([])"
-                : " I18n(" + previewLocale + ": " + node.getValue().get(previewLocale) + ")";
     }
 }

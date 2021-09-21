@@ -6,6 +6,7 @@ import com.google.gson.JsonPrimitive;
 
 import de.marhali.easyi18n.model.LocalizedNode;
 
+import de.marhali.easyi18n.util.array.JsonArrayUtil;
 import org.apache.commons.lang.StringEscapeUtils;
 
 import java.util.ArrayList;

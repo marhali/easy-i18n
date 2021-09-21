@@ -29,7 +29,17 @@ public class KeyAnnotator {
         }
 
         String previewLocale = SettingsService.getInstance(project).getState().getPreviewLocale();
-        LocalizedNode node = DataStore.getInstance(project).getTranslations().getNode(key);
+        String pathPrefix = SettingsService.getInstance(project).getState().getPathPrefix();
+
+        String searchKey = key.length() >= pathPrefix.length()
+                ? key.substring(pathPrefix.length())
+                : key;
+
+        if(searchKey.startsWith(".")) {
+            searchKey = searchKey.substring(1);
+        }
+
+        LocalizedNode node = DataStore.getInstance(project).getTranslations().getNode(searchKey);
 
         if(node == null) { // Unknown translation. Just ignore it
             return;
