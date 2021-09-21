@@ -1,0 +1,17 @@
+alpha:
+  spacing: ' leading space'
+  first: Example Translation
+beta:
+  title: Title
+  nested:
+    title: some nested title
+gamma:
+  array:
+    escaped:
+      - first;element
+      - second element
+      - third;element
+    simple:
+      - first element
+      - second element
+  title: gamma title
