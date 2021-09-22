@@ -5,6 +5,7 @@
 ## [Unreleased]
 ### Added
 - Support for YAML locale files. Thanks to @sunarya-thito
+- Translation key referencing inside editor  
 - Optional path-prefix for translations
 
 ### Changed

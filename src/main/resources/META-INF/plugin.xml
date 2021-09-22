@@ -17,5 +17,7 @@
                                 implementationClass="de.marhali.easyi18n.editor.generic.GenericKeyCompletionContributor" />
 
         <annotator language="" implementationClass="de.marhali.easyi18n.editor.generic.GenericKeyAnnotator" />
+
+        <psi.referenceContributor implementation="de.marhali.easyi18n.editor.generic.GenericKeyReferenceContributor" />
     </extensions>
 </idea-plugin>

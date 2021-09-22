@@ -4,5 +4,8 @@
 
         <completion.contributor language="kotlin"
                                 implementationClass="de.marhali.easyi18n.editor.kotlin.KotlinKeyCompletionContributor" />
+
+        <psi.referenceContributor language="kotlin"
+                                  implementation="de.marhali.easyi18n.editor.kotlin.KotlinKeyReferenceContributor" />
     </extensions>
 </idea-plugin>
