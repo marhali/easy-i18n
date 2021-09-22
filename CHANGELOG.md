@@ -3,6 +3,7 @@
 # easy-i18n Changelog
 
 ## [Unreleased]
+## [1.5.0]
 ### Added
 - Support for YAML locale files. Thanks to @sunarya-thito
 - Translation key referencing inside editor  
