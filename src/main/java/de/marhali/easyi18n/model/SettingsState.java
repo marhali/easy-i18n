@@ -11,6 +11,7 @@ public class SettingsState {
 
     public static final String DEFAULT_PREVIEW_LOCALE = "en";
     public static final String DEFAULT_FILE_PATTERN = ".*";
+    public static final String DEFAULT_PATH_PREFIX = "";
     public static final boolean DEFAULT_CODE_ASSISTANCE = true;
 
     private String localesPath;
@@ -45,19 +46,19 @@ public class SettingsState {
         this.previewLocale = previewLocale;
     }
 
-    public boolean isCodeAssistance() {
-        return codeAssistance == null ? DEFAULT_CODE_ASSISTANCE : codeAssistance;
-    }
-
-    public void setCodeAssistance(boolean codeAssistance) {
-        this.codeAssistance = codeAssistance;
+    public @NotNull String getPathPrefix() {
+        return pathPrefix != null ? pathPrefix : DEFAULT_PATH_PREFIX;
     }
 
     public void setPathPrefix(String pathPrefix) {
         this.pathPrefix = pathPrefix;
     }
 
-    public String getPathPrefix() {
-        return pathPrefix;
+    public boolean isCodeAssistance() {
+        return codeAssistance == null ? DEFAULT_CODE_ASSISTANCE : codeAssistance;
+    }
+
+    public void setCodeAssistance(boolean codeAssistance) {
+        this.codeAssistance = codeAssistance;
     }
 }
