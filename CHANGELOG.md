@@ -3,6 +3,9 @@
 # easy-i18n Changelog
 
 ## [Unreleased]
+### Fixed
+- Exception on key annotation if path-prefix is undefined
+
 ## [1.5.0]
 ### Added
 - Support for YAML locale files. Thanks to @sunarya-thito
