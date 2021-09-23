@@ -3,6 +3,7 @@
 # easy-i18n Changelog
 
 ## [Unreleased]
+## [1.5.1]
 ### Fixed
 - Exception on key annotation if path-prefix is undefined
 
