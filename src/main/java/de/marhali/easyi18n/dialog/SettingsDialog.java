@@ -11,7 +11,7 @@ import com.intellij.ui.components.JBTextField;
 
 import de.marhali.easyi18n.model.SettingsState;
 import de.marhali.easyi18n.service.SettingsService;
-import de.marhali.easyi18n.service.DataStore;
+import de.marhali.easyi18n.service.LegacyDataStore;
 
 import javax.swing.*;
 import java.awt.*;
@@ -50,7 +50,7 @@ public class SettingsDialog {
             state.setCodeAssistance(codeAssistanceCheckbox.isSelected());
 
             // Reload instance
-            DataStore.getInstance(project).reloadFromDisk();
+            LegacyDataStore.getInstance(project).reloadFromDisk();
         }
     }
 
