@@ -11,6 +11,7 @@ import java.util.*;
  * Represents structured tree view for translated messages.
  * @author marhali
  */
+@Deprecated
 public class LocalizedNode {
 
     public static final String ROOT_KEY = "root";

@@ -8,7 +8,7 @@ import de.marhali.easyi18n.dialog.AddDialog;
 import de.marhali.easyi18n.dialog.EditDialog;
 import de.marhali.easyi18n.model.KeyedTranslation;
 import de.marhali.easyi18n.model.LocalizedNode;
-import de.marhali.easyi18n.service.DataStore;
+import de.marhali.easyi18n.service.LegacyDataStore;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -52,7 +52,7 @@ public class KeyReference extends PsiReferenceBase<PsiElement> {
 
         @Override
         public void navigate(boolean requestFocus) {
-            LocalizedNode node = DataStore.getInstance(getProject()).getTranslations().getNode(getKey());
+            LocalizedNode node = LegacyDataStore.getInstance(getProject()).getTranslations().getNode(getKey());
 
             if(node != null) {
                 new EditDialog(getProject(), new KeyedTranslation(getKey(), node.getValue())).showAndHandle();

@@ -8,7 +8,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.ui.components.JBScrollPane;
 import com.intellij.ui.treeStructure.Tree;
 
-import de.marhali.easyi18n.service.DataStore;
+import de.marhali.easyi18n.service.LegacyDataStore;
 import de.marhali.easyi18n.model.LocalizedNode;
 import de.marhali.easyi18n.model.DataSynchronizer;
 import de.marhali.easyi18n.model.Translations;
@@ -100,7 +100,7 @@ public class TreeView implements DataSynchronizer {
 
             if(node.getUserObject() instanceof PresentationData) {
                 String fullPath = TreeUtil.getFullPath(path);
-                LocalizedNode localizedNode = DataStore.getInstance(project).getTranslations().getNode(fullPath);
+                LocalizedNode localizedNode = LegacyDataStore.getInstance(project).getTranslations().getNode(fullPath);
 
                 if(localizedNode != null) {
                     new EditDialog(project,new KeyedTranslation(fullPath, localizedNode.getValue())).showAndHandle();
@@ -120,7 +120,7 @@ public class TreeView implements DataSynchronizer {
             for (TreePath path : tree.getSelectionPaths()) {
                 String fullPath = TreeUtil.getFullPath(path);
 
-                DataStore.getInstance(project).processUpdate(
+                LegacyDataStore.getInstance(project).processUpdate(
                         new TranslationDelete(new KeyedTranslation(fullPath, null)));
             }
         };

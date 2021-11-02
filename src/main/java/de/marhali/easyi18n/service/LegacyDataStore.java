@@ -27,9 +27,10 @@ import java.util.function.Consumer;
  * Factory service to manage localized messages for multiple projects at once.
  * @author marhali
  */
-public class DataStore {
+@Deprecated
+public class LegacyDataStore {
 
-    private static final Map<Project, DataStore> INSTANCES = new WeakHashMap<>();
+    private static final Map<Project, LegacyDataStore> INSTANCES = new WeakHashMap<>();
 
     private final Project project;
     private final List<DataSynchronizer> synchronizer;
@@ -37,18 +38,18 @@ public class DataStore {
     private Translations translations;
     private String searchQuery;
 
-    public static DataStore getInstance(@NotNull Project project) {
-        DataStore store = INSTANCES.get(project);
+    public static LegacyDataStore getInstance(@NotNull Project project) {
+        LegacyDataStore store = INSTANCES.get(project);
 
         if(store == null) {
-            store = new DataStore(project);
+            store = new LegacyDataStore(project);
             INSTANCES.put(project, store);
         }
 
         return store;
     }
 
-    private DataStore(@NotNull Project project) {
+    private LegacyDataStore(@NotNull Project project) {
         this.project = project;
         this.synchronizer = new ArrayList<>();
         this.translations = Translations.empty();

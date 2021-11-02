@@ -11,6 +11,7 @@ import java.util.List;
  * Utility tool to support the translations instance
  * @author marhali
  */
+@Deprecated // SectionUtil
 public class TranslationsUtil {
 
     /**

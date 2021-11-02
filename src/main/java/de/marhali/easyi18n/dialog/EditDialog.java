@@ -6,7 +6,7 @@ import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.ui.components.JBLabel;
 import com.intellij.ui.components.JBScrollPane;
 import com.intellij.ui.components.JBTextField;
-import de.marhali.easyi18n.service.DataStore;
+import de.marhali.easyi18n.service.LegacyDataStore;
 import de.marhali.easyi18n.model.KeyedTranslation;
 import de.marhali.easyi18n.model.TranslationDelete;
 import de.marhali.easyi18n.model.TranslationUpdate;
@@ -40,10 +40,10 @@ public class EditDialog {
         int code = prepare().show();
 
         if(code == DialogWrapper.OK_EXIT_CODE) { // Edit
-            DataStore.getInstance(project).processUpdate(new TranslationUpdate(origin, getChanges()));
+            LegacyDataStore.getInstance(project).processUpdate(new TranslationUpdate(origin, getChanges()));
 
         } else if(code == DeleteActionDescriptor.EXIT_CODE) { // Delete
-            DataStore.getInstance(project).processUpdate(new TranslationDelete(origin));
+            LegacyDataStore.getInstance(project).processUpdate(new TranslationDelete(origin));
         }
     }
 
@@ -74,7 +74,7 @@ public class EditDialog {
 
         JPanel valuePanel = new JPanel(new GridLayout(0, 1, 2, 2));
         valueTextFields = new HashMap<>();
-        for(String locale : DataStore.getInstance(project).getTranslations().getLocales()) {
+        for(String locale : LegacyDataStore.getInstance(project).getTranslations().getLocales()) {
             JBLabel localeLabel = new JBLabel(locale);
             JBTextField localeText = new JBTextField(this.origin.getTranslations().get(locale));
             localeLabel.setLabelFor(localeText);

@@ -6,6 +6,7 @@ import java.util.Map;
  * Translated messages for a dedicated key.
  * @author marhali
  */
+@Deprecated // Might be deprecated
 public class KeyedTranslation {
 
     private String key;

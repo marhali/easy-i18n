@@ -12,6 +12,7 @@ import java.util.List;
  * Represents translation state instance. IO operations will be based on this file.
  * @author marhali
  */
+@Deprecated
 public class Translations {
 
     public static Translations empty() {

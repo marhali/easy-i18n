@@ -4,7 +4,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.ui.components.JBScrollPane;
 import com.intellij.ui.table.JBTable;
 
-import de.marhali.easyi18n.service.DataStore;
+import de.marhali.easyi18n.service.LegacyDataStore;
 import de.marhali.easyi18n.model.LocalizedNode;
 import de.marhali.easyi18n.model.DataSynchronizer;
 import de.marhali.easyi18n.model.Translations;
@@ -54,7 +54,7 @@ public class TableView implements DataSynchronizer {
 
         if(row >= 0) {
             String fullPath = String.valueOf(table.getValueAt(row, 0));
-            LocalizedNode node = DataStore.getInstance(project).getTranslations().getNode(fullPath);
+            LocalizedNode node = LegacyDataStore.getInstance(project).getTranslations().getNode(fullPath);
 
             if(node != null) {
                 new EditDialog(project, new KeyedTranslation(fullPath, node.getValue())).showAndHandle();
@@ -67,7 +67,7 @@ public class TableView implements DataSynchronizer {
             for (int selectedRow : table.getSelectedRows()) {
                 String fullPath = String.valueOf(table.getValueAt(selectedRow, 0));
 
-                DataStore.getInstance(project).processUpdate(
+                LegacyDataStore.getInstance(project).processUpdate(
                         new TranslationDelete(new KeyedTranslation(fullPath, null)));
             }
         };
@@ -78,7 +78,7 @@ public class TableView implements DataSynchronizer {
                             @Nullable String searchQuery, @Nullable String scrollTo) {
 
         table.setModel(new TableModelTranslator(translations, searchQuery, update ->
-                DataStore.getInstance(project).processUpdate(update)));
+                LegacyDataStore.getInstance(project).processUpdate(update)));
 
         if(scrollTo != null) {
             int row = -1;

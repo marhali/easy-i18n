@@ -29,7 +29,7 @@ public class KeyCompletionProvider extends CompletionProvider<CompletionParamete
             return;
         }
 
-        DataStore store = DataStore.getInstance(project);
+        LegacyDataStore store = LegacyDataStore.getInstance(project);
         String previewLocale = SettingsService.getInstance(project).getState().getPreviewLocale();
         String pathPrefix = SettingsService.getInstance(project).getState().getPathPrefix();
 

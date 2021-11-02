@@ -7,6 +7,7 @@ import org.jetbrains.annotations.Nullable;
  * Interface to communicate data changes between data store and ui components.
  * @author marhali
  */
+@Deprecated
 public interface DataSynchronizer {
 
     /**
