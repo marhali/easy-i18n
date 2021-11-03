@@ -11,16 +11,14 @@ import java.util.*;
  * Cached translation data. The data is stored in a tree structure.
  * Tree behaviour (sorted, non-sorted) can be specified via constructor.
  * For more please see {@link TranslationNode}. Example tree view:
- *
- *  #################################
- *  # - user:                       #
- *  #     - principal: 'Principal'  #
- *  #     - username:               #
- *  #         - title: 'Username'   #
- *  # - auth:                       #
- *  #     - logout: 'Logout'        #
- *  #     - login: 'Login'          #
- *  #################################
+ * <br/>
+ * user: <br/>
+ * -- principal: 'Principal' <br/>
+ * -- username: <br/>
+ * -- -- title: 'Username' <br/>
+ * auth: <br/>
+ * -- logout: 'Logout' <br/>
+ * -- login: 'Login' <br/>
  *
  * @author marhali
  */
