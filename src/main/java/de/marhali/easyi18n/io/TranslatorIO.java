@@ -13,6 +13,7 @@ import java.util.function.Consumer;
  * Can be implemented by various standards. Such as JSON, Properties-Bundle and so on.
  * @author marhali
  */
+@Deprecated
 public interface TranslatorIO {
 
     /**
