@@ -15,6 +15,7 @@ import java.io.File;
  * IO operations utility.
  * @author marhali
  */
+@Deprecated
 public class IOUtil {
 
     /**

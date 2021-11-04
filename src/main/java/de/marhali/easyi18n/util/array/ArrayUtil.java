@@ -13,6 +13,7 @@ import java.util.regex.Pattern;
  * Utility methods for simple array support.
  * @author marhali
  */
+@Deprecated
 public abstract class ArrayUtil {
 
     static final String PREFIX = "!arr[";

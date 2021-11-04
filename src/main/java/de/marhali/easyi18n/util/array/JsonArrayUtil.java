@@ -7,6 +7,7 @@ import com.google.gson.JsonElement;
  * Utility methods to read and write json arrays.
  * @author marhali
  */
+@Deprecated
 public class JsonArrayUtil extends ArrayUtil {
     public static String read(JsonArray array) {
         return read(array.iterator(), JsonElement::getAsString);
