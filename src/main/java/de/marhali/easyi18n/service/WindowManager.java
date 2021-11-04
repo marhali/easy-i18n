@@ -5,6 +5,10 @@ import com.intellij.openapi.wm.ToolWindow;
 import de.marhali.easyi18n.tabs.TableView;
 import de.marhali.easyi18n.tabs.TreeView;
 
+/**
+ * Provides access to the plugin's own tool-window.
+ * @author marhali
+ */
 public class WindowManager {
 
     private static WindowManager INSTANCE;
