@@ -2,6 +2,7 @@ package de.marhali.easyi18n.io;
 
 import com.intellij.openapi.project.Project;
 
+import com.intellij.openapi.vfs.VirtualFile;
 import de.marhali.easyi18n.model.SettingsState;
 import de.marhali.easyi18n.model.TranslationData;
 
@@ -48,4 +49,14 @@ public interface IOStrategy {
      */
     void write(@NotNull Project project, @NotNull String localesPath, @NotNull SettingsState state,
                @NotNull TranslationData data, @NotNull Consumer<Boolean> result);
+
+    /**
+     * Checks if the provided file should be processed for translation data
+     * @param state Plugin configuration
+     * @param file File to check
+     * @return true if file matches pattern
+     */
+    default boolean isFileRelevant(@NotNull SettingsState state, @NotNull VirtualFile file) {
+        return file.getName().matches(state.getFilePattern());
+    }
 }
