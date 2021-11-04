@@ -2,27 +2,23 @@ package de.marhali.easyi18n.io.json;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
-
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
+
 import de.marhali.easyi18n.io.IOStrategy;
 import de.marhali.easyi18n.model.SettingsState;
 import de.marhali.easyi18n.model.TranslationData;
 
-import de.marhali.easyi18n.model.TranslationNode;
-import net.minidev.json.JSONObject;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.TreeMap;
 import java.util.function.Consumer;
 
 /**
@@ -45,7 +41,7 @@ public class JsonIOStrategy implements IOStrategy {
 
         for(VirtualFile children : directory.getChildren()) {
             if(!children.isDirectory() && isFileRelevant(state, children)) {
-                if(children.getFileType().getDefaultExtension().toLowerCase().equals(FILE_EXTENSION)) {
+                if(children.getFileType().getDefaultExtension().equalsIgnoreCase(FILE_EXTENSION)) {
                     return true;
                 }
             }
@@ -74,10 +70,17 @@ public class JsonIOStrategy implements IOStrategy {
                         continue;
                     }
 
-                    data.addLocale(file.getNameWithoutExtension());
+                    String locale = file.getNameWithoutExtension();
+                    data.addLocale(locale);
 
-                    JSONObject tree = GSON.fromJson(new InputStreamReader(file.getInputStream(), file.getCharset()), JSONObject.class);
+                    JsonObject tree = GSON.fromJson(new InputStreamReader(file.getInputStream(), file.getCharset()),
+                            JsonObject.class);
+
+                    JsonMapper.read(locale, tree, data.getRootNode());
                 }
+
+                result.accept(data);
+
             } catch(IOException e) {
                 e.printStackTrace();
                 result.accept(null);
@@ -86,7 +89,30 @@ public class JsonIOStrategy implements IOStrategy {
     }
 
     @Override
-    public void write(@NotNull Project project, @NotNull String localesPath, @NotNull SettingsState state, @NotNull TranslationData data, @NotNull Consumer<Boolean> result) {
+    public void write(@NotNull Project project, @NotNull String localesPath,
+                      @NotNull SettingsState state, @NotNull TranslationData data, @NotNull Consumer<Boolean> result) {
+        ApplicationManager.getApplication().runWriteAction(() -> {
+            try {
+                for(String locale : data.getLocales()) {
+                    JsonObject content = new JsonObject();
+                    JsonMapper.write(locale, content, data.getRootNode());
 
+                    File file = new File(localesPath + "/" + locale + "." + FILE_EXTENSION);
+                    boolean exists = file.createNewFile();
+
+                    VirtualFile vf = exists
+                            ? LocalFileSystem.getInstance().refreshAndFindFileByIoFile(file)
+                            : LocalFileSystem.getInstance().findFileByIoFile(file);
+
+                    vf.setBinaryContent(GSON.toJson(content).getBytes(vf.getCharset()));
+                }
+
+                result.accept(true);
+
+            } catch(IOException e) {
+                e.printStackTrace();
+                result.accept(false);
+            }
+        });
     }
 }
