@@ -12,7 +12,7 @@ import de.marhali.easyi18n.service.LegacyDataStore;
 import de.marhali.easyi18n.model.LocalizedNode;
 import de.marhali.easyi18n.model.DataSynchronizer;
 import de.marhali.easyi18n.model.Translations;
-import de.marhali.easyi18n.model.KeyedTranslation;
+import de.marhali.easyi18n.model.LegacyKeyedTranslation;
 import de.marhali.easyi18n.model.TranslationDelete;
 import de.marhali.easyi18n.model.tree.TreeModelTranslator;
 import de.marhali.easyi18n.action.treeview.CollapseTreeViewAction;
@@ -103,7 +103,7 @@ public class TreeView implements DataSynchronizer {
                 LocalizedNode localizedNode = LegacyDataStore.getInstance(project).getTranslations().getNode(fullPath);
 
                 if(localizedNode != null) {
-                    new EditDialog(project,new KeyedTranslation(fullPath, localizedNode.getValue())).showAndHandle();
+                    new EditDialog(project,new LegacyKeyedTranslation(fullPath, localizedNode.getValue())).showAndHandle();
                 }
             }
         }
@@ -121,7 +121,7 @@ public class TreeView implements DataSynchronizer {
                 String fullPath = TreeUtil.getFullPath(path);
 
                 LegacyDataStore.getInstance(project).processUpdate(
-                        new TranslationDelete(new KeyedTranslation(fullPath, null)));
+                        new TranslationDelete(new LegacyKeyedTranslation(fullPath, null)));
             }
         };
     }

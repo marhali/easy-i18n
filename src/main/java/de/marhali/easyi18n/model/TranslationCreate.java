@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
  * @author marhali
  */
 public class TranslationCreate extends TranslationUpdate {
-    public TranslationCreate(@NotNull KeyedTranslation translation) {
+    public TranslationCreate(@NotNull LegacyKeyedTranslation translation) {
         super(null, translation);
     }
 }

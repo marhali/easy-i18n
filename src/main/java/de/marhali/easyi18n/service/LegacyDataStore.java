@@ -8,7 +8,7 @@ import de.marhali.easyi18n.model.LocalizedNode;
 import de.marhali.easyi18n.model.Translations;
 import de.marhali.easyi18n.io.TranslatorIO;
 import de.marhali.easyi18n.model.DataSynchronizer;
-import de.marhali.easyi18n.model.KeyedTranslation;
+import de.marhali.easyi18n.model.LegacyKeyedTranslation;
 import de.marhali.easyi18n.model.TranslationDelete;
 import de.marhali.easyi18n.model.TranslationUpdate;
 import de.marhali.easyi18n.util.IOUtil;
@@ -135,7 +135,7 @@ public class LegacyDataStore {
 
                 // Parent is empty now, we need to remove it as well (except root)
                 if(node.getChildren().isEmpty() && !node.getKey().equals(LocalizedNode.ROOT_KEY)) {
-                    processUpdate(new TranslationDelete(new KeyedTranslation(
+                    processUpdate(new TranslationDelete(new LegacyKeyedTranslation(
                             TranslationsUtil.sectionsToFullPath(sections), null)));
                 }
             }

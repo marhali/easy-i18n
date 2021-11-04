@@ -1,7 +1,7 @@
 package de.marhali.easyi18n.model.table;
 
 import de.marhali.easyi18n.model.LocalizedNode;
-import de.marhali.easyi18n.model.KeyedTranslation;
+import de.marhali.easyi18n.model.LegacyKeyedTranslation;
 import de.marhali.easyi18n.model.TranslationUpdate;
 import de.marhali.easyi18n.model.Translations;
 
@@ -108,8 +108,8 @@ public class TableModelTranslator implements TableModel {
             }
         }
 
-        TranslationUpdate update = new TranslationUpdate(new KeyedTranslation(key, messages),
-                new KeyedTranslation(newKey, messages));
+        TranslationUpdate update = new TranslationUpdate(new LegacyKeyedTranslation(key, messages),
+                new LegacyKeyedTranslation(newKey, messages));
 
         updater.accept(update);
     }

@@ -6,7 +6,7 @@ import com.intellij.psi.impl.FakePsiElement;
 
 import de.marhali.easyi18n.dialog.AddDialog;
 import de.marhali.easyi18n.dialog.EditDialog;
-import de.marhali.easyi18n.model.KeyedTranslation;
+import de.marhali.easyi18n.model.LegacyKeyedTranslation;
 import de.marhali.easyi18n.model.LocalizedNode;
 import de.marhali.easyi18n.service.LegacyDataStore;
 
@@ -55,7 +55,7 @@ public class KeyReference extends PsiReferenceBase<PsiElement> {
             LocalizedNode node = LegacyDataStore.getInstance(getProject()).getTranslations().getNode(getKey());
 
             if(node != null) {
-                new EditDialog(getProject(), new KeyedTranslation(getKey(), node.getValue())).showAndHandle();
+                new EditDialog(getProject(), new LegacyKeyedTranslation(getKey(), node.getValue())).showAndHandle();
             } else {
                 new AddDialog(getProject(), getKey()).showAndHandle();
             }

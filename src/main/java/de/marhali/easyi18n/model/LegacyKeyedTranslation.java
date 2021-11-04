@@ -7,12 +7,12 @@ import java.util.Map;
  * @author marhali
  */
 @Deprecated // Might be deprecated
-public class KeyedTranslation {
+public class LegacyKeyedTranslation {
 
     private String key;
     private Map<String, String> translations;
 
-    public KeyedTranslation(String key, Map<String, String> translations) {
+    public LegacyKeyedTranslation(String key, Map<String, String> translations) {
         this.key = key;
         this.translations = translations;
     }

@@ -8,19 +8,19 @@ import org.jetbrains.annotations.Nullable;
  */
 public class TranslationUpdate {
 
-    private final @Nullable KeyedTranslation origin;
-    private final @Nullable KeyedTranslation change;
+    private final @Nullable LegacyKeyedTranslation origin;
+    private final @Nullable LegacyKeyedTranslation change;
 
-    public TranslationUpdate(@Nullable KeyedTranslation origin, @Nullable KeyedTranslation change) {
+    public TranslationUpdate(@Nullable LegacyKeyedTranslation origin, @Nullable LegacyKeyedTranslation change) {
         this.origin = origin;
         this.change = change;
     }
 
-    public KeyedTranslation getOrigin() {
+    public LegacyKeyedTranslation getOrigin() {
         return origin;
     }
 
-    public KeyedTranslation getChange() {
+    public LegacyKeyedTranslation getChange() {
         return change;
     }
 

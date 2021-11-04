@@ -7,7 +7,7 @@ import com.intellij.ui.components.JBLabel;
 import com.intellij.ui.components.JBScrollPane;
 import com.intellij.ui.components.JBTextField;
 import de.marhali.easyi18n.service.LegacyDataStore;
-import de.marhali.easyi18n.model.KeyedTranslation;
+import de.marhali.easyi18n.model.LegacyKeyedTranslation;
 import de.marhali.easyi18n.model.TranslationDelete;
 import de.marhali.easyi18n.model.TranslationUpdate;
 import de.marhali.easyi18n.dialog.descriptor.DeleteActionDescriptor;
@@ -26,12 +26,12 @@ import java.util.ResourceBundle;
 public class EditDialog {
 
     private final Project project;
-    private final KeyedTranslation origin;
+    private final LegacyKeyedTranslation origin;
 
     private JBTextField keyTextField;
     private Map<String, JBTextField> valueTextFields;
 
-    public EditDialog(Project project, KeyedTranslation origin) {
+    public EditDialog(Project project, LegacyKeyedTranslation origin) {
         this.project = project;
         this.origin = origin;
     }
@@ -47,7 +47,7 @@ public class EditDialog {
         }
     }
 
-    private KeyedTranslation getChanges() {
+    private LegacyKeyedTranslation getChanges() {
         Map<String, String> messages = new HashMap<>();
 
         valueTextFields.forEach((k, v) -> {
@@ -56,7 +56,7 @@ public class EditDialog {
             }
         });
 
-        return new KeyedTranslation(keyTextField.getText(), messages);
+        return new LegacyKeyedTranslation(keyTextField.getText(), messages);
     }
 
     private DialogBuilder prepare() {

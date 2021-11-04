@@ -8,7 +8,7 @@ import com.intellij.ui.components.JBScrollPane;
 import com.intellij.ui.components.JBTextField;
 
 import de.marhali.easyi18n.service.LegacyDataStore;
-import de.marhali.easyi18n.model.KeyedTranslation;
+import de.marhali.easyi18n.model.LegacyKeyedTranslation;
 import de.marhali.easyi18n.model.TranslationCreate;
 
 import javax.swing.*;
@@ -56,7 +56,7 @@ public class AddDialog {
             }
         });
 
-        TranslationCreate creation = new TranslationCreate(new KeyedTranslation(keyTextField.getText(), messages));
+        TranslationCreate creation = new TranslationCreate(new LegacyKeyedTranslation(keyTextField.getText(), messages));
         LegacyDataStore.getInstance(project).processUpdate(creation);
     }
 
