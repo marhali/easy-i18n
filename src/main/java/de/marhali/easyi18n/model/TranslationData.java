@@ -59,6 +59,13 @@ public class TranslationData {
     }
 
     /**
+     * @param locale Adds the provided locale to the supported languages list
+     */
+    public void addLocale(@NotNull String locale) {
+        this.locales.add(locale);
+    }
+
+    /**
      * @return root node which contains all translations
      */
     public @NotNull TranslationNode getRootNode() {
@@ -105,7 +112,7 @@ public class TranslationData {
      * @param fullPath Absolute translation key path
      * @param translation Translation to set. Can be null to delete the corresponding node
      */
-    public void setTranslation(@NotNull String fullPath, @Nullable Translation translation) throws Exception {
+    public void setTranslation(@NotNull String fullPath, @Nullable Translation translation) {
         List<String> sections = this.pathUtil.split(fullPath);
         String nodeKey = sections.remove(sections.size() - 1); // Edge case last section
         TranslationNode node = this.rootNode;
@@ -123,7 +130,7 @@ public class TranslationData {
                 }
 
                 // Created nested section
-                childNode = node.addChildren(section);
+                childNode = node.setChildren(section);
             }
 
             node = childNode;
@@ -137,7 +144,7 @@ public class TranslationData {
             }
 
         } else { // Create or overwrite
-            node.addChildren(nodeKey, translation);
+            node.setChildren(nodeKey, translation);
         }
     }
 
