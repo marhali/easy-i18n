@@ -3,7 +3,6 @@ package de.marhali.easyi18n;
 import de.marhali.easyi18n.model.Translation;
 import de.marhali.easyi18n.model.TranslationData;
 import de.marhali.easyi18n.model.TranslationNode;
-import de.marhali.easyi18n.util.TranslationBuilder;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -18,33 +17,33 @@ public class TranslationDataTest {
 
     private final int numOfTranslations = 18;
 
-    private void addTranslations(TranslationData data) throws Exception {
-        data.setTranslation("zulu", new TranslationBuilder("en", "test").build());
-        data.setTranslation("gamma", new TranslationBuilder("en", "test").build());
+    private void addTranslations(TranslationData data) {
+        data.setTranslation("zulu", new Translation("en", "test"));
+        data.setTranslation("gamma", new Translation("en", "test"));
 
-        data.setTranslation("foxtrot.super.long.key", new TranslationBuilder("en", "test").build());
+        data.setTranslation("foxtrot.super.long.key", new Translation("en", "test"));
 
-        data.setTranslation("bravo.b", new TranslationBuilder("en", "test").build());
-        data.setTranslation("bravo.c", new TranslationBuilder("en", "test").build());
-        data.setTranslation("bravo.a", new TranslationBuilder("en", "test").build());
-        data.setTranslation("bravo.d", new TranslationBuilder("en", "test").build());
-        data.setTranslation("bravo.long.bravo", new TranslationBuilder("en", "test").build());
-        data.setTranslation("bravo.long.charlie.a", new TranslationBuilder("en", "test").build());
-        data.setTranslation("bravo.long.alpha", new TranslationBuilder("en", "test").build());
+        data.setTranslation("bravo.b", new Translation("en", "test"));
+        data.setTranslation("bravo.c", new Translation("en", "test"));
+        data.setTranslation("bravo.a", new Translation("en", "test"));
+        data.setTranslation("bravo.d", new Translation("en", "test"));
+        data.setTranslation("bravo.long.bravo", new Translation("en", "test"));
+        data.setTranslation("bravo.long.charlie.a", new Translation("en", "test"));
+        data.setTranslation("bravo.long.alpha", new Translation("en", "test"));
 
-        data.setTranslation("alpha.b", new TranslationBuilder("en", "test").build());
-        data.setTranslation("alpha.c", new TranslationBuilder("en", "test").build());
-        data.setTranslation("alpha.a", new TranslationBuilder("en", "test").build());
-        data.setTranslation("alpha.d", new TranslationBuilder("en", "test").build());
+        data.setTranslation("alpha.b", new Translation("en", "test"));
+        data.setTranslation("alpha.c", new Translation("en", "test"));
+        data.setTranslation("alpha.a", new Translation("en", "test"));
+        data.setTranslation("alpha.d", new Translation("en", "test"));
 
-        data.setTranslation("charlie.b", new TranslationBuilder("en", "test").build());
-        data.setTranslation("charlie.c", new TranslationBuilder("en", "test").build());
-        data.setTranslation("charlie.a", new TranslationBuilder("en", "test").build());
-        data.setTranslation("charlie.d", new TranslationBuilder("en", "test").build());
+        data.setTranslation("charlie.b", new Translation("en", "test"));
+        data.setTranslation("charlie.c", new Translation("en", "test"));
+        data.setTranslation("charlie.a", new Translation("en", "test"));
+        data.setTranslation("charlie.d", new Translation("en", "test"));
     }
 
     @Test
-    public void testKeySorting() throws Exception {
+    public void testKeySorting() {
         TranslationData data = new TranslationData(true, true);
         this.addTranslations(data);
 
@@ -62,7 +61,7 @@ public class TranslationDataTest {
     }
 
     @Test
-    public void testKeyUnordered() throws Exception {
+    public void testKeyUnordered() {
         TranslationData data = new TranslationData(false, true);
         this.addTranslations(data);
 
@@ -80,13 +79,13 @@ public class TranslationDataTest {
     }
 
     @Test
-    public void testKeyNesting() throws Exception {
+    public void testKeyNesting() {
         TranslationData data = new TranslationData(true, true);
 
-        data.setTranslation("nested.alpha", new TranslationBuilder("en", "test").build());
-        data.setTranslation("nested.bravo", new TranslationBuilder("en", "test").build());
-        data.setTranslation("other.alpha", new TranslationBuilder("en", "test").build());
-        data.setTranslation("other.bravo", new TranslationBuilder("en", "test").build());
+        data.setTranslation("nested.alpha", new Translation("en", "test"));
+        data.setTranslation("nested.bravo", new Translation("en", "test"));
+        data.setTranslation("other.alpha", new Translation("en", "test"));
+        data.setTranslation("other.bravo", new Translation("en", "test"));
 
         Assert.assertEquals(data.getRootNode().getChildren().size(), 2);
 
@@ -96,7 +95,7 @@ public class TranslationDataTest {
     }
 
     @Test
-    public void testKeyNonNested() throws Exception {
+    public void testKeyNonNested() {
         TranslationData data = new TranslationData(true, false);
         this.addTranslations(data);
 
@@ -108,10 +107,10 @@ public class TranslationDataTest {
     }
 
     @Test
-    public void testDeleteNested() throws Exception {
+    public void testDeleteNested() {
         TranslationData data = new TranslationData(true, true);
 
-        Translation value = new TranslationBuilder("en", "test").build();
+        Translation value = new Translation("en", "test");
 
         data.setTranslation("alpha", value);
         data.setTranslation("nested.alpha", value);
@@ -130,10 +129,10 @@ public class TranslationDataTest {
     }
 
     @Test
-    public void testDeleteNonNested() throws Exception {
+    public void testDeleteNonNested() {
         TranslationData data = new TranslationData(true, false);
 
-        Translation value = new TranslationBuilder("en", "test").build();
+        Translation value = new Translation("en", "test");
 
         data.setTranslation("alpha", value);
         data.setTranslation("nested.alpha", value);
@@ -152,7 +151,7 @@ public class TranslationDataTest {
     }
 
     @Test
-    public void testRecurseDeleteNonNested() throws Exception {
+    public void testRecurseDeleteNonNested() {
         TranslationData data = new TranslationData(true, false);
         this.addTranslations(data);
 
@@ -163,7 +162,7 @@ public class TranslationDataTest {
     }
 
     @Test
-    public void testRecurseDeleteNested() throws Exception {
+    public void testRecurseDeleteNested() {
         TranslationData data = new TranslationData(true, true);
         this.addTranslations(data);
 
@@ -174,11 +173,11 @@ public class TranslationDataTest {
     }
 
     @Test
-    public void testOverwriteNonNested() throws Exception {
+    public void testOverwriteNonNested() {
         TranslationData data = new TranslationData(true, false);
 
-        Translation before = new TranslationBuilder("en", "before").build();
-        Translation after = new TranslationBuilder("en", "after").build();
+        Translation before = new Translation("en", "before");
+        Translation after = new Translation("en", "after");
 
         data.setTranslation("alpha", before);
         data.setTranslation("nested.alpha", before);
@@ -198,11 +197,11 @@ public class TranslationDataTest {
     }
 
     @Test
-    public void testOverwriteNested() throws Exception {
+    public void testOverwriteNested() {
         TranslationData data = new TranslationData(true, true);
 
-        Translation before = new TranslationBuilder("en", "before").build();
-        Translation after = new TranslationBuilder("en", "after").build();
+        Translation before = new Translation("en", "before");
+        Translation after = new Translation("en", "after");
 
         data.setTranslation("alpha", before);
         data.setTranslation("nested.alpha", before);
@@ -222,10 +221,10 @@ public class TranslationDataTest {
     }
 
     @Test
-    public void testRecurseTransformNested() throws Exception {
+    public void testRecurseTransformNested() {
         TranslationData data = new TranslationData(true, true);
 
-        Translation value = new TranslationBuilder("en", "test").build();
+        Translation value = new Translation("en", "test");
 
         data.setTranslation("alpha.nested.key", value);
         data.setTranslation("alpha.other", value);
@@ -246,10 +245,10 @@ public class TranslationDataTest {
     }
 
     @Test
-    public void testRecurseTransformNonNested() throws Exception {
+    public void testRecurseTransformNonNested() {
         TranslationData data = new TranslationData(true, false);
 
-        Translation value = new TranslationBuilder("en", "test").build();
+        Translation value = new Translation("en", "test");
 
         data.setTranslation("alpha.nested.key", value);
         data.setTranslation("alpha.other", value);

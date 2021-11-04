@@ -70,20 +70,35 @@ public class TranslationNode {
         return this.children;
     }
 
-    public void addChildren(@NotNull String key, @NotNull TranslationNode node) {
+    public void setChildren(@NotNull String key, @NotNull TranslationNode node) {
         node.setParent(this); // Track parent if adding children's
         this.value.clear();
         this.children.put(key, node);
     }
 
-    public TranslationNode addChildren(@NotNull String key) throws Exception {
-        TranslationNode node = new TranslationNode(this.children.getClass().getDeclaredConstructor().newInstance());
-        this.addChildren(key, node);
-        return node;
+    public @NotNull TranslationNode setChildren(@NotNull String key) {
+        try {
+            TranslationNode node = new TranslationNode(this.children.getClass().getDeclaredConstructor().newInstance());
+            this.setChildren(key, node);
+            return node;
+        } catch(Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Cannot create children of map type " + this.children.getClass().getSimpleName());
+        }
     }
 
-    public void addChildren(@NotNull String key, @NotNull Translation translation) throws Exception {
-        this.addChildren(key).setValue(translation);
+    public void setChildren(@NotNull String key, @NotNull Translation translation) {
+        this.setChildren(key).setValue(translation);
+    }
+
+    public @NotNull TranslationNode getOrCreateChildren(@NotNull String key) {
+        TranslationNode node = this.children.get(key);
+
+        if(node == null) {
+            node = this.setChildren(key);
+        }
+
+        return node;
     }
 
     public void removeChildren(@NotNull String key) {
