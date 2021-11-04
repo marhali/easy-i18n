@@ -12,6 +12,16 @@ public class Translation extends HashMap<String, String> {
         super();
     }
 
+    public Translation(String locale, String content) {
+        this();
+        super.put(locale, content);
+    }
+
+    public Translation add(String locale, String content) {
+        super.put(locale, content);
+        return this;
+    }
+
     @Override
     public String toString() {
         return super.toString();
