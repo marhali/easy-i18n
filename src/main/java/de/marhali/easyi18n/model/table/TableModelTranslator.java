@@ -2,7 +2,7 @@ package de.marhali.easyi18n.model.table;
 
 import de.marhali.easyi18n.model.LocalizedNode;
 import de.marhali.easyi18n.model.LegacyKeyedTranslation;
-import de.marhali.easyi18n.model.TranslationUpdate;
+import de.marhali.easyi18n.model.LegacyTranslationUpdate;
 import de.marhali.easyi18n.model.Translations;
 
 import org.jetbrains.annotations.Nls;
@@ -23,14 +23,14 @@ public class TableModelTranslator implements TableModel {
     private final List<String> locales;
     private final List<String> fullKeys;
 
-    private final Consumer<TranslationUpdate> updater;
+    private final Consumer<LegacyTranslationUpdate> updater;
 
     /**
      * @param translations Translations instance
      * @param searchQuery Search / filter param
      * @param updater Consumer which can be called on cell change / update
      */
-    public TableModelTranslator(Translations translations, String searchQuery, Consumer<TranslationUpdate> updater) {
+    public TableModelTranslator(Translations translations, String searchQuery, Consumer<LegacyTranslationUpdate> updater) {
         this.translations = translations;
         this.locales = translations.getLocales();
         this.updater = updater;
@@ -108,7 +108,7 @@ public class TableModelTranslator implements TableModel {
             }
         }
 
-        TranslationUpdate update = new TranslationUpdate(new LegacyKeyedTranslation(key, messages),
+        LegacyTranslationUpdate update = new LegacyTranslationUpdate(new LegacyKeyedTranslation(key, messages),
                 new LegacyKeyedTranslation(newKey, messages));
 
         updater.accept(update);

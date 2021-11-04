@@ -10,7 +10,7 @@ import de.marhali.easyi18n.io.TranslatorIO;
 import de.marhali.easyi18n.model.DataSynchronizer;
 import de.marhali.easyi18n.model.LegacyKeyedTranslation;
 import de.marhali.easyi18n.model.TranslationDelete;
-import de.marhali.easyi18n.model.TranslationUpdate;
+import de.marhali.easyi18n.model.LegacyTranslationUpdate;
 import de.marhali.easyi18n.util.IOUtil;
 import de.marhali.easyi18n.util.TranslationsUtil;
 
@@ -113,9 +113,9 @@ public class LegacyDataStore {
 
     /**
      * Processes the provided update. Updates translation instance and propagates changes. See {@link DataSynchronizer}
-     * @param update The update to process. For more information see {@link TranslationUpdate}
+     * @param update The update to process. For more information see {@link LegacyTranslationUpdate}
      */
-    public void processUpdate(TranslationUpdate update) {
+    public void processUpdate(LegacyTranslationUpdate update) {
         if(update.isDeletion() || update.isKeyChange()) { // Delete origin i18n key
             String originKey = update.getOrigin().getKey();
             List<String> sections = TranslationsUtil.getSections(originKey);

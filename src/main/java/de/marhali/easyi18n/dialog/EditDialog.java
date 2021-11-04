@@ -9,7 +9,7 @@ import com.intellij.ui.components.JBTextField;
 import de.marhali.easyi18n.service.LegacyDataStore;
 import de.marhali.easyi18n.model.LegacyKeyedTranslation;
 import de.marhali.easyi18n.model.TranslationDelete;
-import de.marhali.easyi18n.model.TranslationUpdate;
+import de.marhali.easyi18n.model.LegacyTranslationUpdate;
 import de.marhali.easyi18n.dialog.descriptor.DeleteActionDescriptor;
 
 import javax.swing.*;
@@ -40,7 +40,7 @@ public class EditDialog {
         int code = prepare().show();
 
         if(code == DialogWrapper.OK_EXIT_CODE) { // Edit
-            LegacyDataStore.getInstance(project).processUpdate(new TranslationUpdate(origin, getChanges()));
+            LegacyDataStore.getInstance(project).processUpdate(new LegacyTranslationUpdate(origin, getChanges()));
 
         } else if(code == DeleteActionDescriptor.EXIT_CODE) { // Delete
             LegacyDataStore.getInstance(project).processUpdate(new TranslationDelete(origin));
