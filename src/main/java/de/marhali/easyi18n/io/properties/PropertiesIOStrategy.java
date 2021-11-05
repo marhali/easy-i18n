@@ -1,8 +1,4 @@
-package de.marhali.easyi18n.io.json;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
+package de.marhali.easyi18n.io.properties;
 
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
@@ -19,17 +15,17 @@ import org.jetbrains.annotations.Nullable;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.StringWriter;
 import java.util.function.Consumer;
 
 /**
- * Strategy for simple json locale files. Each locale has its own file.
- * For example localesPath/en.json, localesPath/de.json.
+ * Strategy for simple 'properties' locale files. Each locale has its own file.
+ * For example localesPath/en.properties, localesPath/de.properties.
  * @author marhali
  */
-public class JsonIOStrategy implements IOStrategy {
+public class PropertiesIOStrategy implements IOStrategy {
 
-    private static final String FILE_EXTENSION = "json";
-    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
+    private static final String FILE_EXTENSION = "properties";
 
     @Override
     public boolean canUse(@NotNull Project project, @NotNull String localesPath, @NotNull SettingsState state) {
@@ -73,10 +69,9 @@ public class JsonIOStrategy implements IOStrategy {
                     String locale = file.getNameWithoutExtension();
                     data.addLocale(locale);
 
-                    JsonObject tree = GSON.fromJson(new InputStreamReader(file.getInputStream(), file.getCharset()),
-                            JsonObject.class);
-
-                    JsonMapper.read(locale, tree, data.getRootNode());
+                    SortableProperties properties = new SortableProperties(state.isSortKeys());
+                    properties.load(new InputStreamReader(file.getInputStream()));
+                    PropertiesMapper.read(locale, properties, data);
                 }
 
                 result.accept(data);
@@ -94,8 +89,8 @@ public class JsonIOStrategy implements IOStrategy {
         ApplicationManager.getApplication().runWriteAction(() -> {
             try {
                 for(String locale : data.getLocales()) {
-                    JsonObject content = new JsonObject();
-                    JsonMapper.write(locale, content, data.getRootNode());
+                    SortableProperties properties = new SortableProperties(state.isSortKeys());
+                    PropertiesMapper.write(locale, properties, data);
 
                     File file = new File(localesPath + "/" + locale + "." + FILE_EXTENSION);
                     boolean exists = file.createNewFile();
@@ -104,7 +99,10 @@ public class JsonIOStrategy implements IOStrategy {
                             ? LocalFileSystem.getInstance().refreshAndFindFileByIoFile(file)
                             : LocalFileSystem.getInstance().findFileByIoFile(file);
 
-                    vf.setBinaryContent(GSON.toJson(content).getBytes(vf.getCharset()));
+                    StringWriter writer = new StringWriter();
+                    properties.store(writer, null);
+
+                    vf.setBinaryContent(writer.toString().getBytes(vf.getCharset()));
                 }
 
                 result.accept(true);

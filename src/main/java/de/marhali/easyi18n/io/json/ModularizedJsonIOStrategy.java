@@ -84,7 +84,7 @@ public class ModularizedJsonIOStrategy implements IOStrategy {
 
                     // Read all underlying module files
                     for(VirtualFile module : localeDir.getChildren()) {
-                        if(module.isDirectory() || isFileRelevant(state, module)) {
+                        if(module.isDirectory() || !isFileRelevant(state, module)) {
                             continue;
                         }
 
