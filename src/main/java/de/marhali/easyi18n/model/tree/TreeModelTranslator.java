@@ -5,9 +5,6 @@ import com.intellij.openapi.project.Project;
 import com.intellij.ui.JBColor;
 
 import de.marhali.easyi18n.service.SettingsService;
-import de.marhali.easyi18n.model.LocalizedNode;
-import de.marhali.easyi18n.model.Translations;
-import de.marhali.easyi18n.util.TranslationsUtil;
 import de.marhali.easyi18n.util.UiUtil;
 
 import org.jetbrains.annotations.NotNull;

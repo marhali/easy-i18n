@@ -5,9 +5,7 @@ import com.intellij.codeInsight.lookup.*;
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.project.*;
 import com.intellij.util.*;
-import de.marhali.easyi18n.model.*;
 import de.marhali.easyi18n.service.*;
-import de.marhali.easyi18n.util.TranslationsUtil;
 import org.jetbrains.annotations.*;
 
 import java.util.*;

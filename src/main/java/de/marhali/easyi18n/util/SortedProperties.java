@@ -6,6 +6,7 @@ import java.util.*;
  * Applies sorting to {@link Properties} files.
  * @author marhali
  */
+@Deprecated
 public class SortedProperties extends Properties {
 
     @Override

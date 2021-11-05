@@ -1,6 +1,6 @@
 package de.marhali.easyi18n;
 
-import de.marhali.easyi18n.model.BusListener;
+import de.marhali.easyi18n.model.bus.BusListener;
 import de.marhali.easyi18n.model.TranslationData;
 
 import org.jetbrains.annotations.NotNull;

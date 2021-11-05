@@ -2,8 +2,6 @@ package de.marhali.easyi18n.io;
 
 import com.intellij.openapi.project.Project;
 
-import de.marhali.easyi18n.model.Translations;
-
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;

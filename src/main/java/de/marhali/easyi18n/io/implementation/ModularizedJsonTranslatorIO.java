@@ -10,10 +10,6 @@ import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 
 import de.marhali.easyi18n.io.TranslatorIO;
-import de.marhali.easyi18n.model.LocalizedNode;
-import de.marhali.easyi18n.model.Translations;
-import de.marhali.easyi18n.util.IOUtil;
-import de.marhali.easyi18n.util.JsonUtil;
 
 import org.jetbrains.annotations.NotNull;
 

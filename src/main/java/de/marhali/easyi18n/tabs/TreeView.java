@@ -8,19 +8,20 @@ import com.intellij.openapi.project.Project;
 import com.intellij.ui.components.JBScrollPane;
 import com.intellij.ui.treeStructure.Tree;
 
-import de.marhali.easyi18n.service.LegacyDataStore;
-import de.marhali.easyi18n.model.LocalizedNode;
-import de.marhali.easyi18n.model.DataSynchronizer;
-import de.marhali.easyi18n.model.Translations;
-import de.marhali.easyi18n.model.LegacyKeyedTranslation;
+import de.marhali.easyi18n.InstanceManager;
+import de.marhali.easyi18n.model.KeyedTranslation;
+import de.marhali.easyi18n.model.Translation;
+import de.marhali.easyi18n.model.TranslationData;
 import de.marhali.easyi18n.model.TranslationDelete;
-import de.marhali.easyi18n.model.tree.TreeModelTranslator;
+import de.marhali.easyi18n.model.bus.BusListener;
 import de.marhali.easyi18n.action.treeview.CollapseTreeViewAction;
 import de.marhali.easyi18n.action.treeview.ExpandTreeViewAction;
 import de.marhali.easyi18n.dialog.EditDialog;
 import de.marhali.easyi18n.listener.DeleteKeyListener;
 import de.marhali.easyi18n.listener.PopupClickListener;
 import de.marhali.easyi18n.renderer.TreeRenderer;
+import de.marhali.easyi18n.service.SettingsService;
+import de.marhali.easyi18n.tabs.mapper.TreeModelMapper;
 import de.marhali.easyi18n.util.TreeUtil;
 
 import org.jetbrains.annotations.NotNull;
@@ -36,7 +37,7 @@ import java.util.ResourceBundle;
  * Show translation state as tree.
  * @author marhali
  */
-public class TreeView implements DataSynchronizer {
+public class TreeView implements BusListener {
 
     private final Project project;
 
@@ -45,6 +46,8 @@ public class TreeView implements DataSynchronizer {
     private JPanel containerPanel;
 
     private Tree tree;
+
+    private TreeModelMapper mapper;
 
     public TreeView(Project project) {
         this.project = project;
@@ -77,19 +80,20 @@ public class TreeView implements DataSynchronizer {
     }
 
     @Override
-    public void synchronize(@NotNull Translations translations,
-                            @Nullable String searchQuery, @Nullable String scrollTo) {
+    public void onUpdateData(@NotNull TranslationData data) {
+        tree.setModel(this.mapper = new TreeModelMapper(data, SettingsService.getInstance(project).getState(), null));
+    }
 
-        TreeModelTranslator model = new TreeModelTranslator(project, translations, searchQuery);
-        tree.setModel(model);
-
-        if(searchQuery != null && !searchQuery.isEmpty()) {
-            expandAll().run();
+    @Override
+    public void onFocusKey(@Nullable String key) {
+        if(key != null && mapper != null) {
+            this.tree.scrollPathToVisible(mapper.findTreePath(key));
         }
+    }
 
-        if(scrollTo != null) {
-            tree.scrollPathToVisible(model.findTreePath(scrollTo));
-        }
+    @Override
+    public void onSearchQuery(@Nullable String query) {
+        // TODO: handle search functionality
     }
 
     private void handlePopup(MouseEvent e) {
@@ -100,10 +104,10 @@ public class TreeView implements DataSynchronizer {
 
             if(node.getUserObject() instanceof PresentationData) {
                 String fullPath = TreeUtil.getFullPath(path);
-                LocalizedNode localizedNode = LegacyDataStore.getInstance(project).getTranslations().getNode(fullPath);
+                Translation translation = InstanceManager.get(project).store().getData().getTranslation(fullPath);
 
-                if(localizedNode != null) {
-                    new EditDialog(project,new LegacyKeyedTranslation(fullPath, localizedNode.getValue())).showAndHandle();
+                if(translation != null) {
+                    new EditDialog(project, new KeyedTranslation(fullPath, translation)).showAndHandle();
                 }
             }
         }
@@ -120,8 +124,9 @@ public class TreeView implements DataSynchronizer {
             for (TreePath path : tree.getSelectionPaths()) {
                 String fullPath = TreeUtil.getFullPath(path);
 
-                LegacyDataStore.getInstance(project).processUpdate(
-                        new TranslationDelete(new LegacyKeyedTranslation(fullPath, null)));
+                InstanceManager.get(project).processUpdate(
+                        new TranslationDelete(new KeyedTranslation(fullPath, null))
+                );
             }
         };
     }

@@ -9,9 +9,9 @@ import com.intellij.ui.components.JBCheckBox;
 import com.intellij.ui.components.JBLabel;
 import com.intellij.ui.components.JBTextField;
 
+import de.marhali.easyi18n.InstanceManager;
 import de.marhali.easyi18n.model.SettingsState;
 import de.marhali.easyi18n.service.SettingsService;
-import de.marhali.easyi18n.service.LegacyDataStore;
 
 import javax.swing.*;
 import java.awt.*;
@@ -50,7 +50,7 @@ public class SettingsDialog {
             state.setCodeAssistance(codeAssistanceCheckbox.isSelected());
 
             // Reload instance
-            LegacyDataStore.getInstance(project).reloadFromDisk();
+            InstanceManager.get(project).store().loadFromPersistenceLayer((success) -> {});
         }
     }
 

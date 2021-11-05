@@ -7,8 +7,7 @@ import com.intellij.openapi.wm.ToolWindowFactory;
 import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
 
-import de.marhali.easyi18n.service.LegacyDataStore;
-import de.marhali.easyi18n.service.WindowManager;
+import de.marhali.easyi18n.InstanceManager;
 import de.marhali.easyi18n.action.*;
 import de.marhali.easyi18n.tabs.TableView;
 import de.marhali.easyi18n.tabs.TreeView;
@@ -48,16 +47,16 @@ public class TranslatorToolWindowFactory implements ToolWindowFactory {
         actions.add(new AddAction());
         actions.add(new ReloadAction());
         actions.add(new SettingsAction());
-        actions.add(new SearchAction((searchString) -> LegacyDataStore.getInstance(project).searchBeyKey(searchString)));
+        actions.add(new SearchAction((query) -> InstanceManager.get(project).bus().propagate().onSearchQuery(query)));
         toolWindow.setTitleActions(actions);
 
         // Initialize Window Manager
         WindowManager.getInstance().initialize(toolWindow, treeView, tableView);
 
         // Synchronize ui with underlying data
-        LegacyDataStore store = LegacyDataStore.getInstance(project);
-        store.addSynchronizer(treeView);
-        store.addSynchronizer(tableView);
-        store.synchronize(null, null);
+        InstanceManager manager = InstanceManager.get(project);
+        manager.bus().addListener(treeView);
+        manager.bus().addListener(tableView);
+        manager.bus().propagate().onUpdateData(manager.store().getData());
     }
 }

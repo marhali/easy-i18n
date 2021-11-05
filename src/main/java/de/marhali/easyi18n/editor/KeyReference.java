@@ -6,9 +6,6 @@ import com.intellij.psi.impl.FakePsiElement;
 
 import de.marhali.easyi18n.dialog.AddDialog;
 import de.marhali.easyi18n.dialog.EditDialog;
-import de.marhali.easyi18n.model.LegacyKeyedTranslation;
-import de.marhali.easyi18n.model.LocalizedNode;
-import de.marhali.easyi18n.service.LegacyDataStore;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

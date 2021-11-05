@@ -4,8 +4,6 @@ import com.intellij.lang.annotation.AnnotationHolder;
 import com.intellij.lang.annotation.HighlightSeverity;
 import com.intellij.openapi.project.Project;
 
-import de.marhali.easyi18n.model.LocalizedNode;
-import de.marhali.easyi18n.service.LegacyDataStore;
 import de.marhali.easyi18n.service.SettingsService;
 
 import org.jetbrains.annotations.NotNull;

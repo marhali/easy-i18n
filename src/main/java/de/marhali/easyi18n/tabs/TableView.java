@@ -4,17 +4,14 @@ import com.intellij.openapi.project.Project;
 import com.intellij.ui.components.JBScrollPane;
 import com.intellij.ui.table.JBTable;
 
-import de.marhali.easyi18n.service.LegacyDataStore;
-import de.marhali.easyi18n.model.LocalizedNode;
-import de.marhali.easyi18n.model.DataSynchronizer;
-import de.marhali.easyi18n.model.Translations;
-import de.marhali.easyi18n.model.LegacyKeyedTranslation;
-import de.marhali.easyi18n.model.TranslationDelete;
-import de.marhali.easyi18n.model.table.TableModelTranslator;
+import de.marhali.easyi18n.InstanceManager;
+import de.marhali.easyi18n.model.*;
 import de.marhali.easyi18n.dialog.EditDialog;
 import de.marhali.easyi18n.listener.DeleteKeyListener;
 import de.marhali.easyi18n.listener.PopupClickListener;
+import de.marhali.easyi18n.model.bus.BusListener;
 import de.marhali.easyi18n.renderer.TableRenderer;
+import de.marhali.easyi18n.tabs.mapper.TableModelMapper;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -28,7 +25,7 @@ import java.util.ResourceBundle;
  * Shows translation state as table.
  * @author marhali
  */
-public class TableView implements DataSynchronizer {
+public class TableView implements BusListener {
 
     private final Project project;
 
@@ -54,10 +51,10 @@ public class TableView implements DataSynchronizer {
 
         if(row >= 0) {
             String fullPath = String.valueOf(table.getValueAt(row, 0));
-            LocalizedNode node = LegacyDataStore.getInstance(project).getTranslations().getNode(fullPath);
+            Translation translation = InstanceManager.get(project).store().getData().getTranslation(fullPath);
 
-            if(node != null) {
-                new EditDialog(project, new LegacyKeyedTranslation(fullPath, node.getValue())).showAndHandle();
+            if(translation != null) {
+                new EditDialog(project, new KeyedTranslation(fullPath, translation)).showAndHandle();
             }
         }
     }
@@ -67,33 +64,38 @@ public class TableView implements DataSynchronizer {
             for (int selectedRow : table.getSelectedRows()) {
                 String fullPath = String.valueOf(table.getValueAt(selectedRow, 0));
 
-                LegacyDataStore.getInstance(project).processUpdate(
-                        new TranslationDelete(new LegacyKeyedTranslation(fullPath, null)));
+                InstanceManager.get(project).processUpdate(
+                        new TranslationDelete(new KeyedTranslation(fullPath, null))
+                );
             }
         };
     }
 
     @Override
-    public void synchronize(@NotNull Translations translations,
-                            @Nullable String searchQuery, @Nullable String scrollTo) {
+    public void onUpdateData(@NotNull TranslationData data) {
+        table.setModel(new TableModelMapper(data, update ->
+                InstanceManager.get(project).processUpdate(update)));
+    }
 
-        table.setModel(new TableModelTranslator(translations, searchQuery, update ->
-                LegacyDataStore.getInstance(project).processUpdate(update)));
+    @Override
+    public void onFocusKey(@Nullable String key) {
+        int row = -1;
 
-        if(scrollTo != null) {
-            int row = -1;
-
-            for (int i = 0; i < table.getRowCount(); i++) {
-                if (String.valueOf(table.getValueAt(i, 0)).equals(scrollTo)) {
-                    row = i;
-                }
-            }
-
-            if (row > -1) { // Matched @scrollTo
-                table.scrollRectToVisible(
-                        new Rectangle(0, (row * table.getRowHeight()) + table.getHeight(), 0, 0));
+        for (int i = 0; i < table.getRowCount(); i++) {
+            if (String.valueOf(table.getValueAt(i, 0)).equals(key)) {
+                row = i;
             }
         }
+
+        if (row > -1) { // Matched @scrollTo
+            table.scrollRectToVisible(
+                    new Rectangle(0, (row * table.getRowHeight()) + table.getHeight(), 0, 0));
+        }
+    }
+
+    @Override
+    public void onSearchQuery(@Nullable String query) {
+        // TODO: handle search functionality
     }
 
     public JPanel getRootPanel() {

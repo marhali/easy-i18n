@@ -5,7 +5,6 @@ import com.intellij.psi.*;
 import com.intellij.util.ProcessingContext;
 
 import de.marhali.easyi18n.editor.KeyReference;
-import de.marhali.easyi18n.service.LegacyDataStore;
 import de.marhali.easyi18n.service.SettingsService;
 
 import org.jetbrains.annotations.NotNull;

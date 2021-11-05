@@ -1,7 +1,6 @@
 package de.marhali.easyi18n.util;
 
 import com.intellij.ide.projectView.PresentationData;
-import de.marhali.easyi18n.model.LocalizedNode;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
@@ -20,14 +19,13 @@ public class TreeUtil {
     public static String getFullPath(TreePath path) {
         StringBuilder builder = new StringBuilder();
 
-
         for (Object obj : path.getPath()) {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) obj;
             Object value = node.getUserObject();
             String section = value instanceof PresentationData ?
                     ((PresentationData) value).getPresentableText() : String.valueOf(value);
 
-            if(section == null || section.equals(LocalizedNode.ROOT_KEY)) { // Skip root node
+            if(section == null) { // Skip empty sections
                 continue;
             }
 

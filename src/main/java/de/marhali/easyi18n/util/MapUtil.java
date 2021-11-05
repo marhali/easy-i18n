@@ -1,7 +1,5 @@
 package de.marhali.easyi18n.util;
 
-import de.marhali.easyi18n.model.LocalizedNode;
-
 import java.util.List;
 import java.util.TreeMap;
 
@@ -9,6 +7,7 @@ import java.util.TreeMap;
  * Map utilities.
  * @author marhali
  */
+@Deprecated
 public class MapUtil {
 
     /**

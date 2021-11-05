@@ -6,12 +6,8 @@ import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 
 import de.marhali.easyi18n.io.TranslatorIO;
-import de.marhali.easyi18n.model.LocalizedNode;
-import de.marhali.easyi18n.model.Translations;
-import de.marhali.easyi18n.util.IOUtil;
 import de.marhali.easyi18n.util.SortedProperties;
 import de.marhali.easyi18n.util.StringUtil;
-import de.marhali.easyi18n.util.TranslationsUtil;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.jetbrains.annotations.NotNull;

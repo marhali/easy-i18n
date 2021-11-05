@@ -1,10 +1,5 @@
 package de.marhali.easyi18n.model.table;
 
-import de.marhali.easyi18n.model.LocalizedNode;
-import de.marhali.easyi18n.model.LegacyKeyedTranslation;
-import de.marhali.easyi18n.model.LegacyTranslationUpdate;
-import de.marhali.easyi18n.model.Translations;
-
 import org.jetbrains.annotations.Nls;
 
 import javax.swing.event.TableModelListener;
