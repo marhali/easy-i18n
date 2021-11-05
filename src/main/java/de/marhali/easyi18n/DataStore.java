@@ -4,6 +4,7 @@ import com.intellij.openapi.project.Project;
 
 import de.marhali.easyi18n.io.IOStrategy;
 import de.marhali.easyi18n.io.json.JsonIOStrategy;
+import de.marhali.easyi18n.io.json.ModularizedJsonIOStrategy;
 import de.marhali.easyi18n.model.SettingsState;
 import de.marhali.easyi18n.model.TranslationData;
 import de.marhali.easyi18n.service.SettingsService;
@@ -23,7 +24,7 @@ import java.util.function.Consumer;
 public class DataStore {
 
     private static final Set<IOStrategy> STRATEGIES = new LinkedHashSet<>(Arrays.asList(
-       new JsonIOStrategy()
+       new JsonIOStrategy(), new ModularizedJsonIOStrategy()
     ));
 
     private final Project project;
