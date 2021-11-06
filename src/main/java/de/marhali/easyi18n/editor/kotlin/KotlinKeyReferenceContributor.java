@@ -5,6 +5,7 @@ import com.intellij.psi.*;
 
 import com.intellij.util.ProcessingContext;
 
+import de.marhali.easyi18n.InstanceManager;
 import de.marhali.easyi18n.editor.KeyReference;
 import de.marhali.easyi18n.service.SettingsService;
 
@@ -44,7 +45,7 @@ public class KotlinKeyReferenceContributor extends PsiReferenceContributor {
                     return PsiReference.EMPTY_ARRAY;
                 }
 
-                if(LegacyDataStore.getInstance(element.getProject()).getTranslations().getNode(value) == null) {
+                if(InstanceManager.get(element.getProject()).store().getData().getNode(value) == null) {
                     return PsiReference.EMPTY_ARRAY;
                 }
 

@@ -4,9 +4,12 @@ import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
 import com.intellij.psi.impl.FakePsiElement;
 
+import de.marhali.easyi18n.InstanceManager;
 import de.marhali.easyi18n.dialog.AddDialog;
 import de.marhali.easyi18n.dialog.EditDialog;
 
+import de.marhali.easyi18n.model.KeyedTranslation;
+import de.marhali.easyi18n.model.Translation;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -49,10 +52,10 @@ public class KeyReference extends PsiReferenceBase<PsiElement> {
 
         @Override
         public void navigate(boolean requestFocus) {
-            LocalizedNode node = LegacyDataStore.getInstance(getProject()).getTranslations().getNode(getKey());
+            Translation translation = InstanceManager.get(getProject()).store().getData().getTranslation(getKey());
 
-            if(node != null) {
-                new EditDialog(getProject(), new LegacyKeyedTranslation(getKey(), node.getValue())).showAndHandle();
+            if(translation != null) {
+                new EditDialog(getProject(), new KeyedTranslation(getKey(), translation)).showAndHandle();
             } else {
                 new AddDialog(getProject(), getKey()).showAndHandle();
             }

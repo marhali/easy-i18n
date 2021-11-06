@@ -4,6 +4,8 @@ import com.intellij.lang.annotation.AnnotationHolder;
 import com.intellij.lang.annotation.HighlightSeverity;
 import com.intellij.openapi.project.Project;
 
+import de.marhali.easyi18n.InstanceManager;
+import de.marhali.easyi18n.model.TranslationNode;
 import de.marhali.easyi18n.service.SettingsService;
 
 import org.jetbrains.annotations.NotNull;
@@ -37,7 +39,7 @@ public class KeyAnnotator {
             searchKey = searchKey.substring(1);
         }
 
-        LocalizedNode node = LegacyDataStore.getInstance(project).getTranslations().getNode(searchKey);
+        TranslationNode node = InstanceManager.get(project).store().getData().getNode(searchKey);
 
         if(node == null) { // Unknown translation. Just ignore it
             return;
