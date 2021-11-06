@@ -7,6 +7,7 @@ import de.marhali.easyi18n.util.StringUtil;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.math.NumberUtils;
 
+import thito.nodeflow.config.ListSection;
 import thito.nodeflow.config.MapSection;
 import thito.nodeflow.config.Section;
 
@@ -20,22 +21,23 @@ public class YamlMapper {
 
     public static void read(String locale, Section section, TranslationNode node) {
         for(String key : section.getKeys()) {
+            Object value = section.getInScope(key).get();
+
             TranslationNode childNode = node.getOrCreateChildren(key);
 
-            if(section.getMap(key).isPresent()) {
+            if(value instanceof MapSection) {
                 // Nested element - run recursively
-                read(locale, section.getMap(key).get(), childNode);
+                System.out.println("run recurse");
+                read(locale, (MapSection) value, childNode);
             } else {
                 Translation translation = childNode.getValue();
 
-                if(section.getList(key).isPresent() || section.getString(key).isPresent()) {
-                    String content = section.isList(key) && section.getList(key).isPresent()
-                            ? YamlArrayMapper.read(section.getList(key).get())
-                            : StringUtil.escapeControls(section.getString(key).get(), true);
+                String content = value instanceof ListSection
+                        ? YamlArrayMapper.read((ListSection) value)
+                        : StringUtil.escapeControls(String.valueOf(value), true);
 
-                    translation.put(locale, content);
-                    childNode.setValue(translation);
-                }
+                translation.put(locale, content);
+                childNode.setValue(translation);
             }
         }
     }
@@ -50,7 +52,7 @@ public class YamlMapper {
                 MapSection childSection = new MapSection();
                 write(locale, childSection, childNode);
                 if(childSection.size() > 0) {
-                    section.set(key, childSection);
+                    section.setInScope(key, childSection);
                 }
             } else {
                 Translation translation = childNode.getValue();
@@ -58,11 +60,11 @@ public class YamlMapper {
 
                 if(content != null) {
                     if(YamlArrayMapper.isArray(content)) {
-                        section.set(key, YamlArrayMapper.write(content));
+                        section.setInScope(key, YamlArrayMapper.write(content));
                     } else if(NumberUtils.isNumber(content)) {
-                        section.set(key, NumberUtils.createNumber(content));
+                        section.setInScope(key, NumberUtils.createNumber(content));
                     } else {
-                        section.set(key, StringEscapeUtils.unescapeJava(content));
+                        section.setInScope(key, StringEscapeUtils.unescapeJava(content));
                     }
                 }
             }
