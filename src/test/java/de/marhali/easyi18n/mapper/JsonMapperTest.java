@@ -68,6 +68,12 @@ public class JsonMapperTest extends AbstractMapperTest {
         Assert.assertEquals(arraySimple, JsonArrayMapper.read(output.get("simple").getAsJsonArray()));
         Assert.assertTrue(output.get("escaped").isJsonArray());
         Assert.assertEquals(arrayEscaped, StringEscapeUtils.unescapeJava(JsonArrayMapper.read(output.get("escaped").getAsJsonArray())));
+
+        TranslationData input = new TranslationData(true, true);
+        JsonMapper.read("en", output, input.getRootNode());
+
+        Assert.assertTrue(JsonArrayMapper.isArray(input.getTranslation("simple").get("en")));
+        Assert.assertTrue(JsonArrayMapper.isArray(input.getTranslation("escaped").get("en")));
     }
 
     @Override
