@@ -19,8 +19,13 @@ public class SortableProperties extends Properties {
     }
 
     @Override
+    public Object get(Object key) {
+        return this.properties.get(key);
+    }
+
+    @Override
     public Set<Object> keySet() {
-        return Collections.unmodifiableSet(new TreeSet<>(super.keySet()));
+        return Collections.unmodifiableSet(this.properties.keySet());
     }
 
     @Override
@@ -31,5 +36,10 @@ public class SortableProperties extends Properties {
     @Override
     public synchronized Object put(Object key, Object value) {
         return this.properties.put(key, value);
+    }
+
+    @Override
+    public String toString() {
+        return this.properties.toString();
     }
 }

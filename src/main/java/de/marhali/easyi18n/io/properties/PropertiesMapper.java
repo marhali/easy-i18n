@@ -20,15 +20,18 @@ public class PropertiesMapper {
             String key = String.valueOf(entry.getKey());
             Object value = entry.getValue();
 
-            TranslationNode childNode = data.getRootNode().getOrCreateChildren(key);
-            Translation translation = childNode.getValue();
+            Translation translation = data.getTranslation(key);
+
+            if(translation == null) {
+                translation = new Translation();
+            }
 
             String content = value instanceof String[]
                     ? PropertiesArrayMapper.read((String[]) value)
                     : StringUtil.escapeControls(String.valueOf(value), true);
 
             translation.put(locale, content);
-            childNode.setValue(translation);
+            data.setTranslation(key, translation);
         }
     }
 

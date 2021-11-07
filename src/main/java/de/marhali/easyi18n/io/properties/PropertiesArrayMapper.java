@@ -18,6 +18,6 @@ public class PropertiesArrayMapper extends ArrayMapper {
     public static String[] write(String concat) {
         List<String> list = new ArrayList<>();
         write(concat, list::add);
-        return (String[]) list.toArray();
+        return list.toArray(new String[0]);
     }
 }
