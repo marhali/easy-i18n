@@ -12,6 +12,7 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -19,7 +20,7 @@ import java.util.function.Consumer;
  * Mapping {@link TranslationData} to {@link TableModel}.
  * @author marhali
  */
-public class TableModelMapper implements TableModel {
+public class TableModelMapper implements TableModel, SearchQueryListener {
 
     private final @NotNull TranslationData data;
     private final @NotNull List<String> locales;
@@ -27,12 +28,17 @@ public class TableModelMapper implements TableModel {
 
     private final @NotNull Consumer<TranslationUpdate> updater;
 
-    public TableModelMapper(@NotNull TranslationData data, Consumer<TranslationUpdate> updater) {
+    public TableModelMapper(@NotNull TranslationData data, @NotNull Consumer<TranslationUpdate> updater) {
         this.data = data;
         this.locales = new ArrayList<>(data.getLocales());
         this.fullKeys = new ArrayList<>(data.getFullKeys());
 
         this.updater = updater;
+    }
+
+    @Override
+    public void onSearchQuery(@Nullable String query) {
+        this.fullKeys = new ArrayList<>();
     }
 
     @Override

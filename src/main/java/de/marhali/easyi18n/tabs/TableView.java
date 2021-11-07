@@ -29,6 +29,8 @@ public class TableView implements BusListener {
 
     private final Project project;
 
+    private TableModelMapper currentMapper;
+
     private JPanel rootPanel;
     private JPanel containerPanel;
 
@@ -73,7 +75,7 @@ public class TableView implements BusListener {
 
     @Override
     public void onUpdateData(@NotNull TranslationData data) {
-        table.setModel(new TableModelMapper(data, update ->
+        table.setModel(this.currentMapper = new TableModelMapper(data, update ->
                 InstanceManager.get(project).processUpdate(update)));
     }
 
@@ -87,7 +89,7 @@ public class TableView implements BusListener {
             }
         }
 
-        if (row > -1) { // Matched @scrollTo
+        if (row > -1) { // Matched @key
             table.scrollRectToVisible(
                     new Rectangle(0, (row * table.getRowHeight()) + table.getHeight(), 0, 0));
         }
@@ -96,6 +98,9 @@ public class TableView implements BusListener {
     @Override
     public void onSearchQuery(@Nullable String query) {
         // TODO: handle search functionality
+        if(this.currentMapper != null) {
+            this.currentMapper.onSearchQuery(query);
+        }
     }
 
     public JPanel getRootPanel() {
