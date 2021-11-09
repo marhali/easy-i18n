@@ -25,12 +25,12 @@ public class TreeUtil {
             String section = value instanceof PresentationData ?
                     ((PresentationData) value).getPresentableText() : String.valueOf(value);
 
-            if(section == null) { // Skip empty sections
+            if(value == null) { // Skip empty sections
                 continue;
             }
 
             if(builder.length() != 0) {
-                builder.append(".");
+                builder.append(PathUtil.DELIMITER);
             }
 
             builder.append(section);

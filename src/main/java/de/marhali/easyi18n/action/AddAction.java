@@ -6,6 +6,7 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 
 import de.marhali.easyi18n.service.WindowManager;
 import de.marhali.easyi18n.dialog.AddDialog;
+import de.marhali.easyi18n.util.PathUtil;
 import de.marhali.easyi18n.util.TreeUtil;
 
 import org.jetbrains.annotations.NotNull;
@@ -42,7 +43,7 @@ public class AddAction extends AnAction {
             TreePath path = manager.getTreeView().getTree().getSelectionPath();
 
             if(path != null) {
-                return TreeUtil.getFullPath(path) + ".";
+                return TreeUtil.getFullPath(path) + PathUtil.DELIMITER;
             }
 
         } else { // Table View
