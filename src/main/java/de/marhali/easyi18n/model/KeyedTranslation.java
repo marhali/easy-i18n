@@ -1,6 +1,7 @@
 package de.marhali.easyi18n.model;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * I18n translation with associated key path (full-key).
@@ -9,9 +10,9 @@ import org.jetbrains.annotations.NotNull;
 public class KeyedTranslation {
 
     private @NotNull String key;
-    private @NotNull Translation translation;
+    private @Nullable Translation translation;
 
-    public KeyedTranslation(@NotNull String key, @NotNull Translation translation) {
+    public KeyedTranslation(@NotNull String key, @Nullable Translation translation) {
         this.key = key;
         this.translation = translation;
     }
@@ -24,7 +25,7 @@ public class KeyedTranslation {
         this.key = key;
     }
 
-    public @NotNull Translation getTranslation() {
+    public @Nullable Translation getTranslation() {
         return translation;
     }
 
