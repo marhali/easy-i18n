@@ -87,7 +87,12 @@ public class TreeView implements BusListener {
     @Override
     public void onFocusKey(@Nullable String key) {
         if(key != null && currentMapper != null) {
-            this.tree.scrollPathToVisible(currentMapper.findTreePath(key));
+            TreePath path = currentMapper.findTreePath(key);
+            this.tree.scrollPathToVisible(path);
+
+            if(this.tree.isCollapsed(path)) {
+                this.tree.expandPath(path);
+            }
         }
     }
 

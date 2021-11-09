@@ -65,8 +65,10 @@ public class InstanceManager {
             if(success) {
                 this.bus.propagate().onUpdateData(this.store.getData());
 
-                if(!update.isDeletion()) { // TODO: maybe focus parent if key was deleted
+                if(!update.isDeletion()) {
                     this.bus.propagate().onFocusKey(update.getChange().getKey());
+                } else {
+                    this.bus.propagate().onFocusKey(update.getOrigin().getKey());
                 }
             }
         });

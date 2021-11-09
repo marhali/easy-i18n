@@ -14,6 +14,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.tree.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -111,19 +112,22 @@ public class TreeModelMapper extends DefaultTreeModel implements SearchQueryList
 
     public @NotNull TreePath findTreePath(@NotNull String fullPath) {
         List<String> sections = new PathUtil(this.state.isNestedKeys()).split(fullPath);
-        Object[] nodes = new Object[sections.size() + 1];
+        List<Object> nodes = new ArrayList<>();
 
-        int pos = 0;
         TreeNode currentNode = (TreeNode) this.getRoot();
-        nodes[pos] = currentNode;
+        nodes.add(currentNode);
 
         for(String section : sections) {
-            pos++;
             currentNode = this.findNode(currentNode, section);
-            nodes[pos] = currentNode;
+
+            if(currentNode == null) {
+                break;
+            }
+
+            nodes.add(currentNode);
         }
 
-        return new TreePath(nodes);
+        return new TreePath(nodes.toArray());
     }
 
     public @Nullable DefaultMutableTreeNode findNode(@NotNull TreeNode parent, @NotNull String key) {
@@ -144,6 +148,6 @@ public class TreeModelMapper extends DefaultTreeModel implements SearchQueryList
             }
         }
 
-        throw new NullPointerException("Cannot find node by key: " + key);
+        return null;
     }
 }
