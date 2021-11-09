@@ -1,10 +1,8 @@
 package de.marhali.easyi18n.tabs.mapper;
 
 import de.marhali.easyi18n.model.*;
-
-import de.marhali.easyi18n.model.bus.BusListener;
 import de.marhali.easyi18n.model.bus.SearchQueryListener;
-import de.marhali.easyi18n.model.bus.UpdateDataListener;
+
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -12,7 +10,6 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -24,7 +21,7 @@ public class TableModelMapper implements TableModel, SearchQueryListener {
 
     private final @NotNull TranslationData data;
     private final @NotNull List<String> locales;
-    private final @NotNull List<String> fullKeys;
+    private @NotNull List<String> fullKeys;
 
     private final @NotNull Consumer<TranslationUpdate> updater;
 
@@ -38,7 +35,27 @@ public class TableModelMapper implements TableModel, SearchQueryListener {
 
     @Override
     public void onSearchQuery(@Nullable String query) {
-        this.fullKeys = new ArrayList<>();
+        if(query == null) { // Reset
+            this.fullKeys = new ArrayList<>(this.data.getFullKeys());
+            return;
+        }
+
+        query = query.toLowerCase();
+        List<String> matches = new ArrayList<>();
+
+        for(String key : this.data.getFullKeys()) {
+            if(key.toLowerCase().contains(query)) {
+                matches.add(key);
+            } else {
+                for(String content : this.data.getTranslation(key).values()) {
+                    if(content.toLowerCase().contains(query)) {
+                        matches.add(key);
+                    }
+                }
+            }
+        }
+
+        this.fullKeys = matches;
     }
 
     @Override

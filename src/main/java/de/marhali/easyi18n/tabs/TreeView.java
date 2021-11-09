@@ -41,13 +41,13 @@ public class TreeView implements BusListener {
 
     private final Project project;
 
+    private TreeModelMapper currentMapper;
+
     private JPanel rootPanel;
     private JPanel toolBarPanel;
     private JPanel containerPanel;
 
     private Tree tree;
-
-    private TreeModelMapper mapper;
 
     public TreeView(Project project) {
         this.project = project;
@@ -81,19 +81,23 @@ public class TreeView implements BusListener {
 
     @Override
     public void onUpdateData(@NotNull TranslationData data) {
-        tree.setModel(this.mapper = new TreeModelMapper(data, SettingsService.getInstance(project).getState(), null));
+        tree.setModel(this.currentMapper = new TreeModelMapper(data, SettingsService.getInstance(project).getState()));
     }
 
     @Override
     public void onFocusKey(@Nullable String key) {
-        if(key != null && mapper != null) {
-            this.tree.scrollPathToVisible(mapper.findTreePath(key));
+        if(key != null && currentMapper != null) {
+            this.tree.scrollPathToVisible(currentMapper.findTreePath(key));
         }
     }
 
     @Override
     public void onSearchQuery(@Nullable String query) {
-        // TODO: handle search functionality
+        if(this.currentMapper != null) {
+            this.currentMapper.onSearchQuery(query);
+            this.expandAll().run();
+            this.tree.updateUI();
+        }
     }
 
     private void handlePopup(MouseEvent e) {

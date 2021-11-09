@@ -97,9 +97,9 @@ public class TableView implements BusListener {
 
     @Override
     public void onSearchQuery(@Nullable String query) {
-        // TODO: handle search functionality
         if(this.currentMapper != null) {
             this.currentMapper.onSearchQuery(query);
+            this.table.updateUI();
         }
     }
 
