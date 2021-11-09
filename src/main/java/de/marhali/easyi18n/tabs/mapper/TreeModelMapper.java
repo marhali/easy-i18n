@@ -4,6 +4,7 @@ import com.intellij.ide.projectView.PresentationData;
 import com.intellij.ui.JBColor;
 
 import de.marhali.easyi18n.model.SettingsState;
+import de.marhali.easyi18n.model.Translation;
 import de.marhali.easyi18n.model.TranslationData;
 import de.marhali.easyi18n.model.TranslationNode;
 import de.marhali.easyi18n.model.bus.SearchQueryListener;
@@ -34,34 +35,53 @@ public class TreeModelMapper extends DefaultTreeModel implements SearchQueryList
         this.state = state;
 
         DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode();
-        this.generateNodes(rootNode, this.data.getRootNode(), null);
+        this.generateNodes(rootNode, this.data.getRootNode());
         super.setRoot(rootNode);
     }
 
     @Override
     public void onSearchQuery(@Nullable String query) {
         DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode();
-        this.generateNodes(rootNode, this.data.getRootNode(), query);
+        TranslationData shadow = new TranslationData(this.state.isSortKeys(), this.state.isNestedKeys());
+
+        if(query == null) {
+            this.generateNodes(rootNode, this.data.getRootNode());
+            super.setRoot(rootNode);
+            return;
+        }
+
+        query = query.toLowerCase();
+
+        for(String currentKey : this.data.getFullKeys()) {
+            Translation translation = this.data.getTranslation(currentKey);
+            String loweredKey = currentKey.toLowerCase();
+
+            if(query.contains(loweredKey) || loweredKey.contains(query)) {
+                shadow.setTranslation(currentKey, translation);
+                continue;
+            }
+
+            for(String currentContent : translation.values()) {
+                if(currentContent.toLowerCase().contains(query)) {
+                    shadow.setTranslation(currentKey, translation);
+                    break;
+                }
+            }
+        }
+
+        this.generateNodes(rootNode, shadow.getRootNode());
         super.setRoot(rootNode);
     }
 
-    private void generateNodes(@NotNull DefaultMutableTreeNode parent,
-                               @NotNull TranslationNode translationNode, @Nullable String searchQuery) {
+    private void generateNodes(@NotNull DefaultMutableTreeNode parent, @NotNull TranslationNode translationNode) {
         for(Map.Entry<String, TranslationNode> entry : translationNode.getChildren().entrySet()) {
             String key = entry.getKey();
             TranslationNode childTranslationNode = entry.getValue();
 
-            if(searchQuery != null) {
-                searchQuery = searchQuery.toLowerCase();
-                if(!this.isApplicable(key, childTranslationNode, searchQuery)) {
-                    continue;
-                }
-            }
-
             if(!childTranslationNode.isLeaf()) {
                 // Nested node - run recursively
                 DefaultMutableTreeNode childNode = new DefaultMutableTreeNode(key);
-                this.generateNodes(childNode, childTranslationNode, searchQuery);
+                this.generateNodes(childNode, childTranslationNode);
                 parent.add(childNode);
             } else {
                 String previewLocale = this.state.getPreviewLocale();
@@ -78,36 +98,6 @@ public class TreeModelMapper extends DefaultTreeModel implements SearchQueryList
                 parent.add(new DefaultMutableTreeNode(data));
             }
         }
-    }
-
-    /**
-     * Checks if the provided tree (@node) is applicable for the search string.
-     * A full-text-search is applied and section keys and every value will be evaluated.
-     * @param key Section key
-     * @param node Node which has @key as key
-     * @param searchQuery Search query to search for
-     * @return True if this node or ANY child is relevant for the search context
-     */
-    private boolean isApplicable(@NotNull String key, @NotNull TranslationNode node, @NotNull String searchQuery) {
-        if(key.toLowerCase().contains(searchQuery)) {
-            return true;
-        }
-
-        if(!node.isLeaf()) {
-            for(Map.Entry<String, TranslationNode> entry : node.getChildren().entrySet()) {
-                if(this.isApplicable(entry.getKey(), entry.getValue(), searchQuery)) {
-                    return true;
-                }
-            }
-        } else {
-            for(String content : node.getValue().values()) {
-                if(content.toLowerCase().contains(searchQuery)) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
     }
 
     public @NotNull TreePath findTreePath(@NotNull String fullPath) {
