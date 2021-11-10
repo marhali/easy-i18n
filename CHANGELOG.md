@@ -3,6 +3,17 @@
 # easy-i18n Changelog
 
 ## [Unreleased]
+### Added
+- The search function now supports full-text-search
+- Automatically reload translation data on file system change
+- Sorting of translation keys can now be disabled via configuration
+- Key section nesting can be disabled via configuration
+- Numbers will be stored as number type whenever possible
+
+### Changed
+- Better focus keys in tree-view after edit
+- Optimized internal data structure (io, cache, events)
+
 ## [1.5.1]
 ### Fixed
 - Exception on key annotation if path-prefix is undefined
