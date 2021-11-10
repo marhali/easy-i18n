@@ -76,7 +76,7 @@ public class YamlIOStrategy implements IOStrategy {
                     String locale = file.getNameWithoutExtension();
                     data.addLocale(locale);
 
-                    try(Reader reader = new InputStreamReader(file.getInputStream())) {
+                    try(Reader reader = new InputStreamReader(file.getInputStream(), file.getCharset())) {
                         Section section = Section.parseToMap(reader);
                         YamlMapper.read(locale, section, data.getRootNode());
                     }

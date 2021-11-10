@@ -70,7 +70,7 @@ public class PropertiesIOStrategy implements IOStrategy {
                     data.addLocale(locale);
 
                     SortableProperties properties = new SortableProperties(state.isSortKeys());
-                    properties.load(new InputStreamReader(file.getInputStream()));
+                    properties.load(new InputStreamReader(file.getInputStream(), file.getCharset()));
                     PropertiesMapper.read(locale, properties, data);
                 }
 
