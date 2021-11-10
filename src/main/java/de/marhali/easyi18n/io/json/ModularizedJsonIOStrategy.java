@@ -88,16 +88,18 @@ public class ModularizedJsonIOStrategy implements IOStrategy {
                             continue;
                         }
 
-                        TranslationNode moduleNode = new TranslationNode(state.isSortKeys()
-                                ? new TreeMap<>()
-                                : new LinkedHashMap<>());
+                        String moduleName = module.getNameWithoutExtension();
+
+                        TranslationNode moduleNode = data.getNode(moduleName) != null
+                                ? data.getNode(moduleName)
+                                : new TranslationNode(state.isSortKeys() ? new TreeMap<>() : new LinkedHashMap<>());
 
                         JsonObject tree = GSON.fromJson(new InputStreamReader(module.getInputStream(),
                                 module.getCharset()), JsonObject.class);
 
                         JsonMapper.read(locale, tree, moduleNode);
 
-                        data.getRootNode().setChildren(module.getNameWithoutExtension(), moduleNode);
+                        data.getRootNode().setChildren(moduleName, moduleNode);
                     }
                 }
 
