@@ -27,7 +27,6 @@ public class YamlMapper {
 
             if(value instanceof MapSection) {
                 // Nested element - run recursively
-                System.out.println("run recurse");
                 read(locale, (MapSection) value, childNode);
             } else {
                 Translation translation = childNode.getValue();
