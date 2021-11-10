@@ -50,7 +50,10 @@ public class SettingsDialog {
             state.setCodeAssistance(codeAssistanceCheckbox.isSelected());
 
             // Reload instance
-            InstanceManager.get(project).store().loadFromPersistenceLayer((success) -> {});
+            InstanceManager manager = InstanceManager.get(project);
+            manager.store().loadFromPersistenceLayer((success) -> {
+                manager.bus().propagate().onUpdateData(manager.store().getData());
+            });
         }
     }
 

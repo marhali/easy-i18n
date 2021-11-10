@@ -23,6 +23,9 @@ public class ReloadAction extends AnAction {
 
     @Override
     public void actionPerformed(@NotNull AnActionEvent e) {
-        InstanceManager.get(e.getProject()).store().loadFromPersistenceLayer((success) -> {});
+        InstanceManager manager = InstanceManager.get(e.getProject());
+        manager.store().loadFromPersistenceLayer((success) -> {
+            manager.bus().propagate().onUpdateData(manager.store().getData());
+        });
     }
 }
