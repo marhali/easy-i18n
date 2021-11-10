@@ -1,6 +1,8 @@
 package de.marhali.easyi18n;
 
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.util.Disposer;
+import com.intellij.openapi.vfs.*;
 
 import de.marhali.easyi18n.io.IOStrategy;
 import de.marhali.easyi18n.io.json.JsonIOStrategy;
@@ -9,6 +11,7 @@ import de.marhali.easyi18n.io.properties.PropertiesIOStrategy;
 import de.marhali.easyi18n.io.yaml.YamlIOStrategy;
 import de.marhali.easyi18n.model.SettingsState;
 import de.marhali.easyi18n.model.TranslationData;
+import de.marhali.easyi18n.service.FileChangeListener;
 import de.marhali.easyi18n.service.SettingsService;
 
 import org.jetbrains.annotations.NotNull;
@@ -31,13 +34,18 @@ public class DataStore {
        new PropertiesIOStrategy()
     ));
 
-    private final Project project;
+    private final @NotNull Project project;
+    private final @NotNull FileChangeListener changeListener;
 
     private @NotNull TranslationData data;
 
-    protected DataStore(Project project) {
+    protected DataStore(@NotNull Project project) {
         this.project = project;
         this.data = new TranslationData(true, true); // Initialize with hard-coded configuration
+        this.changeListener = new FileChangeListener(project);
+
+        VirtualFileManager.getInstance().addAsyncFileListener(
+                this.changeListener, Disposer.newDisposable("EasyI18n"));
     }
 
     public @NotNull TranslationData getData() {
@@ -57,6 +65,8 @@ public class DataStore {
             this.data = new TranslationData(state.isSortKeys(), state.isNestedKeys());
             return;
         }
+
+        this.changeListener.updateLocalesPath(localesPath);
 
         IOStrategy strategy = this.determineStrategy(state, localesPath);
 
