@@ -15,7 +15,7 @@
 - Better focus keys in tree-view after edit
 - Optimized internal data structure (io, cache, events)
 - Adjusted compatibility matrix to 2020.3 - 2021.3
-- Updated dependencies
+- Updated dependencies and improved README file
 
 ## [1.5.1]
 ### Fixed
