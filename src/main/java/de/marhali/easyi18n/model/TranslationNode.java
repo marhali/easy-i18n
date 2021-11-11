@@ -76,6 +76,7 @@ public class TranslationNode {
         this.children.put(key, node);
     }
 
+    @SuppressWarnings("unchecked")
     public @NotNull TranslationNode setChildren(@NotNull String key) {
         try {
             TranslationNode node = new TranslationNode(this.children.getClass().getDeclaredConstructor().newInstance());
