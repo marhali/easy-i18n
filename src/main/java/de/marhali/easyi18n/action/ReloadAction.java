@@ -4,7 +4,7 @@ import com.intellij.icons.AllIcons;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 
-import de.marhali.easyi18n.service.DataStore;
+import de.marhali.easyi18n.InstanceManager;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -23,6 +23,9 @@ public class ReloadAction extends AnAction {
 
     @Override
     public void actionPerformed(@NotNull AnActionEvent e) {
-        DataStore.getInstance(e.getProject()).reloadFromDisk();
+        InstanceManager manager = InstanceManager.get(e.getProject());
+        manager.store().loadFromPersistenceLayer((success) -> {
+            manager.bus().propagate().onUpdateData(manager.store().getData());
+        });
     }
 }

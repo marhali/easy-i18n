@@ -12,12 +12,16 @@ public class SettingsState {
     public static final String DEFAULT_PREVIEW_LOCALE = "en";
     public static final String DEFAULT_FILE_PATTERN = ".*";
     public static final String DEFAULT_PATH_PREFIX = "";
+    public static final boolean DEFAULT_SORT_KEYS = true;
+    public static final boolean DEFAULT_NESTED_KEYS = true;
     public static final boolean DEFAULT_CODE_ASSISTANCE = true;
 
     private String localesPath;
     private String filePattern;
     private String previewLocale;
     private String pathPrefix;
+    private Boolean sortKeys;
+    private Boolean nestedKeys;
     private Boolean codeAssistance;
 
     public SettingsState() {}
@@ -52,6 +56,22 @@ public class SettingsState {
 
     public void setPathPrefix(String pathPrefix) {
         this.pathPrefix = pathPrefix;
+    }
+
+    public boolean isSortKeys() {
+        return sortKeys == null ? DEFAULT_SORT_KEYS : sortKeys;
+    }
+
+    public void setSortKeys(boolean sortKeys) {
+        this.sortKeys = sortKeys;
+    }
+
+    public boolean isNestedKeys() {
+        return nestedKeys == null ? DEFAULT_NESTED_KEYS : nestedKeys;
+    }
+
+    public void setNestedKeys(boolean nestedKeys) {
+        this.nestedKeys = nestedKeys;
     }
 
     public boolean isCodeAssistance() {

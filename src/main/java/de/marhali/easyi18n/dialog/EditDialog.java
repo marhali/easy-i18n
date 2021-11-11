@@ -6,11 +6,12 @@ import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.ui.components.JBLabel;
 import com.intellij.ui.components.JBScrollPane;
 import com.intellij.ui.components.JBTextField;
-import de.marhali.easyi18n.service.DataStore;
+import de.marhali.easyi18n.InstanceManager;
 import de.marhali.easyi18n.model.KeyedTranslation;
+import de.marhali.easyi18n.model.Translation;
 import de.marhali.easyi18n.model.TranslationDelete;
-import de.marhali.easyi18n.model.TranslationUpdate;
 import de.marhali.easyi18n.dialog.descriptor.DeleteActionDescriptor;
+import de.marhali.easyi18n.model.TranslationUpdate;
 
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
@@ -40,23 +41,22 @@ public class EditDialog {
         int code = prepare().show();
 
         if(code == DialogWrapper.OK_EXIT_CODE) { // Edit
-            DataStore.getInstance(project).processUpdate(new TranslationUpdate(origin, getChanges()));
-
+            InstanceManager.get(project).processUpdate(new TranslationUpdate(origin, getChanges()));
         } else if(code == DeleteActionDescriptor.EXIT_CODE) { // Delete
-            DataStore.getInstance(project).processUpdate(new TranslationDelete(origin));
+            InstanceManager.get(project).processUpdate(new TranslationDelete(origin));
         }
     }
 
     private KeyedTranslation getChanges() {
-        Map<String, String> messages = new HashMap<>();
+        Translation translation = new Translation();
 
         valueTextFields.forEach((k, v) -> {
             if(!v.getText().isEmpty()) {
-                messages.put(k, v.getText());
+                translation.put(k, v.getText());
             }
         });
 
-        return new KeyedTranslation(keyTextField.getText(), messages);
+        return new KeyedTranslation(keyTextField.getText(), translation);
     }
 
     private DialogBuilder prepare() {
@@ -74,9 +74,10 @@ public class EditDialog {
 
         JPanel valuePanel = new JPanel(new GridLayout(0, 1, 2, 2));
         valueTextFields = new HashMap<>();
-        for(String locale : DataStore.getInstance(project).getTranslations().getLocales()) {
+
+        for(String locale : InstanceManager.get(project).store().getData().getLocales()) {
             JBLabel localeLabel = new JBLabel(locale);
-            JBTextField localeText = new JBTextField(this.origin.getTranslations().get(locale));
+            JBTextField localeText = new JBTextField(this.origin.getTranslation().get(locale));
             localeLabel.setLabelFor(localeText);
 
             valuePanel.add(localeLabel);

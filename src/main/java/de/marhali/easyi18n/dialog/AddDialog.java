@@ -7,8 +7,9 @@ import com.intellij.ui.components.JBLabel;
 import com.intellij.ui.components.JBScrollPane;
 import com.intellij.ui.components.JBTextField;
 
-import de.marhali.easyi18n.service.DataStore;
+import de.marhali.easyi18n.InstanceManager;
 import de.marhali.easyi18n.model.KeyedTranslation;
+import de.marhali.easyi18n.model.Translation;
 import de.marhali.easyi18n.model.TranslationCreate;
 
 import javax.swing.*;
@@ -48,16 +49,16 @@ public class AddDialog {
     }
 
     private void saveTranslation() {
-        Map<String, String> messages = new HashMap<>();
+        Translation translation = new Translation();
 
         valueTextFields.forEach((k, v) -> {
             if(!v.getText().isEmpty()) {
-                messages.put(k, v.getText());
+                translation.put(k, v.getText());
             }
         });
 
-        TranslationCreate creation = new TranslationCreate(new KeyedTranslation(keyTextField.getText(), messages));
-        DataStore.getInstance(project).processUpdate(creation);
+        TranslationCreate creation = new TranslationCreate(new KeyedTranslation(keyTextField.getText(), translation));
+        InstanceManager.get(project).processUpdate(creation);
     }
 
     private DialogBuilder prepare() {
@@ -75,7 +76,8 @@ public class AddDialog {
 
         JPanel valuePanel = new JPanel(new GridLayout(0, 1, 2, 2));
         valueTextFields = new HashMap<>();
-        for(String locale : DataStore.getInstance(project).getTranslations().getLocales()) {
+
+        for(String locale : InstanceManager.get(project).store().getData().getLocales()) {
             JBLabel localeLabel = new JBLabel(locale);
             JBTextField localeText = new JBTextField();
             localeLabel.setLabelFor(localeText);

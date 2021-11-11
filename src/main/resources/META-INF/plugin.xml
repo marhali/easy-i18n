@@ -1,3 +1,4 @@
+<!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin url="https://github.com/marhali/easy-i18n">
     <id>de.marhali.easyi18n</id>
     <name>Easy I18n</name>
@@ -10,7 +11,7 @@
     <depends optional="true" config-file="de.marhali.easyi18n-kotlin.xml">org.jetbrains.kotlin</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <toolWindow id="Easy I18n" anchor="bottom" factoryClass="de.marhali.easyi18n.TranslatorToolWindowFactory" />
+        <toolWindow id="Easy I18n" anchor="bottom" factoryClass="de.marhali.easyi18n.service.TranslatorToolWindowFactory" />
         <projectService serviceImplementation="de.marhali.easyi18n.service.SettingsService" />
 
         <completion.contributor language="any"

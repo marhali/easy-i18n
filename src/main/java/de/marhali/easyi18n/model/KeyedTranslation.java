@@ -1,42 +1,43 @@
 package de.marhali.easyi18n.model;
 
-import java.util.Map;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
- * Translated messages for a dedicated key.
+ * I18n translation with associated key path (full-key).
  * @author marhali
  */
 public class KeyedTranslation {
 
-    private String key;
-    private Map<String, String> translations;
+    private @NotNull String key;
+    private @Nullable Translation translation;
 
-    public KeyedTranslation(String key, Map<String, String> translations) {
+    public KeyedTranslation(@NotNull String key, @Nullable Translation translation) {
         this.key = key;
-        this.translations = translations;
+        this.translation = translation;
     }
 
-    public String getKey() {
+    public @NotNull String getKey() {
         return key;
     }
 
-    public void setKey(String key) {
+    public void setKey(@NotNull String key) {
         this.key = key;
     }
 
-    public Map<String, String> getTranslations() {
-        return translations;
+    public @Nullable Translation getTranslation() {
+        return translation;
     }
 
-    public void setTranslations(Map<String, String> translations) {
-        this.translations = translations;
+    public void setTranslation(@NotNull Translation translation) {
+        this.translation = translation;
     }
 
     @Override
     public String toString() {
         return "KeyedTranslation{" +
                 "key='" + key + '\'' +
-                ", translations=" + translations +
+                ", translation=" + translation +
                 '}';
     }
 }

@@ -5,9 +5,11 @@ import com.intellij.codeInsight.lookup.*;
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.project.*;
 import com.intellij.util.*;
-import de.marhali.easyi18n.model.*;
+import de.marhali.easyi18n.DataStore;
+import de.marhali.easyi18n.InstanceManager;
+import de.marhali.easyi18n.model.Translation;
 import de.marhali.easyi18n.service.*;
-import de.marhali.easyi18n.util.TranslationsUtil;
+import de.marhali.easyi18n.util.PathUtil;
 import org.jetbrains.annotations.*;
 
 import java.util.*;
@@ -29,7 +31,8 @@ public class KeyCompletionProvider extends CompletionProvider<CompletionParamete
             return;
         }
 
-        DataStore store = DataStore.getInstance(project);
+        DataStore store = InstanceManager.get(project).store();
+        PathUtil pathUtil = new PathUtil(project);
         String previewLocale = SettingsService.getInstance(project).getState().getPreviewLocale();
         String pathPrefix = SettingsService.getInstance(project).getState().getPathPrefix();
 
@@ -54,7 +57,7 @@ public class KeyCompletionProvider extends CompletionProvider<CompletionParamete
             pathPrefix += ".";
         }
 
-        List<String> fullKeys = store.getTranslations().getFullKeys();
+        Set<String> fullKeys = store.getData().getFullKeys();
 
         int sections = path.split("\\.").length;
         int maxSectionForwardLookup = 5;
@@ -65,19 +68,20 @@ public class KeyCompletionProvider extends CompletionProvider<CompletionParamete
                 String[] keySections = key.split("\\.");
 
                 if(keySections.length > sections + maxSectionForwardLookup) { // Key is too deep nested
-                    String shrinkKey = TranslationsUtil.sectionsToFullPath(Arrays.asList(
-                            Arrays.copyOf(keySections, sections + maxSectionForwardLookup)));
+                    String shrinkKey = pathUtil.concat(Arrays.asList(
+                            Arrays.copyOf(keySections, sections + maxSectionForwardLookup)
+                    ));
 
                     result.addElement(LookupElementBuilder.create(pathPrefix + shrinkKey)
                         .appendTailText(" I18n([])", true));
 
                 } else {
-                    LocalizedNode node = store.getTranslations().getNode(key);
-                    String translation = node != null ? node.getValue().get(previewLocale) : null;
+                    Translation translation = store.getData().getTranslation(key);
+                    String content = translation.get(previewLocale);
 
                     result.addElement(LookupElementBuilder.create(pathPrefix + key)
                             .withIcon(AllIcons.Actions.PreserveCaseHover)
-                            .appendTailText(" I18n(" + previewLocale + ": " + translation + ")", true)
+                            .appendTailText(" I18n(" + previewLocale + ": " + content + ")", true)
                     );
                 }
             }

@@ -4,8 +4,8 @@ import com.intellij.patterns.PlatformPatterns;
 import com.intellij.psi.*;
 import com.intellij.util.ProcessingContext;
 
+import de.marhali.easyi18n.InstanceManager;
 import de.marhali.easyi18n.editor.KeyReference;
-import de.marhali.easyi18n.service.DataStore;
 import de.marhali.easyi18n.service.SettingsService;
 
 import org.jetbrains.annotations.NotNull;
@@ -38,7 +38,7 @@ public class GenericKeyReferenceContributor extends PsiReferenceContributor {
                     return PsiReference.EMPTY_ARRAY;
                 }
 
-                if(DataStore.getInstance(element.getProject()).getTranslations().getNode(value) == null) {
+                if(InstanceManager.get(element.getProject()).store().getData().getTranslation(value) == null) {
                     if(!KeyReference.isReferencable(value)) { // Creation policy
                         return PsiReference.EMPTY_ARRAY;
                     }

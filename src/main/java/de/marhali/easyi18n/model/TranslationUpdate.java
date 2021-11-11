@@ -3,7 +3,9 @@ package de.marhali.easyi18n.model;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Represents an update for a translated I18n-Key. Supports key creation, manipulation and deletion.
+ * Represents an update for a translated i18n key.
+ * Supports translation creation, manipulation and deletion.
+ *
  * @author marhali
  */
 public class TranslationUpdate {
@@ -16,24 +18,24 @@ public class TranslationUpdate {
         this.change = change;
     }
 
-    public KeyedTranslation getOrigin() {
+    public @Nullable KeyedTranslation getOrigin() {
         return origin;
     }
 
-    public KeyedTranslation getChange() {
+    public @Nullable KeyedTranslation getChange() {
         return change;
     }
 
     public boolean isCreation() {
-        return origin == null;
+        return this.origin == null;
     }
 
     public boolean isDeletion() {
-        return change == null;
+        return this.change == null;
     }
 
     public boolean isKeyChange() {
-        return origin != null && change != null && !origin.getKey().equals(change.getKey());
+        return this.origin != null && this.change != null && !this.origin.getKey().equals(this.change.getKey());
     }
 
     @Override

@@ -6,29 +6,40 @@
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://paypal.me/marhalide)
 
 <!-- Plugin description -->
-This is an easy plugin to manage internationalization for JSON or Resource-Bundle(Properties) based locale files.
-Most common use case is for translating Webapps or simple Java Applications. Translating large scale projects was never that easy with your favourite IDE!
+This is a plugin for easier management of translation files of projects that need to be translated into different languages. Translating large projects has never been so easy with your favorite IDE!
 
 ## Use Cases
-- Webapps: For example [Vue](https://vuejs.org/) with [vue-i18n](https://kazupon.github.io/vue-i18n/) or any other JSON translation file based technology
-- Java based Resource-Bundle
+- Webapps: [Vue](https://vuejs.org/) with [vue-i18n](https://kazupon.github.io/vue-i18n/), [React](https://reactjs.org/) or any other json based technology
+- Java projects based on Resource-Bundle's
+- Projects that uses yaml, json or properties as locale file base for internationalization
 
 ## Features
-- UI Tool Window with Table- and Tree-View representation
+- UI Tool Window which supports tree- or table-view
 - Easily Add / Edit / Delete translations
-- Filter / Search function to hide irrelevant keys
-- Key completion and annotation inside editor
-- Configurable locales directory & preferred locale for ui presentation 
-- Supports modularized (splitted) json files
-- Translation keys with missing definition for any locale will be displayed red
-- Quick edit any translation by right-click (IntelliJ Popup Action)
-- Quick delete any translation via <kbd>DEL</kbd>-Key
+- Filter function with full-text-search support
+- Editor Assistance: Key completion, annotation and referencing
+- Key sorting and nesting can be configured
+- Configurable locales directory & preferred locale for ui presentation
+- Missing language translations will be indicated red
+- Quick actions: <kbd>right-click</kbd> or <kbd>DEL</kbd> to edit or delete a translation
+- Automatically reloads translation data if any locale file was changed
 <!-- Plugin description end -->
 
 ## Screenshots
-![Tree View](https://raw.githubusercontent.com/marhali/easy-i18n/main/example/images/TreeView.PNG "Tree View")
-![Table View](https://raw.githubusercontent.com/marhali/easy-i18n/main/example/images/TableView.PNG "Table View")
-![Key Completion](https://raw.githubusercontent.com/marhali/easy-i18n/main/example/images/Completion.PNG "Key Completion")
+![Tree View](https://raw.githubusercontent.com/marhali/easy-i18n/main/example/images/tree-view.PNG)
+![TableView](https://raw.githubusercontent.com/marhali/easy-i18n/main/example/images/table-view.PNG)
+![KeyCompletion](https://raw.githubusercontent.com/marhali/easy-i18n/main/example/images/key-completion.PNG)
+![KeyAnnotation](https://raw.githubusercontent.com/marhali/easy-i18n/main/example/images/key-annotation.PNG)
+![KeyEdit](https://raw.githubusercontent.com/marhali/easy-i18n/main/example/images/key-edit.PNG)
+![Settings](https://raw.githubusercontent.com/marhali/easy-i18n/main/example/images/settings.PNG)
+
+## Supported IO Strategies (locale files)
+- Json: <kbd>json</kbd> files inside locales directory
+- Namespaced Json: Multiple <kbd>json</kbd> files per locale directory
+- Yaml: <kbd>yml</kbd> or <kbd>yaml</kbd> files inside locales directory
+- Properties: <kbd>properties</kbd> files inside locales directory
+
+If there are any files in the locales folder that should not be processed, they can be ignored with the <kbd>Translation file pattern</kbd> option.
 
 ## Installation
 - Using IDE built-in plugin system:
@@ -45,8 +56,8 @@ Most common use case is for translating Webapps or simple Java Applications. Tra
 - Install plugin. See **Installation** section
 - Create a directory which will hold the locale files
 - Create a file for each required locale (e.g de.json, en.json) Note: Each json file must at least define an empty section (e.g. **{}**)
-- Click on the **Settings** Action inside the Easy I18n Tool Window
-- Select the created directory (optional: define the preferred locale to view) and press Ok
+- Click on the **Settings** Action inside the EasyI18n Tool Window
+- Select the created directory (optional: define the preferred locale to view) and press **Ok**
 - Translations can now be created / edited or deleted
 
 Examples for the configuration can be found in the [/example](https://github.com/marhali/easy-i18n/tree/main/example) folder.

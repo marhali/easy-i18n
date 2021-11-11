@@ -8,19 +8,20 @@ import com.intellij.openapi.project.Project;
 import com.intellij.ui.components.JBScrollPane;
 import com.intellij.ui.treeStructure.Tree;
 
-import de.marhali.easyi18n.service.DataStore;
-import de.marhali.easyi18n.model.LocalizedNode;
-import de.marhali.easyi18n.model.DataSynchronizer;
-import de.marhali.easyi18n.model.Translations;
+import de.marhali.easyi18n.InstanceManager;
 import de.marhali.easyi18n.model.KeyedTranslation;
+import de.marhali.easyi18n.model.Translation;
+import de.marhali.easyi18n.model.TranslationData;
 import de.marhali.easyi18n.model.TranslationDelete;
-import de.marhali.easyi18n.model.tree.TreeModelTranslator;
+import de.marhali.easyi18n.model.bus.BusListener;
 import de.marhali.easyi18n.action.treeview.CollapseTreeViewAction;
 import de.marhali.easyi18n.action.treeview.ExpandTreeViewAction;
 import de.marhali.easyi18n.dialog.EditDialog;
 import de.marhali.easyi18n.listener.DeleteKeyListener;
 import de.marhali.easyi18n.listener.PopupClickListener;
 import de.marhali.easyi18n.renderer.TreeRenderer;
+import de.marhali.easyi18n.service.SettingsService;
+import de.marhali.easyi18n.tabs.mapper.TreeModelMapper;
 import de.marhali.easyi18n.util.TreeUtil;
 
 import org.jetbrains.annotations.NotNull;
@@ -36,9 +37,11 @@ import java.util.ResourceBundle;
  * Show translation state as tree.
  * @author marhali
  */
-public class TreeView implements DataSynchronizer {
+public class TreeView implements BusListener {
 
     private final Project project;
+
+    private TreeModelMapper currentMapper;
 
     private JPanel rootPanel;
     private JPanel toolBarPanel;
@@ -77,18 +80,28 @@ public class TreeView implements DataSynchronizer {
     }
 
     @Override
-    public void synchronize(@NotNull Translations translations,
-                            @Nullable String searchQuery, @Nullable String scrollTo) {
+    public void onUpdateData(@NotNull TranslationData data) {
+        tree.setModel(this.currentMapper = new TreeModelMapper(data, SettingsService.getInstance(project).getState()));
+    }
 
-        TreeModelTranslator model = new TreeModelTranslator(project, translations, searchQuery);
-        tree.setModel(model);
+    @Override
+    public void onFocusKey(@Nullable String key) {
+        if(key != null && currentMapper != null) {
+            TreePath path = currentMapper.findTreePath(key);
+            this.tree.scrollPathToVisible(path);
 
-        if(searchQuery != null && !searchQuery.isEmpty()) {
-            expandAll().run();
+            if(this.tree.isCollapsed(path)) {
+                this.tree.expandPath(path);
+            }
         }
+    }
 
-        if(scrollTo != null) {
-            tree.scrollPathToVisible(model.findTreePath(scrollTo));
+    @Override
+    public void onSearchQuery(@Nullable String query) {
+        if(this.currentMapper != null) {
+            this.currentMapper.onSearchQuery(query);
+            this.expandAll().run();
+            this.tree.updateUI();
         }
     }
 
@@ -100,10 +113,10 @@ public class TreeView implements DataSynchronizer {
 
             if(node.getUserObject() instanceof PresentationData) {
                 String fullPath = TreeUtil.getFullPath(path);
-                LocalizedNode localizedNode = DataStore.getInstance(project).getTranslations().getNode(fullPath);
+                Translation translation = InstanceManager.get(project).store().getData().getTranslation(fullPath);
 
-                if(localizedNode != null) {
-                    new EditDialog(project,new KeyedTranslation(fullPath, localizedNode.getValue())).showAndHandle();
+                if(translation != null) {
+                    new EditDialog(project, new KeyedTranslation(fullPath, translation)).showAndHandle();
                 }
             }
         }
@@ -120,8 +133,9 @@ public class TreeView implements DataSynchronizer {
             for (TreePath path : tree.getSelectionPaths()) {
                 String fullPath = TreeUtil.getFullPath(path);
 
-                DataStore.getInstance(project).processUpdate(
-                        new TranslationDelete(new KeyedTranslation(fullPath, null)));
+                InstanceManager.get(project).processUpdate(
+                        new TranslationDelete(new KeyedTranslation(fullPath, null))
+                );
             }
         };
     }
