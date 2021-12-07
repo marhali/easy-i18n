@@ -6,6 +6,9 @@
 ### Fixed
 - NullPointerException on key completion
 
+### Changed
+- Updated plugin dependencies
+
 ## [1.6.0]
 ### Added
 - The search function now supports full-text-search
