@@ -33,8 +33,13 @@ import java.util.function.Consumer;
  */
 public class ModularizedJsonIOStrategy implements IOStrategy {
 
-    private static final String FILE_EXTENSION = "json";
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
+
+    private final String FILE_EXTENSION;
+
+    public ModularizedJsonIOStrategy(@NotNull String fileExtension) {
+        this.FILE_EXTENSION = fileExtension;
+    }
 
     @Override
     public boolean canUse(@NotNull Project project, @NotNull String localesPath, @NotNull SettingsState state) {

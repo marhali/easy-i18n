@@ -3,12 +3,15 @@
 # easy-i18n Changelog
 
 ## [Unreleased]
-### Fixed
-- NullPointerException on key completion
-- Changelog handling in release flow
+### Added
+- Support for json based arb files (flutter)
 
 ### Changed
 - Updated plugin dependencies
+
+### Fixed
+- NullPointerException on key completion
+- Changelog handling in release flow
 
 ## [1.6.0]
 ### Added

@@ -29,7 +29,8 @@ import java.util.function.Consumer;
 public class DataStore {
 
     private static final Set<IOStrategy> STRATEGIES = new LinkedHashSet<>(Arrays.asList(
-       new JsonIOStrategy(), new ModularizedJsonIOStrategy(),
+       new JsonIOStrategy("json"), new ModularizedJsonIOStrategy("json"),
+            new JsonIOStrategy("arb"), new ModularizedJsonIOStrategy("arb"),
        new YamlIOStrategy("yaml"), new YamlIOStrategy("yml"),
        new PropertiesIOStrategy()
     ));
