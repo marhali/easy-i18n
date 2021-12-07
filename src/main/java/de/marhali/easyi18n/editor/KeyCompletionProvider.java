@@ -38,10 +38,6 @@ public class KeyCompletionProvider extends CompletionProvider<CompletionParamete
 
         String path = result.getPrefixMatcher().getPrefix();
 
-        if(pathPrefix == null) {
-            pathPrefix = "";
-        }
-
         if(path.startsWith(pathPrefix)) {
             path = path.substring(pathPrefix.length());
 
@@ -77,12 +73,15 @@ public class KeyCompletionProvider extends CompletionProvider<CompletionParamete
 
                 } else {
                     Translation translation = store.getData().getTranslation(key);
-                    String content = translation.get(previewLocale);
 
-                    result.addElement(LookupElementBuilder.create(pathPrefix + key)
-                            .withIcon(AllIcons.Actions.PreserveCaseHover)
-                            .appendTailText(" I18n(" + previewLocale + ": " + content + ")", true)
-                    );
+                    if(translation != null) {
+                        String content = translation.get(previewLocale);
+
+                        result.addElement(LookupElementBuilder.create(pathPrefix + key)
+                                .withIcon(AllIcons.Actions.PreserveCaseHover)
+                                .appendTailText(" I18n(" + previewLocale + ": " + content + ")", true)
+                        );
+                    }
                 }
             }
         }

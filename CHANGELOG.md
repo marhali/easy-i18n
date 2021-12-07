@@ -3,6 +3,10 @@
 # easy-i18n Changelog
 
 ## [Unreleased]
+### Fixed
+- NullPointerException on key completion
+
+## [1.6.0]
 ### Added
 - The search function now supports full-text-search
 - Automatically reload translation data on file system change
