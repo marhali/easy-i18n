@@ -5,6 +5,7 @@
 ## [Unreleased]
 ### Fixed
 - NullPointerException on key completion
+- Changelog handling in release flow
 
 ### Changed
 - Updated plugin dependencies
