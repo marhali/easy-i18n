@@ -37,7 +37,7 @@ public class PropertiesIOStrategy implements IOStrategy {
 
         for(VirtualFile children : directory.getChildren()) {
             if(!children.isDirectory() && isFileRelevant(state, children)) {
-                if(children.getFileType().getDefaultExtension().equalsIgnoreCase(FILE_EXTENSION)) {
+                if(children.getExtension().equalsIgnoreCase(FILE_EXTENSION)) {
                     return true;
                 }
             }

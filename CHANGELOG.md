@@ -9,6 +9,7 @@
 
 ### Changed
 - Updated plugin dependencies
+- Use actual file extension to choose io strategy
 
 ### Fixed
 - NullPointerException on key completion

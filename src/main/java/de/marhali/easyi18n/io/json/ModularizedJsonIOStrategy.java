@@ -56,7 +56,7 @@ public class ModularizedJsonIOStrategy implements IOStrategy {
             if(children.isDirectory()) { // Contains module folders
                 for(VirtualFile moduleFile : children.getChildren()) {
                     if(!moduleFile.isDirectory() && isFileRelevant(state, moduleFile)) {
-                        if(moduleFile.getFileType().getDefaultExtension().equalsIgnoreCase(FILE_EXTENSION)) {
+                        if(moduleFile.getExtension().equalsIgnoreCase(FILE_EXTENSION)) {
                             return true;
                         }
                     }
