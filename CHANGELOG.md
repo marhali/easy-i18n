@@ -3,6 +3,8 @@
 # easy-i18n Changelog
 
 ## [Unreleased]
+
+## [1.7.0]
 ### Added
 - Partial support for translation key folding against actual translation
 - Support for json based arb files (flutter)
@@ -57,8 +59,6 @@
 - Warning for unset target element inside tree-view toolbar
 
 ## [1.4.0]
-### THANKS FOR OVER 1000 DOWNLOADS SO FAR!
-
 ### Added
 - Basic support for json array values
 - Settings option to opt-out code assistance inside editor
