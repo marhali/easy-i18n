@@ -4,6 +4,7 @@
 
 ## [Unreleased]
 ### Added
+- Partial support for translation key folding against actual translation
 - Support for json based arb files (flutter)
 
 ### Changed

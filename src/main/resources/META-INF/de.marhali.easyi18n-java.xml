@@ -1,0 +1,5 @@
+<idea-plugin>
+    <extensions defaultExtensionNs="com.intellij">
+        <lang.foldingBuilder language="JAVA" implementationClass="de.marhali.easyi18n.editor.generic.GenericFoldingBuilder" />
+    </extensions>
+</idea-plugin>
