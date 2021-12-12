@@ -3,6 +3,8 @@
 # easy-i18n Changelog
 
 ## [Unreleased]
+### Fixed
+- Vue.js template folding support
 
 ## [1.7.0]
 ### Added

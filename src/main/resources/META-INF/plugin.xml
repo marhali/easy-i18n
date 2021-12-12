@@ -12,6 +12,7 @@
     <depends optional="true" config-file="de.marhali.easyi18n-kotlin.xml">org.jetbrains.kotlin</depends>
     <depends optional="true" config-file="de.marhali.easyi18n-javascript.xml">JavaScript</depends>
     <depends optional="true" config-file="de.marhali.easyi18n-java.xml">com.intellij.java</depends>
+    <depends optional="true" config-file="de.marhali.easyi18n-vue.xml">org.jetbrains.plugins.vue</depends>
 
     <extensions defaultExtensionNs="com.intellij">
         <toolWindow id="Easy I18n" anchor="bottom" factoryClass="de.marhali.easyi18n.service.TranslatorToolWindowFactory" />
@@ -26,8 +27,5 @@
 
         <psi.referenceContributor
                 implementation="de.marhali.easyi18n.editor.generic.GenericKeyReferenceContributor" />
-
-        <lang.foldingBuilder language="HtmlCompatible"
-                             implementationClass="de.marhali.easyi18n.editor.generic.GenericFoldingBuilder" />
     </extensions>
 </idea-plugin>
