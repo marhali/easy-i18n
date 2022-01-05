@@ -90,8 +90,8 @@ public class TableView implements BusListener {
         }
 
         if (row > -1) { // Matched @key
-            table.scrollRectToVisible(
-                    new Rectangle(0, (row * table.getRowHeight()) + table.getHeight(), 0, 0));
+            table.getSelectionModel().setSelectionInterval(row, row);
+            table.scrollRectToVisible(new Rectangle(table.getCellRect(row, 0, true)));
         }
     }
 

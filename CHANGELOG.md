@@ -3,6 +3,9 @@
 # easy-i18n Changelog
 
 ## [Unreleased]
+### Fixed
+- Key focus within tree or table view after translation change
+
 ### Changed
 - update Qodana to latest version
 
