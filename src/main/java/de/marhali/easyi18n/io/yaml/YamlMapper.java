@@ -2,6 +2,7 @@ package de.marhali.easyi18n.io.yaml;
 
 import de.marhali.easyi18n.model.Translation;
 import de.marhali.easyi18n.model.TranslationNode;
+import de.marhali.easyi18n.util.PathUtil;
 import de.marhali.easyi18n.util.StringUtil;
 
 import org.apache.commons.lang.StringEscapeUtils;
@@ -23,6 +24,9 @@ public class YamlMapper {
         for(String key : section.getKeys()) {
             Object value = section.getInScope(key).get();
 
+            key = StringUtil.escapeControls(
+                    key.replace(PathUtil.DELIMITER, "\\" + PathUtil.DELIMITER), true);
+
             TranslationNode childNode = node.getOrCreateChildren(key);
 
             if(value instanceof MapSection) {
@@ -43,7 +47,9 @@ public class YamlMapper {
 
     public static void write(String locale, Section section, TranslationNode node) {
         for(Map.Entry<String, TranslationNode> entry : node.getChildren().entrySet()) {
-            String key = entry.getKey();
+            String key = StringEscapeUtils.unescapeJava(
+                    entry.getKey().replace("\\" + PathUtil.DELIMITER, PathUtil.DELIMITER));
+
             TranslationNode childNode = entry.getValue();
 
             if(!childNode.isLeaf()) {

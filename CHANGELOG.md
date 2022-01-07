@@ -3,6 +3,9 @@
 # easy-i18n Changelog
 
 ## [Unreleased]
+### Added
+- Support for dots within key nodes in YAML files
+
 ### Fixed
 - Key focus within tree or table view after translation change
 

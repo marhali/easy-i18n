@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * Utility tool for split and merge translation key paths.
@@ -18,7 +19,7 @@ import java.util.List;
  */
 public class PathUtil {
 
-    public static final char DELIMITER = '.';
+    public static final String DELIMITER = ".";
 
     private final boolean nestKeys;
 
@@ -32,11 +33,12 @@ public class PathUtil {
 
     public @NotNull List<String> split(@NotNull String path) {
         // Does not contain any sections or key nesting is disabled
-        if(!path.contains(String.valueOf(DELIMITER)) || !nestKeys) {
+        if(!path.contains(DELIMITER) || !nestKeys) {
             return new ArrayList<>(Collections.singletonList(path));
         }
 
-        return new ArrayList<>(Arrays.asList(path.split("\\" + DELIMITER)));
+        return new ArrayList<>(Arrays.asList(
+                path.split("(?<!\\\\)" + Pattern.quote(DELIMITER))));
     }
 
     public @NotNull String concat(@NotNull List<String> sections) {
