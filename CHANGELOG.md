@@ -7,6 +7,7 @@
 - Support for dots within key nodes in YAML files
 
 ### Fixed
+- First row inside table view is not editable
 - Key focus within tree or table view after translation change
 
 ### Changed

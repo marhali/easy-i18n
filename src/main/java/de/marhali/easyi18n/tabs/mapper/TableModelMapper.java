@@ -85,7 +85,7 @@ public class TableModelMapper implements TableModel, SearchQueryListener {
 
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
-        return rowIndex > 0; // Everything should be editable except the headline
+        return true;
     }
 
     @Override
