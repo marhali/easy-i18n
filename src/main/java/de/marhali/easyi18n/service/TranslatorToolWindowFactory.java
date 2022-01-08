@@ -1,6 +1,7 @@
 package de.marhali.easyi18n.service;
 
 import com.intellij.openapi.actionSystem.AnAction;
+import com.intellij.openapi.project.DumbAware;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowFactory;
@@ -22,7 +23,7 @@ import java.util.ResourceBundle;
  * Tool window factory which will represent the entire ui for this plugin.
  * @author marhali
  */
-public class TranslatorToolWindowFactory implements ToolWindowFactory {
+public class TranslatorToolWindowFactory implements ToolWindowFactory, DumbAware {
 
     @Override
     public void createToolWindowContent(@NotNull Project project, @NotNull ToolWindow toolWindow) {

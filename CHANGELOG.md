@@ -11,7 +11,8 @@
 - Key focus within tree or table view after translation change
 
 ### Changed
-- update Qodana to latest version
+- Update Qodana to latest version
+- Allow tool-window rendering in dumb mode
 
 ## [1.7.1]
 ### Fixed
