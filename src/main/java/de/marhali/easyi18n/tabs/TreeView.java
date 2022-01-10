@@ -9,6 +9,7 @@ import com.intellij.ui.components.JBScrollPane;
 import com.intellij.ui.treeStructure.Tree;
 
 import de.marhali.easyi18n.InstanceManager;
+import de.marhali.easyi18n.listener.ReturnKeyListener;
 import de.marhali.easyi18n.model.KeyedTranslation;
 import de.marhali.easyi18n.model.Translation;
 import de.marhali.easyi18n.model.TranslationData;
@@ -30,11 +31,11 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
-import java.awt.event.MouseEvent;
 import java.util.ResourceBundle;
 
 /**
  * Show translation state as tree.
+ *
  * @author marhali
  */
 public class TreeView implements BusListener {
@@ -56,8 +57,9 @@ public class TreeView implements BusListener {
         tree.setCellRenderer(new TreeRenderer());
         tree.setRootVisible(false);
         tree.getEmptyText().setText(ResourceBundle.getBundle("messages").getString("view.empty"));
-        tree.addMouseListener(new PopupClickListener(this::handlePopup));
-        tree.addKeyListener(new DeleteKeyListener(handleDeleteKey()));
+        tree.addMouseListener(new PopupClickListener(e -> showEditPopup(tree.getPathForLocation(e.getX(), e.getY()))));
+        tree.addKeyListener(new ReturnKeyListener(() -> showEditPopup(tree.getSelectionPath())));
+        tree.addKeyListener(new DeleteKeyListener(this::deleteSelectedNodes));
 
         containerPanel.add(new JBScrollPane(tree));
         placeActions();
@@ -66,8 +68,8 @@ public class TreeView implements BusListener {
     private void placeActions() {
         DefaultActionGroup group = new DefaultActionGroup("TranslationsGroup", false);
 
-        ExpandTreeViewAction expand = new ExpandTreeViewAction(expandAll());
-        CollapseTreeViewAction collapse = new CollapseTreeViewAction(collapseAll());
+        ExpandTreeViewAction expand = new ExpandTreeViewAction(this::expandAll);
+        CollapseTreeViewAction collapse = new CollapseTreeViewAction(this::collapseAll);
 
         group.add(collapse);
         group.add(expand);
@@ -86,13 +88,13 @@ public class TreeView implements BusListener {
 
     @Override
     public void onFocusKey(@Nullable String key) {
-        if(key != null && currentMapper != null) {
+        if (key != null && currentMapper != null) {
             TreePath path = currentMapper.findTreePath(key);
 
             this.tree.getSelectionModel().setSelectionPath(path);
             this.tree.scrollPathToVisible(path);
 
-            if(this.tree.isCollapsed(path)) {
+            if (this.tree.isCollapsed(path)) {
                 this.tree.expandPath(path);
             }
         }
@@ -100,62 +102,60 @@ public class TreeView implements BusListener {
 
     @Override
     public void onSearchQuery(@Nullable String query) {
-        if(this.currentMapper != null) {
+        if (this.currentMapper != null) {
             this.currentMapper.onSearchQuery(query);
-            this.expandAll().run();
+            this.expandAll();
             this.tree.updateUI();
         }
     }
 
-    private void handlePopup(MouseEvent e) {
-        TreePath path = tree.getPathForLocation(e.getX(), e.getY());
+    private void showEditPopup(@Nullable TreePath path) {
+        if (path == null) {
+            return;
+        }
 
-        if(path != null) {
-            DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
+        DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
 
-            if(node.getUserObject() instanceof PresentationData) {
-                String fullPath = TreeUtil.getFullPath(path);
-                Translation translation = InstanceManager.get(project).store().getData().getTranslation(fullPath);
+        if (!(node.getUserObject() instanceof PresentationData)) {
+            return;
+        }
 
-                if(translation != null) {
-                    new EditDialog(project, new KeyedTranslation(fullPath, translation)).showAndHandle();
-                }
-            }
+        String fullPath = TreeUtil.getFullPath(path);
+        Translation translation = InstanceManager.get(project).store().getData().getTranslation(fullPath);
+
+        if (translation == null) {
+            return;
+        }
+
+        new EditDialog(project, new KeyedTranslation(fullPath, translation)).showAndHandle();
+    }
+
+    private void deleteSelectedNodes() {
+        TreePath[] paths = tree.getSelectionPaths();
+
+        if (paths == null) {
+            return;
+        }
+
+        for (TreePath path : tree.getSelectionPaths()) {
+            String fullPath = TreeUtil.getFullPath(path);
+
+            InstanceManager.get(project).processUpdate(
+                    new TranslationDelete(new KeyedTranslation(fullPath, null))
+            );
         }
     }
 
-    private Runnable handleDeleteKey() {
-        return () -> {
-            TreePath[] paths = tree.getSelectionPaths();
-
-            if (paths == null) {
-                return;
-            }
-
-            for (TreePath path : tree.getSelectionPaths()) {
-                String fullPath = TreeUtil.getFullPath(path);
-
-                InstanceManager.get(project).processUpdate(
-                        new TranslationDelete(new KeyedTranslation(fullPath, null))
-                );
-            }
-        };
+    private void expandAll() {
+        for (int i = 0; i < tree.getRowCount(); i++) {
+            tree.expandRow(i);
+        }
     }
 
-    private Runnable expandAll() {
-        return () -> {
-            for(int i = 0; i < tree.getRowCount(); i++) {
-                tree.expandRow(i);
-            }
-        };
-    }
-
-    private Runnable collapseAll() {
-        return () -> {
-            for(int i = 0; i < tree.getRowCount(); i++) {
-                tree.collapseRow(i);
-            }
-        };
+    private void collapseAll() {
+        for (int i = 0; i < tree.getRowCount(); i++) {
+            tree.collapseRow(i);
+        }
     }
 
     public JPanel getRootPanel() {

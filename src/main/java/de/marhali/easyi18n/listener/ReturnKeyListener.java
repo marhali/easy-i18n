@@ -4,20 +4,20 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 /**
- * Delete (DEL) keystroke listener.
+ * Return (\n) keystroke listener.
  * @author marhali
  */
-public class DeleteKeyListener implements KeyListener {
+public class ReturnKeyListener implements KeyListener {
 
     private final Runnable onActivate;
 
-    public DeleteKeyListener(Runnable onActivate) {
+    public ReturnKeyListener(Runnable onActivate) {
         this.onActivate = onActivate;
     }
 
     @Override
     public void keyTyped(KeyEvent e) {
-        if(e.getKeyChar() == KeyEvent.VK_DELETE) {
+        if(e.getKeyChar() == KeyEvent.VK_ENTER) {
             this.onActivate.run();
         }
     }
