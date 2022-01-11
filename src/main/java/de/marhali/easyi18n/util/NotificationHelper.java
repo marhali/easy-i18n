@@ -13,6 +13,6 @@ public class NotificationHelper {
     public static void createIOError(String fileName, Class<?> ioStrategy, Exception ex) {
         ResourceBundle bundle = ResourceBundle.getBundle("messages");
         String message = MessageFormat.format(bundle.getString("error.io"), fileName, ioStrategy.getSimpleName());
-        Logger.getInstance(ioStrategy).error(message, ex.getCause());
+        Logger.getInstance(ioStrategy).error(message, ex);
     }
 }
