@@ -8,6 +8,7 @@
 - Support for dots within key nodes in YAML files
 
 ### Changed
+- Improve exception handling on IO operations
 - Update Qodana to latest version
 - Allow tool-window rendering in dumb mode
 

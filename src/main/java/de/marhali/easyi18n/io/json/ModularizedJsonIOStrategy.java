@@ -12,6 +12,7 @@ import de.marhali.easyi18n.io.IOStrategy;
 import de.marhali.easyi18n.model.SettingsState;
 import de.marhali.easyi18n.model.TranslationData;
 import de.marhali.easyi18n.model.TranslationNode;
+import de.marhali.easyi18n.util.NotificationHelper;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -82,38 +83,39 @@ public class ModularizedJsonIOStrategy implements IOStrategy {
             TranslationData data = new TranslationData(state.isSortKeys(), state.isNestedKeys());
             VirtualFile[] localeDirectories = directory.getChildren();
 
-            try {
-                for(VirtualFile localeDir : localeDirectories) {
-                    String locale = localeDir.getNameWithoutExtension();
-                    data.addLocale(locale);
+            for(VirtualFile localeDir : localeDirectories) {
+                String locale = localeDir.getNameWithoutExtension();
+                data.addLocale(locale);
 
-                    // Read all underlying module files
-                    for(VirtualFile module : localeDir.getChildren()) {
-                        if(module.isDirectory() || !isFileRelevant(state, module)) {
-                            continue;
-                        }
+                // Read all underlying module files
+                for(VirtualFile module : localeDir.getChildren()) {
+                    if(module.isDirectory() || !isFileRelevant(state, module)) {
+                        continue;
+                    }
 
-                        String moduleName = module.getNameWithoutExtension();
+                    String moduleName = module.getNameWithoutExtension();
 
-                        TranslationNode moduleNode = data.getNode(moduleName) != null
-                                ? data.getNode(moduleName)
-                                : new TranslationNode(state.isSortKeys() ? new TreeMap<>() : new LinkedHashMap<>());
+                    TranslationNode moduleNode = data.getNode(moduleName) != null
+                            ? data.getNode(moduleName)
+                            : new TranslationNode(state.isSortKeys() ? new TreeMap<>() : new LinkedHashMap<>());
 
+                    try {
                         JsonObject tree = GSON.fromJson(new InputStreamReader(module.getInputStream(),
                                 module.getCharset()), JsonObject.class);
 
                         JsonMapper.read(locale, tree, moduleNode);
 
                         data.getRootNode().setChildren(moduleName, moduleNode);
+
+                    } catch (Exception e) {
+                        NotificationHelper.createIOError(locale + " / " + moduleName, this.getClass(), e);
+                        result.accept(null);
+                        return;
                     }
                 }
-
-                result.accept(data);
-
-            } catch(IOException e) {
-                e.printStackTrace();
-                result.accept(null);
             }
+
+            result.accept(data);
         });
     }
 

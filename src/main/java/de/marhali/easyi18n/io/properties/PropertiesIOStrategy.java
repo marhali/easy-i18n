@@ -8,6 +8,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import de.marhali.easyi18n.io.IOStrategy;
 import de.marhali.easyi18n.model.SettingsState;
 import de.marhali.easyi18n.model.TranslationData;
+import de.marhali.easyi18n.util.NotificationHelper;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -60,26 +61,27 @@ public class PropertiesIOStrategy implements IOStrategy {
 
             TranslationData data = new TranslationData(state.isSortKeys(), state.isNestedKeys());
 
-            try {
-                for(VirtualFile file : directory.getChildren()) {
-                    if(file.isDirectory() || !isFileRelevant(state, file)) {
-                        continue;
-                    }
+            for(VirtualFile file : directory.getChildren()) {
+                if(file.isDirectory() || !isFileRelevant(state, file)) {
+                    continue;
+                }
 
-                    String locale = file.getNameWithoutExtension();
-                    data.addLocale(locale);
+                String locale = file.getNameWithoutExtension();
+                data.addLocale(locale);
 
+                try {
                     SortableProperties properties = new SortableProperties(state.isSortKeys());
                     properties.load(new InputStreamReader(file.getInputStream(), file.getCharset()));
                     PropertiesMapper.read(locale, properties, data);
+
+                } catch (Exception e) {
+                    NotificationHelper.createIOError(file.getName(), this.getClass(), e);
+                    result.accept(null);
+                    return;
                 }
-
-                result.accept(data);
-
-            } catch(IOException e) {
-                e.printStackTrace();
-                result.accept(null);
             }
+
+            result.accept(data);
         });
     }
 
