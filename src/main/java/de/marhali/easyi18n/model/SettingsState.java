@@ -10,7 +10,7 @@ import org.jetbrains.annotations.Nullable;
 public class SettingsState {
 
     public static final String DEFAULT_PREVIEW_LOCALE = "en";
-    public static final String DEFAULT_FILE_PATTERN = ".*";
+    public static final String DEFAULT_FILE_PATTERN = "*.*";
     public static final String DEFAULT_PATH_PREFIX = "";
     public static final boolean DEFAULT_SORT_KEYS = true;
     public static final boolean DEFAULT_NESTED_KEYS = true;

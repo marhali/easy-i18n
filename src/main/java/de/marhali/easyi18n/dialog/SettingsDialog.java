@@ -74,6 +74,7 @@ public class SettingsDialog {
         /* file pattern */
         JBLabel filePatternLabel = new JBLabel(ResourceBundle.getBundle("messages").getString("settings.path.file-pattern"));
         filePatternText = new JBTextField(state.getFilePattern());
+        filePatternText.setToolTipText(ResourceBundle.getBundle("messages").getString("settings.path.file-pattern-tooltip"));
 
         rootPanel.add(filePatternLabel);
         rootPanel.add(filePatternText);

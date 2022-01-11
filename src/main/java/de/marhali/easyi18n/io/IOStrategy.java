@@ -1,11 +1,12 @@
 package de.marhali.easyi18n.io;
 
 import com.intellij.openapi.project.Project;
-
 import com.intellij.openapi.vfs.VirtualFile;
+
 import de.marhali.easyi18n.model.SettingsState;
 import de.marhali.easyi18n.model.TranslationData;
 
+import org.apache.commons.io.FilenameUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -57,6 +58,7 @@ public interface IOStrategy {
      * @return true if file matches pattern
      */
     default boolean isFileRelevant(@NotNull SettingsState state, @NotNull VirtualFile file) {
-        return file.getName().matches(state.getFilePattern());
+        System.out.println(file.getName() + " " + FilenameUtils.wildcardMatch(file.getName(), state.getFilePattern()));
+        return FilenameUtils.wildcardMatch(file.getName(), state.getFilePattern());
     }
 }
