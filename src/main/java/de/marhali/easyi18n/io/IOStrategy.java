@@ -58,7 +58,6 @@ public interface IOStrategy {
      * @return true if file matches pattern
      */
     default boolean isFileRelevant(@NotNull SettingsState state, @NotNull VirtualFile file) {
-        System.out.println(file.getName() + " " + FilenameUtils.wildcardMatch(file.getName(), state.getFilePattern()));
         return FilenameUtils.wildcardMatch(file.getName(), state.getFilePattern());
     }
 }
