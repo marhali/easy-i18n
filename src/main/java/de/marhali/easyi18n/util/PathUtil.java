@@ -16,7 +16,9 @@ import java.util.regex.Pattern;
  * Some i18n implementations require to NOT nest the translation keys.
  * This util takes care of this and checks the configured setting for this case.
  * @author marhali
+ * @deprecated Replaced by KeyPathConverter
  */
+@Deprecated
 public class PathUtil {
 
     public static final String DELIMITER = ".";
