@@ -8,6 +8,7 @@
 - I18n key nesting will now escape every delimiter within a section layer (can be inverted via option)
 
 ### Added
+- Filter functionality for translations with missing values
 - Full keyboard shortcut support inside tool-window
 - Support for dots within key nodes in YAML files
 

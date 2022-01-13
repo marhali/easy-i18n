@@ -107,6 +107,14 @@ public class TableView implements BusListener {
         }
     }
 
+    @Override
+    public void onFilterMissingTranslations(boolean filter) {
+        if(this.currentMapper != null) {
+            this.currentMapper.onFilterMissingTranslations(filter);
+            this.table.updateUI();
+        }
+    }
+
     public JPanel getRootPanel() {
         return rootPanel;
     }

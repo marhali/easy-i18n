@@ -1,6 +1,7 @@
 package de.marhali.easyi18n.tabs.mapper;
 
 import de.marhali.easyi18n.model.*;
+import de.marhali.easyi18n.model.bus.FilterMissingTranslationsListener;
 import de.marhali.easyi18n.model.bus.SearchQueryListener;
 
 import org.jetbrains.annotations.Nls;
@@ -17,7 +18,7 @@ import java.util.function.Consumer;
  * Mapping {@link TranslationData} to {@link TableModel}.
  * @author marhali
  */
-public class TableModelMapper implements TableModel, SearchQueryListener {
+public class TableModelMapper implements TableModel, SearchQueryListener, FilterMissingTranslationsListener {
 
     private final @NotNull TranslationData data;
     private final @NotNull KeyPathConverter converter;
@@ -57,6 +58,24 @@ public class TableModelMapper implements TableModel, SearchQueryListener {
                         matches.add(key);
                     }
                 }
+            }
+        }
+
+        this.fullKeys = matches;
+    }
+
+    @Override
+    public void onFilterMissingTranslations(boolean filter) {
+        if(!filter) { // Reset
+            this.fullKeys = new ArrayList<>(this.data.getFullKeys());
+            return;
+        }
+
+        List<KeyPath> matches = new ArrayList<>();
+
+        for(KeyPath key : this.data.getFullKeys()) {
+            if(this.data.getTranslation(key).values().size() != this.locales.size()) {
+                matches.add(key);
             }
         }
 

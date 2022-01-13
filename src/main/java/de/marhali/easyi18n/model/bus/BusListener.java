@@ -5,4 +5,5 @@ package de.marhali.easyi18n.model.bus;
  * Every listener needs to be registered manually via {@link de.marhali.easyi18n.DataBus}.
  * @author marhali
  */
-public interface BusListener extends UpdateDataListener, FocusKeyListener, SearchQueryListener {}
+public interface BusListener extends UpdateDataListener, FocusKeyListener,
+        SearchQueryListener, FilterMissingTranslationsListener {}

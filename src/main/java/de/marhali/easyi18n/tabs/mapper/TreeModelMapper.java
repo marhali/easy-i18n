@@ -4,6 +4,7 @@ import com.intellij.ide.projectView.PresentationData;
 import com.intellij.ui.JBColor;
 
 import de.marhali.easyi18n.model.*;
+import de.marhali.easyi18n.model.bus.FilterMissingTranslationsListener;
 import de.marhali.easyi18n.model.bus.SearchQueryListener;
 import de.marhali.easyi18n.util.UiUtil;
 
@@ -19,7 +20,7 @@ import java.util.Map;
  * Mapping {@link TranslationData} to {@link TreeModel}.
  * @author marhali
  */
-public class TreeModelMapper extends DefaultTreeModel implements SearchQueryListener {
+public class TreeModelMapper extends DefaultTreeModel implements SearchQueryListener, FilterMissingTranslationsListener {
 
     private final TranslationData data;
     private final KeyPathConverter converter;
@@ -42,7 +43,7 @@ public class TreeModelMapper extends DefaultTreeModel implements SearchQueryList
         DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode();
         TranslationData shadow = new TranslationData(this.state.isSortKeys());
 
-        if(query == null) {
+        if(query == null) { // Reset
             this.generateNodes(rootNode, this.data.getRootNode());
             super.setRoot(rootNode);
             return;
@@ -64,6 +65,29 @@ public class TreeModelMapper extends DefaultTreeModel implements SearchQueryList
                     shadow.setTranslation(currentKey, translation);
                     break;
                 }
+            }
+        }
+
+        this.generateNodes(rootNode, shadow.getRootNode());
+        super.setRoot(rootNode);
+    }
+
+    @Override
+    public void onFilterMissingTranslations(boolean filter) {
+        DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode();
+        TranslationData shadow = new TranslationData(this.state.isSortKeys());
+
+        if(!filter) { // Reset
+            this.generateNodes(rootNode, this.data.getRootNode());
+            super.setRoot(rootNode);
+            return;
+        }
+
+        for(KeyPath currentKey : this.data.getFullKeys()) {
+            Translation translation = this.data.getTranslation(currentKey);
+
+            if(translation.values().size() != this.data.getLocales().size()) {
+                shadow.setTranslation(currentKey, translation);
             }
         }
 

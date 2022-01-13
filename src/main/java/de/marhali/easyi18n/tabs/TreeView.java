@@ -106,6 +106,15 @@ public class TreeView implements BusListener {
         }
     }
 
+    @Override
+    public void onFilterMissingTranslations(boolean filter) {
+        if (this.currentMapper != null) {
+            this.currentMapper.onFilterMissingTranslations(filter);
+            this.expandAll();
+            this.tree.updateUI();
+        }
+    }
+
     private void showEditPopup(@Nullable TreePath path) {
         if (path == null) {
             return;

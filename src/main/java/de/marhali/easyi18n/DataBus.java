@@ -43,13 +43,18 @@ public class DataBus {
             }
 
             @Override
-            public void onFocusKey(@Nullable KeyPath key) {
+            public void onFocusKey(@NotNull KeyPath key) {
                 listener.forEach(li -> li.onFocusKey(key));
             }
 
             @Override
             public void onSearchQuery(@Nullable String query) {
                 listener.forEach(li -> li.onSearchQuery(query));
+            }
+
+            @Override
+            public void onFilterMissingTranslations(boolean filter) {
+                listener.forEach(li -> li.onFilterMissingTranslations(filter));
             }
         };
     }

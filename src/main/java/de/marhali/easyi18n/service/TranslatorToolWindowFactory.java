@@ -46,6 +46,7 @@ public class TranslatorToolWindowFactory implements ToolWindowFactory, DumbAware
         // ToolWindow Actions (Can be used for every view)
         List<AnAction> actions = new ArrayList<>();
         actions.add(new AddAction());
+        actions.add(new FilterMissingTranslationsAction());
         actions.add(new ReloadAction());
         actions.add(new SettingsAction());
         actions.add(new SearchAction((query) -> InstanceManager.get(project).bus().propagate().onSearchQuery(query)));
