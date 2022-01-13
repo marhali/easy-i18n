@@ -12,6 +12,7 @@
 - Support for dots within key nodes in YAML files
 
 ### Changed
+- Improve marking nodes with missing values in tree-view
 - Key completion inside editor suggests all keys without any logic
 - Translation file pattern uses wildcard matcher instead of regex
 - Improve exception handling on IO operations

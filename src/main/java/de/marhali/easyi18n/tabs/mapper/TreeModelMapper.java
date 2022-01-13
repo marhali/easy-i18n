@@ -71,7 +71,15 @@ public class TreeModelMapper extends DefaultTreeModel implements SearchQueryList
         super.setRoot(rootNode);
     }
 
-    private void generateNodes(@NotNull DefaultMutableTreeNode parent, @NotNull TranslationNode translationNode) {
+    /**
+     *
+     * @param parent Parent tree node
+     * @param translationNode Layer of translation node to write to tree
+     * @return true if children nodes misses any translation values
+     */
+    private boolean generateNodes(@NotNull DefaultMutableTreeNode parent, @NotNull TranslationNode translationNode) {
+        boolean foundMissing = false;
+
         for(Map.Entry<String, TranslationNode> entry : translationNode.getChildren().entrySet()) {
             String key = entry.getKey();
             TranslationNode childTranslationNode = entry.getValue();
@@ -79,8 +87,15 @@ public class TreeModelMapper extends DefaultTreeModel implements SearchQueryList
             if(!childTranslationNode.isLeaf()) {
                 // Nested node - run recursively
                 DefaultMutableTreeNode childNode = new DefaultMutableTreeNode(key);
-                this.generateNodes(childNode, childTranslationNode);
+
+                if(this.generateNodes(childNode, childTranslationNode)) { // Mark red if any children misses translations
+                    PresentationData data = new PresentationData(key, null, null, null);
+                    data.setForcedTextForeground(JBColor.RED);
+                    childNode.setUserObject(data);
+                }
+
                 parent.add(childNode);
+
             } else {
                 String previewLocale = this.state.getPreviewLocale();
                 String sub = "(" + previewLocale + ": " + childTranslationNode.getValue().get(previewLocale) + ")";
@@ -91,13 +106,21 @@ public class TreeModelMapper extends DefaultTreeModel implements SearchQueryList
 
                 if(childTranslationNode.getValue().size() != this.data.getLocales().size()) {
                     data.setForcedTextForeground(JBColor.RED);
+                    foundMissing = true;
                 }
 
                 parent.add(new DefaultMutableTreeNode(data));
             }
         }
+
+        return foundMissing;
     }
 
+    /**
+     * Converts KeyPath to TreePath
+     * @param fullPath Absolute translation key path
+     * @return Converted TreePath
+     */
     public @NotNull TreePath findTreePath(@NotNull KeyPath fullPath) {
         List<Object> nodes = new ArrayList<>();
 
