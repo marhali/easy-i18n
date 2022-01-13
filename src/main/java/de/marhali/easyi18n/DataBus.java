@@ -1,5 +1,6 @@
 package de.marhali.easyi18n;
 
+import de.marhali.easyi18n.model.KeyPath;
 import de.marhali.easyi18n.model.bus.BusListener;
 import de.marhali.easyi18n.model.TranslationData;
 
@@ -42,7 +43,7 @@ public class DataBus {
             }
 
             @Override
-            public void onFocusKey(@Nullable String key) {
+            public void onFocusKey(@Nullable KeyPath key) {
                 listener.forEach(li -> li.onFocusKey(key));
             }
 

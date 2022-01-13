@@ -5,6 +5,9 @@ import com.intellij.lang.annotation.HighlightSeverity;
 import com.intellij.openapi.project.Project;
 
 import de.marhali.easyi18n.InstanceManager;
+import de.marhali.easyi18n.model.KeyPath;
+import de.marhali.easyi18n.model.KeyPathConverter;
+import de.marhali.easyi18n.model.SettingsState;
 import de.marhali.easyi18n.model.TranslationNode;
 import de.marhali.easyi18n.service.SettingsService;
 
@@ -28,18 +31,21 @@ public class KeyAnnotator {
             return;
         }
 
-        String previewLocale = SettingsService.getInstance(project).getState().getPreviewLocale();
-        String pathPrefix = SettingsService.getInstance(project).getState().getPathPrefix();
+        SettingsState state = SettingsService.getInstance(project).getState();
+        String pathPrefix = state.getPathPrefix();
+        String previewLocale = state.getPreviewLocale();
+
+        KeyPathConverter converter = new KeyPathConverter(project);
 
         String searchKey = key.length() >= pathPrefix.length()
                 ? key.substring(pathPrefix.length())
                 : key;
 
-        if(searchKey.startsWith(".")) {
-            searchKey = searchKey.substring(1);
+        if(searchKey.startsWith(KeyPath.DELIMITER)) {
+            searchKey = searchKey.substring(KeyPath.DELIMITER.length());
         }
 
-        TranslationNode node = InstanceManager.get(project).store().getData().getNode(searchKey);
+        TranslationNode node = InstanceManager.get(project).store().getData().getNode(converter.split(searchKey));
 
         if(node == null) { // Unknown translation. Just ignore it
             return;

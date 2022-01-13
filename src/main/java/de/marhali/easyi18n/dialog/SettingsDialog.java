@@ -51,9 +51,8 @@ public class SettingsDialog {
 
             // Reload instance
             InstanceManager manager = InstanceManager.get(project);
-            manager.store().loadFromPersistenceLayer((success) -> {
-                manager.bus().propagate().onUpdateData(manager.store().getData());
-            });
+            manager.store().loadFromPersistenceLayer((success) ->
+                    manager.bus().propagate().onUpdateData(manager.store().getData()));
         }
     }
 

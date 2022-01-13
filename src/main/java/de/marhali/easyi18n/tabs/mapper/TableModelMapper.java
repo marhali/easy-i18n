@@ -20,13 +20,18 @@ import java.util.function.Consumer;
 public class TableModelMapper implements TableModel, SearchQueryListener {
 
     private final @NotNull TranslationData data;
+    private final @NotNull KeyPathConverter converter;
+
     private final @NotNull List<String> locales;
-    private @NotNull List<String> fullKeys;
+    private @NotNull List<KeyPath> fullKeys;
 
     private final @NotNull Consumer<TranslationUpdate> updater;
 
-    public TableModelMapper(@NotNull TranslationData data, @NotNull Consumer<TranslationUpdate> updater) {
+    public TableModelMapper(@NotNull TranslationData data, @NotNull KeyPathConverter converter,
+                            @NotNull Consumer<TranslationUpdate> updater) {
         this.data = data;
+        this.converter = converter;
+
         this.locales = new ArrayList<>(data.getLocales());
         this.fullKeys = new ArrayList<>(data.getFullKeys());
 
@@ -41,10 +46,10 @@ public class TableModelMapper implements TableModel, SearchQueryListener {
         }
 
         query = query.toLowerCase();
-        List<String> matches = new ArrayList<>();
+        List<KeyPath> matches = new ArrayList<>();
 
-        for(String key : this.data.getFullKeys()) {
-            if(key.toLowerCase().contains(query)) {
+        for(KeyPath key : this.data.getFullKeys()) {
+            if(this.converter.concat(key).toLowerCase().contains(query)) {
                 matches.add(key);
             } else {
                 for(String content : this.data.getTranslation(key).values()) {
@@ -90,11 +95,12 @@ public class TableModelMapper implements TableModel, SearchQueryListener {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
+        KeyPath key = this.fullKeys.get(rowIndex);
+
         if(columnIndex == 0) { // Keys
-            return this.fullKeys.get(rowIndex);
+            return this.converter.concat(key);
         }
 
-        String key = this.fullKeys.get(rowIndex);
         String locale = this.locales.get(columnIndex -  1);
         Translation translation = this.data.getTranslation(key);
 
@@ -103,14 +109,14 @@ public class TableModelMapper implements TableModel, SearchQueryListener {
 
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-        String key = String.valueOf(this.getValueAt(rowIndex, 0));
+        KeyPath key = this.fullKeys.get(rowIndex);
         Translation translation = this.data.getTranslation(key);
 
         if(translation == null) { // Unknown cell
             return;
         }
 
-        String newKey = columnIndex == 0 ? String.valueOf(aValue) : key;
+        KeyPath newKey = columnIndex == 0 ? this.converter.split(String.valueOf(aValue)) : key;
 
         // Translation content update
         if(columnIndex > 0) {

@@ -1,7 +1,5 @@
 package de.marhali.easyi18n.model;
 
-import de.marhali.easyi18n.util.PathUtil;
-
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -11,20 +9,20 @@ import java.util.*;
  * Cached translation data. The data is stored in a tree structure.
  * Tree behaviour (sorted, non-sorted) can be specified via constructor.
  * For more please see {@link TranslationNode}. Example tree view:
- * <br/>
- * user: <br/>
- * -- principal: 'Principal' <br/>
- * -- username: <br/>
- * -- -- title: 'Username' <br/>
- * auth: <br/>
- * -- logout: 'Logout' <br/>
- * -- login: 'Login' <br/>
- *
+ * <pre>
+ * {@code
+ * user:
+ *     principal: 'Principal'
+ *     username:
+ *         title: 'Username'
+ * auth:
+ *     logout: 'Logout'
+ *     login: 'Login'
+ * }
+ * </pre>
  * @author marhali
  */
 public class TranslationData {
-
-    private final PathUtil pathUtil;
 
     @NotNull
     private final Set<String> locales;
@@ -36,17 +34,15 @@ public class TranslationData {
      * Creates an empty instance.
      * @param sort Should the translation keys be sorted alphabetically
      */
-    public TranslationData(boolean sort, boolean nestKeys) {
-        this(nestKeys, new HashSet<>(), new TranslationNode(sort ? new TreeMap<>() : new LinkedHashMap<>()));
+    public TranslationData(boolean sort) {
+        this(new HashSet<>(), new TranslationNode(sort ? new TreeMap<>() : new LinkedHashMap<>()));
     }
 
     /**
-     * @param nestKeys Apply key nesting. See {@link PathUtil}
      * @param locales Languages which can be used for translation
      * @param rootNode Translation tree structure
      */
-    public TranslationData(boolean nestKeys, @NotNull Set<String> locales, @NotNull TranslationNode rootNode) {
-        this.pathUtil = new PathUtil(nestKeys);
+    public TranslationData(@NotNull Set<String> locales, @NotNull TranslationNode rootNode) {
         this.locales = locales;
         this.rootNode = rootNode;
     }
@@ -76,15 +72,14 @@ public class TranslationData {
      * @param fullPath Absolute translation path
      * @return Translation node which leads to translations or nested child's
      */
-    public @Nullable TranslationNode getNode(@NotNull String fullPath) {
-        List<String> sections = this.pathUtil.split(fullPath);
+    public @Nullable TranslationNode getNode(@NotNull KeyPath fullPath) {
         TranslationNode node = this.rootNode;
 
         if(fullPath.isEmpty()) { // Return root node if empty path was supplied
             return node;
         }
 
-        for(String section : sections) {
+        for(String section : fullPath) {
             if(node == null) {
                 return null;
             }
@@ -98,7 +93,7 @@ public class TranslationData {
      * @param fullPath Absolute translation key path
      * @return Found translation. Can be null if path is empty or is not a leaf element
      */
-    public @Nullable Translation getTranslation(@NotNull String fullPath) {
+    public @Nullable Translation getTranslation(@NotNull KeyPath fullPath) {
         TranslationNode node = this.getNode(fullPath);
 
         if(node == null || !node.isLeaf()) {
@@ -109,50 +104,52 @@ public class TranslationData {
     }
 
     /**
+     * Create / Update or Delete a specific translation.
+     * The parent path of the translation will be changed if necessary.
      * @param fullPath Absolute translation key path
      * @param translation Translation to set. Can be null to delete the corresponding node
      */
-    public void setTranslation(@NotNull String fullPath, @Nullable Translation translation) {
-        List<String> sections = this.pathUtil.split(fullPath);
-        String nodeKey = sections.remove(sections.size() - 1); // Edge case last section
-        TranslationNode node = this.rootNode;
-
+    public void setTranslation(@NotNull KeyPath fullPath, @Nullable Translation translation) {
         if(fullPath.isEmpty()) {
-            throw new IllegalArgumentException("Path cannot be empty");
+            throw new IllegalArgumentException("Key path cannot be empty");
         }
 
-        for(String section : sections) { // Go to the level of the key (@nodeKey)
+        fullPath = new KeyPath(fullPath);
+        String leafKey = fullPath.remove(fullPath.size() - 1); // Extract edge section as children key of parent
+        TranslationNode node = this.rootNode;
+
+        for(String section : fullPath) { // Go to nested level at @leafKey
             TranslationNode childNode = node.getChildren().get(section);
 
             if(childNode == null) {
-                if(translation == null) { // Path should not be empty for delete
+                if(translation == null) { // Path must not be empty on delete
                     throw new IllegalArgumentException("Delete action on empty path");
                 }
 
-                // Created nested section
                 childNode = node.setChildren(section);
             }
 
             node = childNode;
         }
 
-        if(translation == null) { // Delete
-            node.removeChildren(nodeKey);
+        if(translation == null) { // Delete action
+            node.removeChildren(leafKey);
 
-            if(node.getChildren().isEmpty() && !node.isRoot()) { // Parent is empty now. Run delete recursively
-                this.setTranslation(this.pathUtil.concat(sections), null);
+            if(node.getChildren().isEmpty() && !node.isRoot()) { // Node is empty now. Run delete recursively
+                this.setTranslation(fullPath, null);
             }
-
-        } else { // Create or overwrite
-            node.setChildren(nodeKey, translation);
+            return;
         }
+
+        // Create or overwrite
+        node.setChildren(leafKey, translation);
     }
 
     /**
      * @return All translation keys as absolute paths (full-key)
      */
-    public @NotNull Set<String> getFullKeys() {
-        return this.getFullKeys("", this.rootNode); // Just use root node
+    public @NotNull Set<KeyPath> getFullKeys() {
+        return this.getFullKeys(new KeyPath(), this.rootNode); // Just use root node
     }
 
     /**
@@ -160,15 +157,15 @@ public class TranslationData {
      * @param node Node section to begin with
      * @return All translation keys where the path contains the specified @parentPath
      */
-    public @NotNull Set<String> getFullKeys(String parentPath, TranslationNode node) {
-        Set<String> keys = new LinkedHashSet<>();
+    public @NotNull Set<KeyPath> getFullKeys(KeyPath parentPath, TranslationNode node) {
+        Set<KeyPath> keys = new LinkedHashSet<>();
 
         if(node.isLeaf()) { // This node does not lead to child's - just add the key
             keys.add(parentPath);
         }
 
         for(Map.Entry<String, TranslationNode> children : node.getChildren().entrySet()) {
-            keys.addAll(this.getFullKeys(this.pathUtil.append(parentPath, children.getKey()), children.getValue()));
+            keys.addAll(this.getFullKeys(new KeyPath(parentPath, children.getKey()), children.getValue()));
         }
 
         return keys;
@@ -178,7 +175,6 @@ public class TranslationData {
     public String toString() {
         return "TranslationData{" +
                 "mapClass=" + rootNode.getChildren().getClass().getSimpleName() +
-                ", pathUtil=" + pathUtil +
                 ", locales=" + locales +
                 ", rootNode=" + rootNode +
                 '}';

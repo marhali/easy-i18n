@@ -1,5 +1,6 @@
 package de.marhali.easyi18n;
 
+import de.marhali.easyi18n.model.KeyPath;
 import de.marhali.easyi18n.model.Translation;
 import de.marhali.easyi18n.model.TranslationData;
 import de.marhali.easyi18n.model.TranslationNode;
@@ -15,256 +16,184 @@ import java.util.*;
  */
 public class TranslationDataTest {
 
-    private final int numOfTranslations = 18;
+    private final int numOfTranslations = 14;
+    private final Translation translation = new Translation("en", "test");
 
     private void addTranslations(TranslationData data) {
-        data.setTranslation("zulu", new Translation("en", "test"));
-        data.setTranslation("gamma", new Translation("en", "test"));
+        data.setTranslation(KeyPath.of("zulu"), translation);
+        data.setTranslation(KeyPath.of("gamma"), translation);
 
-        data.setTranslation("foxtrot.super.long.key", new Translation("en", "test"));
+        data.setTranslation(KeyPath.of("foxtrot.super.long.key"), translation);
+        data.setTranslation(KeyPath.of("foxtrot", "super", "long", "key"), translation);
 
-        data.setTranslation("bravo.b", new Translation("en", "test"));
-        data.setTranslation("bravo.c", new Translation("en", "test"));
-        data.setTranslation("bravo.a", new Translation("en", "test"));
-        data.setTranslation("bravo.d", new Translation("en", "test"));
-        data.setTranslation("bravo.long.bravo", new Translation("en", "test"));
-        data.setTranslation("bravo.long.charlie.a", new Translation("en", "test"));
-        data.setTranslation("bravo.long.alpha", new Translation("en", "test"));
+        data.setTranslation(KeyPath.of("charlie.b", "sub"), translation);
+        data.setTranslation(KeyPath.of("charlie.a", "sub"), translation);
 
-        data.setTranslation("alpha.b", new Translation("en", "test"));
-        data.setTranslation("alpha.c", new Translation("en", "test"));
-        data.setTranslation("alpha.a", new Translation("en", "test"));
-        data.setTranslation("alpha.d", new Translation("en", "test"));
+        data.setTranslation(KeyPath.of("bravo.b"), translation);
+        data.setTranslation(KeyPath.of("bravo.c"), translation);
+        data.setTranslation(KeyPath.of("bravo.a"), translation);
+        data.setTranslation(KeyPath.of("bravo.d"), translation);
 
-        data.setTranslation("charlie.b", new Translation("en", "test"));
-        data.setTranslation("charlie.c", new Translation("en", "test"));
-        data.setTranslation("charlie.a", new Translation("en", "test"));
-        data.setTranslation("charlie.d", new Translation("en", "test"));
+        data.setTranslation(KeyPath.of("bravo", "b"), translation);
+        data.setTranslation(KeyPath.of("bravo", "c"), translation);
+        data.setTranslation(KeyPath.of("bravo", "a"), translation);
+        data.setTranslation(KeyPath.of("bravo", "d"), translation);
     }
 
     @Test
     public void testKeySorting() {
-        TranslationData data = new TranslationData(true, true);
+        TranslationData data = new TranslationData(true);
         this.addTranslations(data);
 
-        Set<String> expectation = new LinkedHashSet<>(Arrays.asList(
-                "alpha.a", "alpha.b", "alpha.c", "alpha.d",
-                "bravo.a", "bravo.b", "bravo.c", "bravo.d",
-                "bravo.long.alpha", "bravo.long.bravo", "bravo.long.charlie.a",
-                "charlie.a", "charlie.b", "charlie.c", "charlie.d",
-                "foxtrot.super.long.key",
-                "gamma",
-                "zulu"
+        Set<KeyPath> expectation = new LinkedHashSet<>(Arrays.asList(
+                KeyPath.of("bravo", "a"), KeyPath.of("bravo", "b"), KeyPath.of("bravo", "c"), KeyPath.of("bravo", "d"),
+                KeyPath.of("bravo.a"), KeyPath.of("bravo.b"), KeyPath.of("bravo.c"), KeyPath.of("bravo.d"),
+                KeyPath.of("charlie.a", "sub"), KeyPath.of("charlie.b", "sub"),
+                KeyPath.of("foxtrot", "super", "long", "key"),
+                KeyPath.of("foxtrot.super.long.key"),
+                KeyPath.of("gamma"),
+                KeyPath.of("zulu")
         ));
 
         Assert.assertEquals(data.getFullKeys(), expectation);
+        Assert.assertEquals(data.getFullKeys().size(), numOfTranslations);
     }
 
     @Test
     public void testKeyUnordered() {
-        TranslationData data = new TranslationData(false, true);
+        TranslationData data = new TranslationData(false);
         this.addTranslations(data);
 
-        Set<String> expectation = new LinkedHashSet<>(Arrays.asList(
-                "zulu",
-                "gamma",
-                "foxtrot.super.long.key",
-                "bravo.b", "bravo.c", "bravo.a", "bravo.d",
-                "bravo.long.bravo", "bravo.long.charlie.a", "bravo.long.alpha",
-                "alpha.b", "alpha.c", "alpha.a", "alpha.d",
-                "charlie.b", "charlie.c", "charlie.a", "charlie.d"
+        Set<KeyPath> expectation = new LinkedHashSet<>(Arrays.asList(
+                KeyPath.of("zulu"),
+                KeyPath.of("gamma"),
+                KeyPath.of("foxtrot.super.long.key"),
+                KeyPath.of("foxtrot", "super", "long", "key"),
+                KeyPath.of("charlie.b", "sub"), KeyPath.of("charlie.a", "sub"),
+                KeyPath.of("bravo.b"), KeyPath.of("bravo.c"), KeyPath.of("bravo.a"), KeyPath.of("bravo.d"),
+                KeyPath.of("bravo", "b"), KeyPath.of("bravo", "c"), KeyPath.of("bravo", "a"), KeyPath.of("bravo", "d")
         ));
 
         Assert.assertEquals(data.getFullKeys(), expectation);
+        Assert.assertEquals(data.getFullKeys().size(), numOfTranslations);
     }
 
     @Test
-    public void testKeyNesting() {
-        TranslationData data = new TranslationData(true, true);
+    public void testDelete() {
+        TranslationData data = new TranslationData(true);
 
-        data.setTranslation("nested.alpha", new Translation("en", "test"));
-        data.setTranslation("nested.bravo", new Translation("en", "test"));
-        data.setTranslation("other.alpha", new Translation("en", "test"));
-        data.setTranslation("other.bravo", new Translation("en", "test"));
+        data.setTranslation(KeyPath.of("alpha"), translation);
+        data.setTranslation(KeyPath.of("nested.alpha"), translation);
+        data.setTranslation(KeyPath.of("nested.long.bravo"), translation);
 
-        Assert.assertEquals(data.getRootNode().getChildren().size(), 2);
+        data.setTranslation(KeyPath.of("beta"), translation);
+        data.setTranslation(KeyPath.of("nested", "alpha"), translation);
+        data.setTranslation(KeyPath.of("nested", "long", "bravo"), translation);
 
-        for(TranslationNode node : data.getRootNode().getChildren().values()) {
-            Assert.assertFalse(node.isLeaf());
-        }
-    }
+        Assert.assertEquals(data.getFullKeys().size(), 6);
 
-    @Test
-    public void testKeyNonNested() {
-        TranslationData data = new TranslationData(true, false);
-        this.addTranslations(data);
-
-        Assert.assertEquals(data.getRootNode().getChildren().size(), this.numOfTranslations);
-
-        for(TranslationNode node : data.getRootNode().getChildren().values()) {
-            Assert.assertTrue(node.isLeaf());
-        }
-    }
-
-    @Test
-    public void testDeleteNested() {
-        TranslationData data = new TranslationData(true, true);
-
-        Translation value = new Translation("en", "test");
-
-        data.setTranslation("alpha", value);
-        data.setTranslation("nested.alpha", value);
-        data.setTranslation("nested.long.bravo", value);
+        data.setTranslation(KeyPath.of("alpha"), null);
+        data.setTranslation(KeyPath.of("nested.alpha"), null);
+        data.setTranslation(KeyPath.of("nested.long.bravo"), null);
 
         Assert.assertEquals(data.getFullKeys().size(), 3);
 
-        data.setTranslation("alpha", null);
-        data.setTranslation("nested.alpha", null);
-        data.setTranslation("nested.long.bravo", null);
+        data.setTranslation(KeyPath.of("beta"), null);
+        data.setTranslation(KeyPath.of("nested", "alpha"), null);
+        data.setTranslation(KeyPath.of("nested", "long", "bravo"), null);
 
         Assert.assertEquals(data.getFullKeys().size(), 0);
-        Assert.assertNull(data.getTranslation("alpha"));
-        Assert.assertNull(data.getTranslation("nested.alpha"));
-        Assert.assertNull(data.getTranslation("nested.long.bravo"));
+
+        Assert.assertNull(data.getTranslation(KeyPath.of("alpha")));
+        Assert.assertNull(data.getTranslation(KeyPath.of("nested.alpha")));
+        Assert.assertNull(data.getTranslation(KeyPath.of("nested.long.bravo")));
+
+        Assert.assertNull(data.getTranslation(KeyPath.of("beta")));
+        Assert.assertNull(data.getTranslation(KeyPath.of("nested", "alpha")));
+        Assert.assertNull(data.getTranslation(KeyPath.of("nested", "long", "bravo")));
     }
 
     @Test
-    public void testDeleteNonNested() {
-        TranslationData data = new TranslationData(true, false);
-
-        Translation value = new Translation("en", "test");
-
-        data.setTranslation("alpha", value);
-        data.setTranslation("nested.alpha", value);
-        data.setTranslation("nested.long.bravo", value);
-
-        Assert.assertEquals(data.getFullKeys().size(), 3);
-
-        data.setTranslation("alpha", null);
-        data.setTranslation("nested.alpha", null);
-        data.setTranslation("nested.long.bravo", null);
-
-        Assert.assertEquals(data.getFullKeys().size(), 0);
-        Assert.assertNull(data.getTranslation("alpha"));
-        Assert.assertNull(data.getTranslation("nested.alpha"));
-        Assert.assertNull(data.getTranslation("nested.long.bravo"));
-    }
-
-    @Test
-    public void testRecurseDeleteNonNested() {
-        TranslationData data = new TranslationData(true, false);
+    public void testDeleteRecursively() {
+        TranslationData data = new TranslationData(true);
         this.addTranslations(data);
 
-        data.setTranslation("foxtrot.super.long.key", null);
+        data.setTranslation(KeyPath.of("foxtrot.super.long.key"), null);
+        data.setTranslation(KeyPath.of("foxtrot", "super", "long", "key"), null);
 
-        Assert.assertNull(data.getTranslation("foxtrot.super.long.key"));
+        Assert.assertNull(data.getTranslation(KeyPath.of("foxtrot.super.long.key")));
         Assert.assertNull(data.getRootNode().getChildren().get("foxtrot"));
+        Assert.assertEquals(data.getFullKeys().size(), numOfTranslations  - 2);
     }
 
     @Test
-    public void testRecurseDeleteNested() {
-        TranslationData data = new TranslationData(true, true);
-        this.addTranslations(data);
-
-        data.setTranslation("foxtrot.super.long.key", null);
-
-        Assert.assertNull(data.getTranslation("foxtrot.super.long.key"));
-        Assert.assertNull(data.getRootNode().getChildren().get("foxtrot"));
-    }
-
-    @Test
-    public void testOverwriteNonNested() {
-        TranslationData data = new TranslationData(true, false);
+    public void testOverwrite() {
+        TranslationData data = new TranslationData(true);
 
         Translation before = new Translation("en", "before");
         Translation after = new Translation("en", "after");
 
-        data.setTranslation("alpha", before);
-        data.setTranslation("nested.alpha", before);
-        data.setTranslation("nested.long.bravo", before);
+        data.setTranslation(KeyPath.of("alpha"), before);
+        data.setTranslation(KeyPath.of("nested.alpha"), before);
+        data.setTranslation(KeyPath.of("nested.long.bravo"), before);
+        data.setTranslation(KeyPath.of("beta"), before);
+        data.setTranslation(KeyPath.of("nested", "alpha"), before);
+        data.setTranslation(KeyPath.of("nested", "long", "bravo"), before);
 
-        Assert.assertEquals(data.getTranslation("alpha"), before);
-        Assert.assertEquals(data.getTranslation("alpha"), before);
-        Assert.assertEquals(data.getTranslation("alpha"), before);
+        Assert.assertEquals(data.getTranslation(KeyPath.of("alpha")), before);
+        Assert.assertEquals(data.getTranslation(KeyPath.of("nested.alpha")), before);
+        Assert.assertEquals(data.getTranslation(KeyPath.of("nested.long.bravo")), before);
+        Assert.assertEquals(data.getTranslation(KeyPath.of("beta")), before);
+        Assert.assertEquals(data.getTranslation(KeyPath.of("nested", "alpha")), before);
+        Assert.assertEquals(data.getTranslation(KeyPath.of("nested", "long", "bravo")), before);
 
-        data.setTranslation("alpha", after);
-        data.setTranslation("nested.alpha", after);
-        data.setTranslation("nested.long.bravo", after);
+        data.setTranslation(KeyPath.of("alpha"), after);
+        data.setTranslation(KeyPath.of("nested.alpha"), after);
+        data.setTranslation(KeyPath.of("nested.long.bravo"), after);
+        data.setTranslation(KeyPath.of("beta"), after);
+        data.setTranslation(KeyPath.of("nested", "alpha"), after);
+        data.setTranslation(KeyPath.of("nested", "long", "bravo"), after);
 
-        Assert.assertEquals(data.getTranslation("alpha"), after);
-        Assert.assertEquals(data.getTranslation("alpha"), after);
-        Assert.assertEquals(data.getTranslation("alpha"), after);
+        Assert.assertEquals(data.getTranslation(KeyPath.of("alpha")), after);
+        Assert.assertEquals(data.getTranslation(KeyPath.of("nested.alpha")), after);
+        Assert.assertEquals(data.getTranslation(KeyPath.of("nested.long.bravo")), after);
+        Assert.assertEquals(data.getTranslation(KeyPath.of("beta")), after);
+        Assert.assertEquals(data.getTranslation(KeyPath.of("nested", "alpha")), after);
+        Assert.assertEquals(data.getTranslation(KeyPath.of("nested", "long", "bravo")), after);
     }
 
     @Test
-    public void testOverwriteNested() {
-        TranslationData data = new TranslationData(true, true);
+    public void testTransformRecursively() {
+        TranslationData data = new TranslationData(true);
 
-        Translation before = new Translation("en", "before");
-        Translation after = new Translation("en", "after");
+        data.setTranslation(KeyPath.of("alpha.nested.key"), translation);
+        data.setTranslation(KeyPath.of("alpha.other"), translation);
+        data.setTranslation(KeyPath.of("bravo"), translation);
+        data.setTranslation(KeyPath.of("alpha", "nested", "key"), translation);
+        data.setTranslation(KeyPath.of("alpha", "other"), translation);
+        data.setTranslation(KeyPath.of("charlie"), translation);
 
-        data.setTranslation("alpha", before);
-        data.setTranslation("nested.alpha", before);
-        data.setTranslation("nested.long.bravo", before);
+        Assert.assertEquals(6, data.getFullKeys().size());
 
-        Assert.assertEquals(data.getTranslation("alpha"), before);
-        Assert.assertEquals(data.getTranslation("alpha"), before);
-        Assert.assertEquals(data.getTranslation("alpha"), before);
+        data.setTranslation(KeyPath.of("alpha.nested"), translation);
+        data.setTranslation(KeyPath.of("alpha.other.new"), translation);
+        data.setTranslation(KeyPath.of("bravo"), null);
+        data.setTranslation(KeyPath.of("alpha", "nested"), translation);
+        data.setTranslation(KeyPath.of("alpha", "other", "new"), translation);
+        data.setTranslation(KeyPath.of("charlie"), null);
 
-        data.setTranslation("alpha", after);
-        data.setTranslation("nested.alpha", after);
-        data.setTranslation("nested.long.bravo", after);
+        Assert.assertEquals(6, data.getFullKeys().size());
 
-        Assert.assertEquals(data.getTranslation("alpha"), after);
-        Assert.assertEquals(data.getTranslation("alpha"), after);
-        Assert.assertEquals(data.getTranslation("alpha"), after);
-    }
+        Assert.assertNotNull(data.getTranslation(KeyPath.of("alpha.nested.key")));
+        Assert.assertNotNull(data.getTranslation(KeyPath.of("alpha.other")));
+        Assert.assertNull(data.getTranslation(KeyPath.of("bravo")));
+        Assert.assertEquals(data.getTranslation(KeyPath.of("alpha.nested")), translation);
+        Assert.assertEquals(data.getTranslation(KeyPath.of("alpha.other.new")), translation);
 
-    @Test
-    public void testRecurseTransformNested() {
-        TranslationData data = new TranslationData(true, true);
-
-        Translation value = new Translation("en", "test");
-
-        data.setTranslation("alpha.nested.key", value);
-        data.setTranslation("alpha.other", value);
-        data.setTranslation("bravo", value);
-
-        Assert.assertEquals(data.getFullKeys().size(), 3);
-
-        data.setTranslation("alpha.nested", value);
-        data.setTranslation("alpha.other.new", value);
-        data.setTranslation("bravo", null);
-
-        Assert.assertEquals(data.getFullKeys().size(), 2);
-        Assert.assertNull(data.getTranslation("alpha.nested.key"));
-        Assert.assertNull(data.getTranslation("alpha.other"));
-        Assert.assertNull(data.getTranslation("bravo"));
-        Assert.assertEquals(data.getTranslation("alpha.nested"), value);
-        Assert.assertEquals(data.getTranslation("alpha.other.new"), value);
-    }
-
-    @Test
-    public void testRecurseTransformNonNested() {
-        TranslationData data = new TranslationData(true, false);
-
-        Translation value = new Translation("en", "test");
-
-        data.setTranslation("alpha.nested.key", value);
-        data.setTranslation("alpha.other", value);
-        data.setTranslation("bravo", value);
-
-        Assert.assertEquals(data.getFullKeys().size(), 3);
-
-        data.setTranslation("alpha.nested", value);
-        data.setTranslation("alpha.other.new", value);
-        data.setTranslation("bravo", null);
-
-        Assert.assertEquals(data.getFullKeys().size(), 4);
-        Assert.assertNull(data.getTranslation("bravo"));
-        Assert.assertEquals(data.getTranslation("alpha.nested.key"), value);
-        Assert.assertEquals(data.getTranslation("alpha.other"), value);
-        Assert.assertEquals(data.getTranslation("alpha.nested"), value);
-        Assert.assertEquals(data.getTranslation("alpha.other.new"), value);
+        Assert.assertNull(data.getTranslation(KeyPath.of("alpha", "nested", "key")));
+        Assert.assertNull(data.getTranslation(KeyPath.of("alpha", "other")));
+        Assert.assertNull(data.getTranslation(KeyPath.of("charlie")));
+        Assert.assertEquals(data.getTranslation(KeyPath.of("alpha", "nested")), translation);
+        Assert.assertEquals(data.getTranslation(KeyPath.of("alpha", "other", "new")), translation);
     }
 }

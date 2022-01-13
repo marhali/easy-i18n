@@ -6,12 +6,10 @@ import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.ui.components.JBLabel;
 import com.intellij.ui.components.JBScrollPane;
 import com.intellij.ui.components.JBTextField;
+
 import de.marhali.easyi18n.InstanceManager;
-import de.marhali.easyi18n.model.KeyedTranslation;
-import de.marhali.easyi18n.model.Translation;
-import de.marhali.easyi18n.model.TranslationDelete;
+import de.marhali.easyi18n.model.*;
 import de.marhali.easyi18n.dialog.descriptor.DeleteActionDescriptor;
-import de.marhali.easyi18n.model.TranslationUpdate;
 
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
@@ -27,6 +25,8 @@ import java.util.ResourceBundle;
 public class EditDialog {
 
     private final Project project;
+    private final KeyPathConverter converter;
+
     private final KeyedTranslation origin;
 
     private JBTextField keyTextField;
@@ -34,6 +34,7 @@ public class EditDialog {
 
     public EditDialog(Project project, KeyedTranslation origin) {
         this.project = project;
+        this.converter = new KeyPathConverter(project);
         this.origin = origin;
     }
 
@@ -56,7 +57,7 @@ public class EditDialog {
             }
         });
 
-        return new KeyedTranslation(keyTextField.getText(), translation);
+        return new KeyedTranslation(converter.split(keyTextField.getText()), translation);
     }
 
     private DialogBuilder prepare() {
@@ -65,7 +66,7 @@ public class EditDialog {
 
         JPanel keyPanel = new JPanel(new GridLayout(0, 1, 2,2));
         JBLabel keyLabel = new JBLabel(ResourceBundle.getBundle("messages").getString("translation.key"));
-        keyTextField = new JBTextField(this.origin.getKey());
+        keyTextField = new JBTextField(this.converter.concat(this.origin.getKey()));
         keyLabel.setLabelFor(keyTextField);
         keyPanel.add(keyLabel);
         keyPanel.add(keyTextField);

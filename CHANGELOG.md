@@ -5,12 +5,14 @@
 ## [Unreleased]
 ### BREAKING CHANGES
 - Translation file pattern matcher needs to be updated to <kbd>\*.*</kbd> or equivalent wildcard rule 
+- I18n key nesting will now escape every delimiter within a section layer (can be inverted via option)
 
 ### Added
 - Full keyboard shortcut support inside tool-window
 - Support for dots within key nodes in YAML files
 
 ### Changed
+- Key completion inside editor suggests all keys without any logic
 - Translation file pattern uses wildcard matcher instead of regex
 - Improve exception handling on IO operations
 - Update Qodana to latest version

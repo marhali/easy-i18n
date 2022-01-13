@@ -8,9 +8,10 @@ import com.intellij.ui.components.JBScrollPane;
 import com.intellij.ui.components.JBTextField;
 
 import de.marhali.easyi18n.InstanceManager;
-import de.marhali.easyi18n.model.KeyedTranslation;
-import de.marhali.easyi18n.model.Translation;
-import de.marhali.easyi18n.model.TranslationCreate;
+import de.marhali.easyi18n.model.*;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
@@ -25,19 +26,23 @@ import java.util.ResourceBundle;
  */
 public class AddDialog {
 
-    private final Project project;
-    private String preKey;
+    private final @NotNull Project project;
+    private final @NotNull KeyPathConverter converter;
+
+    private @NotNull KeyPath preKey;
 
     private JBTextField keyTextField;
     private Map<String, JBTextField> valueTextFields;
 
-    public AddDialog(Project project, String preKey) {
+    public AddDialog(@NotNull Project project, @Nullable KeyPath preKey) {
         this(project);
-        this.preKey = preKey;
+        this.preKey = preKey == null ? new KeyPath() : preKey;
     }
 
-    public AddDialog(Project project) {
+    public AddDialog(@NotNull Project project) {
         this.project = project;
+        this.converter = new KeyPathConverter(project);
+        this.preKey = new KeyPath();
     }
 
     public void showAndHandle() {
@@ -57,7 +62,8 @@ public class AddDialog {
             }
         });
 
-        TranslationCreate creation = new TranslationCreate(new KeyedTranslation(keyTextField.getText(), translation));
+        KeyedTranslation keyedTranslation = new KeyedTranslation(converter.split(keyTextField.getText()), translation);
+        TranslationCreate creation = new TranslationCreate(keyedTranslation);
         InstanceManager.get(project).processUpdate(creation);
     }
 
@@ -67,12 +73,16 @@ public class AddDialog {
 
         JPanel keyPanel = new JPanel(new GridLayout(0, 1, 2, 2));
         JBLabel keyLabel = new JBLabel(ResourceBundle.getBundle("messages").getString("translation.key"));
-        keyTextField = new JBTextField(this.preKey);
+        keyTextField = new JBTextField(this.converter.concat(this.preKey));
         keyLabel.setLabelFor(keyTextField);
         keyPanel.add(keyLabel);
         keyPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
         keyPanel.add(keyTextField);
         rootPanel.add(keyPanel);
+
+        if(!this.preKey.isEmpty()) { // Add delimiter if pre key is defined
+            keyTextField.setText(keyTextField.getText() + KeyPath.DELIMITER);
+        }
 
         JPanel valuePanel = new JPanel(new GridLayout(0, 1, 2, 2));
         valueTextFields = new HashMap<>();

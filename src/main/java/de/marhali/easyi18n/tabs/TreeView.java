@@ -10,10 +10,7 @@ import com.intellij.ui.treeStructure.Tree;
 
 import de.marhali.easyi18n.InstanceManager;
 import de.marhali.easyi18n.listener.ReturnKeyListener;
-import de.marhali.easyi18n.model.KeyedTranslation;
-import de.marhali.easyi18n.model.Translation;
-import de.marhali.easyi18n.model.TranslationData;
-import de.marhali.easyi18n.model.TranslationDelete;
+import de.marhali.easyi18n.model.*;
 import de.marhali.easyi18n.model.bus.BusListener;
 import de.marhali.easyi18n.action.treeview.CollapseTreeViewAction;
 import de.marhali.easyi18n.action.treeview.ExpandTreeViewAction;
@@ -40,6 +37,8 @@ import java.util.ResourceBundle;
  */
 public class TreeView implements BusListener {
 
+    private final Tree tree;
+
     private final Project project;
 
     private TreeModelMapper currentMapper;
@@ -47,8 +46,6 @@ public class TreeView implements BusListener {
     private JPanel rootPanel;
     private JPanel toolBarPanel;
     private JPanel containerPanel;
-
-    private Tree tree;
 
     public TreeView(Project project) {
         this.project = project;
@@ -87,8 +84,8 @@ public class TreeView implements BusListener {
     }
 
     @Override
-    public void onFocusKey(@Nullable String key) {
-        if (key != null && currentMapper != null) {
+    public void onFocusKey(@NotNull KeyPath key) {
+        if (currentMapper != null) {
             TreePath path = currentMapper.findTreePath(key);
 
             this.tree.getSelectionModel().setSelectionPath(path);
@@ -120,7 +117,7 @@ public class TreeView implements BusListener {
             return;
         }
 
-        String fullPath = TreeUtil.getFullPath(path);
+        KeyPath fullPath = TreeUtil.getFullPath(path);
         Translation translation = InstanceManager.get(project).store().getData().getTranslation(fullPath);
 
         if (translation == null) {
@@ -138,7 +135,7 @@ public class TreeView implements BusListener {
         }
 
         for (TreePath path : tree.getSelectionPaths()) {
-            String fullPath = TreeUtil.getFullPath(path);
+            KeyPath fullPath = TreeUtil.getFullPath(path);
 
             InstanceManager.get(project).processUpdate(
                     new TranslationDelete(new KeyedTranslation(fullPath, null))

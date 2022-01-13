@@ -11,6 +11,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 
 import de.marhali.easyi18n.DataStore;
 import de.marhali.easyi18n.InstanceManager;
+import de.marhali.easyi18n.model.KeyPathConverter;
 import de.marhali.easyi18n.model.Translation;
 import de.marhali.easyi18n.service.SettingsService;
 
@@ -37,12 +38,13 @@ public class GenericFoldingBuilder extends FoldingBuilderEx {
         }
 
         DataStore store = InstanceManager.get(root.getProject()).store();
+        KeyPathConverter converter = new KeyPathConverter(root.getProject());
 
         for(final PsiLiteralValue literalValue : literalValues) {
             String value = literalValue.getValue() instanceof String ? (String) literalValue.getValue() : null;
 
             // Undefined string literal or not a translation
-            if(value == null || store.getData().getTranslation(value) == null) {
+            if(value == null || store.getData().getTranslation(converter.split(value)) == null) {
                 continue;
             }
 
@@ -65,7 +67,9 @@ public class GenericFoldingBuilder extends FoldingBuilderEx {
         }
 
         DataStore store = InstanceManager.get(literalValue.getProject()).store();
-        Translation translation = store.getData().getTranslation(value);
+        KeyPathConverter converter = new KeyPathConverter(literalValue.getProject());
+
+        Translation translation = store.getData().getTranslation(converter.split(value));
 
         if(translation == null) {
             return null;

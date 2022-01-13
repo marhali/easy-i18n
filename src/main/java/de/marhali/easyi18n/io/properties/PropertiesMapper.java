@@ -1,8 +1,8 @@
 package de.marhali.easyi18n.io.properties;
 
+import de.marhali.easyi18n.model.KeyPath;
 import de.marhali.easyi18n.model.Translation;
 import de.marhali.easyi18n.model.TranslationData;
-import de.marhali.easyi18n.model.TranslationNode;
 import de.marhali.easyi18n.util.StringUtil;
 
 import org.apache.commons.lang.math.NumberUtils;
@@ -17,7 +17,7 @@ public class PropertiesMapper {
 
     public static void read(String locale, SortableProperties properties, TranslationData data) {
         for(Map.Entry<Object, Object> entry : properties.entrySet()) {
-            String key = String.valueOf(entry.getKey());
+            KeyPath key = new KeyPath(String.valueOf(entry.getKey()));
             Object value = entry.getValue();
 
             Translation translation = data.getTranslation(key);
@@ -36,18 +36,19 @@ public class PropertiesMapper {
     }
 
     public static void write(String locale, SortableProperties properties, TranslationData data) {
-        for(String key : data.getFullKeys()) {
+        for(KeyPath key : data.getFullKeys()) {
             Translation translation = data.getTranslation(key);
 
             if(translation != null && translation.containsKey(locale)) {
+                String simpleKey = key.toSimpleString();
                 String content = translation.get(locale);
 
                 if(PropertiesArrayMapper.isArray(content)) {
-                    properties.put(key, PropertiesArrayMapper.write(content));
+                    properties.put(simpleKey, PropertiesArrayMapper.write(content));
                 } else if(NumberUtils.isNumber(content)) {
-                    properties.put(key, NumberUtils.createNumber(content));
+                    properties.put(simpleKey, NumberUtils.createNumber(content));
                 } else {
-                    properties.put(key, content);
+                    properties.put(simpleKey, content);
                 }
             }
         }

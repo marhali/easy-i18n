@@ -42,7 +42,7 @@ public class DataStore {
 
     protected DataStore(@NotNull Project project) {
         this.project = project;
-        this.data = new TranslationData(true, true); // Initialize with hard-coded configuration
+        this.data = new TranslationData(true); // Initialize with hard-coded configuration
         this.changeListener = new FileChangeListener(project);
 
         VirtualFileManager.getInstance().addAsyncFileListener(
@@ -63,7 +63,7 @@ public class DataStore {
         String localesPath = state.getLocalesPath();
 
         if(localesPath == null || localesPath.isEmpty()) { // Populate empty instance
-            this.data = new TranslationData(state.isSortKeys(), state.isNestedKeys());
+            this.data = new TranslationData(state.isSortKeys());
             return;
         }
 
@@ -73,7 +73,7 @@ public class DataStore {
 
         strategy.read(this.project, localesPath, state, (data) -> {
             this.data = data == null
-                    ? new TranslationData(state.isSortKeys(), state.isNestedKeys())
+                    ? new TranslationData(state.isSortKeys())
                     : data;
 
             successResult.accept(data != null);

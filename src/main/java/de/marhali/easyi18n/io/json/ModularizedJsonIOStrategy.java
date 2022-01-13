@@ -9,6 +9,7 @@ import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 
 import de.marhali.easyi18n.io.IOStrategy;
+import de.marhali.easyi18n.model.KeyPath;
 import de.marhali.easyi18n.model.SettingsState;
 import de.marhali.easyi18n.model.TranslationData;
 import de.marhali.easyi18n.model.TranslationNode;
@@ -80,7 +81,7 @@ public class ModularizedJsonIOStrategy implements IOStrategy {
                 throw new IllegalArgumentException("Specified folder is invalid (" + localesPath + ")");
             }
 
-            TranslationData data = new TranslationData(state.isSortKeys(), state.isNestedKeys());
+            TranslationData data = new TranslationData(state.isSortKeys());
             VirtualFile[] localeDirectories = directory.getChildren();
 
             for(VirtualFile localeDir : localeDirectories) {
@@ -95,8 +96,8 @@ public class ModularizedJsonIOStrategy implements IOStrategy {
 
                     String moduleName = module.getNameWithoutExtension();
 
-                    TranslationNode moduleNode = data.getNode(moduleName) != null
-                            ? data.getNode(moduleName)
+                    TranslationNode moduleNode = data.getNode(KeyPath.of(moduleName)) != null
+                            ? data.getNode(KeyPath.of(moduleName))
                             : new TranslationNode(state.isSortKeys() ? new TreeMap<>() : new LinkedHashMap<>());
 
                     try {

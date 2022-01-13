@@ -3,12 +3,8 @@ package de.marhali.easyi18n.tabs.mapper;
 import com.intellij.ide.projectView.PresentationData;
 import com.intellij.ui.JBColor;
 
-import de.marhali.easyi18n.model.SettingsState;
-import de.marhali.easyi18n.model.Translation;
-import de.marhali.easyi18n.model.TranslationData;
-import de.marhali.easyi18n.model.TranslationNode;
+import de.marhali.easyi18n.model.*;
 import de.marhali.easyi18n.model.bus.SearchQueryListener;
-import de.marhali.easyi18n.util.PathUtil;
 import de.marhali.easyi18n.util.UiUtil;
 
 import org.jetbrains.annotations.NotNull;
@@ -26,12 +22,14 @@ import java.util.Map;
 public class TreeModelMapper extends DefaultTreeModel implements SearchQueryListener {
 
     private final TranslationData data;
+    private final KeyPathConverter converter;
     private final SettingsState state;
 
     public TreeModelMapper(TranslationData data, SettingsState state) {
         super(null);
 
         this.data = data;
+        this.converter = new KeyPathConverter(state.isNestedKeys());
         this.state = state;
 
         DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode();
@@ -42,7 +40,7 @@ public class TreeModelMapper extends DefaultTreeModel implements SearchQueryList
     @Override
     public void onSearchQuery(@Nullable String query) {
         DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode();
-        TranslationData shadow = new TranslationData(this.state.isSortKeys(), this.state.isNestedKeys());
+        TranslationData shadow = new TranslationData(this.state.isSortKeys());
 
         if(query == null) {
             this.generateNodes(rootNode, this.data.getRootNode());
@@ -52,9 +50,9 @@ public class TreeModelMapper extends DefaultTreeModel implements SearchQueryList
 
         query = query.toLowerCase();
 
-        for(String currentKey : this.data.getFullKeys()) {
+        for(KeyPath currentKey : this.data.getFullKeys()) {
             Translation translation = this.data.getTranslation(currentKey);
-            String loweredKey = currentKey.toLowerCase();
+            String loweredKey = this.converter.concat(currentKey).toLowerCase();
 
             if(query.contains(loweredKey) || loweredKey.contains(query)) {
                 shadow.setTranslation(currentKey, translation);
@@ -100,14 +98,13 @@ public class TreeModelMapper extends DefaultTreeModel implements SearchQueryList
         }
     }
 
-    public @NotNull TreePath findTreePath(@NotNull String fullPath) {
-        List<String> sections = new PathUtil(this.state.isNestedKeys()).split(fullPath);
+    public @NotNull TreePath findTreePath(@NotNull KeyPath fullPath) {
         List<Object> nodes = new ArrayList<>();
 
         TreeNode currentNode = (TreeNode) this.getRoot();
         nodes.add(currentNode);
 
-        for(String section : sections) {
+        for(String section : fullPath) {
             currentNode = this.findNode(currentNode, section);
 
             if(currentNode == null) {
@@ -120,7 +117,7 @@ public class TreeModelMapper extends DefaultTreeModel implements SearchQueryList
         return new TreePath(nodes.toArray());
     }
 
-    public @Nullable DefaultMutableTreeNode findNode(@NotNull TreeNode parent, @NotNull String key) {
+    private @Nullable DefaultMutableTreeNode findNode(@NotNull TreeNode parent, @NotNull String key) {
         for(int i = 0; i < parent.getChildCount(); i++) {
             TreeNode child = parent.getChildAt(i);
 

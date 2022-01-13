@@ -9,19 +9,19 @@ import org.jetbrains.annotations.Nullable;
  */
 public class KeyedTranslation {
 
-    private @NotNull String key;
+    private @NotNull KeyPath key;
     private @Nullable Translation translation;
 
-    public KeyedTranslation(@NotNull String key, @Nullable Translation translation) {
+    public KeyedTranslation(@NotNull KeyPath key, @Nullable Translation translation) {
         this.key = key;
         this.translation = translation;
     }
 
-    public @NotNull String getKey() {
+    public KeyPath getKey() {
         return key;
     }
 
-    public void setKey(@NotNull String key) {
+    public void setKey(KeyPath key) {
         this.key = key;
     }
 

@@ -7,14 +7,13 @@ import java.util.Map;
 
 /**
  * Translation tree node. Manages child nodes which can be translations or also
- * nodes which can lead to another translation or node.
+ * nodes which can lead to another translation or node.<br>
  * Navigation inside a node can be upward and downward. To construct the full
- * translation key (full-key) every parent needs to be resolved recursively.
- * -
+ * translation key (full-key) every parent needs to be resolved recursively. <br>
+ * <br>
  * Whether the children nodes should be sorted is determined by the parent node.
  * For root nodes (empty parent) the {@link java.util.Map}-Type must be specified
  * to determine which sorting should be applied.
- *
  * @author marhali
  */
 public class TranslationNode {

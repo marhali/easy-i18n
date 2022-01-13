@@ -7,12 +7,18 @@ import com.intellij.psi.impl.FakePsiElement;
 import de.marhali.easyi18n.InstanceManager;
 import de.marhali.easyi18n.dialog.AddDialog;
 import de.marhali.easyi18n.dialog.EditDialog;
-
+import de.marhali.easyi18n.model.KeyPath;
+import de.marhali.easyi18n.model.KeyPathConverter;
 import de.marhali.easyi18n.model.KeyedTranslation;
 import de.marhali.easyi18n.model.Translation;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * Go to declaration reference for i18n keys.
+ * @author marhali
+ */
 public class KeyReference extends PsiReferenceBase<PsiElement> {
 
     @Nullable private final String myKey;
@@ -52,12 +58,14 @@ public class KeyReference extends PsiReferenceBase<PsiElement> {
 
         @Override
         public void navigate(boolean requestFocus) {
-            Translation translation = InstanceManager.get(getProject()).store().getData().getTranslation(getKey());
+            KeyPathConverter converter = new KeyPathConverter(getProject());
+            KeyPath path = converter.split(getKey());
+            Translation translation = InstanceManager.get(getProject()).store().getData().getTranslation(path);
 
             if(translation != null) {
-                new EditDialog(getProject(), new KeyedTranslation(getKey(), translation)).showAndHandle();
+                new EditDialog(getProject(), new KeyedTranslation(path, translation)).showAndHandle();
             } else {
-                new AddDialog(getProject(), getKey()).showAndHandle();
+                new AddDialog(getProject(), path).showAndHandle();
             }
         }
 

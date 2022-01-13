@@ -1,6 +1,7 @@
 package de.marhali.easyi18n.util;
 
 import com.intellij.ide.projectView.PresentationData;
+import de.marhali.easyi18n.model.KeyPath;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
@@ -13,13 +14,13 @@ public class TreeUtil {
 
     /**
      * Constructs the full path for a given {@link TreePath}
-     * @param path TreePath
-     * @return Full key (e.g user.username.title)
+     * @param treePath TreePath
+     * @return Corresponding key path
      */
-    public static String getFullPath(TreePath path) {
-        StringBuilder builder = new StringBuilder();
+    public static KeyPath getFullPath(TreePath treePath) {
+        KeyPath keyPath = new KeyPath();
 
-        for (Object obj : path.getPath()) {
+        for (Object obj : treePath.getPath()) {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) obj;
             Object value = node.getUserObject();
             String section = value instanceof PresentationData ?
@@ -29,13 +30,9 @@ public class TreeUtil {
                 continue;
             }
 
-            if(builder.length() != 0) {
-                builder.append(PathUtil.DELIMITER);
-            }
-
-            builder.append(section);
+            keyPath.add(section);
         }
 
-        return builder.toString();
+        return keyPath;
     }
 }

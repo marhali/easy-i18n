@@ -6,6 +6,7 @@ import com.google.gson.JsonPrimitive;
 
 import de.marhali.easyi18n.io.json.JsonArrayMapper;
 import de.marhali.easyi18n.io.json.JsonMapper;
+import de.marhali.easyi18n.model.KeyPath;
 import de.marhali.easyi18n.model.TranslationData;
 
 import org.apache.commons.lang.StringEscapeUtils;
@@ -16,7 +17,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
- * Unit tests for {@link de.marhali.easyi18n.io.json.JsonMapper}
+ * Unit tests for {@link JsonMapper}.
  * @author marhali
  */
 public class JsonMapperTest extends AbstractMapperTest {
@@ -28,7 +29,7 @@ public class JsonMapperTest extends AbstractMapperTest {
         input.add("alpha", new JsonPrimitive("test"));
         input.add("bravo", new JsonPrimitive("test"));
 
-        TranslationData data = new TranslationData(false, true);
+        TranslationData data = new TranslationData(false);
         JsonMapper.read("en", input, data.getRootNode());
 
         JsonObject output = new JsonObject();
@@ -45,7 +46,7 @@ public class JsonMapperTest extends AbstractMapperTest {
         input.add("alpha", new JsonPrimitive("test"));
         input.add("bravo", new JsonPrimitive("test"));
 
-        TranslationData data = new TranslationData(true, true);
+        TranslationData data = new TranslationData(true);
         JsonMapper.read("en", input, data.getRootNode());
 
         JsonObject output = new JsonObject();
@@ -57,9 +58,9 @@ public class JsonMapperTest extends AbstractMapperTest {
 
     @Override
     public void testArrays() {
-        TranslationData data = new TranslationData(true, true);
-        data.setTranslation("simple", create(arraySimple));
-        data.setTranslation("escaped", create(arrayEscaped));
+        TranslationData data = new TranslationData(true);
+        data.setTranslation(KeyPath.of("simple"), create(arraySimple));
+        data.setTranslation(KeyPath.of("escaped"), create(arrayEscaped));
 
         JsonObject output = new JsonObject();
         JsonMapper.write("en", output, data.getRootNode());
@@ -69,81 +70,82 @@ public class JsonMapperTest extends AbstractMapperTest {
         Assert.assertTrue(output.get("escaped").isJsonArray());
         Assert.assertEquals(arrayEscaped, StringEscapeUtils.unescapeJava(JsonArrayMapper.read(output.get("escaped").getAsJsonArray())));
 
-        TranslationData input = new TranslationData(true, true);
+        TranslationData input = new TranslationData(true);
         JsonMapper.read("en", output, input.getRootNode());
 
-        Assert.assertTrue(JsonArrayMapper.isArray(input.getTranslation("simple").get("en")));
-        Assert.assertTrue(JsonArrayMapper.isArray(input.getTranslation("escaped").get("en")));
+        Assert.assertTrue(JsonArrayMapper.isArray(input.getTranslation(KeyPath.of("simple")).get("en")));
+        Assert.assertTrue(JsonArrayMapper.isArray(input.getTranslation(KeyPath.of("escaped")).get("en")));
     }
 
     @Override
     public void testSpecialCharacters() {
-        TranslationData data = new TranslationData(true, true);
-        data.setTranslation("chars", create(specialCharacters));
+        TranslationData data = new TranslationData(true);
+        data.setTranslation(KeyPath.of("chars"), create(specialCharacters));
 
         JsonObject output = new JsonObject();
         JsonMapper.write("en", output, data.getRootNode());
 
         Assert.assertEquals(specialCharacters, output.get("chars").getAsString());
 
-        TranslationData input = new TranslationData(true, true);
+        TranslationData input = new TranslationData(true);
         JsonMapper.read("en", output, input.getRootNode());
 
-        Assert.assertEquals(specialCharacters, StringEscapeUtils.unescapeJava(input.getTranslation("chars").get("en")));
+        Assert.assertEquals(specialCharacters,
+                StringEscapeUtils.unescapeJava(input.getTranslation(KeyPath.of("chars")).get("en")));
     }
 
     @Override
     public void testNestedKeys() {
-        TranslationData data = new TranslationData(true, true);
-        data.setTranslation("nested.key.section", create("test"));
+        TranslationData data = new TranslationData(true);
+        data.setTranslation(KeyPath.of("nested", "key", "section"), create("test"));
 
         JsonObject output = new JsonObject();
         JsonMapper.write("en", output, data.getRootNode());
 
         Assert.assertEquals("test", output.getAsJsonObject("nested").getAsJsonObject("key").get("section").getAsString());
 
-        TranslationData input = new TranslationData(true, true);
+        TranslationData input = new TranslationData(true);
         JsonMapper.read("en", output, input.getRootNode());
 
-        Assert.assertEquals("test", input.getTranslation("nested.key.section").get("en"));
+        Assert.assertEquals("test", input.getTranslation(KeyPath.of("nested", "key", "section")).get("en"));
     }
 
     @Override
     public void testNonNestedKeys() {
-        TranslationData data = new TranslationData(true, false);
-        data.setTranslation("long.key.with.many.sections", create("test"));
+        TranslationData data = new TranslationData(true);
+        data.setTranslation(KeyPath.of("long.key.with.many.sections"), create("test"));
 
         JsonObject output = new JsonObject();
         JsonMapper.write("en", output, data.getRootNode());
 
         Assert.assertTrue(output.has("long.key.with.many.sections"));
 
-        TranslationData input = new TranslationData(true, false);
+        TranslationData input = new TranslationData(true);
         JsonMapper.read("en", output, input.getRootNode());
 
-        Assert.assertEquals("test", input.getTranslation("long.key.with.many.sections").get("en"));
+        Assert.assertEquals("test", input.getTranslation(KeyPath.of("long.key.with.many.sections")).get("en"));
     }
 
     @Override
     public void testLeadingSpace() {
-        TranslationData data = new TranslationData(true, true);
-        data.setTranslation("space", create(leadingSpace));
+        TranslationData data = new TranslationData(true);
+        data.setTranslation(KeyPath.of("space"), create(leadingSpace));
 
         JsonObject output = new JsonObject();
         JsonMapper.write("en", output, data.getRootNode());
 
         Assert.assertEquals(leadingSpace, output.get("space").getAsString());
 
-        TranslationData input = new TranslationData(true, true);
+        TranslationData input = new TranslationData(true);
         JsonMapper.read("en", output, input.getRootNode());
 
-        Assert.assertEquals(leadingSpace, input.getTranslation("space").get("en"));
+        Assert.assertEquals(leadingSpace, input.getTranslation(KeyPath.of("space")).get("en"));
     }
 
     @Override
     public void testNumbers() {
-        TranslationData data = new TranslationData(true, true);
-        data.setTranslation("numbered", create("15000"));
+        TranslationData data = new TranslationData(true);
+        data.setTranslation(KeyPath.of("numbered"), create("15000"));
 
         JsonObject output = new JsonObject();
         JsonMapper.write("en", output, data.getRootNode());
@@ -154,6 +156,6 @@ public class JsonMapperTest extends AbstractMapperTest {
         input.addProperty("numbered", 143.23);
         JsonMapper.read("en", input, data.getRootNode());
 
-        Assert.assertEquals("143.23", data.getTranslation("numbered").get("en"));
+        Assert.assertEquals("143.23", data.getTranslation(KeyPath.of("numbered")).get("en"));
     }
 }

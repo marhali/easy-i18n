@@ -3,6 +3,7 @@ package de.marhali.easyi18n.mapper;
 import de.marhali.easyi18n.io.properties.PropertiesArrayMapper;
 import de.marhali.easyi18n.io.properties.PropertiesMapper;
 import de.marhali.easyi18n.io.properties.SortableProperties;
+import de.marhali.easyi18n.model.KeyPath;
 import de.marhali.easyi18n.model.TranslationData;
 
 import org.apache.commons.lang.StringEscapeUtils;
@@ -11,7 +12,7 @@ import org.junit.Assert;
 import java.util.*;
 
 /**
- * Unit tests for {@link de.marhali.easyi18n.io.properties.PropertiesMapper}
+ * Unit tests for {@link PropertiesMapper}.
  * @author marhali
  */
 public class PropertiesMapperTest extends AbstractMapperTest {
@@ -23,7 +24,7 @@ public class PropertiesMapperTest extends AbstractMapperTest {
         input.setProperty("alpha", "test");
         input.setProperty("bravo", "test");
 
-        TranslationData data = new TranslationData(false, true);
+        TranslationData data = new TranslationData(false);
         PropertiesMapper.read("en", input, data);
 
         SortableProperties output = new SortableProperties(false);
@@ -40,7 +41,7 @@ public class PropertiesMapperTest extends AbstractMapperTest {
         input.setProperty("alpha", "test");
         input.setProperty("bravo", "test");
 
-        TranslationData data = new TranslationData(true, true);
+        TranslationData data = new TranslationData(true);
         PropertiesMapper.read("en", input, data);
 
         SortableProperties output = new SortableProperties(true);
@@ -52,9 +53,9 @@ public class PropertiesMapperTest extends AbstractMapperTest {
 
     @Override
     public void testArrays() {
-        TranslationData data = new TranslationData(true, true);
-        data.setTranslation("simple", create(arraySimple));
-        data.setTranslation("escaped", create(arrayEscaped));
+        TranslationData data = new TranslationData(true);
+        data.setTranslation(KeyPath.of("simple"), create(arraySimple));
+        data.setTranslation(KeyPath.of("escaped"), create(arrayEscaped));
 
         SortableProperties output = new SortableProperties(true);
         PropertiesMapper.write("en", output, data);
@@ -64,83 +65,84 @@ public class PropertiesMapperTest extends AbstractMapperTest {
         Assert.assertTrue(output.get("escaped") instanceof String[]);
         Assert.assertEquals(arrayEscaped, StringEscapeUtils.unescapeJava(PropertiesArrayMapper.read((String[]) output.get("escaped"))));
 
-        TranslationData input = new TranslationData(true, true);
+        TranslationData input = new TranslationData(true);
         PropertiesMapper.read("en", output, input);
 
-        Assert.assertTrue(PropertiesArrayMapper.isArray(input.getTranslation("simple").get("en")));
-        Assert.assertTrue(PropertiesArrayMapper.isArray(input.getTranslation("escaped").get("en")));
+        Assert.assertTrue(PropertiesArrayMapper.isArray(input.getTranslation(KeyPath.of("simple")).get("en")));
+        Assert.assertTrue(PropertiesArrayMapper.isArray(input.getTranslation(KeyPath.of("escaped")).get("en")));
     }
 
     @Override
     public void testSpecialCharacters() {
-        TranslationData data = new TranslationData(true, true);
-        data.setTranslation("chars", create(specialCharacters));
+        TranslationData data = new TranslationData(true);
+        data.setTranslation(KeyPath.of("chars"), create(specialCharacters));
 
         SortableProperties output = new SortableProperties(true);
         PropertiesMapper.write("en", output, data);
 
         Assert.assertEquals(specialCharacters, output.get("chars"));
 
-        TranslationData input = new TranslationData(true, true);
+        TranslationData input = new TranslationData(true);
         PropertiesMapper.read("en", output, input);
 
-        Assert.assertEquals(specialCharacters, StringEscapeUtils.unescapeJava(input.getTranslation("chars").get("en")));
+        Assert.assertEquals(specialCharacters, StringEscapeUtils.unescapeJava(input.getTranslation(KeyPath.of("chars")).get("en")));
     }
 
     @Override
     public void testNestedKeys() {
-        TranslationData data = new TranslationData(true, true);
-        data.setTranslation("nested.key.sections", create("test"));
+        TranslationData data = new TranslationData(true);
+        data.setTranslation(KeyPath.of("nested", "key", "sections"), create("test"));
 
         SortableProperties output = new SortableProperties(true);
         PropertiesMapper.write("en", output, data);
 
         Assert.assertEquals("test", output.get("nested.key.sections"));
 
-        TranslationData input = new TranslationData(true, true);
+        TranslationData input = new TranslationData(true);
         PropertiesMapper.read("en", output, input);
 
+        System.out.println(input);
+
         Assert.assertTrue(input.getRootNode().getChildren().containsKey("nested"));
-        Assert.assertEquals("test", input.getTranslation("nested.key.sections").get("en"));
+        Assert.assertEquals("test", input.getTranslation(KeyPath.of("nested", "key", "sections")).get("en"));
     }
 
     @Override
-    public void testNonNestedKeys() {
-        TranslationData data = new TranslationData(true, false);
-        data.setTranslation("long.key.with.many.sections", create("test"));
+    public void testNonNestedKeys() { // Note: Key nesting is not supported in properties file.
+        TranslationData data = new TranslationData(true);
+        data.setTranslation(KeyPath.of("long.key.with.many.sections"), create("test"));
 
         SortableProperties output = new SortableProperties(true);
         PropertiesMapper.write("en", output, data);
 
         Assert.assertNotNull(output.get("long.key.with.many.sections"));
 
-        TranslationData input = new TranslationData(true, false);
+        TranslationData input = new TranslationData(true);
         PropertiesMapper.read("en", output, input);
 
-        Assert.assertEquals("test", input.getRootNode().getChildren()
-                .get("long.key.with.many.sections").getValue().get("en"));
+        Assert.assertEquals("test", input.getTranslation(KeyPath.of("long", "key", "with", "many", "sections")).get("en"));
     }
 
     @Override
     public void testLeadingSpace() {
-        TranslationData data = new TranslationData(true, true);
-        data.setTranslation("space", create(leadingSpace));
+        TranslationData data = new TranslationData(true);
+        data.setTranslation(KeyPath.of("space"), create(leadingSpace));
 
         SortableProperties output = new SortableProperties(true);
         PropertiesMapper.write("en", output, data);
 
         Assert.assertEquals(leadingSpace, output.get("space"));
 
-        TranslationData input = new TranslationData(true, true);
+        TranslationData input = new TranslationData(true);
         PropertiesMapper.read("en", output, input);
 
-        Assert.assertEquals(leadingSpace, input.getTranslation("space").get("en"));
+        Assert.assertEquals(leadingSpace, input.getTranslation(KeyPath.of("space")).get("en"));
     }
 
     @Override
     public void testNumbers() {
-        TranslationData data = new TranslationData(true, true);
-        data.setTranslation("numbered", create("15000"));
+        TranslationData data = new TranslationData(true);
+        data.setTranslation(KeyPath.of("numbered"), create("15000"));
 
         SortableProperties output = new SortableProperties(true);
         PropertiesMapper.write("en", output, data);
@@ -151,6 +153,6 @@ public class PropertiesMapperTest extends AbstractMapperTest {
         input.put("numbered", 143.23);
         PropertiesMapper.read("en", input, data);
 
-        Assert.assertEquals("143.23", data.getTranslation("numbered").get("en"));
+        Assert.assertEquals("143.23", data.getTranslation(KeyPath.of("numbered")).get("en"));
     }
 }

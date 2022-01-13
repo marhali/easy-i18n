@@ -28,14 +28,15 @@ import java.util.ResourceBundle;
  */
 public class TableView implements BusListener {
 
+    private final JBTable table;
+
     private final Project project;
 
     private TableModelMapper currentMapper;
+    private KeyPathConverter converter;
 
     private JPanel rootPanel;
     private JPanel containerPanel;
-
-    private JBTable table;
 
     public TableView(Project project) {
         this.project = project;
@@ -55,7 +56,7 @@ public class TableView implements BusListener {
             return;
         }
 
-        String fullPath = String.valueOf(table.getValueAt(row, 0));
+        KeyPath fullPath = this.converter.split(String.valueOf(this.table.getValueAt(row, 0)));
         Translation translation = InstanceManager.get(project).store().getData().getTranslation(fullPath);
 
         if (translation != null) {
@@ -65,7 +66,7 @@ public class TableView implements BusListener {
 
     private void deleteSelectedRows() {
         for (int selectedRow : table.getSelectedRows()) {
-            String fullPath = String.valueOf(table.getValueAt(selectedRow, 0));
+            KeyPath fullPath = this.converter.split(String.valueOf(table.getValueAt(selectedRow, 0)));
 
             InstanceManager.get(project).processUpdate(
                     new TranslationDelete(new KeyedTranslation(fullPath, null))
@@ -75,16 +76,19 @@ public class TableView implements BusListener {
 
     @Override
     public void onUpdateData(@NotNull TranslationData data) {
-        table.setModel(this.currentMapper = new TableModelMapper(data, update ->
+        this.converter = new KeyPathConverter(project);
+
+        table.setModel(this.currentMapper = new TableModelMapper(data, this.converter, update ->
                 InstanceManager.get(project).processUpdate(update)));
     }
 
     @Override
-    public void onFocusKey(@Nullable String key) {
+    public void onFocusKey(@NotNull KeyPath key) {
+        String concatKey = this.converter.concat(key);
         int row = -1;
 
         for (int i = 0; i < table.getRowCount(); i++) {
-            if (String.valueOf(table.getValueAt(i, 0)).equals(key)) {
+            if (table.getValueAt(i, 0).equals(concatKey)) {
                 row = i;
             }
         }

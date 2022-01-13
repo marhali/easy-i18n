@@ -66,7 +66,7 @@ public class YamlIOStrategy implements IOStrategy {
                 throw new IllegalArgumentException("Specified folder is invalid (" + localesPath + ")");
             }
 
-            TranslationData data = new TranslationData(state.isSortKeys(), state.isNestedKeys());
+            TranslationData data = new TranslationData(state.isSortKeys());
 
             for(VirtualFile file : directory.getChildren()) {
                 if(file.isDirectory() || !isFileRelevant(state, file)) {
