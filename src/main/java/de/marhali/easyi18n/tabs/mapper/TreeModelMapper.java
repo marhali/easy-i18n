@@ -116,6 +116,7 @@ public class TreeModelMapper extends DefaultTreeModel implements SearchQueryList
                     PresentationData data = new PresentationData(key, null, null, null);
                     data.setForcedTextForeground(JBColor.RED);
                     childNode.setUserObject(data);
+                    foundMissing = true;
                 }
 
                 parent.add(childNode);
