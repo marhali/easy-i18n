@@ -3,8 +3,6 @@
 # easy-i18n Changelog
 
 ## [Unreleased]
-
-## [2.0.0-rc.1]
 ### BREAKING CHANGES
 - Translation file pattern matcher needs to be updated to <kbd>\*.*</kbd> or equivalent wildcard rule 
 - I18n key nesting will now escape every delimiter within a section layer (can be inverted via option)
