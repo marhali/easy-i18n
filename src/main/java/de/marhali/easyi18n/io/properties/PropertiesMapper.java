@@ -5,6 +5,7 @@ import de.marhali.easyi18n.model.Translation;
 import de.marhali.easyi18n.model.TranslationData;
 import de.marhali.easyi18n.util.StringUtil;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.math.NumberUtils;
 
 import java.util.Map;
@@ -48,7 +49,7 @@ public class PropertiesMapper {
                 } else if(NumberUtils.isNumber(content)) {
                     properties.put(simpleKey, NumberUtils.createNumber(content));
                 } else {
-                    properties.put(simpleKey, content);
+                    properties.put(simpleKey, StringEscapeUtils.unescapeJava(content));
                 }
             }
         }

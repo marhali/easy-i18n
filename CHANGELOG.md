@@ -3,6 +3,8 @@
 # easy-i18n Changelog
 
 ## [Unreleased]
+### Fixed
+- Character unescaping for '.properties' files
 
 ## [2.0.0]
 ### BREAKING CHANGES
