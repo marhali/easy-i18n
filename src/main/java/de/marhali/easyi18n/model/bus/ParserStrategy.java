@@ -9,6 +9,10 @@ public enum ParserStrategy {
     YAML,
     PROPERTIES;
 
+    public String getExampleFilePattern() {
+        return "*." + toString().toLowerCase();
+    }
+
     public int toIndex() {
         int index = 0;
 

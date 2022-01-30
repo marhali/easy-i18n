@@ -20,6 +20,8 @@ import de.marhali.easyi18n.service.SettingsService;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.ResourceBundle;
 
 /**
@@ -101,6 +103,7 @@ public class SettingsDialog {
         parserStrategyComboBox = new ComboBox<>(bundle.getString("settings.strategy.parser").split(ArrayMapper.SPLITERATOR_REGEX));
         parserStrategyComboBox.setSelectedIndex(state.getParserStrategy().toIndex());
         parserStrategyComboBox.setToolTipText(bundle.getString("settings.strategy.parser.tooltip"));
+        parserStrategyComboBox.addItemListener(handleParserChange());
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.gridx = 1;
         constraints.gridy = 0;
@@ -156,5 +159,15 @@ public class SettingsDialog {
         builder.setCenterPanel(rootPanel);
 
         return builder;
+    }
+
+    private ItemListener handleParserChange() {
+        return e -> {
+          if(e.getStateChange() == ItemEvent.SELECTED) {
+              // Automatically suggest file pattern option on parser change
+              ParserStrategy newStrategy = ParserStrategy.fromIndex(parserStrategyComboBox.getSelectedIndex());
+              filePatternText.setText(newStrategy.getExampleFilePattern());
+          }
+        };
     }
 }
