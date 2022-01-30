@@ -22,7 +22,7 @@ public abstract class ArrayMapper {
     static final String SUFFIX = "]";
     static final char DELIMITER = ';';
 
-    static final String SPLITERATOR_REGEX =
+    public static final String SPLITERATOR_REGEX =
             MessageFormat.format("(?<!\\\\){0}", Pattern.quote(String.valueOf(DELIMITER)));
 
     protected static <T> String read(Iterator<T> elements, Function<T, String> stringFactory) {
