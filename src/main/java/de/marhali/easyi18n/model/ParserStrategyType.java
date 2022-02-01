@@ -1,10 +1,10 @@
-package de.marhali.easyi18n.model.bus;
+package de.marhali.easyi18n.model;
 
 /**
  * Represents all supported file parser strategies.
  * @author marhali
  */
-public enum ParserStrategy {
+public enum ParserStrategyType {
     JSON,
     YAML,
     PROPERTIES;
@@ -16,7 +16,7 @@ public enum ParserStrategy {
     public int toIndex() {
         int index = 0;
 
-        for(ParserStrategy strategy : values()) {
+        for(ParserStrategyType strategy : values()) {
             if(strategy == this) {
                 return index;
             }
@@ -27,7 +27,7 @@ public enum ParserStrategy {
         throw new NullPointerException();
     }
 
-    public static ParserStrategy fromIndex(int index) {
+    public static ParserStrategyType fromIndex(int index) {
         return values()[index];
     }
 }

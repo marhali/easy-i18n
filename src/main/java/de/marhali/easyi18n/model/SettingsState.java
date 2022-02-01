@@ -1,6 +1,5 @@
 package de.marhali.easyi18n.model;
 
-import de.marhali.easyi18n.model.bus.ParserStrategy;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -11,8 +10,8 @@ import org.jetbrains.annotations.Nullable;
 public class SettingsState {
 
     public static final String DEFAULT_PREVIEW_LOCALE = "en";
-    public static final FolderStrategy DEFAULT_FOLDER_STRATEGY = FolderStrategy.SINGLE;
-    public static final ParserStrategy DEFAULT_PARSER_STRATEGY = ParserStrategy.JSON;
+    public static final FolderStrategyType DEFAULT_FOLDER_STRATEGY = FolderStrategyType.SINGLE;
+    public static final ParserStrategyType DEFAULT_PARSER_STRATEGY = ParserStrategyType.JSON;
     public static final String DEFAULT_FILE_PATTERN = "*.*";
     public static final String DEFAULT_PATH_PREFIX = "";
     public static final boolean DEFAULT_SORT_KEYS = true;
@@ -20,8 +19,8 @@ public class SettingsState {
     public static final boolean DEFAULT_CODE_ASSISTANCE = true;
 
     private String localesPath;
-    private FolderStrategy folderStrategy;
-    private ParserStrategy parserStrategy;
+    private FolderStrategyType folderStrategy;
+    private ParserStrategyType parserStrategy;
     private String filePattern;
     private String previewLocale;
     private String pathPrefix;
@@ -39,19 +38,19 @@ public class SettingsState {
         this.localesPath = localesPath;
     }
 
-    public @NotNull FolderStrategy getFolderStrategy() {
+    public @NotNull FolderStrategyType getFolderStrategy() {
         return folderStrategy != null ? folderStrategy : DEFAULT_FOLDER_STRATEGY;
     }
 
-    public void setFolderStrategy(FolderStrategy folderStrategy) {
+    public void setFolderStrategy(FolderStrategyType folderStrategy) {
         this.folderStrategy = folderStrategy;
     }
 
-    public @NotNull ParserStrategy getParserStrategy() {
+    public @NotNull ParserStrategyType getParserStrategy() {
         return parserStrategy != null ? parserStrategy : DEFAULT_PARSER_STRATEGY;
     }
 
-    public void setParserStrategy(ParserStrategy parserStrategy) {
+    public void setParserStrategy(ParserStrategyType parserStrategy) {
         this.parserStrategy = parserStrategy;
     }
 

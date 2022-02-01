@@ -13,9 +13,9 @@ import com.intellij.ui.components.JBTextField;
 
 import de.marhali.easyi18n.InstanceManager;
 import de.marhali.easyi18n.io.ArrayMapper;
-import de.marhali.easyi18n.model.FolderStrategy;
+import de.marhali.easyi18n.model.FolderStrategyType;
 import de.marhali.easyi18n.model.SettingsState;
-import de.marhali.easyi18n.model.bus.ParserStrategy;
+import de.marhali.easyi18n.model.ParserStrategyType;
 import de.marhali.easyi18n.service.SettingsService;
 
 import javax.swing.*;
@@ -51,8 +51,8 @@ public class SettingsDialog {
 
         if(prepare(state).show() == DialogWrapper.OK_EXIT_CODE) { // Save changes
             state.setLocalesPath(pathText.getText());
-            state.setFolderStrategy(FolderStrategy.fromIndex(folderStrategyComboBox.getSelectedIndex()));
-            state.setParserStrategy(ParserStrategy.fromIndex(parserStrategyComboBox.getSelectedIndex()));
+            state.setFolderStrategy(FolderStrategyType.fromIndex(folderStrategyComboBox.getSelectedIndex()));
+            state.setParserStrategy(ParserStrategyType.fromIndex(parserStrategyComboBox.getSelectedIndex()));
             state.setFilePattern(filePatternText.getText());
             state.setPreviewLocale(previewLocaleText.getText());
             state.setPathPrefix(pathPrefixText.getText());
@@ -165,7 +165,7 @@ public class SettingsDialog {
         return e -> {
           if(e.getStateChange() == ItemEvent.SELECTED) {
               // Automatically suggest file pattern option on parser change
-              ParserStrategy newStrategy = ParserStrategy.fromIndex(parserStrategyComboBox.getSelectedIndex());
+              ParserStrategyType newStrategy = ParserStrategyType.fromIndex(parserStrategyComboBox.getSelectedIndex());
               filePatternText.setText(newStrategy.getExampleFilePattern());
           }
         };
