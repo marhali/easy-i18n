@@ -3,7 +3,9 @@ package de.marhali.easyi18n.model;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Translation tree node. Manages child nodes which can be translations or also
@@ -26,6 +28,10 @@ public class TranslationNode {
 
     @NotNull
     private Translation value;
+
+    public TranslationNode(boolean sort) {
+        this(sort ? new TreeMap<>() : new LinkedHashMap<>());
+    }
 
     /**
      * Root node initializer. E.g. see {@link java.util.TreeMap} or {@link java.util.HashMap}
