@@ -3,7 +3,7 @@ package de.marhali.easyi18n.ionext.folder;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 
-import de.marhali.easyi18n.model.ParserStrategyType;
+import de.marhali.easyi18n.ionext.parser.ParserStrategyType;
 import de.marhali.easyi18n.model.SettingsState;
 import de.marhali.easyi18n.model.TranslationData;
 import de.marhali.easyi18n.model.TranslationFile;

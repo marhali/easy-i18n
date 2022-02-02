@@ -15,7 +15,7 @@ import de.marhali.easyi18n.InstanceManager;
 import de.marhali.easyi18n.io.ArrayMapper;
 import de.marhali.easyi18n.model.FolderStrategyType;
 import de.marhali.easyi18n.model.SettingsState;
-import de.marhali.easyi18n.model.ParserStrategyType;
+import de.marhali.easyi18n.ionext.parser.ParserStrategyType;
 import de.marhali.easyi18n.service.SettingsService;
 
 import javax.swing.*;
