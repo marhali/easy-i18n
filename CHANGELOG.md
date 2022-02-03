@@ -3,6 +3,16 @@
 # easy-i18n Changelog
 
 ## [Unreleased]
+### BREAKING CHANGES
+- The local file structure of your translation files must be configured in the settings menu
+
+### Added
+- Modularization supports namespace or locale module
+- Full namespace / locale module support for all file types
+
+### Changed
+- Improve exception handling on IO operations
+
 ### Fixed
 - Character unescaping for '.properties' files
 
