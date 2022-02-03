@@ -1,5 +1,7 @@
 package thito.nodeflow.config;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.util.*;
 
 public class MapSection extends HashMap<String, Object> implements Section {
@@ -10,9 +12,12 @@ public class MapSection extends HashMap<String, Object> implements Section {
         super();
     }
 
-    public MapSection(Map<?, ?> m) {
+    public MapSection(@Nullable Map<?, ?> m) {
         super();
-        m.forEach((key, value) -> put(String.valueOf(key), value));
+
+        if(m != null) {
+            m.forEach((key, value) -> put(String.valueOf(key), value));
+        }
     }
 
     protected void setParent(Section parent, String name) {
