@@ -52,6 +52,8 @@ public abstract class ParserStrategy {
                 moduleNode = new TranslationNode(this.settings.isSortKeys());
                 data.getRootNode().setChildren(moduleName, moduleNode);
             }
+
+            targetNode = moduleNode;
         }
 
         return targetNode;
