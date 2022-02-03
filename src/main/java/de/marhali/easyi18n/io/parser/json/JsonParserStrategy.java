@@ -36,7 +36,9 @@ public class JsonParserStrategy extends ParserStrategy {
 
         try(Reader reader = new InputStreamReader(vf.getInputStream(), vf.getCharset())) {
             JsonObject input = GSON.fromJson(reader, JsonObject.class);
-            JsonMapper.read(file.getLocale(), input, targetNode);
+            if(input != null) { // @input is null if file is completely empty
+                JsonMapper.read(file.getLocale(), input, targetNode);
+            }
         }
     }
 

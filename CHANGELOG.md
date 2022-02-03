@@ -15,6 +15,7 @@
 
 ### Fixed
 - Character unescaping for '.properties' files
+- Exception on json files without any content
 
 ## [2.0.0]
 ### BREAKING CHANGES
