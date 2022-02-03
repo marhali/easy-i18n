@@ -1,4 +1,4 @@
-package de.marhali.easyi18n.io.properties;
+package de.marhali.easyi18n.ionext.parser.properties;
 
 import de.marhali.easyi18n.model.KeyPath;
 import de.marhali.easyi18n.model.Translation;

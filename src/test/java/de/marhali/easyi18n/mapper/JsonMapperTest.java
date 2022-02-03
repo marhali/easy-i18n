@@ -4,8 +4,8 @@ import com.google.gson.JsonObject;
 
 import com.google.gson.JsonPrimitive;
 
-import de.marhali.easyi18n.io.json.JsonArrayMapper;
-import de.marhali.easyi18n.io.json.JsonMapper;
+import de.marhali.easyi18n.ionext.parser.json.JsonArrayMapper;
+import de.marhali.easyi18n.ionext.parser.json.JsonMapper;
 import de.marhali.easyi18n.model.KeyPath;
 import de.marhali.easyi18n.model.TranslationData;
 

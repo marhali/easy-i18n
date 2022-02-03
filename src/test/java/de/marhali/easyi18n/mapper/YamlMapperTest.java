@@ -1,7 +1,7 @@
 package de.marhali.easyi18n.mapper;
 
-import de.marhali.easyi18n.io.yaml.YamlArrayMapper;
-import de.marhali.easyi18n.io.yaml.YamlMapper;
+import de.marhali.easyi18n.ionext.parser.yaml.YamlArrayMapper;
+import de.marhali.easyi18n.ionext.parser.yaml.YamlMapper;
 import de.marhali.easyi18n.model.KeyPath;
 import de.marhali.easyi18n.model.TranslationData;
 import org.apache.commons.lang.StringEscapeUtils;

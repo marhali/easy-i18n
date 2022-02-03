@@ -2,8 +2,6 @@ package de.marhali.easyi18n.ionext.parser.properties;
 
 import com.intellij.openapi.vfs.VirtualFile;
 
-import de.marhali.easyi18n.io.properties.PropertiesMapper;
-import de.marhali.easyi18n.io.properties.SortableProperties;
 import de.marhali.easyi18n.ionext.parser.ParserStrategy;
 import de.marhali.easyi18n.model.SettingsState;
 import de.marhali.easyi18n.model.TranslationData;

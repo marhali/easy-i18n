@@ -1,4 +1,4 @@
-package de.marhali.easyi18n.io.yaml;
+package de.marhali.easyi18n.ionext.parser.yaml;
 
 import de.marhali.easyi18n.model.Translation;
 import de.marhali.easyi18n.model.TranslationNode;

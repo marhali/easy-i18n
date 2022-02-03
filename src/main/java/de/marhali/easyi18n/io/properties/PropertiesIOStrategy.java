@@ -6,6 +6,8 @@ import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 
 import de.marhali.easyi18n.io.IOStrategy;
+import de.marhali.easyi18n.ionext.parser.properties.PropertiesMapper;
+import de.marhali.easyi18n.ionext.parser.properties.SortableProperties;
 import de.marhali.easyi18n.model.SettingsState;
 import de.marhali.easyi18n.model.TranslationData;
 import de.marhali.easyi18n.util.NotificationHelper;

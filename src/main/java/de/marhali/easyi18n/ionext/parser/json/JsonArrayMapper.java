@@ -1,8 +1,8 @@
-package de.marhali.easyi18n.io.json;
+package de.marhali.easyi18n.ionext.parser.json;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import de.marhali.easyi18n.io.ArrayMapper;
+import de.marhali.easyi18n.ionext.parser.ArrayMapper;
 
 /**
  * Map json array values.

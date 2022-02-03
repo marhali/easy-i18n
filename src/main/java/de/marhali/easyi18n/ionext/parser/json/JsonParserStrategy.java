@@ -5,7 +5,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.intellij.openapi.vfs.VirtualFile;
 
-import de.marhali.easyi18n.io.json.JsonMapper;
 import de.marhali.easyi18n.ionext.parser.ParserStrategy;
 import de.marhali.easyi18n.model.*;
 
