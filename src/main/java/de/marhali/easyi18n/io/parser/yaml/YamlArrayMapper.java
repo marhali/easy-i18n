@@ -1,6 +1,6 @@
-package de.marhali.easyi18n.ionext.parser.yaml;
+package de.marhali.easyi18n.io.parser.yaml;
 
-import de.marhali.easyi18n.ionext.parser.ArrayMapper;
+import de.marhali.easyi18n.io.parser.ArrayMapper;
 
 import thito.nodeflow.config.ListSection;
 

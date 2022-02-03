@@ -1,9 +1,9 @@
 package de.marhali.easyi18n.model;
 
-import de.marhali.easyi18n.ionext.folder.FolderStrategy;
-import de.marhali.easyi18n.ionext.folder.ModularLocaleFolderStrategy;
-import de.marhali.easyi18n.ionext.folder.ModularNamespaceFolderStrategy;
-import de.marhali.easyi18n.ionext.folder.SingleFolderStrategy;
+import de.marhali.easyi18n.io.folder.FolderStrategy;
+import de.marhali.easyi18n.io.folder.ModularLocaleFolderStrategy;
+import de.marhali.easyi18n.io.folder.ModularNamespaceFolderStrategy;
+import de.marhali.easyi18n.io.folder.SingleFolderStrategy;
 
 /**
  * Represents all supported folder strategies.

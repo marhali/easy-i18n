@@ -1,12 +1,12 @@
-package de.marhali.easyi18n.ionext;
+package de.marhali.easyi18n.io;
 
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 
-import de.marhali.easyi18n.ionext.folder.FolderStrategy;
-import de.marhali.easyi18n.ionext.parser.ParserStrategy;
-import de.marhali.easyi18n.ionext.parser.ParserStrategyType;
+import de.marhali.easyi18n.io.folder.FolderStrategy;
+import de.marhali.easyi18n.io.parser.ParserStrategy;
+import de.marhali.easyi18n.io.parser.ParserStrategyType;
 import de.marhali.easyi18n.model.*;
 
 import org.jetbrains.annotations.NotNull;

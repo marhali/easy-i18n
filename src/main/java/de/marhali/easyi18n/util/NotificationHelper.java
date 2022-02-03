@@ -1,7 +1,7 @@
 package de.marhali.easyi18n.util;
 
 import com.intellij.openapi.diagnostic.Logger;
-import de.marhali.easyi18n.ionext.IOHandler;
+import de.marhali.easyi18n.io.IOHandler;
 import de.marhali.easyi18n.model.SettingsState;
 import org.jetbrains.annotations.NotNull;
 

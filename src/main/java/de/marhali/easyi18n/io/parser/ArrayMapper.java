@@ -1,4 +1,4 @@
-package de.marhali.easyi18n.ionext.parser;
+package de.marhali.easyi18n.io.parser;
 
 import de.marhali.easyi18n.util.StringUtil;
 

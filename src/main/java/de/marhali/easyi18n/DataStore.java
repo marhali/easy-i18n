@@ -5,7 +5,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Disposer;
 import com.intellij.openapi.vfs.*;
 
-import de.marhali.easyi18n.ionext.IOHandler;
+import de.marhali.easyi18n.io.IOHandler;
 import de.marhali.easyi18n.model.SettingsState;
 import de.marhali.easyi18n.model.TranslationData;
 import de.marhali.easyi18n.service.FileChangeListener;

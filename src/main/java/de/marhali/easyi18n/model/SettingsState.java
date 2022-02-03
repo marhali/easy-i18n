@@ -1,6 +1,6 @@
 package de.marhali.easyi18n.model;
 
-import de.marhali.easyi18n.ionext.parser.ParserStrategyType;
+import de.marhali.easyi18n.io.parser.ParserStrategyType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

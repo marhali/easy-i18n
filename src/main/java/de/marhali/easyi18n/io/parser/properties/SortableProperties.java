@@ -1,4 +1,4 @@
-package de.marhali.easyi18n.ionext.parser.properties;
+package de.marhali.easyi18n.io.parser.properties;
 
 import java.util.*;
 

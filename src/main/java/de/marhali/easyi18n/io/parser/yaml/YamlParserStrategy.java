@@ -1,8 +1,8 @@
-package de.marhali.easyi18n.ionext.parser.yaml;
+package de.marhali.easyi18n.io.parser.yaml;
 
 import com.intellij.openapi.vfs.VirtualFile;
 
-import de.marhali.easyi18n.ionext.parser.ParserStrategy;
+import de.marhali.easyi18n.io.parser.ParserStrategy;
 import de.marhali.easyi18n.model.SettingsState;
 import de.marhali.easyi18n.model.TranslationData;
 import de.marhali.easyi18n.model.TranslationFile;

@@ -1,11 +1,11 @@
-package de.marhali.easyi18n.ionext.parser.json;
+package de.marhali.easyi18n.io.parser.json;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.intellij.openapi.vfs.VirtualFile;
 
-import de.marhali.easyi18n.ionext.parser.ParserStrategy;
+import de.marhali.easyi18n.io.parser.ParserStrategy;
 import de.marhali.easyi18n.model.*;
 
 import org.jetbrains.annotations.NotNull;

@@ -1,8 +1,8 @@
-package de.marhali.easyi18n.ionext.parser;
+package de.marhali.easyi18n.io.parser;
 
-import de.marhali.easyi18n.ionext.parser.json.JsonParserStrategy;
-import de.marhali.easyi18n.ionext.parser.properties.PropertiesParserStrategy;
-import de.marhali.easyi18n.ionext.parser.yaml.YamlParserStrategy;
+import de.marhali.easyi18n.io.parser.json.JsonParserStrategy;
+import de.marhali.easyi18n.io.parser.properties.PropertiesParserStrategy;
+import de.marhali.easyi18n.io.parser.yaml.YamlParserStrategy;
 
 /**
  * Represents all supported file parser strategies.

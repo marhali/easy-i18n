@@ -1,4 +1,4 @@
-package de.marhali.easyi18n.ionext.parser.json;
+package de.marhali.easyi18n.io.parser.json;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
