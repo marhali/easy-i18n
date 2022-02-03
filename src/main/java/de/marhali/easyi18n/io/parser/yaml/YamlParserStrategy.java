@@ -9,10 +9,10 @@ import de.marhali.easyi18n.model.TranslationFile;
 import de.marhali.easyi18n.model.TranslationNode;
 
 import org.jetbrains.annotations.NotNull;
+
 import thito.nodeflow.config.MapSection;
 import thito.nodeflow.config.Section;
 
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 
@@ -27,7 +27,7 @@ public class YamlParserStrategy extends ParserStrategy {
     }
 
     @Override
-    public void read(@NotNull TranslationFile file, @NotNull TranslationData data) throws IOException {
+    public void read(@NotNull TranslationFile file, @NotNull TranslationData data) throws Exception {
         data.addLocale(file.getLocale());
 
         VirtualFile vf = file.getVirtualFile();
@@ -40,7 +40,7 @@ public class YamlParserStrategy extends ParserStrategy {
     }
 
     @Override
-    public void write(@NotNull TranslationData data, @NotNull TranslationFile file) throws IOException {
+    public void write(@NotNull TranslationData data, @NotNull TranslationFile file) throws Exception {
         TranslationNode targetNode = super.getTargetNode(data, file);
 
         Section output = new MapSection();

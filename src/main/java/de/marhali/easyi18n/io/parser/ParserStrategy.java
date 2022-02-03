@@ -4,7 +4,6 @@ import de.marhali.easyi18n.model.*;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.io.IOException;
 import java.util.Objects;
 
 /**
@@ -24,14 +23,14 @@ public abstract class ParserStrategy {
      * @param file File to read from
      * @param data Target translation data to save the parsed data
      */
-    public abstract void read(@NotNull TranslationFile file, @NotNull TranslationData data) throws IOException;
+    public abstract void read(@NotNull TranslationFile file, @NotNull TranslationData data) throws Exception;
 
     /**
      * Writes the relevant data to the translation file (consider namespace and locale)
      * @param data Translation data cache
      * @param file Target translation file
      */
-    public abstract void write(@NotNull TranslationData data, @NotNull TranslationFile file) throws IOException;
+    public abstract void write(@NotNull TranslationData data, @NotNull TranslationFile file) throws Exception;
 
     /**
      * Determines translation node to use for parsing

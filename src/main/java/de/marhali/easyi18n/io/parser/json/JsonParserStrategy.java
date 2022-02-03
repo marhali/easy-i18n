@@ -28,7 +28,7 @@ public class JsonParserStrategy extends ParserStrategy {
     }
 
     @Override
-    public void read(@NotNull TranslationFile file, @NotNull TranslationData data) throws IOException {
+    public void read(@NotNull TranslationFile file, @NotNull TranslationData data) throws Exception {
         data.addLocale(file.getLocale());
 
         VirtualFile vf = file.getVirtualFile();
@@ -43,7 +43,7 @@ public class JsonParserStrategy extends ParserStrategy {
     }
 
     @Override
-    public void write(@NotNull TranslationData data, @NotNull TranslationFile file) throws IOException {
+    public void write(@NotNull TranslationData data, @NotNull TranslationFile file) throws Exception {
         TranslationNode targetNode = super.getTargetNode(data, file);
 
         JsonObject output = new JsonObject();
