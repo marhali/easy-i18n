@@ -1,7 +1,7 @@
 package de.marhali.easyi18n.io.parser.json;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
+import com.google.gson.*;
+
 import de.marhali.easyi18n.io.parser.ArrayMapper;
 
 /**
@@ -9,13 +9,28 @@ import de.marhali.easyi18n.io.parser.ArrayMapper;
  * @author marhali
  */
 public class JsonArrayMapper extends ArrayMapper {
+
+    private static final Gson GSON = new GsonBuilder().create();
+
     public static String read(JsonArray array) {
-        return read(array.iterator(), JsonElement::getAsString);
+        return read(array.iterator(), (jsonElement -> jsonElement.isJsonArray() || jsonElement.isJsonObject()
+                ? jsonElement.toString()
+                : jsonElement.getAsString()));
     }
 
     public static JsonArray write(String concat) {
         JsonArray array = new JsonArray();
-        write(concat, array::add);
+
+        write(concat, (element) -> {
+            if(element.startsWith("{") && element.endsWith("}")) {
+                array.add(GSON.fromJson(element, JsonObject.class));
+            } else if (element.startsWith("[") && element.endsWith("]")) {
+                array.add(GSON.fromJson(element, JsonArray.class));
+            } else {
+                array.add(element);
+            }
+        });
+
         return array;
     }
 }
