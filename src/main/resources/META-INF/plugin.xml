@@ -36,5 +36,7 @@
 
         <psi.referenceContributor
                 implementation="de.marhali.easyi18n.editor.generic.GenericKeyReferenceContributor" />
+
+        <errorHandler implementation="de.marhali.easyi18n.service.ErrorReportHandler" />
     </extensions>
 </idea-plugin>

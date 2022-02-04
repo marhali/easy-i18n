@@ -10,6 +10,7 @@
 - Modularization supports namespace or locale module
 - Full namespace / locale module support for all file types
 - Support for object and array elements inside json arrays
+- IDE integrated error report functionality
 
 ### Changed
 - Improve exception handling on IO operations
