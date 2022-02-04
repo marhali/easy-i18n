@@ -1,30 +1,81 @@
-# easy-i18n
+<div id="top"></div>
 
-![Build](https://github.com/marhali/easy-i18n/workflows/Build/badge.svg)
-[![Version](https://img.shields.io/jetbrains/plugin/v/16316.svg)](https://plugins.jetbrains.com/plugin/16316)
-[![Downloads](https://img.shields.io/jetbrains/plugin/d/16316.svg)](https://plugins.jetbrains.com/plugin/16316)
-[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://paypal.me/marhalide)
+<!-- PROJECT SHIELDS -->
+[![Build](https://img.shields.io/github/workflow/status/marhali/easy-i18n/Build?style=for-the-badge)](https://github.com/marhali/easy-i18n/actions)
+[![Version](https://img.shields.io/jetbrains/plugin/v/16316.svg?style=for-the-badge)](https://plugins.jetbrains.com/plugin/16316)
+[![Downloads](https://img.shields.io/jetbrains/plugin/d/16316.svg?style=for-the-badge)](https://plugins.jetbrains.com/plugin/16316)
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg?style=for-the-badge)](https://paypal.me/marhalide)
+
+<!-- PROJECT LOGO -->
+<br />
+<div align="center">
+  <a href="https://github.com/marhali/easy-i18n">
+    <img src="src/main/resources/META-INF/pluginIcon.svg" alt="Logo" width="80" height="80">
+  </a>
+
+  <h3 align="center">Easy I18n</h3>
+
+  <p align="center">
+    <a href="https://github.com/marhali/easy-i18n/tree/main/example">Examples</a>
+    ·
+    <a href="https://github.com/marhali/easy-i18n/issues/new?labels=bug">Report Bug</a>
+    ·
+    <a href="https://github.com/marhali/easy-i18n/issues/new?labels=enhancement">Request Feature</a>
+  </p>
+</div>
 
 <!-- Plugin description -->
-This is a plugin for easier management of translation files of projects that need to be translated into different languages. Translating large projects has never been so easy with your favorite IDE!
+This is a plugin for easier management of translation files for projects that need to be translated into different languages. Translating large projects has never been so easy with your favorite IDE!
 
-## Use Cases
-- Webapps: [Vue](https://vuejs.org/) with [vue-i18n](https://kazupon.github.io/vue-i18n/), [React](https://reactjs.org/) or any other json based technology
-- Java projects based on Resource-Bundle's
-- Projects that uses yaml, json or properties as locale file base for internationalization
+This plugin can be used for any project based on one of the formats and structures listed below.
 
 ## Features
-- UI Tool Window which supports tree- or table-view
-- Easily Add / Edit / Delete translations
-- Filter function with full-text-search support
+- UI Tool-Window which supports _tree-view_ and _table-view_
+- Easily **`Add`** / **`Edit`** / **`Delete`** translations
+- Filter all translations with _full-text-search_ support
 - Editor Assistance: Key completion, annotation and referencing
-- Key sorting and nesting can be configured
+- Translation key sorting and nesting can be configured
 - Configurable locales directory & preferred locale for ui presentation
 - Missing language translations will be indicated red
-- Quick actions: <kbd>right-click</kbd> or <kbd>DEL</kbd> to edit or delete a translation
 - Automatically reloads translation data if any locale file was changed
+
+## Builtin Support
+### File Types
+**<kbd>JSON</kbd>** - **<kbd>YAML</kbd>** - **<kbd>Properties</kbd>**
+
+### Folder Structure
+- Single Directory: All translation files are within one directory 
+- Modularized (**<kbd>Locale</kbd>** \ **<kbd>Namespace</kbd>**)
+- Modularized (**<kbd>Namespace</kbd>** \ **<kbd>Locale</kbd>**)
+
 <!-- Plugin description end -->
 
+## Installation
+
+- Using IDE built-in plugin system:
+
+  <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>Marketplace</kbd> > <kbd>Search for "easy-i18n"</kbd> >
+  <kbd>Install Plugin</kbd>
+
+- Manually:
+
+  Download the [latest release](https://github.com/marhali/easy-i18n/releases/latest) and install it manually using
+  <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> > <kbd>Install plugin from disk...</kbd>
+
+
+
+<!-- PLUGIN CONFIGURATION -->
+## Configuration
+- Install plugin. See **_Installation_** section
+- Create a directory that will contain all translation files
+- Create your individual translation files (e.g. _en.json_, _de.json_). See examples if you need assistance.
+- Click on the `Settings` action inside the EasyI18n Tool-Window (<kbd>View</kbd> > <kbd>Tool Windows</kbd> > <kbd>Easy I18n</kbd>)
+- Specify locales directory
+- Select folder structure and file parser to apply to your translation files
+- Translations can now be created / edited or deleted
+
+
+<!-- USAGE EXAMPLES -->
 ## Screenshots
 ![Tree View](https://raw.githubusercontent.com/marhali/easy-i18n/main/example/images/tree-view.PNG)
 ![TableView](https://raw.githubusercontent.com/marhali/easy-i18n/main/example/images/table-view.PNG)
@@ -33,39 +84,62 @@ This is a plugin for easier management of translation files of projects that nee
 ![KeyEdit](https://raw.githubusercontent.com/marhali/easy-i18n/main/example/images/key-edit.PNG)
 ![Settings](https://raw.githubusercontent.com/marhali/easy-i18n/main/example/images/settings.PNG)
 
-## Supported IO Strategies (locale files)
-- Json: <kbd>json</kbd> files inside locales directory
-- Namespaced Json: Multiple <kbd>json</kbd> files per locale directory
-- Yaml: <kbd>yml</kbd> or <kbd>yaml</kbd> files inside locales directory
-- Properties: <kbd>properties</kbd> files inside locales directory
+_For more examples, please refer to the [Examples Directory](https://github.com/marhali/easy-i18n/tree/main/example)._
 
-If there are any files in the locales folder that should not be processed, they can be ignored with the <kbd>Translation file pattern</kbd> option.
 
-## Installation
-- Using IDE built-in plugin system:
-  
-  <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>Marketplace</kbd> > <kbd>Search for "easy-i18n"</kbd> >
-  <kbd>Install Plugin</kbd>
-  
-- Manually:
+<!-- ROADMAP -->
+## Roadmap
 
-  Download the [latest release](https://github.com/marhali/easy-i18n/releases/latest) and install it manually using
-  <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> > <kbd>Install plugin from disk...</kbd>
+- [ ] JSON5 Support
+- [ ] XML Support
+- [ ] Mark duplicate translation values
 
-## Configuration
-- Install plugin. See **Installation** section
-- Create a directory which will hold the locale files
-- Create a file for each required locale (e.g de.json, en.json) Note: Each json file must at least define an empty section (e.g. **{}**)
-- Click on the **Settings** Action inside the EasyI18n Tool Window
-- Select the created directory (optional: define the preferred locale to view) and press **Ok**
-- Translations can now be created / edited or deleted
+See the [open issues](https://github.com/marhali/easy-i18n/issues) for a full list of proposed features (and known issues).
 
-Examples for the configuration can be found in the [/example](https://github.com/marhali/easy-i18n/tree/main/example) folder.
 
+<!-- CONTRIBUTING -->
+## Contributing
+
+Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+
+If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
+Don't forget to give the project a star! Thanks again!
+
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+
+
+
+
+<!-- LICENSE -->
+## License
+
+Distributed under the MIT License. See `LICENSE` for more information.
+
+
+
+
+
+<!-- CONTACT -->
+## Contact
+
+Marcel Haßlinger - [@marhali_de](https://twitter.com/marhali_de) - [Portfolio Website](https://marhali.de)
+
+Project Link: [https://github.com/marhali/easy-i18n](https://github.com/marhali/easy-i18n)
+
+
+
+<!-- DONATION -->
 ## Donation
-If the project helps you to reduce development time, you can give me a [cup of coffee](https://paypal.me/marhalide) :) 
+If the project helps you to reduce development time, you can give me a [cup of coffee](https://paypal.me/marhalide) :)
 
 ---
 Plugin based on the [IntelliJ Platform Plugin Template][template].
 
+
+<!-- MARKDOWN LINKS & IMAGES -->
 [template]: https://github.com/JetBrains/intellij-platform-plugin-template
