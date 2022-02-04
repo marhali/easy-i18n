@@ -14,6 +14,7 @@
 
 ### Changed
 - Improve exception handling on IO operations
+- Update dependencies
 
 ### Fixed
 - Character unescaping for '.properties' files

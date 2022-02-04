@@ -37,11 +37,13 @@ jobs:
           ${{ github.event.release.body }}
           EOM
           )"
-
+          
           CHANGELOG="${CHANGELOG//'%'/'%25'}"
           CHANGELOG="${CHANGELOG//$'\n'/'%0A'}"
           CHANGELOG="${CHANGELOG//$'\r'/'%0D'}"
+
           echo "::set-output name=changelog::$CHANGELOG"
+
       # Update Unreleased section with the current release note
       - name: Patch Changelog
         if: ${{ steps.properties.outputs.changelog != '' }}
@@ -49,6 +51,7 @@ jobs:
           CHANGELOG: ${{ steps.properties.outputs.changelog }}
         run: |
           ./gradlew patchChangelog --release-note="$CHANGELOG"
+
       # Publish the plugin to the Marketplace
       - name: Publish Plugin
         env:
@@ -69,11 +72,14 @@ jobs:
         run: |
           VERSION="${{ github.event.release.tag_name }}"
           BRANCH="changelog-update-$VERSION"
+
           git config user.email "action@github.com"
           git config user.name "GitHub Action"
+
           git checkout -b $BRANCH
           git commit -am "Changelog update - $VERSION"
           git push --set-upstream origin $BRANCH
+
           gh pr create \
             --title "Changelog update - \`$VERSION\`" \
             --body "Current pull request contains patched \`CHANGELOG.md\` file for the \`$VERSION\` version." \
