@@ -3,6 +3,8 @@
 # easy-i18n Changelog
 
 ## [Unreleased]
+### Fixed
+- Exception on json array value mapping
 
 ## [3.0.0]
 ### BREAKING CHANGES

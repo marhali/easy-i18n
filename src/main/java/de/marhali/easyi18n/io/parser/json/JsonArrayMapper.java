@@ -14,7 +14,7 @@ public class JsonArrayMapper extends ArrayMapper {
 
     public static String read(JsonArray array) {
         return read(array.iterator(), (jsonElement -> jsonElement.isJsonArray() || jsonElement.isJsonObject()
-                ? jsonElement.toString()
+                ? "\\" + jsonElement
                 : jsonElement.getAsString()));
     }
 
@@ -22,10 +22,8 @@ public class JsonArrayMapper extends ArrayMapper {
         JsonArray array = new JsonArray();
 
         write(concat, (element) -> {
-            if(element.startsWith("{") && element.endsWith("}")) {
-                array.add(GSON.fromJson(element, JsonObject.class));
-            } else if (element.startsWith("[") && element.endsWith("]")) {
-                array.add(GSON.fromJson(element, JsonArray.class));
+            if(element.startsWith("\\")) {
+                array.add(GSON.fromJson(element.replace("\\", ""), JsonElement.class));
             } else {
                 array.add(element);
             }
