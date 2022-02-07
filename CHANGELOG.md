@@ -3,6 +3,8 @@
 # easy-i18n Changelog
 
 ## [Unreleased]
+
+## [3.0.0]
 ### BREAKING CHANGES
 - The local file structure of your translation files must be configured in the settings menu
 
