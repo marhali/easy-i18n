@@ -3,6 +3,7 @@ package de.marhali.easyi18n.io;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 
+import de.marhali.easyi18n.exception.EmptyLocalesDirException;
 import de.marhali.easyi18n.io.folder.FolderStrategy;
 import de.marhali.easyi18n.io.parser.ParserStrategy;
 import de.marhali.easyi18n.io.parser.ParserStrategyType;
@@ -49,7 +50,7 @@ public class IOHandler {
         String localesPath = this.settings.getLocalesPath();
 
         if(localesPath == null || localesPath.isEmpty()) {
-            throw new IllegalArgumentException("Locales path must not be empty");
+            throw new EmptyLocalesDirException("Locales path must not be empty");
         }
 
         VirtualFile localesDirectory = LocalFileSystem.getInstance().findFileByIoFile(new File(localesPath));
@@ -82,7 +83,7 @@ public class IOHandler {
         String localesPath = this.settings.getLocalesPath();
 
         if(localesPath == null || localesPath.isEmpty()) {
-            throw new IllegalArgumentException("Locales path must not be empty");
+            throw new EmptyLocalesDirException("Locales path must not be empty");
         }
 
         List<TranslationFile> translationFiles =

@@ -37,6 +37,8 @@
         <psi.referenceContributor
                 implementation="de.marhali.easyi18n.editor.generic.GenericKeyReferenceContributor" />
 
+        <notificationGroup displayType="BALLOON" id="Easy I18n Notification Group" />
+        
         <errorHandler implementation="de.marhali.easyi18n.service.ErrorReportHandler" />
     </extensions>
 </idea-plugin>

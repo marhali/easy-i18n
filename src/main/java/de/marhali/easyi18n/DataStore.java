@@ -5,6 +5,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Disposer;
 import com.intellij.openapi.vfs.*;
 
+import de.marhali.easyi18n.exception.EmptyLocalesDirException;
 import de.marhali.easyi18n.io.IOHandler;
 import de.marhali.easyi18n.model.SettingsState;
 import de.marhali.easyi18n.model.TranslationData;
@@ -60,7 +61,12 @@ public class DataStore {
             } catch (Exception ex) {
                 this.data = new TranslationData(settings.isSortKeys());
                 successResult.accept(false);
-                NotificationHelper.createIOError(settings, ex);
+
+                if(ex instanceof EmptyLocalesDirException) {
+                    NotificationHelper.createEmptyLocalesDirNotification(project);
+                } else {
+                    NotificationHelper.createIOError(settings, ex);
+                }
             }
         });
     }
@@ -79,7 +85,12 @@ public class DataStore {
 
             } catch (Exception ex) {
                 successResult.accept(false);
-                NotificationHelper.createIOError(settings, ex);
+
+                if(ex instanceof EmptyLocalesDirException) {
+                    NotificationHelper.createEmptyLocalesDirNotification(project);
+                } else {
+                    NotificationHelper.createIOError(settings, ex);
+                }
             }
         });
     }

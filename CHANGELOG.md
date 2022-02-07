@@ -3,6 +3,9 @@
 # easy-i18n Changelog
 
 ## [Unreleased]
+### Changed
+- Fresh projects will receive a notification instead of an exception to configure the plugin
+
 ### Fixed
 - Exception on json array value mapping
 
