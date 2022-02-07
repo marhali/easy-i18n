@@ -3,6 +3,8 @@
 # easy-i18n Changelog
 
 ## [Unreleased]
+
+## [3.0.1]
 ### Changed
 - Fresh projects will receive a notification instead of an exception to configure the plugin
 
