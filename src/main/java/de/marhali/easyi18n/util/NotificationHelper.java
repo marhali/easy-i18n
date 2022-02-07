@@ -1,8 +1,6 @@
 package de.marhali.easyi18n.util;
 
-import com.intellij.notification.Notification;
-import com.intellij.notification.NotificationGroupManager;
-import com.intellij.notification.NotificationType;
+import com.intellij.notification.*;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import de.marhali.easyi18n.action.SettingsAction;
@@ -18,6 +16,7 @@ import java.util.ResourceBundle;
  * @author marhali
  */
 public class NotificationHelper {
+
     public static void createIOError(@NotNull SettingsState state, Exception ex) {
         ResourceBundle bundle = ResourceBundle.getBundle("messages");
 
@@ -30,12 +29,14 @@ public class NotificationHelper {
     public static void createEmptyLocalesDirNotification(Project project) {
         ResourceBundle bundle = ResourceBundle.getBundle("messages");
 
-        Notification notification = NotificationGroupManager.getInstance()
-                .getNotificationGroup("Easy I18n Notification Group")
-                .createNotification("Easy I18n", bundle.getString("warning.missing-config"),
-                        NotificationType.WARNING);
+        Notification notification = new Notification(
+                "Easy I18n Notification Group",
+                "Easy I18n",
+                bundle.getString("warning.missing-config"),
+                NotificationType.WARNING);
 
         notification.addAction(new SettingsAction());
-        notification.notify(project);
+
+        Notifications.Bus.notify(notification, project);
     }
 }
