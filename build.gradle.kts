@@ -22,6 +22,11 @@ version = properties("pluginVersion")
 // Configure project's dependencies
 repositories {
     mavenCentral()
+    maven(url = "https://maven.syntaxerror.at")
+}
+
+dependencies {
+    "idea"("at.syntaxerror:json5:1.2.0")
 }
 
 // Configure Gradle IntelliJ Plugin - read more: https://github.com/JetBrains/gradle-intellij-plugin
