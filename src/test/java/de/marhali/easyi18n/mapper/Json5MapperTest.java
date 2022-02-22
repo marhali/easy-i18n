@@ -1,8 +1,6 @@
 package de.marhali.easyi18n.mapper;
 
-import com.google.gson.JsonObject;
 import de.marhali.easyi18n.io.parser.json.JsonArrayMapper;
-import de.marhali.easyi18n.io.parser.json.JsonMapper;
 import de.marhali.easyi18n.io.parser.json5.Json5ArrayMapper;
 import de.marhali.easyi18n.io.parser.json5.Json5Mapper;
 import de.marhali.easyi18n.model.KeyPath;
@@ -66,10 +64,10 @@ public class Json5MapperTest extends AbstractMapperTest {
         Json5Object output = new Json5Object();
         Json5Mapper.write("en", output, data.getRootNode());
 
-        Assert.assertTrue(output.get("simple").isJsonArray());
-        Assert.assertEquals(arraySimple, Json5ArrayMapper.read(output.get("simple").getAsJsonArray()));
-        Assert.assertTrue(output.get("escaped").isJsonArray());
-        Assert.assertEquals(arrayEscaped, StringEscapeUtils.unescapeJava(Json5ArrayMapper.read(output.get("escaped").getAsJsonArray())));
+        Assert.assertTrue(output.get("simple").isJson5Array());
+        Assert.assertEquals(arraySimple, Json5ArrayMapper.read(output.get("simple").getAsJson5Array()));
+        Assert.assertTrue(output.get("escaped").isJson5Array());
+        Assert.assertEquals(arrayEscaped, StringEscapeUtils.unescapeJava(Json5ArrayMapper.read(output.get("escaped").getAsJson5Array())));
 
         TranslationData input = new TranslationData(true);
         Json5Mapper.read("en", output, input.getRootNode());

@@ -39,8 +39,8 @@ public class Json5ParserStrategy extends ParserStrategy {
 
         try (Reader reader = new InputStreamReader(vf.getInputStream(), vf.getCharset())) {
             Json5Element input = JSON5.parse(reader);
-            if(input != null && input.isJsonObject()) {
-                Json5Mapper.read(file.getLocale(), input.getAsJsonObject(), targetNode);
+            if(input != null && input.isJson5Object()) {
+                Json5Mapper.read(file.getLocale(), input.getAsJson5Object(), targetNode);
             }
         }
     }

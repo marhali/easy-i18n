@@ -11,7 +11,6 @@ import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.math.NumberUtils;
 
 import java.util.Map;
-import java.util.regex.Pattern;
 
 /**
  * Mapper for mapping json5 objects into translation nodes and backwards.
@@ -25,14 +24,14 @@ public class Json5Mapper {
 
             TranslationNode childNode = node.getOrCreateChildren(key);
 
-            if(value.isJsonObject()) {
+            if(value.isJson5Object()) {
                 // Nested element - run recursively
-                read(locale, value.getAsJsonObject(), childNode);
+                read(locale, value.getAsJson5Object(), childNode);
             } else {
                 Translation translation = childNode.getValue();
 
-                String content = value.isJsonArray()
-                        ? Json5ArrayMapper.read(value.getAsJsonArray())
+                String content = value.isJson5Array()
+                        ? Json5ArrayMapper.read(value.getAsJson5Array())
                         : StringUtil.escapeControls(value.getAsString(), true);
 
                 translation.put(locale, content);

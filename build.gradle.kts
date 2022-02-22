@@ -25,7 +25,7 @@ repositories {
 }
 
 dependencies {
-    implementation("de.marhali:json5-java:1.0.1")
+    implementation("de.marhali:json5-java:2.0.0")
 }
 
 // Configure Gradle IntelliJ Plugin - read more: https://github.com/JetBrains/gradle-intellij-plugin

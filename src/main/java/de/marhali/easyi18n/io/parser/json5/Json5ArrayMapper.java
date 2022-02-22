@@ -22,7 +22,7 @@ public class Json5ArrayMapper extends ArrayMapper {
     public static String read(Json5Array array) {
         return read(array.iterator(), (jsonElement -> {
             try {
-                return jsonElement.isJsonArray() || jsonElement.isJsonObject()
+                return jsonElement.isJson5Array() || jsonElement.isJson5Object()
                         ? "\\" + JSON5.serialize(jsonElement)
                         : jsonElement.getAsString();
             } catch (IOException e) {
