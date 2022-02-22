@@ -1,6 +1,7 @@
 package de.marhali.easyi18n.io.parser;
 
 import de.marhali.easyi18n.io.parser.json.JsonParserStrategy;
+import de.marhali.easyi18n.io.parser.json5.Json5ParserStrategy;
 import de.marhali.easyi18n.io.parser.properties.PropertiesParserStrategy;
 import de.marhali.easyi18n.io.parser.yaml.YamlParserStrategy;
 
@@ -10,6 +11,7 @@ import de.marhali.easyi18n.io.parser.yaml.YamlParserStrategy;
  */
 public enum ParserStrategyType {
     JSON(JsonParserStrategy.class),
+    JSON5(Json5ParserStrategy.class),
     YAML(YamlParserStrategy.class),
     YML(YamlParserStrategy.class),
     PROPERTIES(PropertiesParserStrategy.class),
