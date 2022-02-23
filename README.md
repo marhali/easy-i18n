@@ -41,7 +41,7 @@ This plugin can be used for any project based on one of the formats and structur
 
 ## Builtin Support
 ### File Types
-**<kbd>JSON</kbd>** - **<kbd>YAML</kbd>** - **<kbd>Properties</kbd>**
+**<kbd>JSON</kbd>** - **<kbd>JSON5</kbd>** - **<kbd>YAML</kbd>** - **<kbd>Properties</kbd>**
 
 ### Folder Structure
 - Single Directory: All translation files are within one directory 
@@ -90,7 +90,7 @@ _For more examples, please refer to the [Examples Directory](https://github.com/
 <!-- ROADMAP -->
 ## Roadmap
 
-- [ ] JSON5 Support
+- [X] JSON5 Support
 - [ ] XML Support
 - [ ] Mark duplicate translation values
 

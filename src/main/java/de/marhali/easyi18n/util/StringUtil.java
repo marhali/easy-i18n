@@ -3,12 +3,24 @@ package de.marhali.easyi18n.util;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.StringWriter;
+import java.util.regex.Pattern;
 
 /**
  * String utilities
  * @author marhali, Apache Commons
  */
 public class StringUtil {
+
+    /**
+     * Checks if the provided String represents a hexadecimal number.
+     * For example: {@code 0x100...}, {@code -0x100...} and {@code +0x100...}.
+     * @param string String to evaluate
+     * @return true if hexadecimal string otherwise false
+     */
+    public static boolean isHexString(@NotNull String string) {
+        final Pattern hexNumberPattern = Pattern.compile("[+-]?0[xX][0-9a-fA-F]+");
+        return hexNumberPattern.matcher(string).matches();
+    }
 
     /**
      * Escapes control characters for the given input string.

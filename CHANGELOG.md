@@ -3,6 +3,8 @@
 # easy-i18n Changelog
 
 ## [Unreleased]
+### Added
+- Support for Json5 files
 
 ## [3.0.1]
 ### Changed
