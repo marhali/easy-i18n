@@ -3,6 +3,8 @@
 # easy-i18n Changelog
 
 ## [Unreleased]
+
+## [3.2.0]
 ### Added
 - Support for IntelliJ 2022.1
 
