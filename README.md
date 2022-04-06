@@ -93,6 +93,8 @@ _For more examples, please refer to the [Examples Directory](https://github.com/
 - [X] JSON5 Support
 - [ ] XML Support
 - [ ] Mark duplicate translation values
+- [ ] Configurable namespace and section separators
+- [ ] Define default namespace to use if none was provided
 
 See the [open issues](https://github.com/marhali/easy-i18n/issues) for a full list of proposed features (and known issues).
 
