@@ -52,6 +52,15 @@ public class InstanceManager {
         return this.bus;
     }
 
+    /**
+     * Reloads the plugin instance. Unsaved cached data will be deleted.
+     * Fetches data from persistence layer and notifies all endpoints via {@link DataBus}.
+     */
+    public void reload() {
+        store.loadFromPersistenceLayer((success) ->
+                bus.propagate().onUpdateData(store.getData()));
+    }
+
     public void processUpdate(TranslationUpdate update) {
         if(update.isDeletion() || update.isKeyChange()) { // Remove origin translation
             this.store.getData().setTranslation(update.getOrigin().getKey(), null);
