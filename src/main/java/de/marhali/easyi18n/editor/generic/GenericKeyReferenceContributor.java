@@ -7,8 +7,8 @@ import com.intellij.util.ProcessingContext;
 import de.marhali.easyi18n.InstanceManager;
 import de.marhali.easyi18n.editor.KeyReference;
 import de.marhali.easyi18n.model.KeyPathConverter;
-import de.marhali.easyi18n.service.SettingsService;
 
+import de.marhali.easyi18n.settings.ProjectSettingsService;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -35,7 +35,7 @@ public class GenericKeyReferenceContributor extends PsiReferenceContributor {
                 }
 
                 // Do not reference keys if service is disabled
-                if(!SettingsService.getInstance(element.getProject()).getState().isCodeAssistance()) {
+                if(!ProjectSettingsService.get(element.getProject()).getState().isAssistance()) {
                     return PsiReference.EMPTY_ARRAY;
                 }
 

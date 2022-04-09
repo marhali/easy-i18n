@@ -10,8 +10,8 @@ import de.marhali.easyi18n.DataStore;
 import de.marhali.easyi18n.InstanceManager;
 import de.marhali.easyi18n.model.KeyPath;
 import de.marhali.easyi18n.model.Translation;
-import de.marhali.easyi18n.service.*;
 
+import de.marhali.easyi18n.settings.ProjectSettingsService;
 import org.jetbrains.annotations.*;
 
 import java.util.*;
@@ -29,14 +29,16 @@ public class KeyCompletionProvider extends CompletionProvider<CompletionParamete
         Project project = parameters.getOriginalFile().getProject();
 
         // Do not annotate keys if service is disabled
-        if(!SettingsService.getInstance(project).getState().isCodeAssistance()) {
+        if(!ProjectSettingsService.get(project).getState().isAssistance()) {
             return;
         }
 
         DataStore store = InstanceManager.get(project).store();
 
-        String previewLocale = SettingsService.getInstance(project).getState().getPreviewLocale();
-        String pathPrefix = SettingsService.getInstance(project).getState().getPathPrefix();
+        String previewLocale = ProjectSettingsService.get(project).getState().getPreviewLocale();
+        //String pathPrefix = ProjectSettingsService.get(project).getState().getPathPrefix();
+        // TODO: Path prefix removal
+        String pathPrefix = "";
 
         if(pathPrefix.length() > 0 && !pathPrefix.endsWith(KeyPath.DELIMITER)) {
             pathPrefix += KeyPath.DELIMITER;

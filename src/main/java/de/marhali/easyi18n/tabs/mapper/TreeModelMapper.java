@@ -6,6 +6,7 @@ import com.intellij.ui.JBColor;
 import de.marhali.easyi18n.model.*;
 import de.marhali.easyi18n.model.bus.FilterMissingTranslationsListener;
 import de.marhali.easyi18n.model.bus.SearchQueryListener;
+import de.marhali.easyi18n.settings.ProjectSettings;
 import de.marhali.easyi18n.util.UiUtil;
 
 import org.jetbrains.annotations.NotNull;
@@ -24,9 +25,9 @@ public class TreeModelMapper extends DefaultTreeModel implements SearchQueryList
 
     private final TranslationData data;
     private final KeyPathConverter converter;
-    private final SettingsState state;
+    private final ProjectSettings state;
 
-    public TreeModelMapper(TranslationData data, SettingsState state) {
+    public TreeModelMapper(TranslationData data, ProjectSettings state) {
         super(null);
 
         this.data = data;
@@ -41,7 +42,7 @@ public class TreeModelMapper extends DefaultTreeModel implements SearchQueryList
     @Override
     public void onSearchQuery(@Nullable String query) {
         DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode();
-        TranslationData shadow = new TranslationData(this.state.isSortKeys());
+        TranslationData shadow = new TranslationData(this.state.isSorting());
 
         if(query == null) { // Reset
             this.generateNodes(rootNode, this.data.getRootNode());
@@ -75,7 +76,7 @@ public class TreeModelMapper extends DefaultTreeModel implements SearchQueryList
     @Override
     public void onFilterMissingTranslations(boolean filter) {
         DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode();
-        TranslationData shadow = new TranslationData(this.state.isSortKeys());
+        TranslationData shadow = new TranslationData(this.state.isSorting());
 
         if(!filter) { // Reset
             this.generateNodes(rootNode, this.data.getRootNode());

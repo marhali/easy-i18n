@@ -18,7 +18,7 @@ import de.marhali.easyi18n.dialog.EditDialog;
 import de.marhali.easyi18n.listener.DeleteKeyListener;
 import de.marhali.easyi18n.listener.PopupClickListener;
 import de.marhali.easyi18n.renderer.TreeRenderer;
-import de.marhali.easyi18n.service.SettingsService;
+import de.marhali.easyi18n.settings.ProjectSettingsService;
 import de.marhali.easyi18n.tabs.mapper.TreeModelMapper;
 import de.marhali.easyi18n.util.TreeUtil;
 
@@ -80,7 +80,7 @@ public class TreeView implements BusListener {
 
     @Override
     public void onUpdateData(@NotNull TranslationData data) {
-        tree.setModel(this.currentMapper = new TreeModelMapper(data, SettingsService.getInstance(project).getState()));
+        tree.setModel(this.currentMapper = new TreeModelMapper(data, ProjectSettingsService.get(project).getState()));
     }
 
     @Override

@@ -2,7 +2,7 @@ package de.marhali.easyi18n.model;
 
 import com.intellij.openapi.project.Project;
 
-import de.marhali.easyi18n.service.SettingsService;
+import de.marhali.easyi18n.settings.ProjectSettingsService;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -22,7 +22,7 @@ public class KeyPathConverter {
     }
 
     public KeyPathConverter(@NotNull Project project) {
-        this(SettingsService.getInstance(project).getState().isNestedKeys());
+        this(ProjectSettingsService.get(project).getState().isNestedKeys());
     }
 
     public @NotNull String concat(@NotNull KeyPath path) {

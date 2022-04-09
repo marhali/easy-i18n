@@ -9,6 +9,7 @@ import de.marhali.easyi18n.io.parser.ParserStrategy;
 import de.marhali.easyi18n.io.parser.ParserStrategyType;
 import de.marhali.easyi18n.model.*;
 
+import de.marhali.easyi18n.settings.ProjectSettings;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -21,23 +22,23 @@ import java.util.List;
  */
 public class IOHandler {
 
-    private final @NotNull SettingsState settings;
+    private final @NotNull ProjectSettings settings;
 
     private final @NotNull FolderStrategy folderStrategy;
 
     private final @NotNull ParserStrategyType parserStrategyType;
     private final @NotNull ParserStrategy parserStrategy;
 
-    public IOHandler(@NotNull SettingsState settings) throws Exception {
+    public IOHandler(@NotNull ProjectSettings settings) throws Exception {
 
         this.settings = settings;
 
         this.folderStrategy = settings.getFolderStrategy().getStrategy()
-                .getDeclaredConstructor(SettingsState.class).newInstance(settings);
+                .getDeclaredConstructor(ProjectSettings.class).newInstance(settings);
 
         this.parserStrategyType = settings.getParserStrategy();
         this.parserStrategy = parserStrategyType.getStrategy()
-                .getDeclaredConstructor(SettingsState.class).newInstance(settings);
+                .getDeclaredConstructor(ProjectSettings.class).newInstance(settings);
     }
 
     /**
@@ -47,7 +48,7 @@ public class IOHandler {
      * @throws IOException Could not read translation data
      */
     public @NotNull TranslationData read() throws IOException {
-        String localesPath = this.settings.getLocalesPath();
+        String localesPath = this.settings.getLocalesDirectory();
 
         if(localesPath == null || localesPath.isEmpty()) {
             throw new EmptyLocalesDirException("Locales path must not be empty");
@@ -59,7 +60,7 @@ public class IOHandler {
             throw new IllegalArgumentException("Specified locales path is invalid (" + localesPath + ")");
         }
 
-        TranslationData data = new TranslationData(this.settings.isSortKeys());
+        TranslationData data = new TranslationData(this.settings.isSorting());
         List<TranslationFile> translationFiles = this.folderStrategy.analyzeFolderStructure(localesDirectory);
 
         for(TranslationFile file : translationFiles) {
@@ -80,7 +81,7 @@ public class IOHandler {
      * @throws IOException Write action failed
      */
     public void write(@NotNull TranslationData data) throws IOException {
-        String localesPath = this.settings.getLocalesPath();
+        String localesPath = this.settings.getLocalesDirectory();
 
         if(localesPath == null || localesPath.isEmpty()) {
             throw new EmptyLocalesDirException("Locales path must not be empty");

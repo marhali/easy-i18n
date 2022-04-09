@@ -3,9 +3,9 @@ package de.marhali.easyi18n.io.folder;
 import com.intellij.openapi.vfs.VirtualFile;
 
 import de.marhali.easyi18n.io.parser.ParserStrategyType;
-import de.marhali.easyi18n.model.SettingsState;
 import de.marhali.easyi18n.model.TranslationData;
 import de.marhali.easyi18n.model.TranslationFile;
+import de.marhali.easyi18n.settings.ProjectSettings;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -20,7 +20,7 @@ import java.util.List;
  */
 public class ModularNamespaceFolderStrategy extends FolderStrategy {
 
-    public ModularNamespaceFolderStrategy(@NotNull SettingsState settings) {
+    public ModularNamespaceFolderStrategy(@NotNull ProjectSettings settings) {
         super(settings);
     }
 

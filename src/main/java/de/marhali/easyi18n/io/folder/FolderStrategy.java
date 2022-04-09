@@ -4,10 +4,10 @@ import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 
 import de.marhali.easyi18n.io.parser.ParserStrategyType;
-import de.marhali.easyi18n.model.SettingsState;
 import de.marhali.easyi18n.model.TranslationData;
 import de.marhali.easyi18n.model.TranslationFile;
 
+import de.marhali.easyi18n.settings.ProjectSettings;
 import org.apache.commons.io.FilenameUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -22,9 +22,9 @@ import java.util.Objects;
  */
 public abstract class FolderStrategy {
 
-    protected final @NotNull SettingsState settings;
+    protected final @NotNull ProjectSettings settings;
 
-    public FolderStrategy(@NotNull SettingsState settings) {
+    public FolderStrategy(@NotNull ProjectSettings settings) {
         this.settings = settings;
     }
 

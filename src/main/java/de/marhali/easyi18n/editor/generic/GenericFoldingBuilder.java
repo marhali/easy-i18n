@@ -13,7 +13,7 @@ import de.marhali.easyi18n.DataStore;
 import de.marhali.easyi18n.InstanceManager;
 import de.marhali.easyi18n.model.KeyPathConverter;
 import de.marhali.easyi18n.model.Translation;
-import de.marhali.easyi18n.service.SettingsService;
+import de.marhali.easyi18n.settings.ProjectSettingsService;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -33,7 +33,7 @@ public class GenericFoldingBuilder extends FoldingBuilderEx {
         Collection<PsiLiteralValue> literalValues = PsiTreeUtil.findChildrenOfType(root, PsiLiteralValue.class);
         List<FoldingDescriptor> descriptors = new ArrayList<>();
 
-        if(!SettingsService.getInstance(root.getProject()).getState().isCodeAssistance()) {
+        if(!ProjectSettingsService.get(root.getProject()).getState().isAssistance()) {
             return FoldingDescriptor.EMPTY;
         }
 
@@ -75,7 +75,7 @@ public class GenericFoldingBuilder extends FoldingBuilderEx {
             return null;
         }
 
-        String previewLocale = SettingsService.getInstance(literalValue.getProject()).getState().getPreviewLocale();
+        String previewLocale = ProjectSettingsService.get(literalValue.getProject()).getState().getPreviewLocale();
 
         return translation.get(previewLocale);
     }

@@ -2,6 +2,7 @@ package de.marhali.easyi18n.io.parser;
 
 import de.marhali.easyi18n.model.*;
 
+import de.marhali.easyi18n.settings.ProjectSettings;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
@@ -12,9 +13,9 @@ import java.util.Objects;
  */
 public abstract class ParserStrategy {
 
-    protected final @NotNull SettingsState settings;
+    protected final @NotNull ProjectSettings settings;
 
-    public ParserStrategy(@NotNull SettingsState settings) {
+    public ParserStrategy(@NotNull ProjectSettings settings) {
         this.settings = settings;
     }
 
@@ -48,7 +49,7 @@ public abstract class ParserStrategy {
             TranslationNode moduleNode = data.getNode(KeyPath.of(moduleName));
 
             if(moduleNode == null) {
-                moduleNode = new TranslationNode(this.settings.isSortKeys());
+                moduleNode = new TranslationNode(this.settings.isSorting());
                 data.getRootNode().setChildren(moduleName, moduleNode);
             }
 

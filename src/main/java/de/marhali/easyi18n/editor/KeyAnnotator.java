@@ -7,10 +7,10 @@ import com.intellij.openapi.project.Project;
 import de.marhali.easyi18n.InstanceManager;
 import de.marhali.easyi18n.model.KeyPath;
 import de.marhali.easyi18n.model.KeyPathConverter;
-import de.marhali.easyi18n.model.SettingsState;
 import de.marhali.easyi18n.model.TranslationNode;
-import de.marhali.easyi18n.service.SettingsService;
 
+import de.marhali.easyi18n.settings.ProjectSettings;
+import de.marhali.easyi18n.settings.ProjectSettingsService;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -27,12 +27,14 @@ public class KeyAnnotator {
      */
     protected void annotate(@NotNull String key, @NotNull Project project, @NotNull AnnotationHolder holder) {
         // Do not annotate keys if service is disabled
-        if(!SettingsService.getInstance(project).getState().isCodeAssistance()) {
+        if(!ProjectSettingsService.get(project).getState().isAssistance()) {
             return;
         }
 
-        SettingsState state = SettingsService.getInstance(project).getState();
-        String pathPrefix = state.getPathPrefix();
+        ProjectSettings state = ProjectSettingsService.get(project).getState();
+        //String pathPrefix = state.getPathPrefix();
+        // TODO: Path prefix removal
+        String pathPrefix = "";
         String previewLocale = state.getPreviewLocale();
 
         KeyPathConverter converter = new KeyPathConverter(project);

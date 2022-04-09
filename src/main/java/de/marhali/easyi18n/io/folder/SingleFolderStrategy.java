@@ -3,9 +3,9 @@ package de.marhali.easyi18n.io.folder;
 import com.intellij.openapi.vfs.VirtualFile;
 
 import de.marhali.easyi18n.io.parser.ParserStrategyType;
-import de.marhali.easyi18n.model.SettingsState;
 import de.marhali.easyi18n.model.TranslationData;
 import de.marhali.easyi18n.model.TranslationFile;
+import de.marhali.easyi18n.settings.ProjectSettings;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -22,7 +22,7 @@ import java.util.List;
  */
 public class SingleFolderStrategy extends FolderStrategy {
 
-    public SingleFolderStrategy(@NotNull SettingsState settings) {
+    public SingleFolderStrategy(@NotNull ProjectSettings settings) {
         super(settings);
     }
 
