@@ -8,6 +8,7 @@ import org.jetbrains.annotations.Nullable;
  * Represents the persistent settings which can be configured.
  * @author marhali
  */
+@Deprecated
 public class SettingsState {
 
     public static final String DEFAULT_PREVIEW_LOCALE = "en";

@@ -13,6 +13,7 @@ import org.jetbrains.annotations.NotNull;
  * @author marhali
  */
 @State(name = "EasyI18nSettings")
+@Deprecated
 public class SettingsService implements PersistentStateComponent<SettingsState> {
 
     public static SettingsService getInstance(Project project) {
@@ -28,6 +29,10 @@ public class SettingsService implements PersistentStateComponent<SettingsState> 
     @Override
     public @NotNull SettingsState getState() {
         return state;
+    }
+
+    public void setState(SettingsState state) {
+        this.state = state;
     }
 
     @Override

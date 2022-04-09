@@ -28,6 +28,7 @@ import java.util.ResourceBundle;
  * Plugin configuration dialog.
  * @author marhali
  */
+@Deprecated
 public class SettingsDialog {
 
     private final Project project;
