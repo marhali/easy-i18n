@@ -35,7 +35,7 @@ public class DataStore {
         this.changeListener = new FileChangeListener(project);
 
         VirtualFileManager.getInstance().addAsyncFileListener(
-                this.changeListener, Disposer.newDisposable("EasyI18n"));
+                this.changeListener, Disposer.newDisposable(project, "EasyI18n"));
     }
 
     public @NotNull TranslationData getData() {

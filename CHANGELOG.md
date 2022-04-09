@@ -3,6 +3,8 @@
 # easy-i18n Changelog
 
 ## [Unreleased]
+### Fixed
+- AlreadyDisposedException on FileChangeListener after project has been disposed
 
 ## [3.2.0]
 ### Added
