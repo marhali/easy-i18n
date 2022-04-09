@@ -25,7 +25,8 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <toolWindow id="Easy I18n" anchor="bottom"
-                    factoryClass="de.marhali.easyi18n.service.TranslatorToolWindowFactory"/>
+                    factoryClass="de.marhali.easyi18n.service.TranslatorToolWindowFactory"
+                    icon="/icons/translate13.svg"/>
 
         <projectService serviceImplementation="de.marhali.easyi18n.settings.ProjectSettingsService"/>
 

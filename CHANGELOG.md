@@ -3,8 +3,11 @@
 # easy-i18n Changelog
 
 ## [Unreleased]
+### Added
+- Individual icon to tool-window
+
 ### Fixed
-- AlreadyDisposedException on FileChangeListener after project has been disposed
+- AlreadyDisposedException on FileChangeListener after project dispose
 
 ## [3.2.0]
 ### Added
