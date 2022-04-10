@@ -7,6 +7,7 @@ import org.jetbrains.annotations.Nullable;
  * I18n translation with associated key path (full-key).
  * @author marhali
  */
+@Deprecated // Replaced by Translation
 public class KeyedTranslation {
 
     private @NotNull KeyPath key;
