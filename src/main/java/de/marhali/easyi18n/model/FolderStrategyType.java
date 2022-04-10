@@ -10,14 +10,20 @@ import de.marhali.easyi18n.io.folder.SingleFolderStrategy;
  * @author marhali
  */
 public enum FolderStrategyType {
-    SINGLE(SingleFolderStrategy.class),
-    MODULARIZED_LOCALE(ModularLocaleFolderStrategy.class),
-    MODULARIZED_NAMESPACE(ModularNamespaceFolderStrategy.class);
+    SINGLE(SingleFolderStrategy.class, false),
+    MODULARIZED_LOCALE(ModularLocaleFolderStrategy.class, true),
+    MODULARIZED_NAMESPACE(ModularNamespaceFolderStrategy.class, false);
 
     private final Class<? extends FolderStrategy> strategy;
+    private final boolean namespaceMode;
 
-    FolderStrategyType(Class<? extends FolderStrategy> strategy) {
+    /**
+     * @param strategy Strategy implementation
+     * @param namespaceMode Does this strategy use namespaces?
+     */
+    FolderStrategyType(Class<? extends FolderStrategy> strategy, boolean namespaceMode) {
         this.strategy = strategy;
+        this.namespaceMode = namespaceMode;
     }
 
     public Class<? extends FolderStrategy> getStrategy() {
@@ -36,6 +42,10 @@ public enum FolderStrategyType {
         }
 
         throw new NullPointerException();
+    }
+
+    public boolean isNamespaceMode() {
+        return namespaceMode;
     }
 
     public static FolderStrategyType fromIndex(int index) {
