@@ -7,6 +7,7 @@ import java.util.HashMap;
  * This class contains only the translations for this unspecific element.
  * @author marhali
  */
+@Deprecated // Replaced by TranslationValue
 public class Translation extends HashMap<String, String> {
     public Translation() {
         super();
