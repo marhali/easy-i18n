@@ -12,7 +12,7 @@ import de.marhali.easyi18n.io.folder.SingleFolderStrategy;
 public enum FolderStrategyType {
     SINGLE(SingleFolderStrategy.class, false),
     MODULARIZED_LOCALE(ModularLocaleFolderStrategy.class, true),
-    MODULARIZED_NAMESPACE(ModularNamespaceFolderStrategy.class, false);
+    MODULARIZED_NAMESPACE(ModularNamespaceFolderStrategy.class, true);
 
     private final Class<? extends FolderStrategy> strategy;
     private final boolean namespaceMode;
