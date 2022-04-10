@@ -13,6 +13,7 @@ import java.util.regex.Pattern;
  * If nesting is enabled the delimiter within a section is escaped otherwise the delimiter between the key sections.
  * @author marhali
  */
+@Deprecated // Replacement moved to utils
 public class KeyPathConverter {
 
     private final boolean nestKeys;
