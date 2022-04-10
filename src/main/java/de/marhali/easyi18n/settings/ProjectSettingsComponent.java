@@ -156,13 +156,20 @@ public class ProjectSettingsComponent extends ProjectSettingsComponentState {
         panel.add(namespaceDelimiter = createDelimiterField(bundle.getString("settings.editor.key.namespace.tooltip")));
         panel.add(new JBLabel(bundle.getString("settings.editor.key.section.title")));
         panel.add(sectionDelimiter = createDelimiterField(bundle.getString("settings.editor.key.section.tooltip")));
-        panel.add(new JBLabel(bundle.getString("settings.editor.key.node.title")));
+        panel.add(createBoldLabel(bundle.getString("settings.editor.key.leaf.title")));
         panel.add(contextDelimiter = createDelimiterField(bundle.getString("settings.editor.key.context.tooltip")));
-        panel.add(new JBLabel(bundle.getString("settings.editor.key.context.title")));
+        panel.add(createBoldLabel(bundle.getString("settings.editor.key.context.title")));
         panel.add(pluralDelimiter = createDelimiterField(bundle.getString("settings.editor.key.plural.tooltip")));
-        panel.add(new JBLabel(bundle.getString("settings.editor.key.plural.title")));
+        panel.add(createBoldLabel(bundle.getString("settings.editor.key.plural.title")));
 
         return panel;
+    }
+
+    private JLabel createBoldLabel(String title) {
+        JBLabel label = new JBLabel(title);
+        Font font = label.getFont();
+        label.setFont(font.deriveFont(font.getStyle() | Font.BOLD));
+        return label;
     }
 
     private JTextField createDelimiterField(String tooltip) {
