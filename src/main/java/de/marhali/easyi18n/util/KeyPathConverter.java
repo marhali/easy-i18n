@@ -61,7 +61,8 @@ public class KeyPathConverter {
 
             // Missing namespace
             if(i == 0 && settings.getFolderStrategy().isNamespaceMode() && hasDefaultNamespace()) {
-                if(section.length() == literalPath.length() || !String.valueOf(literalPath.charAt(section.length())).equals(settings.getNamespaceDelimiter())) {
+                String namespaceDelim = (settings.isNestedKeys() ? "" : "\\") + settings.getNamespaceDelimiter();
+                if(section.length() == literalPath.length() || !literalPath.substring(section.length()).startsWith(namespaceDelim)) {
                     path.add(settings.getDefaultNamespace());
                 }
             }
@@ -102,7 +103,7 @@ public class KeyPathConverter {
         builder.append(Pattern.quote(settings.getSectionDelimiter()));
 
         // Add optional namespace delimiter if present
-        if(hasDefaultNamespace()) {
+        if(settings.getNamespaceDelimiter() != null && !settings.getNamespaceDelimiter().isEmpty()) {
             builder.append("|");
             builder.append(Pattern.quote(Objects.requireNonNull(settings.getNamespaceDelimiter())));
         }
@@ -115,25 +116,27 @@ public class KeyPathConverter {
      * Securely escape found delimiters inside provided section according to the configured policy.
      */
     private String quoteSection(String section) {
+        String quoted = section;
         if(!settings.isNestedKeys()) {
-            return section;
+            return quoted;
         }
 
         if(hasDefaultNamespace()) {
-            section = section.replace(settings.getNamespaceDelimiter(), "\\" + settings.getNamespaceDelimiter());
+            quoted = quoted.replace(settings.getNamespaceDelimiter(), "\\" + settings.getNamespaceDelimiter());
         }
 
-        section = section.replace(settings.getSectionDelimiter(), "\\" + settings.getSectionDelimiter());
-        return section;
+        quoted = quoted.replace(settings.getSectionDelimiter(), "\\" + settings.getSectionDelimiter());
+        return quoted;
     }
 
     private String unquoteSection(String section) {
+        String unquoted = section;
         if(hasDefaultNamespace()) {
-            section = section.replace("\\" + settings.getNamespaceDelimiter(), settings.getNamespaceDelimiter());
+            unquoted = unquoted.replace("\\" + settings.getNamespaceDelimiter(), settings.getNamespaceDelimiter());
         }
 
-        section = section.replace("\\" + settings.getSectionDelimiter(), settings.getSectionDelimiter());
-        return section;
+        unquoted = unquoted.replace("\\" + settings.getSectionDelimiter(), settings.getSectionDelimiter());
+        return unquoted;
     }
 
     /**

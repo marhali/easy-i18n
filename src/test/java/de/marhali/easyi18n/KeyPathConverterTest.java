@@ -11,12 +11,29 @@ import org.jetbrains.annotations.Nullable;
 import org.junit.Assert;
 import org.junit.Test;
 
-
 /**
  * Unit tests for {@link KeyPathConverter}.
  * @author marhali
  */
 public class KeyPathConverterTest {
+
+    @Test
+    public void noNamespaceDelimiter() {
+        KeyPathConverter converter = getConverter(FolderStrategyType.MODULARIZED_NAMESPACE, null, ".", null, true);
+
+        Assert.assertEquals(new KeyPath("username"), converter.fromString("username"));
+        Assert.assertEquals(new KeyPath("username:nested"), converter.fromString("username:nested"));
+        Assert.assertEquals(new KeyPath("username:nested", "leaf"), converter.fromString("username:nested.leaf"));
+    }
+
+    @Test
+    public void emptyDefaultNamespace() {
+        KeyPathConverter converter = getConverter(FolderStrategyType.MODULARIZED_NAMESPACE, ":", ".", null, true);
+
+        Assert.assertEquals(new KeyPath("username"), converter.fromString("username"));
+        Assert.assertEquals(new KeyPath("username", "nested"), converter.fromString("username:nested"));
+        Assert.assertEquals(new KeyPath("username", "nested", "leaf"), converter.fromString("username:nested.leaf"));
+    }
 
     @Test
     public void nonNestedSingle() {
@@ -39,8 +56,7 @@ public class KeyPathConverterTest {
         Assert.assertEquals("username.title\\:concat.leaf\\.node", converter.toString(new KeyPath("username.title", "concat.leaf", "node")));
 
         Assert.assertEquals(new KeyPath("common", "username"), converter.fromString("username"));
-        // TODO: problem here
-        Assert.assertEquals(new KeyPath("username.title", "concat.leaf", "node"), converter.fromString("username.title\\:concat\\.leaf.node"));
+        Assert.assertEquals(new KeyPath("username.title", "concat", "leaf.node"), converter.fromString("username.title\\:concat\\.leaf.node"));
     }
 
     @Test
