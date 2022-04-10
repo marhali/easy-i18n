@@ -13,6 +13,7 @@ import java.util.regex.Pattern;
  * The respective layer (io, presentation) is responsible for using the correct mapping mechanism.
  * @author marhali
  */
+@Deprecated
 public class KeyPath extends ArrayList<String> {
 
     public static final String DELIMITER = ".";
