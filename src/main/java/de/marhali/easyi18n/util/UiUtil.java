@@ -1,6 +1,7 @@
 package de.marhali.easyi18n.util;
 
 import java.util.Map;
+import java.util.Set;
 
 /**
  * User interface utilities.
@@ -13,12 +14,12 @@ public class UiUtil {
      * @param messages Contains locales with desired translation
      * @return String with html format
      */
-    public static String generateHtmlTooltip(Map<String, String> messages) {
+    public static String generateHtmlTooltip(Set<Map.Entry<String, String>> messages) {
         StringBuilder builder = new StringBuilder();
 
         builder.append("<html>");
 
-        for(Map.Entry<String, String> entry : messages.entrySet()) {
+        for(Map.Entry<String, String> entry : messages) {
             builder.append("<b>");
             builder.append(entry.getKey()).append(":");
             builder.append("</b> ");
