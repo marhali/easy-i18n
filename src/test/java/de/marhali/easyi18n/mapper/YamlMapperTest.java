@@ -2,8 +2,8 @@ package de.marhali.easyi18n.mapper;
 
 import de.marhali.easyi18n.io.parser.yaml.YamlArrayMapper;
 import de.marhali.easyi18n.io.parser.yaml.YamlMapper;
-import de.marhali.easyi18n.model.KeyPath;
 import de.marhali.easyi18n.model.TranslationData;
+import de.marhali.easyi18n.model.KeyPath;
 import org.apache.commons.lang.StringEscapeUtils;
 
 import org.junit.Assert;
@@ -58,8 +58,8 @@ public class YamlMapperTest extends AbstractMapperTest {
     @Override
     public void testArrays() {
         TranslationData data = new TranslationData(true);
-        data.setTranslation(KeyPath.of("simple"), create(arraySimple));
-        data.setTranslation(KeyPath.of("escaped"), create(arrayEscaped));
+        data.setTranslation(new KeyPath("simple"), create(arraySimple));
+        data.setTranslation(new KeyPath("escaped"), create(arrayEscaped));
 
         Section output = new MapSection();
         YamlMapper.write("en", output, data.getRootNode());
@@ -72,14 +72,14 @@ public class YamlMapperTest extends AbstractMapperTest {
         TranslationData input = new TranslationData(true);
         YamlMapper.read("en", output, input.getRootNode());
 
-        Assert.assertTrue(YamlArrayMapper.isArray(input.getTranslation(KeyPath.of("simple")).get("en")));
-        Assert.assertTrue(YamlArrayMapper.isArray(input.getTranslation(KeyPath.of("escaped")).get("en")));
+        Assert.assertTrue(YamlArrayMapper.isArray(input.getTranslation(new KeyPath("simple")).get("en")));
+        Assert.assertTrue(YamlArrayMapper.isArray(input.getTranslation(new KeyPath("escaped")).get("en")));
     }
 
     @Override
     public void testSpecialCharacters() {
         TranslationData data = new TranslationData(true);
-        data.setTranslation(KeyPath.of("chars"), create(specialCharacters));
+        data.setTranslation(new KeyPath("chars"), create(specialCharacters));
 
         Section output = new MapSection();
         YamlMapper.write("en", output, data.getRootNode());
@@ -90,13 +90,13 @@ public class YamlMapperTest extends AbstractMapperTest {
         YamlMapper.read("en", output, input.getRootNode());
 
         Assert.assertEquals(specialCharacters,
-                StringEscapeUtils.unescapeJava(input.getTranslation(KeyPath.of("chars")).get("en")));
+                StringEscapeUtils.unescapeJava(input.getTranslation(new KeyPath("chars")).get("en")));
     }
 
     @Override
     public void testNestedKeys() {
         TranslationData data = new TranslationData(true);
-        data.setTranslation(KeyPath.of("nested", "key", "section"), create("test"));
+        data.setTranslation(new KeyPath("nested", "key", "section"), create("test"));
 
         Section output = new MapSection();
         YamlMapper.write("en", output, data.getRootNode());
@@ -106,13 +106,13 @@ public class YamlMapperTest extends AbstractMapperTest {
         TranslationData input = new TranslationData(true);
         YamlMapper.read("en", output, input.getRootNode());
 
-        Assert.assertEquals("test", input.getTranslation(KeyPath.of("nested", "key", "section")).get("en"));
+        Assert.assertEquals("test", input.getTranslation(new KeyPath("nested", "key", "section")).get("en"));
     }
 
     @Override
     public void testNonNestedKeys() {
         TranslationData data = new TranslationData(true);
-        data.setTranslation(KeyPath.of("long.key.with.many.sections"), create("test"));
+        data.setTranslation(new KeyPath("long.key.with.many.sections"), create("test"));
 
         Section output = new MapSection();
         YamlMapper.write("en", output, data.getRootNode());
@@ -122,13 +122,13 @@ public class YamlMapperTest extends AbstractMapperTest {
         TranslationData input = new TranslationData(true);
         YamlMapper.read("en", output, input.getRootNode());
 
-        Assert.assertEquals("test", input.getTranslation(KeyPath.of("long.key.with.many.sections")).get("en"));
+        Assert.assertEquals("test", input.getTranslation(new KeyPath("long.key.with.many.sections")).get("en"));
     }
 
     @Override
     public void testLeadingSpace() {
         TranslationData data = new TranslationData(true);
-        data.setTranslation(KeyPath.of("space"), create(leadingSpace));
+        data.setTranslation(new KeyPath("space"), create(leadingSpace));
 
         Section output = new MapSection();
         YamlMapper.write("en", output, data.getRootNode());
@@ -138,13 +138,13 @@ public class YamlMapperTest extends AbstractMapperTest {
         TranslationData input = new TranslationData(true);
         YamlMapper.read("en", output, input.getRootNode());
 
-        Assert.assertEquals(leadingSpace, input.getTranslation(KeyPath.of("space")).get("en"));
+        Assert.assertEquals(leadingSpace, input.getTranslation(new KeyPath("space")).get("en"));
     }
 
     @Override
     public void testNumbers() {
         TranslationData data = new TranslationData(true);
-        data.setTranslation(KeyPath.of("numbered"), create("15000"));
+        data.setTranslation(new KeyPath("numbered"), create("15000"));
 
         Section output = new MapSection();
         YamlMapper.write("en", output, data.getRootNode());
@@ -155,6 +155,6 @@ public class YamlMapperTest extends AbstractMapperTest {
         input.set("numbered", 143.23);
         YamlMapper.read("en", input, data.getRootNode());
 
-        Assert.assertEquals("143.23", data.getTranslation(KeyPath.of("numbered")).get("en"));
+        Assert.assertEquals("143.23", data.getTranslation(new KeyPath("numbered")).get("en"));
     }
 }

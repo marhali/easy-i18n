@@ -1,6 +1,6 @@
 package de.marhali.easyi18n.mapper;
 
-import de.marhali.easyi18n.model.Translation;
+import de.marhali.easyi18n.model.TranslationValue;
 
 import org.junit.Test;
 
@@ -39,7 +39,7 @@ public abstract class AbstractMapperTest {
     @Test
     public abstract void testNumbers();
 
-    protected Translation create(String content) {
-        return new Translation("en", content);
+    protected TranslationValue create(String content) {
+        return new TranslationValue("en", content);
     }
 }

@@ -4,8 +4,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 
-import de.marhali.easyi18n.model.Translation;
 import de.marhali.easyi18n.model.TranslationNode;
+import de.marhali.easyi18n.model.TranslationValue;
 import de.marhali.easyi18n.util.StringUtil;
 
 import org.apache.commons.lang.StringEscapeUtils;
@@ -30,7 +30,7 @@ public class JsonMapper {
                 // Nested element - run recursively
                 read(locale, value.getAsJsonObject(), childNode);
             } else {
-                Translation translation = childNode.getValue();
+                TranslationValue translation = childNode.getValue();
 
                 String content = entry.getValue().isJsonArray()
                         ? JsonArrayMapper.read(value.getAsJsonArray())
@@ -55,7 +55,7 @@ public class JsonMapper {
                     json.add(key, childJson);
                 }
             } else {
-                Translation translation = childNode.getValue();
+                TranslationValue translation = childNode.getValue();
                 String content = translation.get(locale);
 
                 if(content != null) {

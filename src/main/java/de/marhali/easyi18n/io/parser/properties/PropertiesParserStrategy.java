@@ -7,6 +7,7 @@ import de.marhali.easyi18n.model.TranslationData;
 import de.marhali.easyi18n.model.TranslationFile;
 import de.marhali.easyi18n.model.TranslationNode;
 import de.marhali.easyi18n.settings.ProjectSettings;
+import de.marhali.easyi18n.util.KeyPathConverter;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -20,8 +21,11 @@ import java.io.StringWriter;
  */
 public class PropertiesParserStrategy extends ParserStrategy {
 
+    private final @NotNull KeyPathConverter converter;
+
     public PropertiesParserStrategy(@NotNull ProjectSettings settings) {
         super(settings);
+        this.converter = new KeyPathConverter(settings);
     }
 
     @Override
@@ -35,7 +39,7 @@ public class PropertiesParserStrategy extends ParserStrategy {
         try(Reader reader = new InputStreamReader(vf.getInputStream(), vf.getCharset())) {
             SortableProperties input = new SortableProperties(this.settings.isSorting());
             input.load(reader);
-            PropertiesMapper.read(file.getLocale(), input, targetData);
+            PropertiesMapper.read(file.getLocale(), input, targetData, converter);
         }
     }
 
@@ -45,7 +49,7 @@ public class PropertiesParserStrategy extends ParserStrategy {
         TranslationData targetData = new TranslationData(data.getLocales(), targetNode);
 
         SortableProperties output = new SortableProperties(this.settings.isSorting());
-        PropertiesMapper.write(file.getLocale(), output, targetData);
+        PropertiesMapper.write(file.getLocale(), output, targetData, converter);
 
         try(StringWriter writer = new StringWriter()) {
             output.store(writer, null);
