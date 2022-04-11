@@ -6,10 +6,10 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.project.Project;
 import com.intellij.ui.content.Content;
 
-import de.marhali.easyi18n.model.KeyPath;
-import de.marhali.easyi18n.model.KeyPathConverter;
-import de.marhali.easyi18n.service.WindowManager;
 import de.marhali.easyi18n.dialog.AddDialog;
+import de.marhali.easyi18n.model.translation.KeyPath;
+import de.marhali.easyi18n.service.WindowManager;
+import de.marhali.easyi18n.util.KeyPathConverter;
 import de.marhali.easyi18n.util.TreeUtil;
 
 import org.jetbrains.annotations.NotNull;
@@ -32,7 +32,7 @@ public class AddAction extends AnAction {
 
     @Override
     public void actionPerformed(@NotNull AnActionEvent e) {
-        new AddDialog(Objects.requireNonNull(e.getProject()), detectPreKey(e.getProject())).showAndHandle();
+        new AddDialog(Objects.requireNonNull(e.getProject()), detectPreKey(e.getProject()), null).showAndHandle();
     }
 
     private @Nullable KeyPath detectPreKey(@NotNull Project project) {
@@ -58,7 +58,7 @@ public class AddAction extends AnAction {
 
             if(row >= 0) {
                 String path = String.valueOf(window.getTableView().getTable().getValueAt(row, 0));
-                return converter.split(path);
+                return converter.fromString(path);
             }
         }
 

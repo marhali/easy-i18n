@@ -3,102 +3,53 @@ package de.marhali.easyi18n.dialog;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogBuilder;
 import com.intellij.openapi.ui.DialogWrapper;
-import com.intellij.ui.components.JBLabel;
-import com.intellij.ui.components.JBScrollPane;
-import com.intellij.ui.components.JBTextField;
 
 import de.marhali.easyi18n.InstanceManager;
-import de.marhali.easyi18n.model.*;
 import de.marhali.easyi18n.dialog.descriptor.DeleteActionDescriptor;
+import de.marhali.easyi18n.model.TranslationDelete;
+import de.marhali.easyi18n.model.TranslationUpdate;
+import de.marhali.easyi18n.model.translation.Translation;
+
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
-import javax.swing.border.EtchedBorder;
-import java.awt.*;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.ResourceBundle;
 
 /**
- * Edit translation dialog.
+ * Dialog to edit or delete an existing translation.
  * @author marhali
  */
-public class EditDialog {
+public class EditDialog extends TranslationDialog {
 
-    private final Project project;
-    private final KeyPathConverter converter;
-
-    private final KeyedTranslation origin;
-
-    private JBTextField keyTextField;
-    private Map<String, JBTextField> valueTextFields;
-
-    public EditDialog(Project project, KeyedTranslation origin) {
-        this.project = project;
-        this.converter = new KeyPathConverter(project);
-        this.origin = origin;
+    /**
+     * Constructs a new edit dialog with the provided translation
+     * @param project Opened project
+     * @param origin Translation to edit
+     */
+    public EditDialog(@NotNull Project project, @NotNull Translation origin) {
+        super(project, origin);
     }
 
-    public void showAndHandle() {
-        int code = prepare().show();
-
-        if(code == DialogWrapper.OK_EXIT_CODE) { // Edit
-            InstanceManager.get(project).processUpdate(new TranslationUpdate(origin, getChanges()));
-        } else if(code == DeleteActionDescriptor.EXIT_CODE) { // Delete
-            InstanceManager.get(project).processUpdate(new TranslationDelete(origin));
-        }
-    }
-
-    private KeyedTranslation getChanges() {
-        Translation translation = new Translation();
-
-        valueTextFields.forEach((k, v) -> {
-            if(!v.getText().isEmpty()) {
-                translation.put(k, v.getText());
-            }
-        });
-
-        return new KeyedTranslation(converter.split(keyTextField.getText()), translation);
-    }
-
-    private DialogBuilder prepare() {
-        JPanel rootPanel = new JPanel();
-        rootPanel.setLayout(new BoxLayout(rootPanel, BoxLayout.PAGE_AXIS));
-
-        JPanel keyPanel = new JPanel(new GridLayout(0, 1, 2,2));
-        JBLabel keyLabel = new JBLabel(ResourceBundle.getBundle("messages").getString("translation.key"));
-        keyTextField = new JBTextField(this.converter.concat(this.origin.getKey()));
-        keyLabel.setLabelFor(keyTextField);
-        keyPanel.add(keyLabel);
-        keyPanel.add(keyTextField);
-        keyPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
-        rootPanel.add(keyPanel);
-
-        JPanel valuePanel = new JPanel(new GridLayout(0, 1, 2, 2));
-        valueTextFields = new HashMap<>();
-
-        for(String locale : InstanceManager.get(project).store().getData().getLocales()) {
-            JBLabel localeLabel = new JBLabel(locale);
-            JBTextField localeText = new JBTextField(this.origin.getTranslation().get(locale));
-            localeLabel.setLabelFor(localeText);
-
-            valuePanel.add(localeLabel);
-            valuePanel.add(localeText);
-            valueTextFields.put(locale, localeText);
-        }
-
-        JBScrollPane valuePane = new JBScrollPane(valuePanel);
-        valuePane.setBorder(BorderFactory.createTitledBorder(new EtchedBorder(),
-                ResourceBundle.getBundle("messages").getString("translation.locales")));
-        rootPanel.add(valuePane);
-
+    @Override
+    protected @NotNull DialogBuilder configure(@NotNull JComponent centerPanel) {
         DialogBuilder builder = new DialogBuilder();
-        builder.setTitle(ResourceBundle.getBundle("messages").getString("action.edit"));
+        builder.setTitle(bundle.getString("action.edit"));
         builder.removeAllActions();
         builder.addCancelAction();
         builder.addActionDescriptor(new DeleteActionDescriptor());
         builder.addOkAction();
-        builder.setCenterPanel(rootPanel);
-
+        builder.setCenterPanel(centerPanel);
         return builder;
+    }
+
+    @Override
+    protected void handleExit(int exitCode) {
+        switch (exitCode) {
+            case DialogWrapper.OK_EXIT_CODE:
+                InstanceManager.get(project).processUpdate(new TranslationUpdate(origin, getState()));
+                break;
+            case DeleteActionDescriptor.EXIT_CODE:
+                InstanceManager.get(project).processUpdate(new TranslationDelete(origin));
+                break;
+        }
     }
 }
