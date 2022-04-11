@@ -3,8 +3,15 @@
 # easy-i18n Changelog
 
 ## [Unreleased]
+### BREAKING CHANGES
+- Configuration rework. Existing settings will be lost and must be configured via the new configuration page
+
 ### Added
+- Key delimiters (namespace / section) can be configured
 - Individual icon to tool-window
+
+### Changed
+- Moved configuration dialog into own page inside <kbd>IDE Settings</kbd> 
 
 ### Fixed
 - AlreadyDisposedException on FileChangeListener after project dispose
