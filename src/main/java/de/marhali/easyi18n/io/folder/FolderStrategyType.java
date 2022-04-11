@@ -1,9 +1,4 @@
-package de.marhali.easyi18n.model;
-
-import de.marhali.easyi18n.io.folder.FolderStrategy;
-import de.marhali.easyi18n.io.folder.ModularLocaleFolderStrategy;
-import de.marhali.easyi18n.io.folder.ModularNamespaceFolderStrategy;
-import de.marhali.easyi18n.io.folder.SingleFolderStrategy;
+package de.marhali.easyi18n.io.folder;
 
 /**
  * Represents all supported folder strategies.

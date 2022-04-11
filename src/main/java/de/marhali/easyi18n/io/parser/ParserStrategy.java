@@ -2,6 +2,7 @@ package de.marhali.easyi18n.io.parser;
 
 import de.marhali.easyi18n.model.*;
 
+import de.marhali.easyi18n.model.KeyPath;
 import de.marhali.easyi18n.settings.ProjectSettings;
 import org.jetbrains.annotations.NotNull;
 
@@ -46,7 +47,7 @@ public abstract class ParserStrategy {
 
         if(file.getNamespace() != null) {
             String moduleName = file.getNamespace();
-            TranslationNode moduleNode = data.getNode(KeyPath.of(moduleName));
+            TranslationNode moduleNode = data.getNode(new KeyPath(moduleName));
 
             if(moduleNode == null) {
                 moduleNode = new TranslationNode(this.settings.isSorting());
@@ -69,7 +70,7 @@ public abstract class ParserStrategy {
         TranslationNode targetNode = data.getRootNode();
 
         if(file.getNamespace() != null) {
-            targetNode = data.getNode(KeyPath.of(file.getNamespace()));
+            targetNode = data.getNode(new KeyPath(file.getNamespace()));
         }
 
         return Objects.requireNonNull(targetNode);

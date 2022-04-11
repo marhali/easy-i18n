@@ -1,7 +1,7 @@
 package de.marhali.easyi18n.settings;
 
 import de.marhali.easyi18n.io.parser.ParserStrategyType;
-import de.marhali.easyi18n.model.FolderStrategyType;
+import de.marhali.easyi18n.io.folder.FolderStrategyType;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
