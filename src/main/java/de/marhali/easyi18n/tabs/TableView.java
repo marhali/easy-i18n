@@ -5,14 +5,19 @@ import com.intellij.ui.components.JBScrollPane;
 import com.intellij.ui.table.JBTable;
 
 import de.marhali.easyi18n.InstanceManager;
-import de.marhali.easyi18n.listener.ReturnKeyListener;
-import de.marhali.easyi18n.model.*;
 import de.marhali.easyi18n.dialog.EditDialog;
+import de.marhali.easyi18n.listener.ReturnKeyListener;
 import de.marhali.easyi18n.listener.DeleteKeyListener;
 import de.marhali.easyi18n.listener.PopupClickListener;
+import de.marhali.easyi18n.model.TranslationData;
+import de.marhali.easyi18n.model.action.TranslationDelete;
 import de.marhali.easyi18n.model.bus.BusListener;
+import de.marhali.easyi18n.model.KeyPath;
+import de.marhali.easyi18n.model.Translation;
+import de.marhali.easyi18n.model.TranslationValue;
 import de.marhali.easyi18n.renderer.TableRenderer;
 import de.marhali.easyi18n.tabs.mapper.TableModelMapper;
+import de.marhali.easyi18n.util.KeyPathConverter;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -56,20 +61,20 @@ public class TableView implements BusListener {
             return;
         }
 
-        KeyPath fullPath = this.converter.split(String.valueOf(this.table.getValueAt(row, 0)));
-        Translation translation = InstanceManager.get(project).store().getData().getTranslation(fullPath);
+        KeyPath fullPath = this.converter.fromString(String.valueOf(this.table.getValueAt(row, 0)));
+        TranslationValue value = InstanceManager.get(project).store().getData().getTranslation(fullPath);
 
-        if (translation != null) {
-            new EditDialog(project, new KeyedTranslation(fullPath, translation)).showAndHandle();
+        if (value != null) {
+            new EditDialog(project, new Translation(fullPath, value)).showAndHandle();
         }
     }
 
     private void deleteSelectedRows() {
         for (int selectedRow : table.getSelectedRows()) {
-            KeyPath fullPath = this.converter.split(String.valueOf(table.getValueAt(selectedRow, 0)));
+            KeyPath fullPath = this.converter.fromString(String.valueOf(table.getValueAt(selectedRow, 0)));
 
             InstanceManager.get(project).processUpdate(
-                    new TranslationDelete(new KeyedTranslation(fullPath, null))
+                    new TranslationDelete(new Translation(fullPath, null))
             );
         }
     }
@@ -84,7 +89,7 @@ public class TableView implements BusListener {
 
     @Override
     public void onFocusKey(@NotNull KeyPath key) {
-        String concatKey = this.converter.concat(key);
+        String concatKey = this.converter.toString(key);
         int row = -1;
 
         for (int i = 0; i < table.getRowCount(); i++) {
