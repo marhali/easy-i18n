@@ -1,5 +1,6 @@
-package de.marhali.easyi18n.model;
+package de.marhali.easyi18n.model.action;
 
+import de.marhali.easyi18n.model.Translation;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -10,19 +11,19 @@ import org.jetbrains.annotations.Nullable;
  */
 public class TranslationUpdate {
 
-    private final @Nullable KeyedTranslation origin;
-    private final @Nullable KeyedTranslation change;
+    private final @Nullable Translation origin;
+    private final @Nullable Translation change;
 
-    public TranslationUpdate(@Nullable KeyedTranslation origin, @Nullable KeyedTranslation change) {
+    public TranslationUpdate(@Nullable Translation origin, @Nullable Translation change) {
         this.origin = origin;
         this.change = change;
     }
 
-    public @Nullable KeyedTranslation getOrigin() {
+    public @Nullable Translation getOrigin() {
         return origin;
     }
 
-    public @Nullable KeyedTranslation getChange() {
+    public @Nullable Translation getChange() {
         return change;
     }
 

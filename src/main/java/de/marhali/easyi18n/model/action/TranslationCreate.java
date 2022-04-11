@@ -1,4 +1,6 @@
-package de.marhali.easyi18n.model;
+package de.marhali.easyi18n.model.action;
+
+import de.marhali.easyi18n.model.Translation;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -7,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
  * @author marhali
  */
 public class TranslationCreate extends TranslationUpdate {
-    public TranslationCreate(@NotNull KeyedTranslation translation) {
+    public TranslationCreate(@NotNull Translation translation) {
         super(null, translation);
     }
 }

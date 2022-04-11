@@ -1,30 +1,54 @@
 package de.marhali.easyi18n.model;
 
-import java.util.HashMap;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
- * Represents all translations for an element. The assignment to an element is done in the using class.
- * This class contains only the translations for this unspecific element.
+ * Represents a translation with defined key and locale values.
+ *
  * @author marhali
  */
-@Deprecated // Replaced by TranslationValue
-public class Translation extends HashMap<String, String> {
-    public Translation() {
-        super();
+public class Translation {
+
+    private final @NotNull KeyPath key;
+    private @Nullable TranslationValue value;
+
+    /**
+     * Constructs a new translation instance.
+     * @param key Absolute key path
+     * @param value Values to set - nullable to indicate removal
+     */
+    public Translation(@NotNull KeyPath key, @Nullable TranslationValue value) {
+        this.key = key;
+        this.value = value;
     }
 
-    public Translation(String locale, String content) {
-        this();
-        super.put(locale, content);
+    /**
+     * @return Absolute key path
+     */
+    public @NotNull KeyPath getKey() {
+        return key;
     }
 
-    public Translation add(String locale, String content) {
-        super.put(locale, content);
-        return this;
+    /**
+     * @return values - nullable to indicate removal
+     */
+    public @Nullable TranslationValue getValue() {
+        return value;
+    }
+
+    /**
+     * @param value Values to set - nullable to indicate removal
+     */
+    public void setValue(@Nullable TranslationValue value) {
+        this.value = value;
     }
 
     @Override
     public String toString() {
-        return super.toString();
+        return "Translation{" +
+                "key=" + key +
+                ", value=" + value +
+                '}';
     }
 }

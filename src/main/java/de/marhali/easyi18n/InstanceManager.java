@@ -3,7 +3,7 @@ package de.marhali.easyi18n;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
 
-import de.marhali.easyi18n.model.TranslationUpdate;
+import de.marhali.easyi18n.model.action.TranslationUpdate;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -67,7 +67,7 @@ public class InstanceManager {
         }
 
         if(!update.isDeletion()) { // Create or re-create translation with changed data
-            this.store.getData().setTranslation(update.getChange().getKey(), update.getChange().getTranslation());
+            this.store.getData().setTranslation(update.getChange().getKey(), update.getChange().getValue());
         }
 
         this.store.saveToPersistenceLayer(success -> {

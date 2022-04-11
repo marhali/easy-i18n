@@ -7,9 +7,9 @@ import com.intellij.ui.components.JBTextField;
 import com.intellij.util.ui.FormBuilder;
 
 import de.marhali.easyi18n.InstanceManager;
-import de.marhali.easyi18n.model.translation.KeyPath;
-import de.marhali.easyi18n.model.translation.Translation;
-import de.marhali.easyi18n.model.translation.TranslationValue;
+import de.marhali.easyi18n.model.KeyPath;
+import de.marhali.easyi18n.model.Translation;
+import de.marhali.easyi18n.model.TranslationValue;
 import de.marhali.easyi18n.settings.ProjectSettings;
 import de.marhali.easyi18n.settings.ProjectSettingsService;
 import de.marhali.easyi18n.util.KeyPathConverter;

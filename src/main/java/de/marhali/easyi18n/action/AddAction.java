@@ -7,7 +7,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.ui.content.Content;
 
 import de.marhali.easyi18n.dialog.AddDialog;
-import de.marhali.easyi18n.model.translation.KeyPath;
+import de.marhali.easyi18n.model.KeyPath;
 import de.marhali.easyi18n.service.WindowManager;
 import de.marhali.easyi18n.util.KeyPathConverter;
 import de.marhali.easyi18n.util.TreeUtil;

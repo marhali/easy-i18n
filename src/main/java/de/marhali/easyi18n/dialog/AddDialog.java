@@ -5,10 +5,10 @@ import com.intellij.openapi.ui.DialogBuilder;
 import com.intellij.openapi.ui.DialogWrapper;
 
 import de.marhali.easyi18n.InstanceManager;
-import de.marhali.easyi18n.model.TranslationCreate;
-import de.marhali.easyi18n.model.translation.KeyPath;
-import de.marhali.easyi18n.model.translation.Translation;
-import de.marhali.easyi18n.model.translation.TranslationValue;
+import de.marhali.easyi18n.model.action.TranslationCreate;
+import de.marhali.easyi18n.model.KeyPath;
+import de.marhali.easyi18n.model.Translation;
+import de.marhali.easyi18n.model.TranslationValue;
 import de.marhali.easyi18n.settings.ProjectSettingsService;
 
 import org.jetbrains.annotations.NotNull;

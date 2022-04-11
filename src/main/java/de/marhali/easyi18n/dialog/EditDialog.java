@@ -6,9 +6,9 @@ import com.intellij.openapi.ui.DialogWrapper;
 
 import de.marhali.easyi18n.InstanceManager;
 import de.marhali.easyi18n.dialog.descriptor.DeleteActionDescriptor;
-import de.marhali.easyi18n.model.TranslationDelete;
-import de.marhali.easyi18n.model.TranslationUpdate;
-import de.marhali.easyi18n.model.translation.Translation;
+import de.marhali.easyi18n.model.action.TranslationDelete;
+import de.marhali.easyi18n.model.action.TranslationUpdate;
+import de.marhali.easyi18n.model.Translation;
 
 import org.jetbrains.annotations.NotNull;
 

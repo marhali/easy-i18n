@@ -1,9 +1,9 @@
 package de.marhali.easyi18n;
 
-import de.marhali.easyi18n.model.KeyPath;
 import de.marhali.easyi18n.model.bus.BusListener;
 import de.marhali.easyi18n.model.TranslationData;
 
+import de.marhali.easyi18n.model.KeyPath;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

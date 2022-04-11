@@ -93,7 +93,7 @@ public class TranslationData {
      * @param fullPath Absolute translation key path
      * @return Found translation. Can be null if path is empty or is not a leaf element
      */
-    public @Nullable Translation getTranslation(@NotNull KeyPath fullPath) {
+    public @Nullable TranslationValue getTranslation(@NotNull KeyPath fullPath) {
         TranslationNode node = this.getNode(fullPath);
 
         if(node == null || !node.isLeaf()) {
@@ -109,7 +109,7 @@ public class TranslationData {
      * @param fullPath Absolute translation key path
      * @param translation Translation to set. Can be null to delete the corresponding node
      */
-    public void setTranslation(@NotNull KeyPath fullPath, @Nullable Translation translation) {
+    public void setTranslation(@NotNull KeyPath fullPath, @Nullable TranslationValue translation) {
         if(fullPath.isEmpty()) {
             throw new IllegalArgumentException("Key path cannot be empty");
         }

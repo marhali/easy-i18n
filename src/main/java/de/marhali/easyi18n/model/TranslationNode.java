@@ -27,7 +27,7 @@ public class TranslationNode {
     private Map<String, TranslationNode> children;
 
     @NotNull
-    private Translation value;
+    private TranslationValue value;
 
     public TranslationNode(boolean sort) {
         this(sort ? new TreeMap<>() : new LinkedHashMap<>());
@@ -40,7 +40,7 @@ public class TranslationNode {
     public TranslationNode(@NotNull Map<String, TranslationNode> children) {
         this.parent = null;
         this.children = children;
-        this.value = new Translation();
+        this.value = new TranslationValue();
     }
 
     /**
@@ -62,11 +62,11 @@ public class TranslationNode {
         this.parent = parent;
     }
 
-    public @NotNull Translation getValue() {
+    public @NotNull TranslationValue getValue() {
         return value;
     }
 
-    public void setValue(@NotNull Translation value) {
+    public void setValue(@NotNull TranslationValue value) {
         this.children.clear();
         this.value = value;
     }
@@ -93,7 +93,7 @@ public class TranslationNode {
         }
     }
 
-    public void setChildren(@NotNull String key, @NotNull Translation translation) {
+    public void setChildren(@NotNull String key, @NotNull TranslationValue translation) {
         this.setChildren(key).setValue(translation);
     }
 

@@ -1,7 +1,10 @@
 package de.marhali.easyi18n.util;
 
-import de.marhali.easyi18n.model.translation.KeyPath;
+import com.intellij.openapi.project.Project;
+
+import de.marhali.easyi18n.model.KeyPath;
 import de.marhali.easyi18n.settings.ProjectSettings;
+import de.marhali.easyi18n.settings.ProjectSettingsService;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -20,8 +23,16 @@ public class KeyPathConverter {
      * Constructs a new converter instance
      * @param settings Delimiter configuration
      */
-    public KeyPathConverter(ProjectSettings settings) {
+    public KeyPathConverter(@NotNull ProjectSettings settings) {
         this.settings = settings;
+    }
+
+    /**
+     * @see #KeyPathConverter(ProjectSettings)
+     * @param project Opened project
+     */
+    public KeyPathConverter(@NotNull Project project) {
+        this(ProjectSettingsService.get(project).getState());
     }
 
     /**
