@@ -37,7 +37,6 @@ abstract class TranslationDialog {
     protected final @NotNull Translation origin;
 
     protected final JTextField keyField;
-    protected final JTextField descriptionField;
     protected final Map<String, JTextField> localeValueFields;
 
     /**
@@ -55,7 +54,6 @@ abstract class TranslationDialog {
         TranslationValue value = origin.getValue();
 
         this.keyField = new JBTextField(converter.toString(origin.getKey()));
-        this.descriptionField = new JBTextField(value != null ? value.getDescription() : null);
         this.localeValueFields = new HashMap<>();
 
         for(String locale : InstanceManager.get(project).store().getData().getLocales()) {
@@ -92,9 +90,8 @@ abstract class TranslationDialog {
      */
     protected @NotNull Translation getState() {
         KeyPath key = converter.fromString(keyField.getText());
-        TranslationValue value = new TranslationValue();
 
-        value.setDescription(descriptionField.getText());
+        TranslationValue value = new TranslationValue();
 
         for(Map.Entry<String, JTextField> entry : localeValueFields.entrySet()) {
             value.put(entry.getKey(), entry.getValue().getText());
@@ -106,7 +103,6 @@ abstract class TranslationDialog {
     private DialogBuilder createDialog() {
         JPanel panel = FormBuilder.createFormBuilder()
                 .addLabeledComponent(bundle.getString("translation.key"), keyField, true)
-                .addLabeledComponent(bundle.getString("translation.description"), descriptionField, 6, true)
                 .addComponent(createLocalesPanel(), 12)
                 .getPanel();
 

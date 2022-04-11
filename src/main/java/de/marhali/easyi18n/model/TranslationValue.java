@@ -6,6 +6,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Represents the set values behind a specific translation.
@@ -13,122 +14,57 @@ import java.util.Map;
  */
 public class TranslationValue {
 
-    private @Nullable String description;
-    private @NotNull Map<String, String> values;
-    private @Nullable Object misc;
-
-    public TranslationValue(@Nullable String description, @NotNull Map<String, String> values, @Nullable Object misc) {
-        this.description = description;
-        this.values = values;
-        this.misc = misc;
-    }
-
-    public TranslationValue(@NotNull Map<String, String> values) {
-        this(null, values, null);
-    }
-
-    public TranslationValue(@NotNull String locale, @NotNull String value) {
-        this(new HashMap<>(Map.of(locale, value)));
-    }
+    private @NotNull Map<String, String> localeValues;
 
     public TranslationValue() {
-        this(null, new HashMap<>(), null);
+        this.localeValues = new HashMap<>();
     }
 
-    /**
-     * Retrieve additional description for this translation
-     * @return Description
-     */
-    public @Nullable String getDescription() {
-        return description;
+    public TranslationValue(@NotNull String locale, @NotNull String content) {
+        this();
+        localeValues.put(locale, content);
     }
 
-    /**
-     * Override or set description for this translation
-     * @param description Description
-     */
-    public void setDescription(@Nullable String description) {
-        this.description = description;
+    public Set<Map.Entry<String, String>> getEntries() {
+        return this.localeValues.entrySet();
     }
 
-    /**
-     * Set locale specific values.
-     * @param values New values
-     */
-    public void setValues(@NotNull Map<String, String> values) {
-        this.values = values;
+    public Collection<String> getLocaleContents() {
+        return this.localeValues.values();
     }
 
-    public @NotNull Map<String, String> getValues() {
-        return values;
+    public void setLocaleValues(@NotNull Map<String, String> localeValues) {
+        this.localeValues = localeValues;
     }
 
-    /**
-     * Overrides or sets a value for a specific locale.
-     * @param locale Locale type
-     * @param value New value
-     */
-    public void put(@NotNull String locale, @Nullable String value) {
-        if(value == null) { // Delete operation
-            values.remove(locale);
-        } else {
-            values.put(locale, value);
-        }
-    }
-
-    public void remove(String locale) {
-        values.remove(locale);
-    }
-
-    /**
-     * Retrieves the associated value for a specific locale
-     * @param locale Locale type
-     * @return Value or null if missing
-     */
     public @Nullable String get(@NotNull String locale) {
-        return values.get(locale);
+        return this.localeValues.get(locale);
     }
 
-    public boolean containsLocale(@Nullable String locale) {
-        return values.containsKey(locale);
+    public void put(@NotNull String locale, @NotNull String content) {
+        this.localeValues.put(locale, content);
     }
 
-    public @NotNull Collection<String> getLocaleValues() {
-        return values.values();
+    public void remove(@NotNull String locale) {
+        this.localeValues.remove(locale);
+    }
+
+    public boolean containsLocale(@NotNull String locale) {
+        return this.localeValues.containsKey(locale);
     }
 
     public int size() {
-        return values.size();
+        return this.localeValues.size();
     }
 
     public void clear() {
-        description = null;
-        values.clear();
-        misc = null;
-    }
-
-    /**
-     * I18n support data
-     * @return Data
-     */
-    public @Nullable Object getMisc() {
-        return misc;
-    }
-
-    /**
-     * Set or update I18n support data
-     * @param misc New Data
-     */
-    public void setMisc(@Nullable Object misc) {
-        this.misc = misc;
+        this.localeValues.clear();
     }
 
     @Override
     public String toString() {
         return "TranslationValue{" +
-                "description='" + description + '\'' +
-                ", values=" + values +
-                ", misc=" + misc +
+                "localeValues=" + localeValues +
                 '}';
     }
 }
