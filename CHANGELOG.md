@@ -8,9 +8,12 @@
 
 ### Added
 - Key delimiters (namespace / section) can be configured
-- Individual icon to tool-window
+- Extract translation intention
+- Individual icon for tool-window and lookup items
+- Dedicated configuration file (easy-i18n.xml) inside <kbd>.idea</kbd> folder
 
 ### Changed
+- Editor assistance has been reengineered. This will affect key suggestion and annotation
 - Moved configuration dialog into own page inside <kbd>IDE Settings</kbd> 
 
 ### Fixed
