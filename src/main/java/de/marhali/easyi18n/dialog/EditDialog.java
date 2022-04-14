@@ -4,13 +4,13 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogBuilder;
 import com.intellij.openapi.ui.DialogWrapper;
 
-import de.marhali.easyi18n.InstanceManager;
 import de.marhali.easyi18n.dialog.descriptor.DeleteActionDescriptor;
 import de.marhali.easyi18n.model.action.TranslationDelete;
 import de.marhali.easyi18n.model.action.TranslationUpdate;
 import de.marhali.easyi18n.model.Translation;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 
@@ -42,14 +42,14 @@ public class EditDialog extends TranslationDialog {
     }
 
     @Override
-    protected void handleExit(int exitCode) {
+    protected @Nullable TranslationUpdate handleExit(int exitCode) {
         switch (exitCode) {
             case DialogWrapper.OK_EXIT_CODE:
-                InstanceManager.get(project).processUpdate(new TranslationUpdate(origin, getState()));
-                break;
+                return new TranslationUpdate(origin, getState());
             case DeleteActionDescriptor.EXIT_CODE:
-                InstanceManager.get(project).processUpdate(new TranslationDelete(origin));
-                break;
+                return new TranslationDelete(origin);
+            default:
+                return null;
         }
     }
 }

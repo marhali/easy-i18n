@@ -4,11 +4,11 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogBuilder;
 import com.intellij.openapi.ui.DialogWrapper;
 
-import de.marhali.easyi18n.InstanceManager;
 import de.marhali.easyi18n.model.action.TranslationCreate;
 import de.marhali.easyi18n.model.KeyPath;
 import de.marhali.easyi18n.model.Translation;
 import de.marhali.easyi18n.model.TranslationValue;
+import de.marhali.easyi18n.model.action.TranslationUpdate;
 import de.marhali.easyi18n.settings.ProjectSettingsService;
 
 import org.jetbrains.annotations.NotNull;
@@ -58,9 +58,10 @@ public class AddDialog extends TranslationDialog {
     }
 
     @Override
-    protected void handleExit(int exitCode) {
+    protected @Nullable TranslationUpdate handleExit(int exitCode) {
         if(exitCode == DialogWrapper.OK_EXIT_CODE) {
-            InstanceManager.get(project).processUpdate(new TranslationCreate(getState()));
+            return new TranslationCreate(getState());
         }
+        return null;
     }
 }
