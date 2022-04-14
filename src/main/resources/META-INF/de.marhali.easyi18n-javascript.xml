@@ -1,6 +1,17 @@
 <idea-plugin>
     <extensions defaultExtensionNs="com.intellij">
-        <lang.foldingBuilder language="JavaScript" implementationClass="de.marhali.easyi18n.editor.generic.GenericFoldingBuilder" />
-        <lang.foldingBuilder language="TypeScript" implementationClass="de.marhali.easyi18n.editor.generic.GenericFoldingBuilder" />
+        <psi.referenceContributor
+                language="JavaScript"
+                implementation="de.marhali.easyi18n.assistance.reference.JsKeyReferenceContributor"
+        />
+
+        <lang.documentationProvider
+                language="JavaScript"
+                implementationClass="de.marhali.easyi18n.assistance.documentation.CommonDocumentationProvider"
+        />
+
+        <intentionAction>
+            <className>de.marhali.easyi18n.assistance.intention.JsExtractIntention</className>
+        </intentionAction>
     </extensions>
 </idea-plugin>

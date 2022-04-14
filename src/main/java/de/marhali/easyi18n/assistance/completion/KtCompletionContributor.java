@@ -1,19 +1,16 @@
-package de.marhali.easyi18n.editor.kotlin;
+package de.marhali.easyi18n.assistance.completion;
 
 import com.intellij.codeInsight.completion.CompletionContributor;
 import com.intellij.codeInsight.completion.CompletionType;
 import com.intellij.patterns.PlatformPatterns;
-
-import de.marhali.easyi18n.editor.KeyCompletionProvider;
 import org.jetbrains.kotlin.psi.KtLiteralStringTemplateEntry;
 
 /**
- * Kotlin specific translation key completion contributor.
+ * Kotlin specific completion contributor.
  * @author marhali
  */
-public class KotlinKeyCompletionContributor  extends CompletionContributor {
-
-    public KotlinKeyCompletionContributor() {
+public class KtCompletionContributor extends CompletionContributor {
+    public KtCompletionContributor() {
         extend(CompletionType.BASIC, PlatformPatterns.psiElement().inside(KtLiteralStringTemplateEntry.class),
                 new KeyCompletionProvider());
     }

@@ -1,11 +1,27 @@
 <idea-plugin>
     <extensions defaultExtensionNs="com.intellij">
-        <annotator language="kotlin" implementationClass="de.marhali.easyi18n.editor.kotlin.KotlinKeyAnnotator" />
+        <intentionAction>
+            <className>de.marhali.easyi18n.assistance.intention.KtExtractIntention</className>
+        </intentionAction>
 
-        <completion.contributor language="kotlin"
-                                implementationClass="de.marhali.easyi18n.editor.kotlin.KotlinKeyCompletionContributor" />
+        <psi.referenceContributor
+                language="kotlin"
+                implementation="de.marhali.easyi18n.assistance.reference.KtKeyReferenceContributor"
+        />
 
-        <psi.referenceContributor language="kotlin"
-                                  implementation="de.marhali.easyi18n.editor.kotlin.KotlinKeyReferenceContributor" />
+        <lang.documentationProvider
+                language="kotlin"
+                implementationClass="de.marhali.easyi18n.assistance.documentation.CommonDocumentationProvider"
+        />
+
+        <completion.contributor
+                language="kotlin"
+                implementationClass="de.marhali.easyi18n.assistance.completion.KtCompletionContributor"
+        />
+
+        <lang.foldingBuilder
+                language="kotlin"
+                implementationClass="de.marhali.easyi18n.assistance.folding.KtFoldingBuilder"
+        />
     </extensions>
 </idea-plugin>

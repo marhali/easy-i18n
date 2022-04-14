@@ -1,5 +1,27 @@
 <idea-plugin>
     <extensions defaultExtensionNs="com.intellij">
-        <lang.foldingBuilder language="JAVA" implementationClass="de.marhali.easyi18n.editor.generic.GenericFoldingBuilder" />
+        <intentionAction>
+            <className>de.marhali.easyi18n.assistance.intention.JavaExtractIntention</className>
+        </intentionAction>
+
+        <psi.referenceContributor
+                language="JAVA"
+                implementation="de.marhali.easyi18n.assistance.reference.JavaKeyReferenceContributor"
+        />
+
+        <lang.foldingBuilder
+                language="JAVA"
+                implementationClass="de.marhali.easyi18n.assistance.folding.JavaFoldingBuilder"
+        />
+
+        <lang.documentationProvider
+                language="JAVA"
+                implementationClass="de.marhali.easyi18n.assistance.documentation.CommonDocumentationProvider"
+        />
+
+        <completion.contributor
+                language="JAVA"
+                implementationClass="de.marhali.easyi18n.assistance.completion.JavaCompletionContributor"
+        />
     </extensions>
 </idea-plugin>
