@@ -2,23 +2,23 @@ package de.marhali.easyi18n.assistance.reference;
 
 import com.intellij.openapi.project.Project;
 import com.intellij.patterns.PlatformPatterns;
-import com.intellij.psi.*;
-
-
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiReference;
+import com.intellij.psi.PsiReferenceProvider;
+import com.intellij.psi.PsiReferenceRegistrar;
 import com.intellij.util.ProcessingContext;
+import com.jetbrains.php.lang.psi.elements.StringLiteralExpression;
 
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Java specific key reference binding.
- * @author marhali
+ * Php specific key reference binding
  */
-public class JavaKeyReferenceContributor extends AbstractKeyReferenceContributor {
-
+public class PhpKeyReferenceContributor extends AbstractKeyReferenceContributor {
     @Override
     public void registerReferenceProviders(@NotNull PsiReferenceRegistrar registrar) {
         registrar.registerReferenceProvider(
-                PlatformPatterns.psiElement(PsiLiteralExpression.class),
+                PlatformPatterns.psiElement(StringLiteralExpression.class),
                 getProvider());
     }
 
@@ -29,12 +29,8 @@ public class JavaKeyReferenceContributor extends AbstractKeyReferenceContributor
                     @NotNull PsiElement element, @NotNull ProcessingContext context) {
 
                 Project project = element.getProject();
-                PsiLiteralExpression literalExpression = (PsiLiteralExpression) element;
-                String value = literalExpression.getValue() instanceof String
-                        ? (String) literalExpression.getValue()
-                        : null;
-
-                return getReferences(project, element, value);
+                StringLiteralExpression literalExpression = (StringLiteralExpression) element;
+                return getReferences(project, element, literalExpression.getContents());
             }
         };
     }

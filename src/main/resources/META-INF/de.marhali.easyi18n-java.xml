@@ -1,7 +1,7 @@
 <idea-plugin>
     <extensions defaultExtensionNs="com.intellij">
         <intentionAction>
-            <className>de.marhali.easyi18n.assistance.intention.JavaExtractIntention</className>
+            <className>de.marhali.easyi18n.assistance.intention.JavaTranslationIntention</className>
         </intentionAction>
 
         <psi.referenceContributor

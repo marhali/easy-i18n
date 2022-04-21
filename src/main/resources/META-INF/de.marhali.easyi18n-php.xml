@@ -1,0 +1,27 @@
+<idea-plugin>
+    <extensions defaultExtensionNs="com.intellij">
+        <intentionAction>
+            <className>de.marhali.easyi18n.assistance.intention.PhpTranslationIntention</className>
+        </intentionAction>
+
+        <psi.referenceContributor
+                language="PHP"
+                implementation="de.marhali.easyi18n.assistance.reference.PhpKeyReferenceContributor"
+        />
+
+        <lang.foldingBuilder
+                language="PHP"
+                implementationClass="de.marhali.easyi18n.assistance.folding.PhpFoldingBuilder"
+        />
+
+        <lang.documentationProvider
+                language="PHP"
+                implementationClass="de.marhali.easyi18n.assistance.documentation.CommonDocumentationProvider"
+        />
+
+        <completion.contributor
+                language="PHP"
+                implementationClass="de.marhali.easyi18n.assistance.completion.PhpCompletionContributor"
+        />
+    </extensions>
+</idea-plugin>

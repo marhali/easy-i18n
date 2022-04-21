@@ -9,6 +9,7 @@
 ### Added
 - Key delimiters (namespace / section) can be configured
 - Extract translation intention
+- Full language support for Java, Kotlin, JavaScript / TypeScript, Vue and PHP
 - Individual icon for tool-window and lookup items
 - Dedicated configuration file (easy-i18n.xml) inside <kbd>.idea</kbd> folder
 

@@ -1,7 +1,7 @@
 <idea-plugin>
     <extensions defaultExtensionNs="com.intellij">
         <intentionAction>
-            <className>de.marhali.easyi18n.assistance.intention.KtExtractIntention</className>
+            <className>de.marhali.easyi18n.assistance.intention.KtTranslationIntention</className>
         </intentionAction>
 
         <psi.referenceContributor

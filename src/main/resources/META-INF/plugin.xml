@@ -13,6 +13,7 @@
     <depends optional="true" config-file="de.marhali.easyi18n-javascript.xml">JavaScript</depends>
     <depends optional="true" config-file="de.marhali.easyi18n-java.xml">com.intellij.java</depends>
     <depends optional="true" config-file="de.marhali.easyi18n-vue.xml">org.jetbrains.plugins.vue</depends>
+    <depends optional="true" config-file="de.marhali.easyi18n-php.xml">com.jetbrains.php</depends>
 
     <actions>
         <action
