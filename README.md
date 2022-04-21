@@ -91,11 +91,11 @@ _For more examples, please refer to the [Examples Directory](https://github.com/
 ## Roadmap
 
 - [X] JSON5 Support
+- [X] Configurable namespace and section separators
+- [X] Define default namespace to use if none was provided
+- [X] Enhance editor code assistance
 - [ ] XML Support
 - [ ] Mark duplicate translation values
-- [ ] Configurable namespace and section separators
-- [ ] Define default namespace to use if none was provided
-- [ ] Enhance editor code assistance
 
 See the [open issues](https://github.com/marhali/easy-i18n/issues) for a full list of proposed features (and known issues).
 
