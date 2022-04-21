@@ -36,6 +36,9 @@ public class ProjectSettingsComponentState {
     protected JCheckBox nestedKeys;
     protected JCheckBox assistance;
 
+    // Experimental configuration
+    protected JCheckBox alwaysFold;
+
     protected ProjectSettingsState getState() {
         // Every field needs to provide its state
         ProjectSettingsState state = new ProjectSettingsState();
@@ -56,6 +59,8 @@ public class ProjectSettingsComponentState {
 
         state.setNestedKeys(nestedKeys.isSelected());
         state.setAssistance(assistance.isSelected());
+
+        state.setAlwaysFold(alwaysFold.isSelected());
 
         return state;
     }
@@ -78,5 +83,7 @@ public class ProjectSettingsComponentState {
 
         nestedKeys.setSelected(state.isNestedKeys());
         assistance.setSelected(state.isAssistance());
+
+        alwaysFold.setSelected(state.isAlwaysFold());
     }
 }

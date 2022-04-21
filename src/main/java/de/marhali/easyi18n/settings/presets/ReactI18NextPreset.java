@@ -76,4 +76,9 @@ public class ReactI18NextPreset implements ProjectSettings {
     public boolean isAssistance() {
         return true;
     }
+
+    @Override
+    public boolean isAlwaysFold() {
+        return false;
+    }
 }

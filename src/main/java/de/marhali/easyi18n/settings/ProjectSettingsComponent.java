@@ -60,6 +60,9 @@ public class ProjectSettingsComponent extends ProjectSettingsComponentState {
                 .addVerticalGap(12)
                 .addComponent(constructNestedKeysField())
                 .addComponent(constructAssistanceField())
+                .addVerticalGap(24)
+                .addComponent(new TitledSeparator(bundle.getString("settings.experimental.title")))
+                .addComponent(constructAlwaysFoldField())
                 .addComponentFillVertically(new JPanel(), 0)
                 .getPanel();
     }
@@ -201,6 +204,12 @@ public class ProjectSettingsComponent extends ProjectSettingsComponentState {
         assistance = new JBCheckBox(bundle.getString("settings.editor.assistance.title"));
         assistance.setToolTipText(bundle.getString("settings.editor.assistance.tooltip"));
         return assistance;
+    }
+
+    private JComponent constructAlwaysFoldField() {
+        alwaysFold = new JBCheckBox(bundle.getString("settings.experimental.always-fold.title"));
+        alwaysFold.setToolTipText(bundle.getString("settings.experimental.always-fold.tooltip"));
+        return alwaysFold;
     }
 
     private ItemListener handleParserChange() {

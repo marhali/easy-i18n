@@ -29,4 +29,7 @@ public interface ProjectSettings {
 
     boolean isNestedKeys();
     boolean isAssistance();
+
+    // Experimental Configuration
+    boolean isAlwaysFold();
 }

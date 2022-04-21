@@ -76,4 +76,9 @@ public class DefaultPreset implements ProjectSettings {
     public boolean isAssistance() {
         return true;
     }
+
+    @Override
+    public boolean isAlwaysFold() {
+        return false;
+    }
 }

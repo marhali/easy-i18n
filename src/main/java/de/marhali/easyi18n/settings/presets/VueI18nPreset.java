@@ -75,4 +75,9 @@ public class VueI18nPreset implements ProjectSettings {
     public boolean isAssistance() {
         return true;
     }
+
+    @Override
+    public boolean isAlwaysFold() {
+        return false;
+    }
 }

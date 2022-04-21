@@ -34,6 +34,9 @@ public class ProjectSettingsState implements ProjectSettings {
     private Boolean nestedKeys;
     private Boolean assistance;
 
+    // Experimental configuration
+    private Boolean alwaysFold;
+
     public ProjectSettingsState() {}
 
     @Override
@@ -102,6 +105,11 @@ public class ProjectSettingsState implements ProjectSettings {
         return assistance != null ? assistance : defaults.isAssistance();
     }
 
+    @Override
+    public boolean isAlwaysFold() {
+        return alwaysFold != null ? alwaysFold : defaults.isAlwaysFold();
+    }
+
     public void setLocalesDirectory(String localesDirectory) {
         this.localesDirectory = localesDirectory;
     }
@@ -152,5 +160,9 @@ public class ProjectSettingsState implements ProjectSettings {
 
     public void setAssistance(Boolean assistance) {
         this.assistance = assistance;
+    }
+
+    public void setAlwaysFold(Boolean alwaysFold) {
+        this.alwaysFold = alwaysFold;
     }
 }

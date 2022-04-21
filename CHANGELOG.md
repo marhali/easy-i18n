@@ -11,6 +11,7 @@
 - Extract translation intention
 - Full language support for Java, Kotlin, JavaScript / TypeScript, Vue and PHP
 - Expand already expanded nodes after data update
+- Experimental option to force translation key folding
 - Individual icon for tool-window and lookup items
 - Dedicated configuration file (easy-i18n.xml) inside <kbd>.idea</kbd> folder
 

@@ -14,6 +14,7 @@ import de.marhali.easyi18n.InstanceManager;
 import de.marhali.easyi18n.assistance.OptionalAssistance;
 import de.marhali.easyi18n.model.TranslationData;
 import de.marhali.easyi18n.model.TranslationValue;
+import de.marhali.easyi18n.settings.ProjectSettings;
 import de.marhali.easyi18n.settings.ProjectSettingsService;
 import de.marhali.easyi18n.util.KeyPathConverter;
 
@@ -22,6 +23,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Language specific translation key folding with representative locale value.
@@ -52,8 +54,9 @@ abstract class AbstractFoldingBuilder extends FoldingBuilderEx implements Option
 
         List<FoldingDescriptor> descriptors = new ArrayList<>();
 
+        ProjectSettings settings = ProjectSettingsService.get(root.getProject()).getState();
         TranslationData data = InstanceManager.get(root.getProject()).store().getData();
-        KeyPathConverter converter = new KeyPathConverter(root.getProject());
+        KeyPathConverter converter = new KeyPathConverter(settings);
 
         for(Pair<String, PsiElement> region : extractRegions(root)) {
             if(data.getTranslation(converter.fromString(region.first)) == null) {
@@ -64,7 +67,8 @@ abstract class AbstractFoldingBuilder extends FoldingBuilderEx implements Option
                     region.second.getTextRange().getEndOffset() - 1);
 
             // Some language implementations like [Vue Template] does not support FoldingGroup's
-            FoldingDescriptor descriptor = new FoldingDescriptor(region.second.getNode(), range);
+            FoldingDescriptor descriptor = new FoldingDescriptor(region.second.getNode(), range,
+                    null, Set.of(), settings.isAlwaysFold());
 
             descriptors.add(descriptor);
         }
