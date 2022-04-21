@@ -32,6 +32,8 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 /**
@@ -84,7 +86,21 @@ public class TreeView implements BusListener {
 
     @Override
     public void onUpdateData(@NotNull TranslationData data) {
+        List<Integer> expanded = getExpandedRows();
         tree.setModel(this.currentMapper = new TreeModelMapper(data, ProjectSettingsService.get(project).getState()));
+        expanded.forEach(tree::expandRow);
+    }
+
+    private List<Integer> getExpandedRows() {
+        List<Integer> expanded = new ArrayList<>();
+
+        for(int i = 0; i < tree.getRowCount(); i++) {
+            if(tree.isExpanded(i)) {
+                expanded.add(i);
+            }
+        }
+
+        return expanded;
     }
 
     @Override
