@@ -1,12 +1,12 @@
 package de.marhali.easyi18n.io.parser.json5;
 
-import de.marhali.easyi18n.model.Translation;
 import de.marhali.easyi18n.model.TranslationNode;
+import de.marhali.easyi18n.model.TranslationValue;
 import de.marhali.easyi18n.util.StringUtil;
-
 import de.marhali.json5.Json5Element;
 import de.marhali.json5.Json5Object;
 import de.marhali.json5.Json5Primitive;
+
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.math.NumberUtils;
 
@@ -28,7 +28,7 @@ public class Json5Mapper {
                 // Nested element - run recursively
                 read(locale, value.getAsJson5Object(), childNode);
             } else {
-                Translation translation = childNode.getValue();
+                TranslationValue translation = childNode.getValue();
 
                 String content = value.isJson5Array()
                         ? Json5ArrayMapper.read(value.getAsJson5Array())
@@ -54,7 +54,7 @@ public class Json5Mapper {
                 }
 
             } else {
-                Translation translation = childNode.getValue();
+                TranslationValue translation = childNode.getValue();
                 String content = translation.get(locale);
                 if(content != null) {
                     if(Json5ArrayMapper.isArray(content)) {

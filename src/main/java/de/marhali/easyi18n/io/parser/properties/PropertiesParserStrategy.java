@@ -3,10 +3,11 @@ package de.marhali.easyi18n.io.parser.properties;
 import com.intellij.openapi.vfs.VirtualFile;
 
 import de.marhali.easyi18n.io.parser.ParserStrategy;
-import de.marhali.easyi18n.model.SettingsState;
 import de.marhali.easyi18n.model.TranslationData;
 import de.marhali.easyi18n.model.TranslationFile;
 import de.marhali.easyi18n.model.TranslationNode;
+import de.marhali.easyi18n.settings.ProjectSettings;
+import de.marhali.easyi18n.util.KeyPathConverter;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -20,8 +21,11 @@ import java.io.StringWriter;
  */
 public class PropertiesParserStrategy extends ParserStrategy {
 
-    public PropertiesParserStrategy(@NotNull SettingsState settings) {
+    private final @NotNull KeyPathConverter converter;
+
+    public PropertiesParserStrategy(@NotNull ProjectSettings settings) {
         super(settings);
+        this.converter = new KeyPathConverter(settings);
     }
 
     @Override
@@ -33,9 +37,9 @@ public class PropertiesParserStrategy extends ParserStrategy {
         TranslationData targetData = new TranslationData(data.getLocales(), targetNode);
 
         try(Reader reader = new InputStreamReader(vf.getInputStream(), vf.getCharset())) {
-            SortableProperties input = new SortableProperties(this.settings.isSortKeys());
+            SortableProperties input = new SortableProperties(this.settings.isSorting());
             input.load(reader);
-            PropertiesMapper.read(file.getLocale(), input, targetData);
+            PropertiesMapper.read(file.getLocale(), input, targetData, converter);
         }
     }
 
@@ -44,8 +48,8 @@ public class PropertiesParserStrategy extends ParserStrategy {
         TranslationNode targetNode = super.getTargetNode(data, file);
         TranslationData targetData = new TranslationData(data.getLocales(), targetNode);
 
-        SortableProperties output = new SortableProperties(this.settings.isSortKeys());
-        PropertiesMapper.write(file.getLocale(), output, targetData);
+        SortableProperties output = new SortableProperties(this.settings.isSorting());
+        PropertiesMapper.write(file.getLocale(), output, targetData, converter);
 
         try(StringWriter writer = new StringWriter()) {
             output.store(writer, null);

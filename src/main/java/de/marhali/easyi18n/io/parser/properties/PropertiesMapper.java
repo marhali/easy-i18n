@@ -1,8 +1,9 @@
 package de.marhali.easyi18n.io.parser.properties;
 
-import de.marhali.easyi18n.model.KeyPath;
-import de.marhali.easyi18n.model.Translation;
 import de.marhali.easyi18n.model.TranslationData;
+import de.marhali.easyi18n.model.KeyPath;
+import de.marhali.easyi18n.model.TranslationValue;
+import de.marhali.easyi18n.util.KeyPathConverter;
 import de.marhali.easyi18n.util.StringUtil;
 
 import org.apache.commons.lang.StringEscapeUtils;
@@ -16,15 +17,17 @@ import java.util.Map;
  */
 public class PropertiesMapper {
 
-    public static void read(String locale, SortableProperties properties, TranslationData data) {
+    public static void read(String locale, SortableProperties properties,
+                            TranslationData data, KeyPathConverter converter) {
+
         for(Map.Entry<Object, Object> entry : properties.entrySet()) {
-            KeyPath key = new KeyPath(String.valueOf(entry.getKey()));
+            KeyPath key = converter.fromString(String.valueOf(entry.getKey()));
             Object value = entry.getValue();
 
-            Translation translation = data.getTranslation(key);
+            TranslationValue translation = data.getTranslation(key);
 
             if(translation == null) {
-                translation = new Translation();
+                translation = new TranslationValue();
             }
 
             String content = value instanceof String[]
@@ -36,12 +39,14 @@ public class PropertiesMapper {
         }
     }
 
-    public static void write(String locale, SortableProperties properties, TranslationData data) {
-        for(KeyPath key : data.getFullKeys()) {
-            Translation translation = data.getTranslation(key);
+    public static void write(String locale, SortableProperties properties,
+                             TranslationData data, KeyPathConverter converter) {
 
-            if(translation != null && translation.containsKey(locale)) {
-                String simpleKey = key.toSimpleString();
+        for(KeyPath key : data.getFullKeys()) {
+            TranslationValue translation = data.getTranslation(key);
+
+            if(translation != null && translation.containsLocale(locale)) {
+                String simpleKey = converter.toString(key);
                 String content = translation.get(locale);
 
                 if(PropertiesArrayMapper.isArray(content)) {

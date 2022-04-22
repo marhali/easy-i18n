@@ -13,6 +13,7 @@
     <depends optional="true" config-file="de.marhali.easyi18n-javascript.xml">JavaScript</depends>
     <depends optional="true" config-file="de.marhali.easyi18n-java.xml">com.intellij.java</depends>
     <depends optional="true" config-file="de.marhali.easyi18n-vue.xml">org.jetbrains.plugins.vue</depends>
+    <depends optional="true" config-file="de.marhali.easyi18n-php.xml">com.jetbrains.php</depends>
 
     <actions>
         <action
@@ -24,21 +25,18 @@
     </actions>
 
     <extensions defaultExtensionNs="com.intellij">
-        <toolWindow id="Easy I18n" anchor="bottom" factoryClass="de.marhali.easyi18n.service.TranslatorToolWindowFactory" />
+        <toolWindow id="Easy I18n" anchor="bottom"
+                    factoryClass="de.marhali.easyi18n.service.TranslatorToolWindowFactory"
+                    icon="/icons/translate13.svg"/>
 
-        <projectService serviceImplementation="de.marhali.easyi18n.service.SettingsService" />
+        <projectService serviceImplementation="de.marhali.easyi18n.settings.ProjectSettingsService"/>
 
-        <completion.contributor language="any"
-                                implementationClass="de.marhali.easyi18n.editor.generic.GenericKeyCompletionContributor" />
+        <projectConfigurable parentId="tools" instance="de.marhali.easyi18n.settings.ProjectSettingsConfigurable"
+                             id="de.marhali.easyi18n.service.AppSettingsConfigurable"
+                             displayName="Easy I18n" nonDefaultProject="true"/>
 
-        <annotator language=""
-                   implementationClass="de.marhali.easyi18n.editor.generic.GenericKeyAnnotator" />
+        <notificationGroup displayType="BALLOON" id="Easy I18n Notification Group"/>
 
-        <psi.referenceContributor
-                implementation="de.marhali.easyi18n.editor.generic.GenericKeyReferenceContributor" />
-
-        <notificationGroup displayType="BALLOON" id="Easy I18n Notification Group" />
-        
-        <errorHandler implementation="de.marhali.easyi18n.service.ErrorReportHandler" />
+        <errorHandler implementation="de.marhali.easyi18n.service.ErrorReportHandler"/>
     </extensions>
 </idea-plugin>

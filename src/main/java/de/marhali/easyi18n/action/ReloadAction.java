@@ -8,6 +8,7 @@ import de.marhali.easyi18n.InstanceManager;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 /**
@@ -23,9 +24,6 @@ public class ReloadAction extends AnAction {
 
     @Override
     public void actionPerformed(@NotNull AnActionEvent e) {
-        InstanceManager manager = InstanceManager.get(e.getProject());
-        manager.store().loadFromPersistenceLayer((success) -> {
-            manager.bus().propagate().onUpdateData(manager.store().getData());
-        });
+        InstanceManager.get(Objects.requireNonNull(e.getProject())).reload();
     }
 }

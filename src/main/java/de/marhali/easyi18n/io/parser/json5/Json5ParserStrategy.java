@@ -3,10 +3,10 @@ package de.marhali.easyi18n.io.parser.json5;
 import com.intellij.openapi.vfs.VirtualFile;
 
 import de.marhali.easyi18n.io.parser.ParserStrategy;
-import de.marhali.easyi18n.model.SettingsState;
 import de.marhali.easyi18n.model.TranslationData;
 import de.marhali.easyi18n.model.TranslationFile;
 import de.marhali.easyi18n.model.TranslationNode;
+import de.marhali.easyi18n.settings.ProjectSettings;
 import de.marhali.json5.Json5;
 import de.marhali.json5.Json5Element;
 import de.marhali.json5.Json5Object;
@@ -26,7 +26,7 @@ public class Json5ParserStrategy extends ParserStrategy {
     private static final Json5 JSON5 = Json5.builder(builder ->
             builder.allowInvalidSurrogate().trailingComma().indentFactor(4).build());
 
-    public Json5ParserStrategy(@NotNull SettingsState settings) {
+    public Json5ParserStrategy(@NotNull ProjectSettings settings) {
         super(settings);
     }
 

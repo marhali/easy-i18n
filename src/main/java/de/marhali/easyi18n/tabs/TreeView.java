@@ -9,16 +9,20 @@ import com.intellij.ui.components.JBScrollPane;
 import com.intellij.ui.treeStructure.Tree;
 
 import de.marhali.easyi18n.InstanceManager;
+import de.marhali.easyi18n.dialog.EditDialog;
 import de.marhali.easyi18n.listener.ReturnKeyListener;
-import de.marhali.easyi18n.model.*;
+import de.marhali.easyi18n.model.TranslationData;
+import de.marhali.easyi18n.model.action.TranslationDelete;
 import de.marhali.easyi18n.model.bus.BusListener;
 import de.marhali.easyi18n.action.treeview.CollapseTreeViewAction;
 import de.marhali.easyi18n.action.treeview.ExpandTreeViewAction;
-import de.marhali.easyi18n.dialog.EditDialog;
 import de.marhali.easyi18n.listener.DeleteKeyListener;
 import de.marhali.easyi18n.listener.PopupClickListener;
+import de.marhali.easyi18n.model.KeyPath;
+import de.marhali.easyi18n.model.Translation;
+import de.marhali.easyi18n.model.TranslationValue;
 import de.marhali.easyi18n.renderer.TreeRenderer;
-import de.marhali.easyi18n.service.SettingsService;
+import de.marhali.easyi18n.settings.ProjectSettingsService;
 import de.marhali.easyi18n.tabs.mapper.TreeModelMapper;
 import de.marhali.easyi18n.util.TreeUtil;
 
@@ -28,6 +32,8 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 /**
@@ -80,7 +86,21 @@ public class TreeView implements BusListener {
 
     @Override
     public void onUpdateData(@NotNull TranslationData data) {
-        tree.setModel(this.currentMapper = new TreeModelMapper(data, SettingsService.getInstance(project).getState()));
+        List<Integer> expanded = getExpandedRows();
+        tree.setModel(this.currentMapper = new TreeModelMapper(data, ProjectSettingsService.get(project).getState()));
+        expanded.forEach(tree::expandRow);
+    }
+
+    private List<Integer> getExpandedRows() {
+        List<Integer> expanded = new ArrayList<>();
+
+        for(int i = 0; i < tree.getRowCount(); i++) {
+            if(tree.isExpanded(i)) {
+                expanded.add(i);
+            }
+        }
+
+        return expanded;
     }
 
     @Override
@@ -127,13 +147,13 @@ public class TreeView implements BusListener {
         }
 
         KeyPath fullPath = TreeUtil.getFullPath(path);
-        Translation translation = InstanceManager.get(project).store().getData().getTranslation(fullPath);
+        TranslationValue value = InstanceManager.get(project).store().getData().getTranslation(fullPath);
 
-        if (translation == null) {
+        if (value == null) {
             return;
         }
 
-        new EditDialog(project, new KeyedTranslation(fullPath, translation)).showAndHandle();
+        new EditDialog(project, new Translation(fullPath, value)).showAndHandle();
     }
 
     private void deleteSelectedNodes() {
@@ -147,7 +167,7 @@ public class TreeView implements BusListener {
             KeyPath fullPath = TreeUtil.getFullPath(path);
 
             InstanceManager.get(project).processUpdate(
-                    new TranslationDelete(new KeyedTranslation(fullPath, null))
+                    new TranslationDelete(new Translation(fullPath, null))
             );
         }
     }

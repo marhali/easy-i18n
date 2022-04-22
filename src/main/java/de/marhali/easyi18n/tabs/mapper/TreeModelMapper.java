@@ -3,9 +3,14 @@ package de.marhali.easyi18n.tabs.mapper;
 import com.intellij.ide.projectView.PresentationData;
 import com.intellij.ui.JBColor;
 
-import de.marhali.easyi18n.model.*;
+import de.marhali.easyi18n.model.TranslationData;
+import de.marhali.easyi18n.model.TranslationNode;
 import de.marhali.easyi18n.model.bus.FilterMissingTranslationsListener;
 import de.marhali.easyi18n.model.bus.SearchQueryListener;
+import de.marhali.easyi18n.model.KeyPath;
+import de.marhali.easyi18n.model.TranslationValue;
+import de.marhali.easyi18n.settings.ProjectSettings;
+import de.marhali.easyi18n.util.KeyPathConverter;
 import de.marhali.easyi18n.util.UiUtil;
 
 import org.jetbrains.annotations.NotNull;
@@ -24,13 +29,13 @@ public class TreeModelMapper extends DefaultTreeModel implements SearchQueryList
 
     private final TranslationData data;
     private final KeyPathConverter converter;
-    private final SettingsState state;
+    private final ProjectSettings state;
 
-    public TreeModelMapper(TranslationData data, SettingsState state) {
+    public TreeModelMapper(TranslationData data, ProjectSettings state) {
         super(null);
 
         this.data = data;
-        this.converter = new KeyPathConverter(state.isNestedKeys());
+        this.converter = new KeyPathConverter(state);
         this.state = state;
 
         DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode();
@@ -41,7 +46,7 @@ public class TreeModelMapper extends DefaultTreeModel implements SearchQueryList
     @Override
     public void onSearchQuery(@Nullable String query) {
         DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode();
-        TranslationData shadow = new TranslationData(this.state.isSortKeys());
+        TranslationData shadow = new TranslationData(this.state.isSorting());
 
         if(query == null) { // Reset
             this.generateNodes(rootNode, this.data.getRootNode());
@@ -52,15 +57,15 @@ public class TreeModelMapper extends DefaultTreeModel implements SearchQueryList
         query = query.toLowerCase();
 
         for(KeyPath currentKey : this.data.getFullKeys()) {
-            Translation translation = this.data.getTranslation(currentKey);
-            String loweredKey = this.converter.concat(currentKey).toLowerCase();
+            TranslationValue translation = this.data.getTranslation(currentKey);
+            String loweredKey = this.converter.toString(currentKey).toLowerCase();
 
             if(query.contains(loweredKey) || loweredKey.contains(query)) {
                 shadow.setTranslation(currentKey, translation);
                 continue;
             }
 
-            for(String currentContent : translation.values()) {
+            for(String currentContent : translation.getLocaleContents()) {
                 if(currentContent.toLowerCase().contains(query)) {
                     shadow.setTranslation(currentKey, translation);
                     break;
@@ -75,7 +80,7 @@ public class TreeModelMapper extends DefaultTreeModel implements SearchQueryList
     @Override
     public void onFilterMissingTranslations(boolean filter) {
         DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode();
-        TranslationData shadow = new TranslationData(this.state.isSortKeys());
+        TranslationData shadow = new TranslationData(this.state.isSorting());
 
         if(!filter) { // Reset
             this.generateNodes(rootNode, this.data.getRootNode());
@@ -84,9 +89,9 @@ public class TreeModelMapper extends DefaultTreeModel implements SearchQueryList
         }
 
         for(KeyPath currentKey : this.data.getFullKeys()) {
-            Translation translation = this.data.getTranslation(currentKey);
+            TranslationValue translation = this.data.getTranslation(currentKey);
 
-            if(translation.values().size() != this.data.getLocales().size()) {
+            if(translation.getLocaleContents().size() != this.data.getLocales().size()) {
                 shadow.setTranslation(currentKey, translation);
             }
         }
@@ -124,7 +129,7 @@ public class TreeModelMapper extends DefaultTreeModel implements SearchQueryList
             } else {
                 String previewLocale = this.state.getPreviewLocale();
                 String sub = "(" + previewLocale + ": " + childTranslationNode.getValue().get(previewLocale) + ")";
-                String tooltip = UiUtil.generateHtmlTooltip(childTranslationNode.getValue());
+                String tooltip = UiUtil.generateHtmlTooltip(childTranslationNode.getValue().getEntries());
 
                 PresentationData data = new PresentationData(key, sub, null, null);
                 data.setTooltip(tooltip);

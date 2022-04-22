@@ -1,6 +1,45 @@
 <idea-plugin>
     <extensions defaultExtensionNs="com.intellij">
-        <lang.foldingBuilder language="JavaScript" implementationClass="de.marhali.easyi18n.editor.generic.GenericFoldingBuilder" />
-        <lang.foldingBuilder language="TypeScript" implementationClass="de.marhali.easyi18n.editor.generic.GenericFoldingBuilder" />
+        <psi.referenceContributor
+                language="JavaScript"
+                implementation="de.marhali.easyi18n.assistance.reference.JsKeyReferenceContributor"
+        />
+
+        <lang.documentationProvider
+                language="JavaScript"
+                implementationClass="de.marhali.easyi18n.assistance.documentation.CommonDocumentationProvider"
+        />
+
+        <!-- JavaScript plugin also includes TypeScript -->
+        <lang.documentationProvider
+                language="TypeScript"
+                implementationClass="de.marhali.easyi18n.assistance.documentation.CommonDocumentationProvider"
+        />
+
+        <!-- JavaScript plugin also includes TypeScript -->
+        <lang.foldingBuilder
+                language="TypeScript"
+                implementationClass="de.marhali.easyi18n.assistance.folding.JsFoldingBuilder"
+        />
+
+        <!-- JavaScript plugin also includes TypeScript JSX -->
+        <lang.foldingBuilder
+                language="TypeScript JSX"
+                implementationClass="de.marhali.easyi18n.assistance.folding.JsFoldingBuilder"
+        />
+
+        <lang.foldingBuilder
+                language="JavaScript"
+                implementationClass="de.marhali.easyi18n.assistance.folding.JsFoldingBuilder"
+        />
+
+        <intentionAction>
+            <className>de.marhali.easyi18n.assistance.intention.JsTranslationIntention</className>
+        </intentionAction>
+
+        <completion.contributor
+                language="JavaScript"
+                implementationClass="de.marhali.easyi18n.assistance.completion.JsCompletionContributor"
+        />
     </extensions>
 </idea-plugin>

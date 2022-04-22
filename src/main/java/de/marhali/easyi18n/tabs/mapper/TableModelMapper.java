@@ -1,8 +1,13 @@
 package de.marhali.easyi18n.tabs.mapper;
 
-import de.marhali.easyi18n.model.*;
+import de.marhali.easyi18n.model.TranslationData;
+import de.marhali.easyi18n.model.action.TranslationUpdate;
 import de.marhali.easyi18n.model.bus.FilterMissingTranslationsListener;
 import de.marhali.easyi18n.model.bus.SearchQueryListener;
+import de.marhali.easyi18n.model.KeyPath;
+import de.marhali.easyi18n.model.Translation;
+import de.marhali.easyi18n.model.TranslationValue;
+import de.marhali.easyi18n.util.KeyPathConverter;
 
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
@@ -50,10 +55,10 @@ public class TableModelMapper implements TableModel, SearchQueryListener, Filter
         List<KeyPath> matches = new ArrayList<>();
 
         for(KeyPath key : this.data.getFullKeys()) {
-            if(this.converter.concat(key).toLowerCase().contains(query)) {
+            if(this.converter.toString(key).toLowerCase().contains(query)) {
                 matches.add(key);
             } else {
-                for(String content : this.data.getTranslation(key).values()) {
+                for(String content : this.data.getTranslation(key).getLocaleContents()) {
                     if(content.toLowerCase().contains(query)) {
                         matches.add(key);
                     }
@@ -74,7 +79,7 @@ public class TableModelMapper implements TableModel, SearchQueryListener, Filter
         List<KeyPath> matches = new ArrayList<>();
 
         for(KeyPath key : this.data.getFullKeys()) {
-            if(this.data.getTranslation(key).values().size() != this.locales.size()) {
+            if(this.data.getTranslation(key).getLocaleContents().size() != this.locales.size()) {
                 matches.add(key);
             }
         }
@@ -117,25 +122,25 @@ public class TableModelMapper implements TableModel, SearchQueryListener, Filter
         KeyPath key = this.fullKeys.get(rowIndex);
 
         if(columnIndex == 0) { // Keys
-            return this.converter.concat(key);
+            return this.converter.toString(key);
         }
 
         String locale = this.locales.get(columnIndex -  1);
-        Translation translation = this.data.getTranslation(key);
+        TranslationValue value = this.data.getTranslation(key);
 
-        return translation == null ? null : translation.get(locale);
+        return value == null ? null : value.get(locale);
     }
 
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
         KeyPath key = this.fullKeys.get(rowIndex);
-        Translation translation = this.data.getTranslation(key);
+        TranslationValue translation = this.data.getTranslation(key);
 
         if(translation == null) { // Unknown cell
             return;
         }
 
-        KeyPath newKey = columnIndex == 0 ? this.converter.split(String.valueOf(aValue)) : key;
+        KeyPath newKey = columnIndex == 0 ? this.converter.fromString(String.valueOf(aValue)) : key;
 
         // Translation content update
         if(columnIndex > 0) {
@@ -146,8 +151,8 @@ public class TableModelMapper implements TableModel, SearchQueryListener, Filter
             }
         }
 
-        TranslationUpdate update = new TranslationUpdate(new KeyedTranslation(key, translation),
-                new KeyedTranslation(newKey, translation));
+        TranslationUpdate update = new TranslationUpdate(new Translation(key, translation),
+                new Translation(newKey, translation));
 
         this.updater.accept(update);
     }

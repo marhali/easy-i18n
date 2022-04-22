@@ -2,6 +2,8 @@ package de.marhali.easyi18n.io.parser;
 
 import de.marhali.easyi18n.model.*;
 
+import de.marhali.easyi18n.model.KeyPath;
+import de.marhali.easyi18n.settings.ProjectSettings;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
@@ -12,9 +14,9 @@ import java.util.Objects;
  */
 public abstract class ParserStrategy {
 
-    protected final @NotNull SettingsState settings;
+    protected final @NotNull ProjectSettings settings;
 
-    public ParserStrategy(@NotNull SettingsState settings) {
+    public ParserStrategy(@NotNull ProjectSettings settings) {
         this.settings = settings;
     }
 
@@ -45,10 +47,10 @@ public abstract class ParserStrategy {
 
         if(file.getNamespace() != null) {
             String moduleName = file.getNamespace();
-            TranslationNode moduleNode = data.getNode(KeyPath.of(moduleName));
+            TranslationNode moduleNode = data.getNode(new KeyPath(moduleName));
 
             if(moduleNode == null) {
-                moduleNode = new TranslationNode(this.settings.isSortKeys());
+                moduleNode = new TranslationNode(this.settings.isSorting());
                 data.getRootNode().setChildren(moduleName, moduleNode);
             }
 
@@ -68,7 +70,7 @@ public abstract class ParserStrategy {
         TranslationNode targetNode = data.getRootNode();
 
         if(file.getNamespace() != null) {
-            targetNode = data.getNode(KeyPath.of(file.getNamespace()));
+            targetNode = data.getNode(new KeyPath(file.getNamespace()));
         }
 
         return Objects.requireNonNull(targetNode);

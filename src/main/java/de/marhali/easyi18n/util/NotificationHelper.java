@@ -5,7 +5,7 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import de.marhali.easyi18n.action.SettingsAction;
 import de.marhali.easyi18n.io.IOHandler;
-import de.marhali.easyi18n.model.SettingsState;
+import de.marhali.easyi18n.settings.ProjectSettings;
 import org.jetbrains.annotations.NotNull;
 
 import java.text.MessageFormat;
@@ -17,11 +17,11 @@ import java.util.ResourceBundle;
  */
 public class NotificationHelper {
 
-    public static void createIOError(@NotNull SettingsState state, Exception ex) {
+    public static void createIOError(@NotNull ProjectSettings state, Exception ex) {
         ResourceBundle bundle = ResourceBundle.getBundle("messages");
 
         String message = MessageFormat.format(bundle.getString("error.io"),
-                state.getFolderStrategy(), state.getParserStrategy(), state.getFilePattern(), state.getLocalesPath());
+                state.getFolderStrategy(), state.getParserStrategy(), state.getFilePattern(), state.getLocalesDirectory());
 
         Logger.getInstance(IOHandler.class).error(message, ex);
     }

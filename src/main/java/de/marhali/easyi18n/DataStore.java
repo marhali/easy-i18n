@@ -7,10 +7,10 @@ import com.intellij.openapi.vfs.*;
 
 import de.marhali.easyi18n.exception.EmptyLocalesDirException;
 import de.marhali.easyi18n.io.IOHandler;
-import de.marhali.easyi18n.model.SettingsState;
 import de.marhali.easyi18n.model.TranslationData;
 import de.marhali.easyi18n.service.FileChangeListener;
-import de.marhali.easyi18n.service.SettingsService;
+import de.marhali.easyi18n.settings.ProjectSettings;
+import de.marhali.easyi18n.settings.ProjectSettingsService;
 import de.marhali.easyi18n.util.NotificationHelper;
 
 import org.jetbrains.annotations.NotNull;
@@ -35,7 +35,7 @@ public class DataStore {
         this.changeListener = new FileChangeListener(project);
 
         VirtualFileManager.getInstance().addAsyncFileListener(
-                this.changeListener, Disposer.newDisposable("EasyI18n"));
+                this.changeListener, Disposer.newDisposable(project, "EasyI18n"));
     }
 
     public @NotNull TranslationData getData() {
@@ -48,18 +48,18 @@ public class DataStore {
      * @param successResult Consumer will inform if operation was successful
      */
     public void loadFromPersistenceLayer(@NotNull Consumer<Boolean> successResult) {
-        SettingsState settings = SettingsService.getInstance(this.project).getState();
+        ProjectSettings settings = ProjectSettingsService.get(project).getState();
 
         ApplicationManager.getApplication().saveAll(); // Save opened files (required if new locales were added)
 
         ApplicationManager.getApplication().runReadAction(() -> {
             try {
                 this.data = new IOHandler(settings).read();
-                this.changeListener.updateLocalesPath(settings.getLocalesPath());
+                this.changeListener.updateLocalesPath(settings.getLocalesDirectory());
                 successResult.accept(true);
 
             } catch (Exception ex) {
-                this.data = new TranslationData(settings.isSortKeys());
+                this.data = new TranslationData(settings.isSorting());
                 successResult.accept(false);
 
                 if(ex instanceof EmptyLocalesDirException) {
@@ -76,7 +76,7 @@ public class DataStore {
      * @param successResult Consumer will inform if operation was successful
      */
     public void saveToPersistenceLayer(@NotNull Consumer<Boolean> successResult) {
-        SettingsState settings = SettingsService.getInstance(this.project).getState();
+        ProjectSettings settings = ProjectSettingsService.get(project).getState();
 
         ApplicationManager.getApplication().runWriteAction(() -> {
             try {

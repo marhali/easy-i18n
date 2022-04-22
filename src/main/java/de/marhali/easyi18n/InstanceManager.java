@@ -3,7 +3,7 @@ package de.marhali.easyi18n;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
 
-import de.marhali.easyi18n.model.TranslationUpdate;
+import de.marhali.easyi18n.model.action.TranslationUpdate;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -52,13 +52,22 @@ public class InstanceManager {
         return this.bus;
     }
 
+    /**
+     * Reloads the plugin instance. Unsaved cached data will be deleted.
+     * Fetches data from persistence layer and notifies all endpoints via {@link DataBus}.
+     */
+    public void reload() {
+        store.loadFromPersistenceLayer((success) ->
+                bus.propagate().onUpdateData(store.getData()));
+    }
+
     public void processUpdate(TranslationUpdate update) {
         if(update.isDeletion() || update.isKeyChange()) { // Remove origin translation
             this.store.getData().setTranslation(update.getOrigin().getKey(), null);
         }
 
         if(!update.isDeletion()) { // Create or re-create translation with changed data
-            this.store.getData().setTranslation(update.getChange().getKey(), update.getChange().getTranslation());
+            this.store.getData().setTranslation(update.getChange().getKey(), update.getChange().getValue());
         }
 
         this.store.saveToPersistenceLayer(success -> {

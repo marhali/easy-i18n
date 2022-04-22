@@ -1,7 +1,7 @@
 package de.marhali.easyi18n.io.parser.yaml;
 
-import de.marhali.easyi18n.model.Translation;
 import de.marhali.easyi18n.model.TranslationNode;
+import de.marhali.easyi18n.model.TranslationValue;
 import de.marhali.easyi18n.util.StringUtil;
 
 import org.apache.commons.lang.StringEscapeUtils;
@@ -28,7 +28,7 @@ public class YamlMapper {
                 // Nested element - run recursively
                 read(locale, (MapSection) value, childNode);
             } else {
-                Translation translation = childNode.getValue();
+                TranslationValue translation = childNode.getValue();
 
                 String content = value instanceof ListSection
                         ? YamlArrayMapper.read((ListSection) value)
@@ -53,7 +53,7 @@ public class YamlMapper {
                     section.setInScope(key, childSection);
                 }
             } else {
-                Translation translation = childNode.getValue();
+                TranslationValue translation = childNode.getValue();
                 String content = translation.get(locale);
 
                 if(content != null) {
