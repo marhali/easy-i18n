@@ -99,6 +99,7 @@ _For more examples, please refer to the [Examples Directory](https://github.com/
 - [X] Enhance editor code assistance
 - [ ] XML Support
 - [ ] Mark duplicate translation values
+- [ ] Python language assistance
 
 See the [open issues](https://github.com/marhali/easy-i18n/issues) for a full list of proposed features (and known issues).
 
