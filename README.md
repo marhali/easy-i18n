@@ -33,9 +33,9 @@ This plugin can be used for any project based on one of the formats and structur
 - UI Tool-Window which supports _tree-view_ and _table-view_
 - Easily **`Add`** / **`Edit`** / **`Delete`** translations
 - Filter all translations with _full-text-search_ support
-- Editor Assistance: Key completion, annotation and referencing
+- Editor Assistance: translation intention, completion-contributor, key-annotation and -folding
 - Translation key sorting and nesting can be configured
-- Configurable locales directory & preferred locale for ui presentation
+- Extensive configuration options: locales directory, preferred locale, key delimiters
 - Missing language translations will be indicated red
 - Automatically reloads translation data if any locale file was changed
 
@@ -47,6 +47,9 @@ This plugin can be used for any project based on one of the formats and structur
 - Single Directory: All translation files are within one directory 
 - Modularized (**<kbd>Locale</kbd>** \ **<kbd>Namespace</kbd>**)
 - Modularized (**<kbd>Namespace</kbd>** \ **<kbd>Locale</kbd>**)
+
+### Language Support
+**<kbd>JavaScript / TypeScript</kbd>** - **<kbd>Vue</kbd>** - **<kbd>Java</kbd>** - **<kbd>Kotlin</kbd>** - **<kbd>PHP</kbd>**
 
 <!-- Plugin description end -->
 
