@@ -39,7 +39,7 @@ public class SortableProperties extends Properties {
     }
 
     @Override
-    public String toString() {
+    public synchronized String toString() {
         return this.properties.toString();
     }
 }
