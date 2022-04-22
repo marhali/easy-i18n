@@ -32,12 +32,23 @@ public class AddAction extends AnAction {
 
     @Override
     public void actionPerformed(@NotNull AnActionEvent e) {
-        new AddDialog(Objects.requireNonNull(e.getProject()), detectPreKey(e.getProject()), null).showAndHandle();
+        Project project = Objects.requireNonNull(e.getProject());
+        new AddDialog(project, detectPreKey(project), null).showAndHandle();
     }
 
+    /**
+     * Detects a selected translation key in our tool-window.
+     * @param project Opened project
+     * @return Found key to prefill translation key or null if not applicable
+     */
     private @Nullable KeyPath detectPreKey(@NotNull Project project) {
         KeyPathConverter converter = new KeyPathConverter(project);
         WindowManager window = WindowManager.getInstance();
+
+        if(window.getToolWindow() == null) {
+            return null;
+        }
+
         Content manager = window.getToolWindow().getContentManager().getSelectedContent();
 
         if(manager == null) {
