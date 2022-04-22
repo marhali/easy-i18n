@@ -21,6 +21,7 @@
 
 ### Fixed
 - AlreadyDisposedException on FileChangeListener after project dispose
+- Request-URL limit for error reports
 
 ## [3.2.0]
 ### Added
