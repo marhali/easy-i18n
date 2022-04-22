@@ -157,6 +157,11 @@ public class KeyPathConverterTest {
             public boolean isAssistance() {
                 return false;
             }
+
+            @Override
+            public boolean isAlwaysFold() {
+                return false;
+            }
         });
     }
 }

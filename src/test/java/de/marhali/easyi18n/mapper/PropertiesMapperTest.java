@@ -230,6 +230,11 @@ public class PropertiesMapperTest extends AbstractMapperTest {
             public boolean isAssistance() {
                 return false;
             }
+
+            @Override
+            public boolean isAlwaysFold() {
+                return false;
+            }
         });
     }
 }
