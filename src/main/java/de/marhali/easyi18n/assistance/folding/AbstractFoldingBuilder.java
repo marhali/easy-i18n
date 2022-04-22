@@ -59,7 +59,7 @@ abstract class AbstractFoldingBuilder extends FoldingBuilderEx implements Option
         KeyPathConverter converter = new KeyPathConverter(settings);
 
         for(Pair<String, PsiElement> region : extractRegions(root)) {
-            if(data.getTranslation(converter.fromString(region.first)) == null) {
+            if(region.first == null || data.getTranslation(converter.fromString(region.first)) == null) {
                 continue;
             }
 
