@@ -1,6 +1,14 @@
 <idea-plugin>
     <extensions defaultExtensionNs="com.intellij">
-        <lang.foldingBuilder language="VueJS" implementationClass="de.marhali.easyi18n.assistance.folding.JsFoldingBuilder" />
+        <lang.foldingBuilder
+                language="VueJS"
+                implementationClass="de.marhali.easyi18n.assistance.folding.JsFoldingBuilder"
+        />
+
+        <lang.foldingBuilder
+                language="Vue"
+                implementationClass="de.marhali.easyi18n.assistance.folding.JsFoldingBuilder"
+        />
 
         <lang.documentationProvider
                 language="VueJS"
