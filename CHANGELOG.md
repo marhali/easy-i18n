@@ -3,6 +3,8 @@
 # easy-i18n Changelog
 
 ## [Unreleased]
+
+## [4.0.0]
 ### BREAKING CHANGES
 - Configuration rework. Existing settings will be lost and must be configured via the new configuration page
 
