@@ -37,6 +37,8 @@ public class ProjectSettingsState implements ProjectSettings {
     // Experimental configuration
     private Boolean alwaysFold;
 
+    private Boolean translatorServiceEnabled;
+
     public ProjectSettingsState() {}
 
     @Override
@@ -110,6 +112,11 @@ public class ProjectSettingsState implements ProjectSettings {
         return alwaysFold != null ? alwaysFold : defaults.isAlwaysFold();
     }
 
+    @Override
+    public boolean isTranslatorServiceEnabled() {
+        return translatorServiceEnabled != null ? translatorServiceEnabled : defaults.isTranslatorServiceEnabled();
+    }
+
     public void setLocalesDirectory(String localesDirectory) {
         this.localesDirectory = localesDirectory;
     }
@@ -164,5 +171,9 @@ public class ProjectSettingsState implements ProjectSettings {
 
     public void setAlwaysFold(Boolean alwaysFold) {
         this.alwaysFold = alwaysFold;
+    }
+
+    public void setTranslatorServiceEnabled(Boolean translatorServiceEnabled) {
+        this.translatorServiceEnabled = translatorServiceEnabled;
     }
 }

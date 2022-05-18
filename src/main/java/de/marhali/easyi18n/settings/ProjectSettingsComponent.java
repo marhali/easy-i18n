@@ -63,6 +63,7 @@ public class ProjectSettingsComponent extends ProjectSettingsComponentState {
                 .addVerticalGap(24)
                 .addComponent(new TitledSeparator(bundle.getString("settings.experimental.title")))
                 .addComponent(constructAlwaysFoldField())
+                .addComponent(constructTranslatorServiceEnabledField())
                 .addComponentFillVertically(new JPanel(), 0)
                 .getPanel();
     }
@@ -210,6 +211,12 @@ public class ProjectSettingsComponent extends ProjectSettingsComponentState {
         alwaysFold = new JBCheckBox(bundle.getString("settings.experimental.always-fold.title"));
         alwaysFold.setToolTipText(bundle.getString("settings.experimental.always-fold.tooltip"));
         return alwaysFold;
+    }
+
+    private JComponent constructTranslatorServiceEnabledField() {
+        translatorServiceEnabled = new JBCheckBox(bundle.getString("settings.experimental.translator.title"));
+        translatorServiceEnabled.setToolTipText(bundle.getString("settings.experimental.translator.tooltip"));
+        return translatorServiceEnabled;
     }
 
     private ItemListener handleParserChange() {

@@ -80,4 +80,7 @@ public class VueI18nPreset implements ProjectSettings {
     public boolean isAlwaysFold() {
         return false;
     }
+
+    @Override
+    public boolean isTranslatorServiceEnabled() { return false; }
 }

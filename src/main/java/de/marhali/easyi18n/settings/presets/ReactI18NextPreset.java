@@ -81,4 +81,7 @@ public class ReactI18NextPreset implements ProjectSettings {
     public boolean isAlwaysFold() {
         return false;
     }
+
+    @Override
+    public boolean isTranslatorServiceEnabled() { return false; }
 }

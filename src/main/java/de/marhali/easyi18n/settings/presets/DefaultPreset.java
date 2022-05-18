@@ -81,4 +81,7 @@ public class DefaultPreset implements ProjectSettings {
     public boolean isAlwaysFold() {
         return false;
     }
+
+    @Override
+    public boolean isTranslatorServiceEnabled() { return false; }
 }

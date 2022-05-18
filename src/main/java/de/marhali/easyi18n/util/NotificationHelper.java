@@ -39,4 +39,14 @@ public class NotificationHelper {
 
         Notifications.Bus.notify(notification, project);
     }
+
+    public static void createTranslatorServiceErrorNotification(Project project, int statusCode, String response) {
+        final ResourceBundle bundle = ResourceBundle.getBundle("messages");
+
+        final String message = String.format("%s%nStatus %d: %s", bundle.getString("error.translator-error"), statusCode, response);
+        final Notification notification = new Notification("Easy I18n Notification Group", "Easy I18n",
+                message, NotificationType.ERROR);
+
+        Notifications.Bus.notify(notification, project);
+    }
 }

@@ -32,4 +32,5 @@ public interface ProjectSettings {
 
     // Experimental Configuration
     boolean isAlwaysFold();
+    boolean isTranslatorServiceEnabled();
 }

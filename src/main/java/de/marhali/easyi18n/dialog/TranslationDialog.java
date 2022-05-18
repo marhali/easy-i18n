@@ -11,6 +11,7 @@ import de.marhali.easyi18n.InstanceManager;
 import de.marhali.easyi18n.model.KeyPath;
 import de.marhali.easyi18n.model.Translation;
 import de.marhali.easyi18n.model.TranslationValue;
+import de.marhali.easyi18n.model.action.Translate;
 import de.marhali.easyi18n.model.action.TranslationUpdate;
 import de.marhali.easyi18n.settings.ProjectSettings;
 import de.marhali.easyi18n.settings.ProjectSettingsService;
@@ -21,7 +22,10 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.*;
+import java.text.MessageFormat;
 import java.util.*;
 
 /**
@@ -136,6 +140,7 @@ abstract class TranslationDialog {
 
         for(Map.Entry<String, JTextField> localeEntry : localeValueFields.entrySet()) {
             builder.addLabeledComponent(localeEntry.getKey(), localeEntry.getValue(), 6, true);
+            addTranslatorPopup(localeEntry.getValue(), localeEntry.getKey());
         }
 
         JScrollPane scrollPane = new JBScrollPane(builder.getPanel());
@@ -144,5 +149,50 @@ abstract class TranslationDialog {
                 new EtchedBorder(), bundle.getString("translation.locales")));
 
         return scrollPane;
+    }
+
+    private void addTranslatorPopup(JTextField textField, String targetLocale) {
+        final String sourceLocale = settings.getPreviewLocale();
+        final boolean translatorServiceEnabled = settings.isTranslatorServiceEnabled();
+        final JTextField sourceLocaleTextField = localeValueFields.get(sourceLocale);
+
+        if (translatorServiceEnabled && sourceLocaleTextField != textField && !sourceLocale.isBlank()) {
+            final JPopupMenu popupMenu = addPopUpMenu(textField);
+            addTranslateMenuItem(popupMenu, targetLocale, textField, sourceLocale, sourceLocaleTextField);
+        }
+    }
+
+    @NotNull
+    private JPopupMenu addPopUpMenu(JTextField textField) {
+        final JPopupMenu popup = new JPopupMenu();
+        textField.add(popup);
+        textField.setComponentPopupMenu(popup);
+        return popup;
+    }
+
+    private void addTranslateMenuItem(JPopupMenu popupMenu, String targetLocale, JTextField targetTextField, String sourceLocale,
+            JTextField sourceTextField) {
+        final String label = MessageFormat.format(bundle.getString("action.translate"), sourceLocale);
+        final JMenuItem translateMenuItem = popupMenu.add(label);
+        sourceTextField.getDocument().addDocumentListener(new DocumentListener() {
+            private void update(DocumentEvent e) { translateMenuItem.setEnabled(e.getDocument().getLength() > 0); }
+            @Override
+            public void insertUpdate(DocumentEvent e) { update(e); }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) { update(e); }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) { }
+        });
+
+        translateMenuItem.addActionListener(event -> {
+            final String sourceString = sourceTextField.getText();
+            final Translate translate = new Translate(project, targetLocale, sourceLocale, sourceString);
+            final Optional<String> translation = translate.getTranslation();
+            if(translation.isPresent()) {
+                targetTextField.setText(translation.get());
+            }
+        });
     }
 }

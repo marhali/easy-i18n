@@ -38,6 +38,7 @@ public class ProjectSettingsComponentState {
 
     // Experimental configuration
     protected JCheckBox alwaysFold;
+    protected JCheckBox translatorServiceEnabled;
 
     protected ProjectSettingsState getState() {
         // Every field needs to provide its state
@@ -61,6 +62,7 @@ public class ProjectSettingsComponentState {
         state.setAssistance(assistance.isSelected());
 
         state.setAlwaysFold(alwaysFold.isSelected());
+        state.setTranslatorServiceEnabled(translatorServiceEnabled.isSelected());
 
         return state;
     }
@@ -85,5 +87,6 @@ public class ProjectSettingsComponentState {
         assistance.setSelected(state.isAssistance());
 
         alwaysFold.setSelected(state.isAlwaysFold());
+        translatorServiceEnabled.setSelected(state.isTranslatorServiceEnabled());
     }
 }
