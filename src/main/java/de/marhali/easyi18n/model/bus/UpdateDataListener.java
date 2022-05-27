@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
  */
 public interface UpdateDataListener {
     /**
-     * Update the translations based on the supplied data.
+     * Update the underlying translation data set.
      * @param data Updated translations
      */
     void onUpdateData(@NotNull TranslationData data);

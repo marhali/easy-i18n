@@ -2,7 +2,7 @@ package de.marhali.easyi18n.tabs.mapper;
 
 import de.marhali.easyi18n.model.TranslationData;
 import de.marhali.easyi18n.model.action.TranslationUpdate;
-import de.marhali.easyi18n.model.bus.FilterMissingTranslationsListener;
+import de.marhali.easyi18n.model.bus.FilterIncompleteListener;
 import de.marhali.easyi18n.model.bus.SearchQueryListener;
 import de.marhali.easyi18n.model.KeyPath;
 import de.marhali.easyi18n.model.Translation;
@@ -23,7 +23,7 @@ import java.util.function.Consumer;
  * Mapping {@link TranslationData} to {@link TableModel}.
  * @author marhali
  */
-public class TableModelMapper implements TableModel, SearchQueryListener, FilterMissingTranslationsListener {
+public class TableModelMapper implements TableModel, SearchQueryListener, FilterIncompleteListener {
 
     private final @NotNull TranslationData data;
     private final @NotNull KeyPathConverter converter;

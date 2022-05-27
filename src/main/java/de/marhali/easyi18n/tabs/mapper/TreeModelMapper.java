@@ -5,7 +5,7 @@ import com.intellij.ui.JBColor;
 
 import de.marhali.easyi18n.model.TranslationData;
 import de.marhali.easyi18n.model.TranslationNode;
-import de.marhali.easyi18n.model.bus.FilterMissingTranslationsListener;
+import de.marhali.easyi18n.model.bus.FilterIncompleteListener;
 import de.marhali.easyi18n.model.bus.SearchQueryListener;
 import de.marhali.easyi18n.model.KeyPath;
 import de.marhali.easyi18n.model.TranslationValue;
@@ -25,7 +25,7 @@ import java.util.Map;
  * Mapping {@link TranslationData} to {@link TreeModel}.
  * @author marhali
  */
-public class TreeModelMapper extends DefaultTreeModel implements SearchQueryListener, FilterMissingTranslationsListener {
+public class TreeModelMapper extends DefaultTreeModel implements SearchQueryListener, FilterIncompleteListener {
 
     private final TranslationData data;
     private final KeyPathConverter converter;

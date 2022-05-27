@@ -9,7 +9,7 @@ import org.jetbrains.annotations.Nullable;
 public interface SearchQueryListener {
     /**
      * Filter the displayed data according to the search query. Supply 'null' to return to the normal state.
-     * The keys and the content itself should be considered.
+     * The keys and the content itself should be considered (full-text-search).
      * @param query Filter key or content
      */
     void onSearchQuery(@Nullable String query);
