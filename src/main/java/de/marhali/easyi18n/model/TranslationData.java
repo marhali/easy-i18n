@@ -171,6 +171,10 @@ public class TranslationData {
         return keys;
     }
 
+    public boolean isSorting() {
+        return rootNode.getChildren() instanceof TreeMap;
+    }
+
     @Override
     public String toString() {
         return "TranslationData{" +
