@@ -110,8 +110,8 @@ public class TranslationData {
      * @param translation Translation to set. Can be null to delete the corresponding node
      */
     public void setTranslation(@NotNull KeyPath fullPath, @Nullable TranslationValue translation) {
-        if(fullPath.isEmpty()) {
-            throw new IllegalArgumentException("Key path cannot be empty");
+        if(fullPath.isEmpty()) { // Skip empty translation keys
+            return;
         }
 
         fullPath = new KeyPath(fullPath);
@@ -123,7 +123,8 @@ public class TranslationData {
 
             if(childNode == null) {
                 if(translation == null) { // Path must not be empty on delete
-                    throw new IllegalArgumentException("Delete action on empty path");
+                    // Section already deleted / non-existent
+                    return;
                 }
 
                 childNode = node.setChildren(section);
