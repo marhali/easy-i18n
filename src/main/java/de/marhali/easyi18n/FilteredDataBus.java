@@ -116,7 +116,7 @@ public class FilteredDataBus implements BusListener {
 
             // filter duplicate values
             if(filterDuplicate) {
-                if(!isDuplicate(value)) {
+                if(!isDuplicate(key, value)) {
                     shadow.setTranslation(key, null);
                 }
             }
@@ -155,12 +155,16 @@ public class FilteredDataBus implements BusListener {
     /**
      * Filter duplicate translation values
      */
-    private boolean isDuplicate(@NotNull TranslationValue value) {
+    private boolean isDuplicate(@NotNull KeyPath key, @NotNull TranslationValue value) {
         Collection<String> contents = value.getLocaleContents();
 
         for (KeyPath currentKey : this.data.getFullKeys()) {
             TranslationValue currentValue = this.data.getTranslation(currentKey);
             assert currentValue != null;
+
+            if(currentKey.equals(key)) { // Only consider other translations
+                continue;
+            }
 
             for (String currentContent : currentValue.getLocaleContents()) {
                 if(contents.contains(currentContent)) {
