@@ -107,6 +107,7 @@ public class FilteredDataBus implements BusListener {
             if(filterIncomplete) {
                 if(!TranslationUtil.isIncomplete(value, this.data)) {
                     shadow.setTranslation(key, null);
+                    continue;
                 }
             }
 
@@ -114,6 +115,7 @@ public class FilteredDataBus implements BusListener {
             if(filterDuplicate) {
                 if(!TranslationUtil.hasDuplicates(new Translation(key, value), this.data)) {
                     shadow.setTranslation(key, null);
+                    continue;
                 }
             }
 
@@ -121,6 +123,7 @@ public class FilteredDataBus implements BusListener {
             if(searchQuery != null) {
                 if(!TranslationUtil.isSearched(settings, new Translation(key, value), searchQuery)) {
                     shadow.setTranslation(key, null);
+                    //continue;
                 }
             }
         }
