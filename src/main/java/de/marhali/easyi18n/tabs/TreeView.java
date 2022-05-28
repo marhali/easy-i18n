@@ -21,7 +21,7 @@ import de.marhali.easyi18n.model.KeyPath;
 import de.marhali.easyi18n.model.Translation;
 import de.marhali.easyi18n.model.TranslationValue;
 import de.marhali.easyi18n.model.bus.FilteredBusListener;
-import de.marhali.easyi18n.renderer.TreeRenderer;
+import de.marhali.easyi18n.tabs.renderer.TreeRenderer;
 import de.marhali.easyi18n.settings.ProjectSettingsService;
 import de.marhali.easyi18n.tabs.mapper.TreeModelMapper;
 import de.marhali.easyi18n.util.TreeUtil;

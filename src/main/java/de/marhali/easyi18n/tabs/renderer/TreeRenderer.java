@@ -1,4 +1,4 @@
-package de.marhali.easyi18n.renderer;
+package de.marhali.easyi18n.tabs.renderer;
 
 import com.intellij.ide.util.treeView.NodeRenderer;
 import com.intellij.navigation.ItemPresentation;

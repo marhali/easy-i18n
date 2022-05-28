@@ -2,21 +2,17 @@ package de.marhali.easyi18n;
 
 import com.intellij.openapi.project.Project;
 
-import de.marhali.easyi18n.model.KeyPath;
-import de.marhali.easyi18n.model.TranslationData;
-import de.marhali.easyi18n.model.TranslationNode;
-import de.marhali.easyi18n.model.TranslationValue;
+import de.marhali.easyi18n.model.*;
 import de.marhali.easyi18n.model.bus.BusListener;
 import de.marhali.easyi18n.model.bus.ExpandAllListener;
 import de.marhali.easyi18n.model.bus.FilteredBusListener;
 import de.marhali.easyi18n.settings.ProjectSettingsService;
 import de.marhali.easyi18n.settings.ProjectSettingsState;
-import de.marhali.easyi18n.util.KeyPathConverter;
+import de.marhali.easyi18n.util.TranslationUtil;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -109,21 +105,21 @@ public class FilteredDataBus implements BusListener {
 
             // filter incomplete translations
             if(filterIncomplete) {
-                if(!isIncomplete(value)) {
+                if(!TranslationUtil.isIncomplete(value, this.data)) {
                     shadow.setTranslation(key, null);
                 }
             }
 
             // filter duplicate values
             if(filterDuplicate) {
-                if(!isDuplicate(key, value)) {
+                if(!TranslationUtil.hasDuplicates(new Translation(key, value), this.data)) {
                     shadow.setTranslation(key, null);
                 }
             }
 
             // full-text-search
             if(searchQuery != null) {
-                if(!isSearched(key, value)) {
+                if(!TranslationUtil.isSearched(settings, new Translation(key, value), searchQuery)) {
                     shadow.setTranslation(key, null);
                 }
             }
@@ -143,55 +139,5 @@ public class FilteredDataBus implements BusListener {
      */
     private void fire(@NotNull Consumer<FilteredBusListener> li) {
         listener.forEach(li);
-    }
-
-    /**
-     * Filter translations with missing translation values for any locale
-     */
-    private boolean isIncomplete(@NotNull TranslationValue value) {
-        return this.data.getLocales().size() != value.getLocaleContents().size();
-    }
-
-    /**
-     * Filter duplicate translation values
-     */
-    private boolean isDuplicate(@NotNull KeyPath key, @NotNull TranslationValue value) {
-        Collection<String> contents = value.getLocaleContents();
-
-        for (KeyPath currentKey : this.data.getFullKeys()) {
-            TranslationValue currentValue = this.data.getTranslation(currentKey);
-            assert currentValue != null;
-
-            if(currentKey.equals(key)) { // Only consider other translations
-                continue;
-            }
-
-            for (String currentContent : currentValue.getLocaleContents()) {
-                if(contents.contains(currentContent)) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * Filter by search query
-     */
-    private boolean isSearched(@NotNull KeyPath key, @NotNull TranslationValue value) {
-        String concatKey = new KeyPathConverter(settings).toString(key).toLowerCase();
-
-        if(searchQuery.contains(concatKey) || concatKey.contains(searchQuery)) {
-            return true;
-        }
-
-        for (String localeContent : value.getLocaleContents()) {
-            if(localeContent.toLowerCase().contains(searchQuery)) {
-                return true;
-            }
-        }
-
-        return false;
     }
 }

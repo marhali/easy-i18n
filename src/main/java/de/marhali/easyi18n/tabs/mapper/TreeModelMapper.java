@@ -3,10 +3,12 @@ package de.marhali.easyi18n.tabs.mapper;
 import com.intellij.ide.projectView.PresentationData;
 import com.intellij.ui.JBColor;
 
+import de.marhali.easyi18n.model.Translation;
 import de.marhali.easyi18n.model.TranslationData;
 import de.marhali.easyi18n.model.TranslationNode;
 import de.marhali.easyi18n.model.KeyPath;
 import de.marhali.easyi18n.settings.ProjectSettings;
+import de.marhali.easyi18n.util.TranslationUtil;
 import de.marhali.easyi18n.util.UiUtil;
 
 import org.jetbrains.annotations.NotNull;
@@ -33,31 +35,33 @@ public class TreeModelMapper extends DefaultTreeModel {
         this.state = state;
 
         DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode();
-        this.generateNodes(rootNode, this.data.getRootNode());
+        this.generateNodes(rootNode, new KeyPath(), this.data.getRootNode());
         super.setRoot(rootNode);
     }
 
     /**
      * @param parent Parent tree node
      * @param translationNode Layer of translation node to write to tree
-     * @return true if children nodes misses any translation values
+     * @return color to apply on the parent node
      */
-    private boolean generateNodes(@NotNull DefaultMutableTreeNode parent, @NotNull TranslationNode translationNode) {
-        boolean foundMissing = false;
+    private JBColor generateNodes(@NotNull DefaultMutableTreeNode parent, @NotNull KeyPath parentPath, @NotNull TranslationNode translationNode) {
+        JBColor color = null;
 
         for(Map.Entry<String, TranslationNode> entry : translationNode.getChildren().entrySet()) {
             String key = entry.getKey();
+            KeyPath keyPath = new KeyPath(parentPath, key);
             TranslationNode childTranslationNode = entry.getValue();
 
-            if(!childTranslationNode.isLeaf()) {
-                // Nested node - run recursively
+            if(!childTranslationNode.isLeaf()) { // Nested node - run recursively
                 DefaultMutableTreeNode childNode = new DefaultMutableTreeNode(key);
 
-                if(this.generateNodes(childNode, childTranslationNode)) { // Mark red if any children misses translations
+                JBColor childColor = this.generateNodes(childNode, keyPath, childTranslationNode);
+
+                if(childColor != null) {
                     PresentationData data = new PresentationData(key, null, null, null);
-                    data.setForcedTextForeground(JBColor.RED);
+                    data.setForcedTextForeground(childColor);
                     childNode.setUserObject(data);
-                    foundMissing = true;
+                    color = childColor;
                 }
 
                 parent.add(childNode);
@@ -72,14 +76,17 @@ public class TreeModelMapper extends DefaultTreeModel {
 
                 if(childTranslationNode.getValue().size() != this.data.getLocales().size()) {
                     data.setForcedTextForeground(JBColor.RED);
-                    foundMissing = true;
+                    color = JBColor.RED;
+                } else if(TranslationUtil.hasDuplicates(new Translation(keyPath, childTranslationNode.getValue()), this.data)) {
+                    data.setForcedTextForeground(JBColor.YELLOW);
+                    color = JBColor.YELLOW;
                 }
 
                 parent.add(new DefaultMutableTreeNode(data));
             }
         }
 
-        return foundMissing;
+        return color;
     }
 
     /**

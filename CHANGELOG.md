@@ -5,6 +5,7 @@
 ## [Unreleased]
 ### Added
 - Duplicate translation values filter
+- Indicate translations with duplicated values yellow
 - Multiple translation filters can be used together
 
 ### Changed
