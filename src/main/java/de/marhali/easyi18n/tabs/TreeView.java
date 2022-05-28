@@ -13,7 +13,6 @@ import de.marhali.easyi18n.dialog.EditDialog;
 import de.marhali.easyi18n.listener.ReturnKeyListener;
 import de.marhali.easyi18n.model.TranslationData;
 import de.marhali.easyi18n.model.action.TranslationDelete;
-import de.marhali.easyi18n.model.bus.BusListener;
 import de.marhali.easyi18n.action.treeview.CollapseTreeViewAction;
 import de.marhali.easyi18n.action.treeview.ExpandTreeViewAction;
 import de.marhali.easyi18n.listener.DeleteKeyListener;
@@ -21,6 +20,7 @@ import de.marhali.easyi18n.listener.PopupClickListener;
 import de.marhali.easyi18n.model.KeyPath;
 import de.marhali.easyi18n.model.Translation;
 import de.marhali.easyi18n.model.TranslationValue;
+import de.marhali.easyi18n.model.bus.FilteredBusListener;
 import de.marhali.easyi18n.renderer.TreeRenderer;
 import de.marhali.easyi18n.settings.ProjectSettingsService;
 import de.marhali.easyi18n.tabs.mapper.TreeModelMapper;
@@ -32,16 +32,13 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 /**
  * Show translation state as tree.
- *
  * @author marhali
  */
-public class TreeView implements BusListener {
+public class TreeView implements FilteredBusListener {
 
     private final Tree tree;
 
@@ -71,8 +68,8 @@ public class TreeView implements BusListener {
     private void placeActions() {
         DefaultActionGroup group = new DefaultActionGroup("TranslationsGroup", false);
 
-        ExpandTreeViewAction expand = new ExpandTreeViewAction(this::expandAll);
-        CollapseTreeViewAction collapse = new CollapseTreeViewAction(this::collapseAll);
+        ExpandTreeViewAction expand = new ExpandTreeViewAction(this::onExpandAll);
+        CollapseTreeViewAction collapse = new CollapseTreeViewAction(this::onCollapseAll);
 
         group.add(collapse);
         group.add(expand);
@@ -117,24 +114,6 @@ public class TreeView implements BusListener {
         }
     }
 
-    @Override
-    public void onSearchQuery(@Nullable String query) {
-        if (this.currentMapper != null) {
-            this.currentMapper.onSearchQuery(query);
-            this.expandAll();
-            this.tree.updateUI();
-        }
-    }
-
-    @Override
-    public void onFilterMissingTranslations(boolean filter) {
-        if (this.currentMapper != null) {
-            this.currentMapper.onFilterMissingTranslations(filter);
-            this.expandAll();
-            this.tree.updateUI();
-        }
-    }
-
     private void showEditPopup(@Nullable TreePath path) {
         if (path == null) {
             return;
@@ -157,28 +136,30 @@ public class TreeView implements BusListener {
     }
 
     private void deleteSelectedNodes() {
-        TreePath[] paths = tree.getSelectionPaths();
+        TreePath[] selection = tree.getSelectionPaths();
+        Set<KeyPath> batchDelete = new HashSet<>();
 
-        if (paths == null) {
+        if(selection == null) {
             return;
         }
 
-        for (TreePath path : tree.getSelectionPaths()) {
-            KeyPath fullPath = TreeUtil.getFullPath(path);
+        for (TreePath path : selection) {
+            batchDelete.add(TreeUtil.getFullPath(path));
+        }
 
-            InstanceManager.get(project).processUpdate(
-                    new TranslationDelete(new Translation(fullPath, null))
-            );
+        for (KeyPath key : batchDelete) {
+            InstanceManager.get(project).processUpdate(new TranslationDelete(new Translation(key, null)));
         }
     }
 
-    private void expandAll() {
+    @Override
+    public void onExpandAll() {
         for (int i = 0; i < tree.getRowCount(); i++) {
             tree.expandRow(i);
         }
     }
 
-    private void collapseAll() {
+    public void onCollapseAll() {
         for (int i = 0; i < tree.getRowCount(); i++) {
             tree.collapseRow(i);
         }

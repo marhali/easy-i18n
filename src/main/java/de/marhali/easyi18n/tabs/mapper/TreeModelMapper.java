@@ -5,12 +5,8 @@ import com.intellij.ui.JBColor;
 
 import de.marhali.easyi18n.model.TranslationData;
 import de.marhali.easyi18n.model.TranslationNode;
-import de.marhali.easyi18n.model.bus.FilterIncompleteListener;
-import de.marhali.easyi18n.model.bus.SearchQueryListener;
 import de.marhali.easyi18n.model.KeyPath;
-import de.marhali.easyi18n.model.TranslationValue;
 import de.marhali.easyi18n.settings.ProjectSettings;
-import de.marhali.easyi18n.util.KeyPathConverter;
 import de.marhali.easyi18n.util.UiUtil;
 
 import org.jetbrains.annotations.NotNull;
@@ -25,17 +21,15 @@ import java.util.Map;
  * Mapping {@link TranslationData} to {@link TreeModel}.
  * @author marhali
  */
-public class TreeModelMapper extends DefaultTreeModel implements SearchQueryListener, FilterIncompleteListener {
+public class TreeModelMapper extends DefaultTreeModel {
 
     private final TranslationData data;
-    private final KeyPathConverter converter;
     private final ProjectSettings state;
 
     public TreeModelMapper(TranslationData data, ProjectSettings state) {
         super(null);
 
         this.data = data;
-        this.converter = new KeyPathConverter(state);
         this.state = state;
 
         DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode();
@@ -43,65 +37,7 @@ public class TreeModelMapper extends DefaultTreeModel implements SearchQueryList
         super.setRoot(rootNode);
     }
 
-    @Override
-    public void onSearchQuery(@Nullable String query) {
-        DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode();
-        TranslationData shadow = new TranslationData(this.state.isSorting());
-
-        if(query == null) { // Reset
-            this.generateNodes(rootNode, this.data.getRootNode());
-            super.setRoot(rootNode);
-            return;
-        }
-
-        query = query.toLowerCase();
-
-        for(KeyPath currentKey : this.data.getFullKeys()) {
-            TranslationValue translation = this.data.getTranslation(currentKey);
-            String loweredKey = this.converter.toString(currentKey).toLowerCase();
-
-            if(query.contains(loweredKey) || loweredKey.contains(query)) {
-                shadow.setTranslation(currentKey, translation);
-                continue;
-            }
-
-            for(String currentContent : translation.getLocaleContents()) {
-                if(currentContent.toLowerCase().contains(query)) {
-                    shadow.setTranslation(currentKey, translation);
-                    break;
-                }
-            }
-        }
-
-        this.generateNodes(rootNode, shadow.getRootNode());
-        super.setRoot(rootNode);
-    }
-
-    @Override
-    public void onFilterMissingTranslations(boolean filter) {
-        DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode();
-        TranslationData shadow = new TranslationData(this.state.isSorting());
-
-        if(!filter) { // Reset
-            this.generateNodes(rootNode, this.data.getRootNode());
-            super.setRoot(rootNode);
-            return;
-        }
-
-        for(KeyPath currentKey : this.data.getFullKeys()) {
-            TranslationValue translation = this.data.getTranslation(currentKey);
-
-            if(translation.getLocaleContents().size() != this.data.getLocales().size()) {
-                shadow.setTranslation(currentKey, translation);
-            }
-        }
-
-        this.generateNodes(rootNode, shadow.getRootNode());
-        super.setRoot(rootNode);
-    }
-
     /**
-     *
      * @param parent Parent tree node
      * @param translationNode Layer of translation node to write to tree
      * @return true if children nodes misses any translation values

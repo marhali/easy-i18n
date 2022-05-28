@@ -2,8 +2,6 @@ package de.marhali.easyi18n.tabs.mapper;
 
 import de.marhali.easyi18n.model.TranslationData;
 import de.marhali.easyi18n.model.action.TranslationUpdate;
-import de.marhali.easyi18n.model.bus.FilterIncompleteListener;
-import de.marhali.easyi18n.model.bus.SearchQueryListener;
 import de.marhali.easyi18n.model.KeyPath;
 import de.marhali.easyi18n.model.Translation;
 import de.marhali.easyi18n.model.TranslationValue;
@@ -11,7 +9,6 @@ import de.marhali.easyi18n.util.KeyPathConverter;
 
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
@@ -23,13 +20,13 @@ import java.util.function.Consumer;
  * Mapping {@link TranslationData} to {@link TableModel}.
  * @author marhali
  */
-public class TableModelMapper implements TableModel, SearchQueryListener, FilterIncompleteListener {
+public class TableModelMapper implements TableModel {
 
     private final @NotNull TranslationData data;
     private final @NotNull KeyPathConverter converter;
 
     private final @NotNull List<String> locales;
-    private @NotNull List<KeyPath> fullKeys;
+    private final @NotNull List<KeyPath> fullKeys;
 
     private final @NotNull Consumer<TranslationUpdate> updater;
 
@@ -42,49 +39,6 @@ public class TableModelMapper implements TableModel, SearchQueryListener, Filter
         this.fullKeys = new ArrayList<>(data.getFullKeys());
 
         this.updater = updater;
-    }
-
-    @Override
-    public void onSearchQuery(@Nullable String query) {
-        if(query == null) { // Reset
-            this.fullKeys = new ArrayList<>(this.data.getFullKeys());
-            return;
-        }
-
-        query = query.toLowerCase();
-        List<KeyPath> matches = new ArrayList<>();
-
-        for(KeyPath key : this.data.getFullKeys()) {
-            if(this.converter.toString(key).toLowerCase().contains(query)) {
-                matches.add(key);
-            } else {
-                for(String content : this.data.getTranslation(key).getLocaleContents()) {
-                    if(content.toLowerCase().contains(query)) {
-                        matches.add(key);
-                    }
-                }
-            }
-        }
-
-        this.fullKeys = matches;
-    }
-
-    @Override
-    public void onFilterMissingTranslations(boolean filter) {
-        if(!filter) { // Reset
-            this.fullKeys = new ArrayList<>(this.data.getFullKeys());
-            return;
-        }
-
-        List<KeyPath> matches = new ArrayList<>();
-
-        for(KeyPath key : this.data.getFullKeys()) {
-            if(this.data.getTranslation(key).getLocaleContents().size() != this.locales.size()) {
-                matches.add(key);
-            }
-        }
-
-        this.fullKeys = matches;
     }
 
     @Override

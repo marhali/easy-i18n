@@ -14,9 +14,10 @@ import java.util.ResourceBundle;
  * Action which toggles translation filter on missing values.
  * @author marhali
  */
-public class FilterMissingTranslationsAction extends AnAction {
-    public FilterMissingTranslationsAction() {
-        super(ResourceBundle.getBundle("messages").getString("action.toggle-missing"),
+public class FilterIncompleteAction extends AnAction {
+    // TODO: Custom icon to differentiate between incomplete and duplicate filter
+    public FilterIncompleteAction() {
+        super(ResourceBundle.getBundle("messages").getString("action.filter.incomplete"),
                 null, AllIcons.General.ShowWarning);
     }
 
@@ -25,6 +26,6 @@ public class FilterMissingTranslationsAction extends AnAction {
         Project project = Objects.requireNonNull(e.getProject());
         boolean enable = e.getPresentation().getIcon() == AllIcons.General.ShowWarning;
         e.getPresentation().setIcon(enable ? AllIcons.General.Warning : AllIcons.General.ShowWarning);
-        InstanceManager.get(project).bus().propagate().onFilterMissingTranslations(enable);
+        InstanceManager.get(project).bus().propagate().onFilterIncomplete(enable);
     }
 }

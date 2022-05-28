@@ -11,33 +11,30 @@ import de.marhali.easyi18n.listener.DeleteKeyListener;
 import de.marhali.easyi18n.listener.PopupClickListener;
 import de.marhali.easyi18n.model.TranslationData;
 import de.marhali.easyi18n.model.action.TranslationDelete;
-import de.marhali.easyi18n.model.bus.BusListener;
 import de.marhali.easyi18n.model.KeyPath;
 import de.marhali.easyi18n.model.Translation;
 import de.marhali.easyi18n.model.TranslationValue;
+import de.marhali.easyi18n.model.bus.FilteredBusListener;
 import de.marhali.easyi18n.renderer.TableRenderer;
 import de.marhali.easyi18n.tabs.mapper.TableModelMapper;
 import de.marhali.easyi18n.util.KeyPathConverter;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ResourceBundle;
+import java.util.*;
 
 /**
  * Shows translation state as table.
- *
  * @author marhali
  */
-public class TableView implements BusListener {
+public class TableView implements FilteredBusListener {
 
     private final JBTable table;
 
     private final Project project;
 
-    private TableModelMapper currentMapper;
     private KeyPathConverter converter;
 
     private JPanel rootPanel;
@@ -70,12 +67,14 @@ public class TableView implements BusListener {
     }
 
     private void deleteSelectedRows() {
-        for (int selectedRow : table.getSelectedRows()) {
-            KeyPath fullPath = this.converter.fromString(String.valueOf(table.getValueAt(selectedRow, 0)));
+        Set<KeyPath> batchDelete = new HashSet<>();
 
-            InstanceManager.get(project).processUpdate(
-                    new TranslationDelete(new Translation(fullPath, null))
-            );
+        for (int selectedRow : table.getSelectedRows()) {
+            batchDelete.add(this.converter.fromString(String.valueOf(table.getValueAt(selectedRow, 0))));
+        }
+
+        for (KeyPath key : batchDelete) {
+            InstanceManager.get(project).processUpdate(new TranslationDelete(new Translation(key, null)));
         }
     }
 
@@ -83,7 +82,7 @@ public class TableView implements BusListener {
     public void onUpdateData(@NotNull TranslationData data) {
         this.converter = new KeyPathConverter(project);
 
-        table.setModel(this.currentMapper = new TableModelMapper(data, this.converter, update ->
+        table.setModel(new TableModelMapper(data, this.converter, update ->
                 InstanceManager.get(project).processUpdate(update)));
     }
 
@@ -105,19 +104,8 @@ public class TableView implements BusListener {
     }
 
     @Override
-    public void onSearchQuery(@Nullable String query) {
-        if (this.currentMapper != null) {
-            this.currentMapper.onSearchQuery(query);
-            this.table.updateUI();
-        }
-    }
-
-    @Override
-    public void onFilterMissingTranslations(boolean filter) {
-        if(this.currentMapper != null) {
-            this.currentMapper.onFilterMissingTranslations(filter);
-            this.table.updateUI();
-        }
+    public void onExpandAll() {
+        // table-view never collapse any rows
     }
 
     public JPanel getRootPanel() {

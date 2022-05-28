@@ -20,6 +20,7 @@ public class InstanceManager {
 
     private final DataStore store;
     private final DataBus bus;
+    private final FilteredDataBus uiBus;
 
     public static InstanceManager get(@NotNull Project project) {
         InstanceManager instance = INSTANCES.get(project);
@@ -35,6 +36,10 @@ public class InstanceManager {
     private InstanceManager(@NotNull Project project) {
         this.store = new DataStore(project);
         this.bus = new DataBus();
+        this.uiBus = new FilteredDataBus(project);
+
+        // Register ui eventbus on top of the normal eventbus
+        this.bus.addListener(this.uiBus);
 
         // Load data after first initialization
         ApplicationManager.getApplication().invokeLater(() -> {
@@ -48,8 +53,18 @@ public class InstanceManager {
         return this.store;
     }
 
+    /**
+     * Primary eventbus.
+     */
     public DataBus bus() {
         return this.bus;
+    }
+
+    /**
+     * UI optimized eventbus with builtin filter logic.
+     */
+    public FilteredDataBus uiBus() {
+        return this.uiBus;
     }
 
     /**

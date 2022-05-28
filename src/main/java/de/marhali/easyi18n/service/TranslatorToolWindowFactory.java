@@ -27,6 +27,7 @@ public class TranslatorToolWindowFactory implements ToolWindowFactory, DumbAware
 
     @Override
     public void createToolWindowContent(@NotNull Project project, @NotNull ToolWindow toolWindow) {
+        InstanceManager manager = InstanceManager.get(project);
         ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
 
         // Translations tree view
@@ -46,19 +47,19 @@ public class TranslatorToolWindowFactory implements ToolWindowFactory, DumbAware
         // ToolWindow Actions (Can be used for every view)
         List<AnAction> actions = new ArrayList<>();
         actions.add(new AddAction());
-        actions.add(new FilterMissingTranslationsAction());
+        actions.add(new FilterIncompleteAction());
+        actions.add(new FilterDuplicateAction());
         actions.add(new ReloadAction());
         actions.add(new SettingsAction());
-        actions.add(new SearchAction((query) -> InstanceManager.get(project).bus().propagate().onSearchQuery(query)));
+        actions.add(new SearchAction((query) -> manager.bus().propagate().onSearchQuery(query)));
         toolWindow.setTitleActions(actions);
 
         // Initialize Window Manager
         WindowManager.getInstance().initialize(toolWindow, treeView, tableView);
 
         // Synchronize ui with underlying data
-        InstanceManager manager = InstanceManager.get(project);
-        manager.bus().addListener(treeView);
-        manager.bus().addListener(tableView);
+        manager.uiBus().addListener(treeView);
+        manager.uiBus().addListener(tableView);
         manager.bus().propagate().onUpdateData(manager.store().getData());
     }
 }

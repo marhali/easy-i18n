@@ -3,6 +3,16 @@
 # easy-i18n Changelog
 
 ## [Unreleased]
+### Added
+- Duplicate translation values filter
+- Multiple translation filters can be used together
+
+### Changed
+- Reengineered how translation filters are applied internally
+
+### Fixed
+- Exception during batch delete
+- Translation filters keep their status across updates
 
 ## [4.0.0]
 ### BREAKING CHANGES

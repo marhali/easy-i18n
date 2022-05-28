@@ -2,8 +2,8 @@ package de.marhali.easyi18n;
 
 import de.marhali.easyi18n.model.bus.BusListener;
 import de.marhali.easyi18n.model.TranslationData;
-
 import de.marhali.easyi18n.model.KeyPath;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -11,7 +11,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Data-bus which is used to distribute changes regarding translations or ui tools to the participating components.
+ * Eventbus which is mandatory to distribute changes to the participating components.
+ * For user interface related components the {@link FilteredDataBus} has a builtin solution to apply all relevant filters.
  * @author marhali
  */
 public class DataBus {
@@ -38,8 +39,13 @@ public class DataBus {
     public BusListener propagate() {
         return new BusListener() {
             @Override
-            public void onUpdateData(@NotNull TranslationData data) {
-                listener.forEach(li -> li.onUpdateData(data));
+            public void onFilterDuplicate(boolean filter) {
+                listener.forEach(li -> li.onFilterDuplicate(filter));
+            }
+
+            @Override
+            public void onFilterIncomplete(boolean filter) {
+                listener.forEach(li -> li.onFilterIncomplete(filter));
             }
 
             @Override
@@ -53,8 +59,8 @@ public class DataBus {
             }
 
             @Override
-            public void onFilterMissingTranslations(boolean filter) {
-                listener.forEach(li -> li.onFilterMissingTranslations(filter));
+            public void onUpdateData(@NotNull TranslationData data) {
+                listener.forEach(li -> li.onUpdateData(data));
             }
         };
     }
