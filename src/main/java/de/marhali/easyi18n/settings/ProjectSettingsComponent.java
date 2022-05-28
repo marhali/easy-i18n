@@ -51,6 +51,7 @@ public class ProjectSettingsComponent extends ProjectSettingsComponentState {
                 .addLabeledComponent(bundle.getString("settings.resource.path.title"), constructLocalesDirectoryField(), 1, false)
                 .addLabeledComponent(bundle.getString("settings.resource.strategy"), constructFileStrategyPanel(), 1, false)
                 .addVerticalGap(12)
+                .addComponent(constructIncludeSubDirsField())
                 .addComponent(constructSortingField())
                 .addVerticalGap(24)
                 .addComponent(new TitledSeparator(bundle.getString("settings.editor.title")))
@@ -144,6 +145,12 @@ public class ProjectSettingsComponent extends ProjectSettingsComponentState {
         panel.add(filePattern, constraints);
 
         return panel;
+    }
+
+    private JComponent constructIncludeSubDirsField() {
+        includeSubDirs = new JBCheckBox(bundle.getString("settings.resource.nesting.title"));
+        includeSubDirs.setToolTipText(bundle.getString("settings.resource.nesting.tooltip"));
+        return includeSubDirs;
     }
 
     private JComponent constructSortingField() {

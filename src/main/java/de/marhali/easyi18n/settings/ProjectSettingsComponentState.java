@@ -23,6 +23,7 @@ public class ProjectSettingsComponentState {
     protected ComboBox<String> parserStrategy;
     protected JTextField filePattern;
 
+    protected JCheckBox includeSubDirs;
     protected JCheckBox sorting;
 
     // Editor configuration
@@ -48,6 +49,7 @@ public class ProjectSettingsComponentState {
         state.setParserStrategy(ParserStrategyType.fromIndex(parserStrategy.getSelectedIndex()));
         state.setFilePattern(filePattern.getText());
 
+        state.setIncludeSubDirs(includeSubDirs.isSelected());
         state.setSorting(sorting.isSelected());
 
         state.setNamespaceDelimiter(namespaceDelimiter.getText());
@@ -72,6 +74,7 @@ public class ProjectSettingsComponentState {
         parserStrategy.setSelectedIndex((state.getParserStrategy().toIndex()));
         filePattern.setText(state.getFilePattern());
 
+        includeSubDirs.setSelected(state.isIncludeSubDirs());
         sorting.setSelected(state.isSorting());
 
         namespaceDelimiter.setText(state.getNamespaceDelimiter());

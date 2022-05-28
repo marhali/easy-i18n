@@ -17,6 +17,7 @@ public interface ProjectSettings {
     @NotNull ParserStrategyType getParserStrategy();
     @NotNull String getFilePattern();
 
+    boolean isIncludeSubDirs();
     boolean isSorting();
 
     // Editor Configuration

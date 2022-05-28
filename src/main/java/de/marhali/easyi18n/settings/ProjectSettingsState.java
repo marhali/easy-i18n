@@ -21,6 +21,7 @@ public class ProjectSettingsState implements ProjectSettings {
     private ParserStrategyType parserStrategy;
     private String filePattern;
 
+    private Boolean includeSubDirs;
     private Boolean sorting;
 
     // Editor configuration
@@ -57,6 +58,11 @@ public class ProjectSettingsState implements ProjectSettings {
     @Override
     public @NotNull String getFilePattern() {
         return filePattern != null ? filePattern : defaults.getFilePattern();
+    }
+
+    @Override
+    public boolean isIncludeSubDirs() {
+        return includeSubDirs != null ? includeSubDirs : defaults.isIncludeSubDirs();
     }
 
     @Override
@@ -124,6 +130,10 @@ public class ProjectSettingsState implements ProjectSettings {
 
     public void setFilePattern(String filePattern) {
         this.filePattern = filePattern;
+    }
+
+    public void setIncludeSubDirs(Boolean includeSubDirs) {
+        this.includeSubDirs = includeSubDirs;
     }
 
     public void setSorting(Boolean sorting) {

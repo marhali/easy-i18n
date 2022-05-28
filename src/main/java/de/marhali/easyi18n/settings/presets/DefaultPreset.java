@@ -33,6 +33,11 @@ public class DefaultPreset implements ProjectSettings {
     }
 
     @Override
+    public boolean isIncludeSubDirs() {
+        return false;
+    }
+
+    @Override
     public boolean isSorting() {
         return true;
     }
