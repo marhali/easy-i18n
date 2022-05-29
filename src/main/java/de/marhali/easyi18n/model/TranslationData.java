@@ -89,6 +89,20 @@ public class TranslationData {
         return node;
     }
 
+    public @NotNull TranslationNode getOrCreateNoe(@NotNull KeyPath fullPath) {
+        TranslationNode node = this.rootNode;
+
+        if(fullPath.isEmpty()) { // Return root node if empty path was supplied
+            return node;
+        }
+
+        for(String section : fullPath) {
+            node = node.getOrCreateChildren(section);
+        }
+
+        return node;
+    }
+
     /**
      * @param fullPath Absolute translation key path
      * @return Found translation. Can be null if path is empty or is not a leaf element

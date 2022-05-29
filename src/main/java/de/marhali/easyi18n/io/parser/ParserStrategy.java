@@ -46,15 +46,7 @@ public abstract class ParserStrategy {
         TranslationNode targetNode = data.getRootNode();
 
         if(file.getNamespace() != null) {
-            String moduleName = file.getNamespace();
-            TranslationNode moduleNode = data.getNode(new KeyPath(moduleName));
-
-            if(moduleNode == null) {
-                moduleNode = new TranslationNode(this.settings.isSorting());
-                data.getRootNode().setChildren(moduleName, moduleNode);
-            }
-
-            targetNode = moduleNode;
+            targetNode = data.getOrCreateNoe(file.getNamespace());
         }
 
         return targetNode;

@@ -13,9 +13,9 @@ public class TranslationFile {
 
     private final @NotNull VirtualFile virtualFile;
     private final @NotNull String locale;
-    private final @Nullable String namespace;
+    private final @Nullable KeyPath namespace;
 
-    public TranslationFile(@NotNull VirtualFile virtualFile, @NotNull String locale, @Nullable String namespace) {
+    public TranslationFile(@NotNull VirtualFile virtualFile, @NotNull String locale, @Nullable KeyPath namespace) {
         this.virtualFile = virtualFile;
         this.locale = locale;
         this.namespace = namespace;
@@ -29,7 +29,7 @@ public class TranslationFile {
         return locale;
     }
 
-    public @Nullable String getNamespace() {
+    public @Nullable KeyPath getNamespace() {
         return namespace;
     }
 

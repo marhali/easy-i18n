@@ -6,8 +6,8 @@ import com.intellij.openapi.vfs.VirtualFile;
 import de.marhali.easyi18n.io.parser.ParserStrategyType;
 import de.marhali.easyi18n.model.TranslationData;
 import de.marhali.easyi18n.model.TranslationFile;
-
 import de.marhali.easyi18n.settings.ProjectSettings;
+
 import org.apache.commons.io.FilenameUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -70,5 +70,15 @@ public abstract class FolderStrategy {
                 : LocalFileSystem.getInstance().findFileByIoFile(file);
 
         return Objects.requireNonNull(vf);
+    }
+
+    /**
+     * Checks whether a given file or directory exists
+     * @param parent Parent path
+     * @param child File / Directory name
+     * @return true if file is existing otherwise false
+     */
+    protected boolean exists(@NotNull String parent, @NotNull String child) {
+        return LocalFileSystem.getInstance().findFileByIoFile(new File(parent, child)) != null;
     }
 }

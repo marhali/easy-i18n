@@ -3,8 +3,10 @@ package de.marhali.easyi18n.io.folder;
 import com.intellij.openapi.vfs.VirtualFile;
 
 import de.marhali.easyi18n.io.parser.ParserStrategyType;
+import de.marhali.easyi18n.model.KeyPath;
 import de.marhali.easyi18n.model.TranslationData;
 import de.marhali.easyi18n.model.TranslationFile;
+import de.marhali.easyi18n.model.TranslationNode;
 import de.marhali.easyi18n.settings.ProjectSettings;
 
 import org.jetbrains.annotations.NotNull;
@@ -12,6 +14,8 @@ import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Modular translation folder strategy by namespace.
@@ -26,17 +30,22 @@ public class ModularNamespaceFolderStrategy extends FolderStrategy {
 
     @Override
     public @NotNull List<TranslationFile> analyzeFolderStructure(@NotNull VirtualFile localesDirectory) {
+        return new ArrayList<>(findLocaleFiles(new KeyPath(), localesDirectory));
+    }
+
+    private List<TranslationFile> findLocaleFiles(KeyPath ns, VirtualFile dir) {
         List<TranslationFile> files = new ArrayList<>();
 
-        for(VirtualFile namespaceModuleDir : localesDirectory.getChildren()) {
-            if(namespaceModuleDir.isDirectory()) {
-                String namespace = namespaceModuleDir.getNameWithoutExtension();
-
-                for(VirtualFile localeFile : namespaceModuleDir.getChildren()) {
-                    if(super.isFileRelevant(localeFile)) {
-                        files.add(new TranslationFile(localeFile, localeFile.getNameWithoutExtension(), namespace));
-                    }
+        for (VirtualFile localeFile : dir.getChildren()) {
+            if(localeFile.isDirectory()) {
+                if(settings.isIncludeSubDirs()) {
+                    files.addAll(findLocaleFiles(new KeyPath(ns, localeFile.getName()), localeFile));
                 }
+                continue;
+            }
+
+            if(super.isFileRelevant(localeFile)) {
+                files.add(new TranslationFile(localeFile, localeFile.getNameWithoutExtension(), ns));
             }
         }
 
@@ -48,14 +57,24 @@ public class ModularNamespaceFolderStrategy extends FolderStrategy {
             @NotNull String localesPath, @NotNull ParserStrategyType type,
             @NotNull TranslationData data) throws IOException {
 
+        return new ArrayList<>(this.createLocaleFiles(
+                localesPath, data.getLocales(), new KeyPath(), type, data.getRootNode()));
+    }
+
+    private List<TranslationFile> createLocaleFiles(String localesPath, Set<String> locales, KeyPath path, ParserStrategyType type, TranslationNode node) throws IOException {
         List<TranslationFile> files = new ArrayList<>();
 
-        for(String namespace : data.getRootNode().getChildren().keySet()) {
-            for(String locale : data.getLocales()) {
-                VirtualFile vf = super.constructFile(localesPath + "/" + namespace,
-                        locale + "." + type.getFileExtension());
+        for (Map.Entry<String, TranslationNode> entry : node.getChildren().entrySet()) {
+            String parentPath = localesPath + "/" + String.join("/", path);
 
-                files.add(new TranslationFile(vf, locale, namespace));
+            if(super.exists(parentPath, entry.getKey())) { // Is directory - includeSubDirs
+                files.addAll(createLocaleFiles(localesPath, locales, new KeyPath(path, entry.getKey()), type, entry.getValue()));
+                continue;
+            }
+
+            for (String locale : locales) {
+                VirtualFile vf = super.constructFile(parentPath, locale + "." + type.getFileExtension());
+                files.add(new TranslationFile(vf, locale, path));
             }
         }
 
