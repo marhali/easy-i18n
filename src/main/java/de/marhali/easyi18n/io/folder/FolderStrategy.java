@@ -63,6 +63,7 @@ public abstract class FolderStrategy {
      */
     protected @NotNull VirtualFile constructFile(@NotNull String parent, @NotNull String child) throws IOException {
         File file = new File(parent, child);
+        file.getParentFile().mkdirs();
         boolean exists = file.createNewFile();
 
         VirtualFile vf = exists
