@@ -44,7 +44,7 @@ public class PropertiesParserStrategy extends ParserStrategy {
     }
 
     @Override
-    public void write(@NotNull TranslationData data, @NotNull TranslationFile file) throws Exception {
+    public @NotNull String write(@NotNull TranslationData data, @NotNull TranslationFile file) throws Exception {
         TranslationNode targetNode = super.getTargetNode(data, file);
         TranslationData targetData = new TranslationData(data.getLocales(), targetNode);
 
@@ -53,9 +53,7 @@ public class PropertiesParserStrategy extends ParserStrategy {
 
         try(StringWriter writer = new StringWriter()) {
             output.store(writer, null);
-
-            VirtualFile vf = file.getVirtualFile();
-            vf.setBinaryContent(writer.toString().getBytes(vf.getCharset()));
+            return writer.toString();
         }
     }
 }

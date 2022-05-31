@@ -44,13 +44,12 @@ public class JsonParserStrategy extends ParserStrategy {
     }
 
     @Override
-    public void write(@NotNull TranslationData data, @NotNull TranslationFile file) throws Exception {
+    public @NotNull String write(@NotNull TranslationData data, @NotNull TranslationFile file) throws Exception {
         TranslationNode targetNode = super.getTargetNode(data, file);
 
         JsonObject output = new JsonObject();
         JsonMapper.write(file.getLocale(), output, Objects.requireNonNull(targetNode));
 
-        VirtualFile vf = file.getVirtualFile();
-        vf.setBinaryContent(GSON.toJson(output).getBytes(vf.getCharset()));
+        return GSON.toJson(output);
     }
 }

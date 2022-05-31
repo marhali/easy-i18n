@@ -8,6 +8,7 @@
 - Indicate translations with duplicated values yellow
 - Multiple translation filters can be used together
 - Option to consider subdirectories for modularized translation files
+- Reformat translation files based on IDE preferences
 
 ### Changed
 - Reengineered how translation filters are applied internally

@@ -1,10 +1,10 @@
 package de.marhali.easyi18n.io.parser;
 
 import de.marhali.easyi18n.model.*;
-
-import de.marhali.easyi18n.model.KeyPath;
 import de.marhali.easyi18n.settings.ProjectSettings;
+
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
@@ -28,11 +28,13 @@ public abstract class ParserStrategy {
     public abstract void read(@NotNull TranslationFile file, @NotNull TranslationData data) throws Exception;
 
     /**
-     * Writes the relevant data to the translation file (consider namespace and locale)
+     * Constructs the relevant data to represents the specified translation file. (consider namespace and locale)
      * @param data Translation data cache
      * @param file Target translation file
+     * @return String representing target translation file.
+     * Can be null to indicate that the file is not necessary and could be deleted
      */
-    public abstract void write(@NotNull TranslationData data, @NotNull TranslationFile file) throws Exception;
+    public abstract @Nullable String write(@NotNull TranslationData data, @NotNull TranslationFile file) throws Exception;
 
     /**
      * Determines translation node to use for parsing

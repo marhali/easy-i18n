@@ -40,13 +40,11 @@ public class YamlParserStrategy extends ParserStrategy {
     }
 
     @Override
-    public void write(@NotNull TranslationData data, @NotNull TranslationFile file) throws Exception {
+    public @NotNull String write(@NotNull TranslationData data, @NotNull TranslationFile file) throws Exception {
         TranslationNode targetNode = super.getTargetNode(data, file);
 
         Section output = new MapSection();
         YamlMapper.write(file.getLocale(), output, targetNode);
-
-        VirtualFile vf = file.getVirtualFile();
-        vf.setBinaryContent(Section.toString(output).getBytes(vf.getCharset()));
+        return Section.toString(output);
     }
 }

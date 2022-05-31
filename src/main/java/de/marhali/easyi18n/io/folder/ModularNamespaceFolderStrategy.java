@@ -38,7 +38,7 @@ public class ModularNamespaceFolderStrategy extends FolderStrategy {
 
         for (VirtualFile localeFile : dir.getChildren()) {
             if(localeFile.isDirectory()) {
-                if(settings.isIncludeSubDirs()) {
+                if(ns.isEmpty() || settings.isIncludeSubDirs()) {
                     files.addAll(findLocaleFiles(new KeyPath(ns, localeFile.getName()), localeFile));
                 }
                 continue;
@@ -67,7 +67,8 @@ public class ModularNamespaceFolderStrategy extends FolderStrategy {
         for (Map.Entry<String, TranslationNode> entry : node.getChildren().entrySet()) {
             String parentPath = localesPath + "/" + String.join("/", path);
 
-            if(super.exists(parentPath, entry.getKey())) { // Is directory - includeSubDirs
+            // Root-Node or is directory(includeSubDirs)
+            if(path.isEmpty() || super.exists(parentPath, entry.getKey())) {
                 files.addAll(createLocaleFiles(localesPath, locales, new KeyPath(path, entry.getKey()), type, entry.getValue()));
                 continue;
             }

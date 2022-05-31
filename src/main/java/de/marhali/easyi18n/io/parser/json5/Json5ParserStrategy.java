@@ -46,13 +46,12 @@ public class Json5ParserStrategy extends ParserStrategy {
     }
 
     @Override
-    public void write(@NotNull TranslationData data, @NotNull TranslationFile file) throws Exception {
+    public @NotNull String write(@NotNull TranslationData data, @NotNull TranslationFile file) throws Exception {
         TranslationNode targetNode = super.getTargetNode(data, file);
 
         Json5Object output = new Json5Object();
         Json5Mapper.write(file.getLocale(), output, Objects.requireNonNull(targetNode));
 
-        VirtualFile vf = file.getVirtualFile();
-        vf.setBinaryContent(JSON5.serialize(output).getBytes(vf.getCharset()));
+        return JSON5.serialize(output);
     }
 }

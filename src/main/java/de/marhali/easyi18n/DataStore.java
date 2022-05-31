@@ -54,7 +54,7 @@ public class DataStore {
 
         ApplicationManager.getApplication().runReadAction(() -> {
             try {
-                this.data = new IOHandler(settings).read();
+                this.data = new IOHandler(project, settings).read();
                 this.changeListener.updateLocalesPath(settings.getLocalesDirectory());
                 successResult.accept(true);
 
@@ -80,7 +80,7 @@ public class DataStore {
 
         ApplicationManager.getApplication().runWriteAction(() -> {
             try {
-                new IOHandler(settings).write(this.data);
+                new IOHandler(project, settings).write(this.data);
                 successResult.accept(true);
 
             } catch (Exception ex) {

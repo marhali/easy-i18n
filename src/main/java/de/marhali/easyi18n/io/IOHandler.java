@@ -1,8 +1,14 @@
 package de.marhali.easyi18n.io;
 
+import com.intellij.codeInsight.actions.ReformatCodeProcessor;
+import com.intellij.openapi.editor.Document;
+import com.intellij.openapi.fileEditor.FileDocumentManager;
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 
+import com.intellij.psi.PsiDocumentManager;
+import com.intellij.psi.PsiFile;
 import de.marhali.easyi18n.exception.EmptyLocalesDirException;
 import de.marhali.easyi18n.io.folder.FolderStrategy;
 import de.marhali.easyi18n.io.parser.ParserStrategy;
@@ -22,6 +28,7 @@ import java.util.List;
  */
 public class IOHandler {
 
+    private final @NotNull Project project;
     private final @NotNull ProjectSettings settings;
 
     private final @NotNull FolderStrategy folderStrategy;
@@ -29,8 +36,8 @@ public class IOHandler {
     private final @NotNull ParserStrategyType parserStrategyType;
     private final @NotNull ParserStrategy parserStrategy;
 
-    public IOHandler(@NotNull ProjectSettings settings) throws Exception {
-
+    public IOHandler(@NotNull Project project, @NotNull ProjectSettings settings) throws Exception {
+        this.project = project;
         this.settings = settings;
 
         this.folderStrategy = settings.getFolderStrategy().getStrategy()
@@ -76,7 +83,7 @@ public class IOHandler {
 
     /**
      * Writes the provided translation data to the local project files <br>
-     * <b>Note:</b> This method must be called from an Write-Action-Context (see ApplicationManager)
+     * <b>Note:</b> This method must be called from a Write-Action-Context (see ApplicationManager)
      * @param data Cached translation data to save
      * @throws IOException Write action failed
      */
@@ -92,7 +99,25 @@ public class IOHandler {
 
         for(TranslationFile file : translationFiles) {
             try {
-                this.parserStrategy.write(data, file);
+                String content = this.parserStrategy.write(data, file);
+
+                if(content == null) {
+                    // We should consider deleting the target translation file if it has no content
+                    continue;
+                }
+
+                Document document = FileDocumentManager.getInstance().getDocument(file.getVirtualFile());
+
+                assert document != null;
+                document.setText(content);
+
+                PsiFile psi = PsiDocumentManager.getInstance(project).getCachedPsiFile(document);
+                assert psi != null;
+
+                new ReformatCodeProcessor(psi, false).run();
+
+                FileDocumentManager.getInstance().saveDocument(document);
+
             } catch (Exception ex) {
                 throw new IOException(file + "\n\n" + ex.getMessage(), ex);
             }
