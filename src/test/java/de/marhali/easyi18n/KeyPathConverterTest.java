@@ -162,6 +162,11 @@ public class KeyPathConverterTest {
             public boolean isAlwaysFold() {
                 return false;
             }
+
+            @Override
+            public boolean isIncludeSubDirs() {
+                return false;
+            }
         });
     }
 }

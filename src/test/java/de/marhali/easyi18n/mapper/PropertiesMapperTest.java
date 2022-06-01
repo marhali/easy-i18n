@@ -235,6 +235,11 @@ public class PropertiesMapperTest extends AbstractMapperTest {
             public boolean isAlwaysFold() {
                 return false;
             }
+
+            @Override
+            public boolean isIncludeSubDirs() {
+                return false;
+            }
         });
     }
 }
