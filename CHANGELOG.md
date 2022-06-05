@@ -3,6 +3,8 @@
 # easy-i18n Changelog
 
 ## [Unreleased]
+
+## [4.1.0]
 ### Added
 - Duplicate translation values filter
 - Indicate translations with duplicated values yellow
