@@ -107,11 +107,17 @@ public class IOHandler {
                 }
 
                 Document document = FileDocumentManager.getInstance().getDocument(file.getVirtualFile());
-
                 assert document != null;
+
+                // content must use \n line separators (internal intellij guideline)
                 document.setText(content);
 
                 PsiFile psi = PsiDocumentManager.getInstance(project).getCachedPsiFile(document);
+
+                if(psi == null) {
+                    psi = PsiDocumentManager.getInstance(project).getPsiFile(document);
+                }
+
                 assert psi != null;
 
                 new ReformatCodeProcessor(psi, false).run();
