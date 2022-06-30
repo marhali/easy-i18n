@@ -53,7 +53,8 @@ public class PropertiesParserStrategy extends ParserStrategy {
 
         try(StringWriter writer = new StringWriter()) {
             output.store(writer, null);
-            return writer.toString();
+            // Current implementation only works with \n line separators (IntelliJ Document Formatting)
+            return writer.toString().replaceAll("\r\n", "\n");
         }
     }
 }
