@@ -3,6 +3,8 @@
 # easy-i18n Changelog
 
 ## [Unreleased]
+
+## [4.1.1]
 ### Fixed
 - AssertionError on translation update
 - Use correct line separator in <kbd>properties</kbd> files
