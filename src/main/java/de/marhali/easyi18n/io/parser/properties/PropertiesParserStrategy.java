@@ -52,9 +52,8 @@ public class PropertiesParserStrategy extends ParserStrategy {
         PropertiesMapper.write(file.getLocale(), output, targetData, converter);
 
         try(StringWriter writer = new StringWriter()) {
-            output.store(writer, null);
-            // Current implementation only works with \n line separators (IntelliJ Document Formatting)
-            return writer.toString().replaceAll("\r\n", "\n");
+            output.store(writer);
+            return writer.toString();
         }
     }
 }
