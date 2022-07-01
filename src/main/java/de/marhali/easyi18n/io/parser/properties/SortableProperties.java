@@ -58,23 +58,24 @@ public class SortableProperties extends Properties {
     }
 
     public void store(Writer writer) throws IOException {
-        IntelliJBufferedWriter bw = new IntelliJBufferedWriter(writer);
-        boolean escUnicode = false;
+        try(IntelliJBufferedWriter bw = new IntelliJBufferedWriter(writer)) {
+            boolean escUnicode = false;
 
-        synchronized (this) {
-            for (Map.Entry<Object, Object> e : entrySet()) {
-                String key = String.valueOf(e.getKey());
-                String val = String.valueOf(e.getValue());
-                key = saveConvert(key, true, escUnicode);
-                /* No need to escape embedded and trailing spaces for value, hence
-                 * pass false to flag.
-                 */
-                val = saveConvert(val, false, escUnicode);
-                bw.write(key + "=" + val);
-                bw.newLine();
+            synchronized (this) {
+                for (Map.Entry<Object, Object> e : entrySet()) {
+                    String key = String.valueOf(e.getKey());
+                    String val = String.valueOf(e.getValue());
+                    key = saveConvert(key, true, escUnicode);
+                    /* No need to escape embedded and trailing spaces for value, hence
+                     * pass false to flag.
+                     */
+                    val = saveConvert(val, false, escUnicode);
+                    bw.write(key + "=" + val);
+                    bw.newLine();
+                }
             }
+            bw.flush();
         }
-        bw.flush();
     }
 
     /*
