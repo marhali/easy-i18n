@@ -3,6 +3,10 @@
 # easy-i18n Changelog
 
 ## [Unreleased]
+### Fixed
+- AssertionError on translation update
+- Use correct line separator in <kbd>properties</kbd> files
+- Allow numbers and other data types in <kbd>properties</kbd> files
 
 ## [4.1.0]
 ### Added
