@@ -3,6 +3,11 @@
 # easy-i18n Changelog
 
 ## [Unreleased]
+### Added
+- Support for IntelliJ Platform version 2022.2
+
+### Changes
+- Updated dependencies
 
 ## [4.1.1]
 ### Fixed
