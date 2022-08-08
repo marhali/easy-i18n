@@ -3,6 +3,11 @@
 # easy-i18n Changelog
 
 ## [Unreleased]
+### Changed
+- Updated dependencies
+
+### Fixed
+- Downgrade java to fix compatibility issues
 
 ## [4.2.0]
 ### Added

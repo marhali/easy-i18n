@@ -33,6 +33,13 @@ jobs:
       changelog: ${{ steps.properties.outputs.changelog }}
     steps:
 
+      # Free GitHub Actions Environment Disk Space
+      - name: Maximize Build Space
+        run: |
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /opt/ghc
+
       # Check out current repository
       - name: Fetch Sources
         uses: actions/checkout@v3
@@ -41,12 +48,12 @@ jobs:
       - name: Gradle Wrapper Validation
         uses: gradle/wrapper-validation-action@v1.0.4
 
-      # Setup Java 17 environment for the next steps
+      # Setup Java 11 environment for the next steps
       - name: Setup Java
         uses: actions/setup-java@v3
         with:
           distribution: zulu
-          java-version: 17
+          java-version: 11
 
       # Set environment variables
       - name: Export Properties
@@ -101,7 +108,7 @@ jobs:
 
       # Run Qodana inspections
       - name: Qodana - Code Inspection
-        uses: JetBrains/qodana-action@v2022.1.1
+        uses: JetBrains/qodana-action@v2022.2.1
 
       # Prepare plugin archive content for creating artifact
       - name: Prepare Plugin Artifact
