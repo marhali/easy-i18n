@@ -3,6 +3,8 @@
 # easy-i18n Changelog
 
 ## [Unreleased]
+
+## [4.1.2]
 This is a re-release of <kbd>v4.1.1</kbd> to fix compatibility issues with older IDE versions than <kbd>2022.2</kbd>.
 
 ## [4.1.1]
