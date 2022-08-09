@@ -3,6 +3,8 @@
 # easy-i18n Changelog
 
 ## [Unreleased]
+
+## [4.2.1]
 ### Changed
 - Updated dependencies
 
