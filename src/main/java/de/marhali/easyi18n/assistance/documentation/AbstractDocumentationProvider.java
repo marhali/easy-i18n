@@ -16,6 +16,7 @@ import de.marhali.easyi18n.util.KeyPathConverter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.text.MessageFormat;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -76,10 +77,6 @@ abstract class AbstractDocumentationProvider implements DocumentationProvider, O
 
         StringBuilder builder = new StringBuilder();
 
-        builder.append(DocumentationMarkup.DEFINITION_START);
-        builder.append(bundle.getString("documentation"));
-        builder.append(DocumentationMarkup.DEFINITION_END);
-
         if(results.size() == 1) { // Single value
             builder.append(DocumentationMarkup.CONTENT_START);
             builder.append("<strong>").append(results.values().toArray()[0]).append("</strong>");
@@ -98,6 +95,13 @@ abstract class AbstractDocumentationProvider implements DocumentationProvider, O
 
             builder.append(DocumentationMarkup.SECTIONS_END);
         }
+
+        String excerpt = MessageFormat.format(bundle.getString("documentation"),
+                "<strong>'" + settings.getPreviewLocale() + "'</strong>");
+
+        builder.append(DocumentationMarkup.CONTENT_START).append(DocumentationMarkup.GRAYED_START);
+        builder.append(excerpt);
+        builder.append(DocumentationMarkup.GRAYED_END).append(DocumentationMarkup.CONTENT_END);
 
         return  builder.toString();
     }
