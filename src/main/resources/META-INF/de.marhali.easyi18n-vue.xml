@@ -1,5 +1,8 @@
 <idea-plugin>
     <extensions defaultExtensionNs="com.intellij">
+        <!--
+        Extending folding in Vue files breaks the entire section folding functionality
+        An issue has been opened: https://youtrack.jetbrains.com/issue/IJSDK-1525
         <lang.foldingBuilder
                 language="VueJS"
                 implementationClass="de.marhali.easyi18n.assistance.folding.JsFoldingBuilder"
@@ -9,6 +12,7 @@
                 language="Vue"
                 implementationClass="de.marhali.easyi18n.assistance.folding.JsFoldingBuilder"
         />
+        -->
 
         <lang.documentationProvider
                 language="VueJS"
