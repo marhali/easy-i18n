@@ -28,7 +28,7 @@ public class TableRenderer extends DefaultTableCellRenderer {
         if(missesValues(row, table)) {
             component.setForeground(JBColor.RED);
         } else if(hasDuplicates(row, table)) {
-            component.setForeground(JBColor.YELLOW);
+            component.setForeground(JBColor.ORANGE);
         }
 
         return component;

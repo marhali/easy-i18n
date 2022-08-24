@@ -78,8 +78,8 @@ public class TreeModelMapper extends DefaultTreeModel {
                     data.setForcedTextForeground(JBColor.RED);
                     color = JBColor.RED;
                 } else if(TranslationUtil.hasDuplicates(new Translation(keyPath, childTranslationNode.getValue()), this.data)) {
-                    data.setForcedTextForeground(JBColor.YELLOW);
-                    color = JBColor.YELLOW;
+                    data.setForcedTextForeground(JBColor.ORANGE);
+                    color = JBColor.ORANGE;
                 }
 
                 parent.add(new DefaultMutableTreeNode(data));

@@ -5,6 +5,7 @@
 ## [Unreleased]
 ### Changed
 - Documentation provider better focuses on the actual translation part
+- Color duplicate translation values orange to increase contrast in light themes
 
 ### Fixed
 - Unintended overwrite of existing folding regions 
