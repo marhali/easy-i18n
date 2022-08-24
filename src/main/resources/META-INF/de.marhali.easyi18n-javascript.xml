@@ -10,32 +10,23 @@
                 implementationClass="de.marhali.easyi18n.assistance.documentation.CommonDocumentationProvider"
         />
 
-        <!-- JavaScript plugin also includes TypeScript -->
         <lang.documentationProvider
                 language="TypeScript"
                 implementationClass="de.marhali.easyi18n.assistance.documentation.CommonDocumentationProvider"
         />
 
-        <!-- JavaScript plugin also includes TypeScript -->
+        <lang.foldingBuilder
+                language="JavaScript"
+                implementationClass="de.marhali.easyi18n.assistance.folding.JsFoldingBuilder"
+        />
+
         <lang.foldingBuilder
                 language="TypeScript"
                 implementationClass="de.marhali.easyi18n.assistance.folding.JsFoldingBuilder"
         />
 
-        <!-- JavaScript plugin also includes TypeScript JSX -->
         <lang.foldingBuilder
                 language="TypeScript JSX"
-                implementationClass="de.marhali.easyi18n.assistance.folding.JsFoldingBuilder"
-        />
-
-        <!-- JavaScript plugin also includes ECMAScript 6 -->
-        <lang.foldingBuilder
-                language="ECMAScript 6"
-                implementationClass="de.marhali.easyi18n.assistance.folding.JsFoldingBuilder"
-        />
-
-        <lang.foldingBuilder
-                language="JavaScript"
                 implementationClass="de.marhali.easyi18n.assistance.folding.JsFoldingBuilder"
         />
 
