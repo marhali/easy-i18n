@@ -3,6 +3,11 @@
 # easy-i18n Changelog
 
 ## [Unreleased]
+### Changed
+- Documentation provider better focuses on the actual translation part
+
+### Fixed
+- Unintended overwrite of existing folding regions 
 
 ## [4.2.1]
 ### Changed
