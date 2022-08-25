@@ -3,12 +3,14 @@
 # easy-i18n Changelog
 
 ## [Unreleased]
+
+## [4.2.2]
 ### Changed
 - Documentation provider better focuses on the actual translation part
 - Color duplicate translation values orange to increase contrast in light themes
 
 ### Fixed
-- Unintended overwrite of existing folding regions 
+- Unintended overwrite of existing folding regions
 
 ## [4.2.1]
 ### Changed
