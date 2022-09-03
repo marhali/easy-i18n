@@ -3,6 +3,8 @@
 # easy-i18n Changelog
 
 ## [Unreleased]
+
+## [4.2.3]
 ### Changed
 - Removed warning about missing configuration during project initialization
 
