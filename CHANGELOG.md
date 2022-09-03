@@ -3,6 +3,8 @@
 # easy-i18n Changelog
 
 ## [Unreleased]
+### Fixed
+- Folding support for Vue files
 
 ## [4.2.2]
 ### Changed
