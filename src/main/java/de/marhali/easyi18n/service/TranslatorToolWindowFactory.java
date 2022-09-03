@@ -28,7 +28,7 @@ public class TranslatorToolWindowFactory implements ToolWindowFactory, DumbAware
     @Override
     public void createToolWindowContent(@NotNull Project project, @NotNull ToolWindow toolWindow) {
         InstanceManager manager = InstanceManager.get(project);
-        ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
+        ContentFactory contentFactory = ContentFactory.getInstance();
 
         // Translations tree view
         TreeView treeView = new TreeView(project);
