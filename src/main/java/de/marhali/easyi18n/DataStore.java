@@ -62,9 +62,7 @@ public class DataStore {
                 this.data = new TranslationData(settings.isSorting());
                 successResult.accept(false);
 
-                if(ex instanceof EmptyLocalesDirException) {
-                    NotificationHelper.createEmptyLocalesDirNotification(project);
-                } else {
+                if(!(ex instanceof EmptyLocalesDirException)) {
                     NotificationHelper.createIOError(settings, ex);
                 }
             }

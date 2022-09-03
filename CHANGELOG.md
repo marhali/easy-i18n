@@ -3,6 +3,11 @@
 # easy-i18n Changelog
 
 ## [Unreleased]
+### Changed
+- Removed warning about missing configuration during project initialization
+
+### Fixed
+- Folding support for Vue files
 
 ## [4.2.2]
 ### Changed

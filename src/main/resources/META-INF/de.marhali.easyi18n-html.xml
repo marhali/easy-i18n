@@ -1,0 +1,13 @@
+<idea-plugin>
+    <extensions defaultExtensionNs="com.intellij">
+        <lang.foldingBuilder
+                language="HTML"
+                implementationClass="de.marhali.easyi18n.assistance.folding.JsFoldingBuilder"
+        />
+
+        <lang.documentationProvider
+                language="HTML"
+                implementationClass="de.marhali.easyi18n.assistance.documentation.CommonDocumentationProvider"
+        />
+    </extensions>
+</idea-plugin>
