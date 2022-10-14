@@ -2,6 +2,7 @@ package de.marhali.easyi18n.io.parser.json5;
 
 import com.intellij.openapi.vfs.VirtualFile;
 
+import de.marhali.easyi18n.exception.SyntaxException;
 import de.marhali.easyi18n.io.parser.ParserStrategy;
 import de.marhali.easyi18n.model.TranslationData;
 import de.marhali.easyi18n.model.TranslationFile;
@@ -11,6 +12,7 @@ import de.marhali.json5.Json5;
 import de.marhali.json5.Json5Element;
 import de.marhali.json5.Json5Object;
 
+import de.marhali.json5.exception.Json5Exception;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.InputStreamReader;
@@ -38,8 +40,18 @@ public class Json5ParserStrategy extends ParserStrategy {
         TranslationNode targetNode = super.getOrCreateTargetNode(file, data);
 
         try (Reader reader = new InputStreamReader(vf.getInputStream(), vf.getCharset())) {
-            Json5Element input = JSON5.parse(reader);
-            if(input != null && input.isJson5Object()) {
+            Json5Element input;
+
+            try {
+                input = JSON5.parse(reader);
+                if(input != null && !input.isJson5Object()) {
+                    throw new SyntaxException("Expected a json5 object as root node", file);
+                }
+            } catch (Json5Exception ex) {
+                throw new SyntaxException(ex.getMessage(), file);
+            }
+
+            if(input != null) {
                 Json5Mapper.read(file.getLocale(), input.getAsJson5Object(), targetNode);
             }
         }

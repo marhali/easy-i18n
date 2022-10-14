@@ -4,8 +4,10 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 
+import com.google.gson.JsonSyntaxException;
 import com.intellij.openapi.vfs.VirtualFile;
 
+import de.marhali.easyi18n.exception.SyntaxException;
 import de.marhali.easyi18n.io.parser.ParserStrategy;
 import de.marhali.easyi18n.model.*;
 import de.marhali.easyi18n.settings.ProjectSettings;
@@ -36,7 +38,14 @@ public class JsonParserStrategy extends ParserStrategy {
         TranslationNode targetNode = super.getOrCreateTargetNode(file, data);
 
         try(Reader reader = new InputStreamReader(vf.getInputStream(), vf.getCharset())) {
-            JsonObject input = GSON.fromJson(reader, JsonObject.class);
+            JsonObject input;
+
+            try {
+                input = GSON.fromJson(reader, JsonObject.class);
+            } catch (JsonSyntaxException ex) {
+                throw new SyntaxException(ex.getMessage(), file);
+            }
+
             if(input != null) { // @input is null if file is completely empty
                 JsonMapper.read(file.getLocale(), input, targetNode);
             }

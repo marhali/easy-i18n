@@ -3,7 +3,9 @@ package de.marhali.easyi18n.util;
 import com.intellij.notification.*;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
+import de.marhali.easyi18n.action.OpenFileAction;
 import de.marhali.easyi18n.action.SettingsAction;
+import de.marhali.easyi18n.exception.SyntaxException;
 import de.marhali.easyi18n.io.IOHandler;
 import de.marhali.easyi18n.settings.ProjectSettings;
 import org.jetbrains.annotations.NotNull;
@@ -16,6 +18,7 @@ import java.util.ResourceBundle;
  * @author marhali
  */
 public class NotificationHelper {
+    private static final String NOTIFICATION_GROUP = "Easy I18n Notification Group";
 
     public static void createIOError(@NotNull ProjectSettings state, Exception ex) {
         ResourceBundle bundle = ResourceBundle.getBundle("messages");
@@ -26,11 +29,27 @@ public class NotificationHelper {
         Logger.getInstance(IOHandler.class).error(message, ex);
     }
 
+    public static void createBadSyntaxNotification(Project project, SyntaxException ex) {
+        ResourceBundle bundle = ResourceBundle.getBundle("messages");
+
+        Notification notification = new Notification(
+                NOTIFICATION_GROUP,
+                bundle.getString("warning.bad-syntax"),
+                ex.getMessage(),
+                NotificationType.ERROR
+        );
+
+        notification.addAction(new OpenFileAction(ex.getFile().getVirtualFile(), false));
+        notification.addAction(new SettingsAction(false));
+
+        Notifications.Bus.notify(notification, project);
+    }
+
     public static void createEmptyLocalesDirNotification(Project project) {
         ResourceBundle bundle = ResourceBundle.getBundle("messages");
 
         Notification notification = new Notification(
-                "Easy I18n Notification Group",
+                NOTIFICATION_GROUP,
                 "Easy I18n",
                 bundle.getString("warning.missing-config"),
                 NotificationType.WARNING);

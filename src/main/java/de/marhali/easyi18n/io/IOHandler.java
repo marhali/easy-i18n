@@ -10,12 +10,14 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiFile;
 import de.marhali.easyi18n.exception.EmptyLocalesDirException;
+import de.marhali.easyi18n.exception.SyntaxException;
 import de.marhali.easyi18n.io.folder.FolderStrategy;
 import de.marhali.easyi18n.io.parser.ParserStrategy;
 import de.marhali.easyi18n.io.parser.ParserStrategyType;
 import de.marhali.easyi18n.model.*;
 
 import de.marhali.easyi18n.settings.ProjectSettings;
+import de.marhali.easyi18n.util.NotificationHelper;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -73,6 +75,8 @@ public class IOHandler {
         for(TranslationFile file : translationFiles) {
             try {
                 this.parserStrategy.read(file, data);
+            } catch (SyntaxException ex) {
+                NotificationHelper.createBadSyntaxNotification(project, ex);
             } catch(Exception ex) {
                 throw new IOException(file + "\n\n" + ex.getMessage(), ex);
             }

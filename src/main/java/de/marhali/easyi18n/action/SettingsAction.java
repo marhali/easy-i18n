@@ -18,8 +18,12 @@ import java.util.ResourceBundle;
 public class SettingsAction extends AnAction {
 
     public SettingsAction() {
+        this(true);
+    }
+
+    public SettingsAction(boolean showIcon) {
         super(ResourceBundle.getBundle("messages").getString("action.settings"),
-                null, AllIcons.General.Settings);
+                null, showIcon ? AllIcons.General.Settings : null);
     }
 
     @Override

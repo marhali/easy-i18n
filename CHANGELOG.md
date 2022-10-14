@@ -3,6 +3,9 @@
 # easy-i18n Changelog
 
 ## [Unreleased]
+### Changed
+- Improved exception handling on syntax errors
+
 ### Fixed
 - Some settings are not retained on IDE restarts
 

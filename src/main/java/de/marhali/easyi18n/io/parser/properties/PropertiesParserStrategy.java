@@ -2,6 +2,7 @@ package de.marhali.easyi18n.io.parser.properties;
 
 import com.intellij.openapi.vfs.VirtualFile;
 
+import de.marhali.easyi18n.exception.SyntaxException;
 import de.marhali.easyi18n.io.parser.ParserStrategy;
 import de.marhali.easyi18n.model.TranslationData;
 import de.marhali.easyi18n.model.TranslationFile;
@@ -11,6 +12,7 @@ import de.marhali.easyi18n.util.KeyPathConverter;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringWriter;
@@ -38,8 +40,16 @@ public class PropertiesParserStrategy extends ParserStrategy {
 
         try(Reader reader = new InputStreamReader(vf.getInputStream(), vf.getCharset())) {
             SortableProperties input = new SortableProperties(this.settings.isSorting());
-            input.load(reader);
-            PropertiesMapper.read(file.getLocale(), input, targetData, converter);
+
+            try {
+                input.load(reader);
+            } catch(IOException ex) {
+                throw new SyntaxException(ex.getMessage(), file);
+            }
+
+            if(!input.isEmpty()) {
+                PropertiesMapper.read(file.getLocale(), input, targetData, converter);
+            }
         }
     }
 
