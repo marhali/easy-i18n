@@ -3,6 +3,8 @@
 # easy-i18n Changelog
 
 ## [Unreleased]
+### Fixed
+- Some settings are not retained on IDE restarts
 
 ## [4.2.3]
 ### Changed

@@ -1,5 +1,7 @@
 package de.marhali.easyi18n.settings;
 
+import com.intellij.util.xmlb.annotations.Property;
+
 import de.marhali.easyi18n.io.parser.ParserStrategyType;
 import de.marhali.easyi18n.io.folder.FolderStrategyType;
 import de.marhali.easyi18n.settings.presets.DefaultPreset;
@@ -7,87 +9,112 @@ import de.marhali.easyi18n.settings.presets.DefaultPreset;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Objects;
+
 /**
  * Represents the project-specific configuration of this plugin.
  * @author marhali
  */
 public class ProjectSettingsState implements ProjectSettings {
 
-    private static final ProjectSettings defaults = new DefaultPreset();
-
     // Resource Configuration
-    private String localesDirectory;
-    private FolderStrategyType folderStrategy;
-    private ParserStrategyType parserStrategy;
-    private String filePattern;
+    @Property private String localesDirectory;
+    @Property private FolderStrategyType folderStrategy;
+    @Property private ParserStrategyType parserStrategy;
+    @Property private String filePattern;
 
-    private Boolean includeSubDirs;
-    private Boolean sorting;
+    @Property private Boolean includeSubDirs;
+    @Property private boolean sorting;
 
     // Editor configuration
-    private String namespaceDelimiter;
-    private String sectionDelimiter;
-    private String contextDelimiter;
-    private String pluralDelimiter;
-    private String defaultNamespace;
-    private String previewLocale;
+    @Property private String namespaceDelimiter;
+    @Property private String sectionDelimiter;
+    @Property private String contextDelimiter;
+    @Property private String pluralDelimiter;
+    @Property private String defaultNamespace;
+    @Property private String previewLocale;
 
-    private Boolean nestedKeys;
-    private Boolean assistance;
+    @Property private Boolean nestedKeys;
+    @Property private Boolean assistance;
 
     // Experimental configuration
-    private Boolean alwaysFold;
+    @Property private Boolean alwaysFold;
 
-    public ProjectSettingsState() {}
+    public ProjectSettingsState() {
+        this(new DefaultPreset());
+    }
+
+    public ProjectSettingsState(ProjectSettings defaults) {
+        // Apply defaults on initialization
+        this.localesDirectory = defaults.getLocalesDirectory();
+        this.folderStrategy = defaults.getFolderStrategy();
+        this.parserStrategy = defaults.getParserStrategy();
+        this.filePattern = defaults.getFilePattern();
+
+        this.includeSubDirs = defaults.isIncludeSubDirs();
+        this.sorting = defaults.isSorting();
+
+        this.namespaceDelimiter = defaults.getNamespaceDelimiter();
+        this.sectionDelimiter = defaults.getSectionDelimiter();
+        this.contextDelimiter = defaults.getContextDelimiter();
+        this.pluralDelimiter = defaults.getPluralDelimiter();
+        this.defaultNamespace = defaults.getDefaultNamespace();
+        this.previewLocale = defaults.getPreviewLocale();
+
+        this.nestedKeys = defaults.isNestedKeys();
+        this.assistance = defaults.isAssistance();
+
+        this.alwaysFold = defaults.isAlwaysFold();
+    }
 
     @Override
     public @Nullable String getLocalesDirectory() {
-        return localesDirectory != null ? localesDirectory : defaults.getLocalesDirectory();
+        return localesDirectory;
     }
 
     @Override
     public @NotNull FolderStrategyType getFolderStrategy() {
-        return folderStrategy != null ? folderStrategy : defaults.getFolderStrategy();
+        return folderStrategy;
     }
 
     @Override
     public @NotNull ParserStrategyType getParserStrategy() {
-        return parserStrategy != null ? parserStrategy : defaults.getParserStrategy();
+        return parserStrategy;
     }
 
     @Override
     public @NotNull String getFilePattern() {
-        return filePattern != null ? filePattern : defaults.getFilePattern();
+        return filePattern;
     }
 
     @Override
     public boolean isIncludeSubDirs() {
-        return includeSubDirs != null ? includeSubDirs : defaults.isIncludeSubDirs();
+        return includeSubDirs;
     }
 
     @Override
     public boolean isSorting() {
-        return sorting != null ? sorting : defaults.isSorting();
+        return sorting;
     }
 
     @Override
     public @Nullable String getNamespaceDelimiter() {
-        return namespaceDelimiter != null ? namespaceDelimiter : defaults.getNamespaceDelimiter();
+        return namespaceDelimiter;
     }
 
     @Override
     public @NotNull String getSectionDelimiter() {
-        return sectionDelimiter != null ? sectionDelimiter : defaults.getSectionDelimiter();
+        return sectionDelimiter;
     }
 
     @Override
     public @Nullable String getContextDelimiter() {
-        return contextDelimiter != null ? contextDelimiter : defaults.getContextDelimiter();
+        return contextDelimiter;
     }
 
     @Override
     public @Nullable String getPluralDelimiter() {
-        return pluralDelimiter != null ? pluralDelimiter : defaults.getPluralDelimiter();
+        return pluralDelimiter;
     }
 
     @Nullable
@@ -98,22 +125,22 @@ public class ProjectSettingsState implements ProjectSettings {
 
     @Override
     public @NotNull String getPreviewLocale() {
-        return previewLocale != null ? previewLocale : defaults.getPreviewLocale();
+        return previewLocale;
     }
 
     @Override
     public boolean isNestedKeys() {
-        return nestedKeys != null ? nestedKeys : defaults.isNestedKeys();
+        return nestedKeys;
     }
 
     @Override
     public boolean isAssistance() {
-        return assistance != null ? assistance : defaults.isAssistance();
+        return assistance;
     }
 
     @Override
     public boolean isAlwaysFold() {
-        return alwaysFold != null ? alwaysFold : defaults.isAlwaysFold();
+        return alwaysFold;
     }
 
     public void setLocalesDirectory(String localesDirectory) {
@@ -174,5 +201,57 @@ public class ProjectSettingsState implements ProjectSettings {
 
     public void setAlwaysFold(Boolean alwaysFold) {
         this.alwaysFold = alwaysFold;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ProjectSettingsState that = (ProjectSettingsState) o;
+        return sorting == that.sorting
+                && folderStrategy == that.folderStrategy
+                && parserStrategy == that.parserStrategy
+                && Objects.equals(localesDirectory, that.localesDirectory)
+                && Objects.equals(filePattern, that.filePattern)
+                && Objects.equals(includeSubDirs, that.includeSubDirs)
+                && Objects.equals(namespaceDelimiter, that.namespaceDelimiter)
+                && Objects.equals(sectionDelimiter, that.sectionDelimiter)
+                && Objects.equals(contextDelimiter, that.contextDelimiter)
+                && Objects.equals(pluralDelimiter, that.pluralDelimiter)
+                && Objects.equals(defaultNamespace, that.defaultNamespace)
+                && Objects.equals(previewLocale, that.previewLocale)
+                && Objects.equals(nestedKeys, that.nestedKeys)
+                && Objects.equals(assistance, that.assistance)
+                && Objects.equals(alwaysFold, that.alwaysFold);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+                localesDirectory, folderStrategy, parserStrategy, filePattern, includeSubDirs,
+                sorting, namespaceDelimiter, sectionDelimiter, contextDelimiter, pluralDelimiter,
+                defaultNamespace, previewLocale, nestedKeys, assistance, alwaysFold
+        );
+    }
+
+    @Override
+    public String toString() {
+        return "ProjectSettingsState{" +
+                "localesDirectory='" + localesDirectory + '\'' +
+                ", folderStrategy=" + folderStrategy +
+                ", parserStrategy=" + parserStrategy +
+                ", filePattern='" + filePattern + '\'' +
+                ", includeSubDirs=" + includeSubDirs +
+                ", sorting=" + sorting +
+                ", namespaceDelimiter='" + namespaceDelimiter + '\'' +
+                ", sectionDelimiter='" + sectionDelimiter + '\'' +
+                ", contextDelimiter='" + contextDelimiter + '\'' +
+                ", pluralDelimiter='" + pluralDelimiter + '\'' +
+                ", defaultNamespace='" + defaultNamespace + '\'' +
+                ", previewLocale='" + previewLocale + '\'' +
+                ", nestedKeys=" + nestedKeys +
+                ", assistance=" + assistance +
+                ", alwaysFold=" + alwaysFold +
+                '}';
     }
 }
