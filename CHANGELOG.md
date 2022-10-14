@@ -3,6 +3,8 @@
 # easy-i18n Changelog
 
 ## [Unreleased]
+
+## [4.2.4]
 ### Changed
 - Improved exception handling on syntax errors
 
