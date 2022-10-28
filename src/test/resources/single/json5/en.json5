@@ -3,10 +3,10 @@
   "number": -187,
   "hex": -0x187,
   "object": {
-    "title": "Title"
+    "title": "Title",
   },
   "array": [
     "item1",
-    "item2"
-  ]
+    "item2",
+  ],
 }
