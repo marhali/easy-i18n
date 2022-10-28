@@ -49,9 +49,6 @@ public class DataStore {
      */
     public void loadFromPersistenceLayer(@NotNull Consumer<Boolean> successResult) {
         ProjectSettings settings = ProjectSettingsService.get(project).getState();
-
-        ApplicationManager.getApplication().saveAll(); // Save opened files (required if new locales were added)
-
         ApplicationManager.getApplication().runReadAction(() -> {
             try {
                 this.data = new IOHandler(project, settings).read();

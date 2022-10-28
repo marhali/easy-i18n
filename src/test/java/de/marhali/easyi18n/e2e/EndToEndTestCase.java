@@ -51,7 +51,7 @@ public abstract class EndToEndTestCase extends BasePlatformTestCase {
 
     public void testParseAndSerialize() throws IOException {
         // Read translation files based on the provided settings
-        InstanceManager.get(getProject()).reload();
+        InstanceManager.get(getProject()).store().loadFromPersistenceLayer(success -> {});
 
         // Save the cached translation data to a temporary output directory
         ProjectSettingsState out = new ProjectSettingsState(settings);

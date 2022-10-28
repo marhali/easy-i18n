@@ -6,6 +6,9 @@
 ### Added
 - Regex support for translation file patterns
 
+### Changed
+- Reload function internally consolidated
+
 ### Fixed
 - Parsing for <kbd>.properties</kbd> files
 
