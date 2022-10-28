@@ -43,4 +43,9 @@ public class TestSettingsState extends DefaultPreset {
     public @NotNull String getFilePattern() {
         return "*.*";
     }
+
+    @Override
+    public boolean isSorting() {
+        return false;
+    }
 }
