@@ -5,14 +5,22 @@ import com.intellij.util.xmlb.XmlSerializerUtil;
 
 import de.marhali.easyi18n.settings.presets.DefaultPreset;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * Tests for the project settings service itself.
  * @author marhali
  */
 public class ProjectSettingsServiceTest extends BasePlatformTestCase {
+
+    @Override
+    protected @NotNull String getTestName(boolean lowercaseFirstLetter) {
+        return lowercaseFirstLetter ? "projectSettingsServiceTest" : "ProjectSettingsServiceTest";
+    }
+
     public void testSettingsDefaultPreset() {
         ProjectSettingsState state = ProjectSettingsService.get(getProject()).getState();
-        assertEquals(state, new ProjectSettingsState(new DefaultPreset()));
+        assertEquals(new ProjectSettingsState(new DefaultPreset()), state);
     }
 
     public void testPersistenceState() {
