@@ -17,8 +17,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Collection;
-import java.util.Iterator;
+import java.util.Arrays;
 import java.util.Objects;
 
 /**
@@ -64,22 +63,23 @@ public abstract class EndToEndTestCase extends BasePlatformTestCase {
         IOFileFilter fileFilter = TrueFileFilter.INSTANCE;
 
         File originalDirectory = new File(Objects.requireNonNull(settings.getLocalesDirectory()));
-        Collection<File> originalFiles = FileUtils.listFiles(originalDirectory, fileFilter, fileFilter);
+        File[] originalFiles = FileUtils.listFiles(originalDirectory, fileFilter, fileFilter).toArray(new File[0]);
 
         File outputDirectory = tempPath.toFile();
-        Collection<File> outputFiles = FileUtils.listFiles(outputDirectory, fileFilter, fileFilter);
+        File[] outputFiles = FileUtils.listFiles(outputDirectory, fileFilter, fileFilter).toArray(new File[0]);
 
-        assertEquals(originalFiles.size(), outputFiles.size());
+        Arrays.sort(originalFiles);
+        Arrays.sort(outputFiles);
 
-        Iterator<File> originalFilesIterator = originalFiles.iterator();
-        Iterator<File> outputFilesIterator = outputFiles.iterator();
+        assertEquals(originalFiles.length, outputFiles.length);
 
-        while(originalFilesIterator.hasNext()) {
-            File originalFile = originalFilesIterator.next();
-            File outputFile = outputFilesIterator.next();
+        for(int i = 0; i < originalFiles.length; i++) {
+            File originalFile = originalFiles[i];
+            File outputFile = outputFiles[i];
 
-            assertEquals(FileUtils.readFileToString(originalFile, CHARSET),
-                    FileUtils.readFileToString(outputFile, CHARSET).replace("\r\n", "\n"));
+            // Replace originalFile with os-dependent line-separators
+            assertEquals(FileUtils.readFileToString(originalFile, CHARSET).replace("\n", System.lineSeparator()),
+                    FileUtils.readFileToString(outputFile, CHARSET));
         }
     }
 }
