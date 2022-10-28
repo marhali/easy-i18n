@@ -31,7 +31,7 @@ public class ProjectSettingsService implements PersistentStateComponent<ProjectS
      * Sets the provided configuration and invalidates the merged state.
      * @param state New configuration
      */
-    protected void setState(@NotNull ProjectSettingsState state) {
+    public void setState(@NotNull ProjectSettingsState state) {
         this.state = state;
     }
 

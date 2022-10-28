@@ -1,0 +1,11 @@
+{
+  "title": "Titel",
+  "number": 187,
+  "object": {
+    "title": "Titel"
+  },
+  "array": [
+    "element1",
+    "element2"
+  ]
+}

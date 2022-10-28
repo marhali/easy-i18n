@@ -10,9 +10,16 @@ import de.marhali.easyi18n.settings.presets.DefaultPreset;
  * @author marhali
  */
 public class ProjectSettingsServiceTest extends BasePlatformTestCase {
+
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
+        ProjectSettingsService.get(getProject()).setState(new ProjectSettingsState());
+    }
+
     public void testSettingsDefaultPreset() {
         ProjectSettingsState state = ProjectSettingsService.get(getProject()).getState();
-        assertEquals(state, new ProjectSettingsState(new DefaultPreset()));
+        assertEquals(new ProjectSettingsState(new DefaultPreset()), state);
     }
 
     public void testPersistenceState() {

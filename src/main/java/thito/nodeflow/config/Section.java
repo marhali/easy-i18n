@@ -46,7 +46,7 @@ public interface Section {
     }
     static String toString(Section section) {
         DumperOptions options = new DumperOptions();
-        options.setIndent(4);
+        options.setIndent(2);
         options.setAllowUnicode(true);
         options.setPrettyFlow(true);
         options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);

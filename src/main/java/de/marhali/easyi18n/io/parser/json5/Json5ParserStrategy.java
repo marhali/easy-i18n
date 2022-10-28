@@ -26,7 +26,7 @@ import java.util.Objects;
 public class Json5ParserStrategy extends ParserStrategy {
 
     private static final Json5 JSON5 = Json5.builder(builder ->
-            builder.allowInvalidSurrogate().trailingComma().indentFactor(4).build());
+            builder.allowInvalidSurrogate().trailingComma().indentFactor(2).build());
 
     public Json5ParserStrategy(@NotNull ProjectSettings settings) {
         super(settings);

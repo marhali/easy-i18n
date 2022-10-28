@@ -3,6 +3,15 @@
 # easy-i18n Changelog
 
 ## [Unreleased]
+### Added
+- Support for IntelliJ Platform version 2022.3
+- Regex support for translation file patterns
+
+### Changed
+- Reload function internally consolidated
+
+### Fixed
+- Parsing for <kbd>.properties</kbd> files
 
 ## [4.2.4]
 ### Changed

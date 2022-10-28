@@ -54,10 +54,7 @@ public class FileChangeListener implements AsyncFileListener {
                     events.forEach((e) -> {
                         if(e.getPath().contains(localesPath)) { // Perform reload
                             logger.debug("Detected file change. Reloading instance...");
-                            InstanceManager manager = InstanceManager.get(project);
-                            manager.store().loadFromPersistenceLayer((success) -> {
-                                manager.bus().propagate().onUpdateData(manager.store().getData());
-                            });
+                            InstanceManager.get(project).reload();
                         }
                     });
                 }

@@ -1,0 +1,12 @@
+{
+  "title": "Title",
+  "number": -187,
+  "hex": -0x187,
+  "object": {
+    "title": "Title",
+  },
+  "array": [
+    "item1",
+    "item2",
+  ],
+}
