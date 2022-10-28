@@ -3,6 +3,9 @@
 # easy-i18n Changelog
 
 ## [Unreleased]
+### Added
+- Regex support for translation file patterns
+
 ### Fixed
 - Parsing for <kbd>.properties</kbd> files
 

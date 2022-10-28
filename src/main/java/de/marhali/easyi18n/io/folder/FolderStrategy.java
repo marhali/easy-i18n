@@ -7,8 +7,8 @@ import de.marhali.easyi18n.io.parser.ParserStrategyType;
 import de.marhali.easyi18n.model.TranslationData;
 import de.marhali.easyi18n.model.TranslationFile;
 import de.marhali.easyi18n.settings.ProjectSettings;
+import de.marhali.easyi18n.util.WildcardRegexMatcher;
 
-import org.apache.commons.io.FilenameUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -51,7 +51,8 @@ public abstract class FolderStrategy {
      * @return true if file matches and should be processed
      */
     protected boolean isFileRelevant(@NotNull VirtualFile file) {
-        return !file.isDirectory() && FilenameUtils.wildcardMatch(file.getName(), this.settings.getFilePattern());
+        return !file.isDirectory()
+                && WildcardRegexMatcher.matchWildcardRegex(file.getName(), settings.getFilePattern());
     }
 
     /**
