@@ -79,7 +79,7 @@ public abstract class EndToEndTestCase extends BasePlatformTestCase {
             File outputFile = outputFilesIterator.next();
 
             assertEquals(FileUtils.readFileToString(originalFile, CHARSET),
-                    FileUtils.readFileToString(outputFile, CHARSET));
+                    FileUtils.readFileToString(outputFile, CHARSET).replace("\r\n", "\n"));
         }
     }
 }
