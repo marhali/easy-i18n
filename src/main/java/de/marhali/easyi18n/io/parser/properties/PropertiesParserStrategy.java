@@ -47,9 +47,7 @@ public class PropertiesParserStrategy extends ParserStrategy {
                 throw new SyntaxException(ex.getMessage(), file);
             }
 
-            if(!input.isEmpty()) {
-                PropertiesMapper.read(file.getLocale(), input, targetData, converter);
-            }
+            PropertiesMapper.read(file.getLocale(), input, targetData, converter);
         }
     }
 

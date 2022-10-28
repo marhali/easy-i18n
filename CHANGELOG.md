@@ -3,6 +3,8 @@
 # easy-i18n Changelog
 
 ## [Unreleased]
+### Fixed
+- Parsing for <kbd>.properties</kbd> files
 
 ## [4.2.4]
 ### Changed
