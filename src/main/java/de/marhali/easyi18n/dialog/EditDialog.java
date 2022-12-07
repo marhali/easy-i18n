@@ -1,7 +1,6 @@
 package de.marhali.easyi18n.dialog;
 
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.DialogBuilder;
 import com.intellij.openapi.ui.DialogWrapper;
 
 import de.marhali.easyi18n.dialog.descriptor.DeleteActionDescriptor;
@@ -27,18 +26,13 @@ public class EditDialog extends TranslationDialog {
      */
     public EditDialog(@NotNull Project project, @NotNull Translation origin) {
         super(project, origin);
+
+        setTitle(bundle.getString("action.edit"));
     }
 
     @Override
-    protected @NotNull DialogBuilder configure(@NotNull JComponent centerPanel) {
-        DialogBuilder builder = new DialogBuilder();
-        builder.setTitle(bundle.getString("action.edit"));
-        builder.removeAllActions();
-        builder.addCancelAction();
-        builder.addActionDescriptor(new DeleteActionDescriptor());
-        builder.addOkAction();
-        builder.setCenterPanel(centerPanel);
-        return builder;
+    protected Action @NotNull [] createLeftSideActions() {
+        return new Action[]{ new DeleteActionDescriptor(this) };
     }
 
     @Override

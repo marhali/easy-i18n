@@ -6,6 +6,9 @@
 ### Added
 - Support of path variables for the locales directory configuration @SIMULATAN
 
+### Changed
+- Restructure form actions to improve user experience
+
 ## [4.3.1]
 ### Fixed
 - Support for all 2022.3 builds (223.*)
