@@ -3,6 +3,8 @@
 # easy-i18n Changelog
 
 ## [Unreleased]
+
+## [4.3.1]
 ### Fixed
 - Support for all 2022.3 builds (223.*)
 
