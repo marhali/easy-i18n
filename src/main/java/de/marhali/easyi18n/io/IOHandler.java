@@ -1,6 +1,7 @@
 package de.marhali.easyi18n.io;
 
 import com.intellij.codeInsight.actions.ReformatCodeProcessor;
+import com.intellij.openapi.components.PathMacroManager;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.project.Project;
@@ -57,7 +58,8 @@ public class IOHandler {
      * @throws IOException Could not read translation data
      */
     public @NotNull TranslationData read() throws IOException {
-        String localesPath = this.settings.getLocalesDirectory();
+        String localesPath = PathMacroManager.getInstance(project)
+                .expandPath(this.settings.getLocalesDirectory());
 
         if(localesPath == null || localesPath.isEmpty()) {
             throw new EmptyLocalesDirException("Locales path must not be empty");
