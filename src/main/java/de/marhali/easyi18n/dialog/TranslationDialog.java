@@ -1,7 +1,7 @@
 package de.marhali.easyi18n.dialog;
 
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.DialogBuilder;
+import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.ui.components.JBScrollPane;
 import com.intellij.ui.components.JBTextField;
 import com.intellij.util.Consumer;
@@ -28,7 +28,7 @@ import java.util.*;
  * Base for add and edit translation dialogs.
  * @author marhali
  */
-abstract class TranslationDialog {
+abstract class TranslationDialog extends DialogWrapper {
 
     protected static final ResourceBundle bundle = ResourceBundle.getBundle("messages");
 
@@ -48,6 +48,8 @@ abstract class TranslationDialog {
      * @param origin Prefill translation
      */
     protected TranslationDialog(@NotNull Project project, @NotNull Translation origin) {
+        super(project);
+
         this.project = project;
         this.settings = ProjectSettingsService.get(project).getState();
         this.converter = new KeyPathConverter(settings);
@@ -76,14 +78,6 @@ abstract class TranslationDialog {
     }
 
     /**
-     * Implementation needs to configure the dialog. E.g. title, actions, ...
-     * The implementation needs to set the provided centerPanel as the view panel.
-     * @param centerPanel GUI to set on the dialog builder
-     * @return configured dialog builder
-     */
-    protected abstract @NotNull DialogBuilder configure(@NotNull JComponent centerPanel);
-
-    /**
      * Implementation needs to handle exit
      * @param exitCode See {@link com.intellij.openapi.ui.DialogWrapper} for exit codes
      * @return update conclusion, null if aborted
@@ -95,7 +89,10 @@ abstract class TranslationDialog {
      * Internally, the {@link #handleExit(int)} method will be called to determine finalization logic.
      */
     public void showAndHandle() {
-        int exitCode = createDialog().show();
+        init();
+        show();
+
+        int exitCode = getExitCode();
         TranslationUpdate update = handleExit(exitCode);
 
         if(update != null) {
@@ -120,7 +117,8 @@ abstract class TranslationDialog {
         return new Translation(key, value);
     }
 
-    private DialogBuilder createDialog() {
+    @Override
+    protected @Nullable JComponent createCenterPanel() {
         JPanel panel = FormBuilder.createFormBuilder()
                 .addLabeledComponent(bundle.getString("translation.key"), keyField, true)
                 .addComponent(createLocalesPanel(), 12)
@@ -128,7 +126,7 @@ abstract class TranslationDialog {
 
         panel.setMinimumSize(new Dimension(200, 150));
 
-        return configure(panel);
+        return panel;
     }
 
     private JComponent createLocalesPanel() {
