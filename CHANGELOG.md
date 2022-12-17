@@ -6,6 +6,7 @@
 ### Changed
 - Dropped support for IDE versions older than 2022.2
 - Updated dependencies
+- Removed deprecated API access (TranslatorToolWindowFactory)
 
 ### Fixed
 - Broken badge link in README
