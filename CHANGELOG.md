@@ -3,6 +3,9 @@
 # easy-i18n Changelog
 
 ## [Unreleased]
+### Changed
+- Dropped support for IDE versions older than 2022.2
+- Updated dependencies
 
 ## [4.4.0]
 ### Added
