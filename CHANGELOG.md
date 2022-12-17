@@ -7,6 +7,9 @@
 - Dropped support for IDE versions older than 2022.2
 - Updated dependencies
 
+### Fixed
+- Broken badge link in README
+
 ## [4.4.0]
 ### Added
 - Support of path variables for the locales directory configuration @SIMULATAN
