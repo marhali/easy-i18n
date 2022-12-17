@@ -3,6 +3,8 @@
 # easy-i18n Changelog
 
 ## [Unreleased]
+
+## [4.4.0]
 ### Added
 - Support of path variables for the locales directory configuration @SIMULATAN
 
