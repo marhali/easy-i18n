@@ -9,6 +9,7 @@
 - Removed deprecated API access (TranslatorToolWindowFactory)
 
 ### Fixed
+- Exception on file change listener
 - Broken badge link in README
 
 ## [4.4.0]

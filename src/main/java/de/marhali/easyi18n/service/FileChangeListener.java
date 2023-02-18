@@ -1,5 +1,6 @@
 package de.marhali.easyi18n.service;
 
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.AsyncFileListener;
@@ -54,7 +55,9 @@ public class FileChangeListener implements AsyncFileListener {
                     events.forEach((e) -> {
                         if(e.getPath().contains(localesPath)) { // Perform reload
                             logger.debug("Detected file change. Reloading instance...");
-                            InstanceManager.get(project).reload();
+                            ApplicationManager.getApplication().invokeLater(() ->
+                                    InstanceManager.get(project).reload()
+                            );
                         }
                     });
                 }
