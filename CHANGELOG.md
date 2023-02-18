@@ -9,6 +9,7 @@
 - Removed deprecated API access (TranslatorToolWindowFactory)
 
 ### Fixed
+- Support for all 2023.1 builds (231.*)
 - Exception on file change listener
 - Broken badge link in README
 
