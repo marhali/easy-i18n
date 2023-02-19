@@ -10,19 +10,31 @@ import de.marhali.easyi18n.model.TranslationNode;
 import de.marhali.easyi18n.settings.ProjectSettings;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import org.yaml.snakeyaml.DumperOptions;
+import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.error.YAMLException;
-import thito.nodeflow.config.MapSection;
-import thito.nodeflow.config.Section;
 
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.HashMap;
+import java.util.Map;
 
-/**
- * Yaml / YML file format parser strategy.
- * @author marhali
- */
 public class YamlParserStrategy extends ParserStrategy {
+
+    private static DumperOptions dumperOptions() {
+        DumperOptions options = new DumperOptions();
+
+        options.setIndent(2);
+        options.setAllowUnicode(true);
+        options.setPrettyFlow(true);
+        options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
+
+        return options;
+    }
+
+    private static final Yaml YAML = new Yaml(dumperOptions());
 
     public YamlParserStrategy(@NotNull ProjectSettings settings) {
         super(settings);
@@ -36,11 +48,11 @@ public class YamlParserStrategy extends ParserStrategy {
         TranslationNode targetNode = super.getOrCreateTargetNode(file, data);
 
         try(Reader reader = new InputStreamReader(vf.getInputStream(), vf.getCharset())) {
-            Section input;
+            Map<String, Object> input;
 
             try {
-                input = Section.parseToMap(reader);
-            } catch (YAMLException ex) {
+                input = YAML.load(reader);
+            } catch(YAMLException ex) {
                 throw new SyntaxException(ex.getMessage(), file);
             }
 
@@ -49,11 +61,12 @@ public class YamlParserStrategy extends ParserStrategy {
     }
 
     @Override
-    public @NotNull String write(@NotNull TranslationData data, @NotNull TranslationFile file) throws Exception {
+    public @Nullable String write(@NotNull TranslationData data, @NotNull TranslationFile file) throws Exception {
         TranslationNode targetNode = super.getTargetNode(data, file);
 
-        Section output = new MapSection();
+        Map<String, Object> output = new HashMap<>();
         YamlMapper.write(file.getLocale(), output, targetNode);
-        return Section.toString(output);
+
+        return YAML.dumpAsMap(output);
     }
 }
