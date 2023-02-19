@@ -1,7 +1,7 @@
 <div id="top"></div>
 
 <!-- PROJECT SHIELDS -->
-[![Build](https://img.shields.io/github/workflow/status/marhali/easy-i18n/Build?style=for-the-badge)](https://github.com/marhali/easy-i18n/actions)
+[![Build](https://img.shields.io/github/actions/workflow/status/marhali/easy-i18n/build.yml?branch=main&style=for-the-badge)](https://github.com/marhali/easy-i18n/actions)
 [![Version](https://img.shields.io/jetbrains/plugin/v/16316.svg?style=for-the-badge)](https://plugins.jetbrains.com/plugin/16316)
 [![Downloads](https://img.shields.io/jetbrains/plugin/d/16316.svg?style=for-the-badge)](https://plugins.jetbrains.com/plugin/16316)
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg?style=for-the-badge)](https://paypal.me/marhalide)
