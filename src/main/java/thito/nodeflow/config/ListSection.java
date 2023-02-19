@@ -16,7 +16,7 @@ public class ListSection extends ArrayList<Object> implements Section {
         addAll(c);
     }
 
-    void setParent(Section parent, String name) {
+    public void setParent(Section parent, String name) {
         this.parent = parent;
         this.name = name;
     }

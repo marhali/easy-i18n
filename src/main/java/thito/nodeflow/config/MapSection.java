@@ -20,7 +20,7 @@ public class MapSection extends HashMap<String, Object> implements Section {
         }
     }
 
-    void setParent(Section parent, String name) {
+    public void setParent(Section parent, String name) {
         this.parent = parent;
         this.name = name;
     }
