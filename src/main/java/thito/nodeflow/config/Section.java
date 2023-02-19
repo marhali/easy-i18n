@@ -191,7 +191,7 @@ public interface Section {
             if (o instanceof Map) {
                 if (o instanceof MapSection) return (MapSection) o;
                 MapSection mapSection = new MapSection((Map<?, ?>) o);
-                mapSection.setParent(this, Section.getName(path));
+                mapSection.setParent(getParent(), Section.getName(path));
                 return mapSection;
             }
             return null;
@@ -214,7 +214,7 @@ public interface Section {
                 return list;
             }
             ListSection list = new ListSection(Collections.singleton(o));
-            list.setParent(this, Section.getName(path));
+            list.setParent(getParent(), Section.getName(path));
             return list;
         });
     }
