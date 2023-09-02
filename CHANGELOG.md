@@ -7,6 +7,9 @@
 ### Added
 - Support for all 2023.2 builds (232.*)
 
+### Changed
+- Translator tool window icon color
+
 ## [4.4.1] - 2023-02-19
 
 ### Changed
