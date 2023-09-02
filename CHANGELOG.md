@@ -4,6 +4,8 @@
 
 ## [Unreleased]
 
+## [4.4.2] - 2023-09-02
+
 ### Added
 - Support for all 2023.2 builds (232.*)
 
@@ -342,7 +344,8 @@
 ### Changed
 - README.md
 
-[Unreleased]: null/compare/v4.4.1...HEAD
+[Unreleased]: https://github.com/marhali/easy-i18n/compare/v4.4.2...HEAD
+[4.4.2]: https://github.com/marhali/easy-i18n/compare/v4.4.1...v4.4.2
 [4.4.1]: null/compare/v4.4.0...v4.4.1
 [4.4.0]: null/compare/v4.3.1...v4.4.0
 [4.3.1]: null/compare/v4.3.0...v4.3.1
