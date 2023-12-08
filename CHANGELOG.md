@@ -8,6 +8,7 @@
 - Support for all 2023.3 builds (233.*)
 
 ### Changed
+- Replace deprecated apache commons utils
 - Update dependencies
 
 ## [4.4.2] - 2023-09-02
