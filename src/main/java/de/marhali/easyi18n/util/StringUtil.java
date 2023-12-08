@@ -24,7 +24,7 @@ public class StringUtil {
 
     /**
      * Escapes control characters for the given input string.
-     * Inspired by Apache Commons (see {@link org.apache.commons.lang.StringEscapeUtils}
+     * Inspired by Apache Commons (see {@link org.apache.commons.text.StringEscapeUtils}
      * @param input The input string
      * @param skipStrings Should every string literal indication ("", '') be skipped? (Needed e.g. for json)
      * @return Escaped string
