@@ -7,9 +7,8 @@ import com.google.gson.JsonPrimitive;
 import de.marhali.easyi18n.model.TranslationNode;
 import de.marhali.easyi18n.model.TranslationValue;
 import de.marhali.easyi18n.util.StringUtil;
-
-import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.commons.lang.math.NumberUtils;
+import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.commons.text.StringEscapeUtils;
 
 import java.util.Map;
 
@@ -61,7 +60,7 @@ public class JsonMapper {
                 if(content != null) {
                     if(JsonArrayMapper.isArray(content)) {
                         json.add(key, JsonArrayMapper.write(content));
-                    } else if(NumberUtils.isNumber(content)) {
+                    } else if(NumberUtils.isCreatable(content)) {
                         json.add(key, new JsonPrimitive(NumberUtils.createNumber(content)));
                     } else {
                         json.add(key, new JsonPrimitive(StringEscapeUtils.unescapeJava(content)));
