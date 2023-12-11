@@ -4,6 +4,9 @@
 
 ## [Unreleased]
 
+### Changed
+- Treat empty translation values (e.g. "") as incomplete
+
 ## [4.4.4] - 2023-12-11
 
 ### Fixed
