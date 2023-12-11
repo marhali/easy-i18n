@@ -4,6 +4,9 @@
 
 ## [Unreleased]
 
+### Fixed
+- remove deprecated internal API usage on reload() action
+
 ## [4.4.3] - 2023-12-08
 
 ### Added
