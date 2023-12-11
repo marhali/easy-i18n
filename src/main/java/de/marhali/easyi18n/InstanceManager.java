@@ -72,7 +72,6 @@ public class InstanceManager {
      * Fetches data from persistence layer and notifies all endpoints via {@link DataBus}.
      */
     public void reload() {
-        ApplicationManager.getApplication().saveAll(); // Save opened files (required if new locales were added)
         store.loadFromPersistenceLayer((success) ->
                 bus.propagate().onUpdateData(store.getData()));
     }
