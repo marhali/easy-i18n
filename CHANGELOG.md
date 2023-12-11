@@ -4,7 +4,10 @@
 
 ## [Unreleased]
 
+## [4.4.4] - 2023-12-11
+
 ### Fixed
+
 - remove deprecated internal API usage on reload() action
 
 ## [4.4.3] - 2023-12-08
@@ -428,7 +431,8 @@
 
 - README.md
 
-[Unreleased]: https://github.com/marhali/easy-i18n/compare/v4.4.3...HEAD
+[Unreleased]: https://github.com/marhali/easy-i18n/compare/v4.4.4...HEAD
+[4.4.4]: https://github.com/marhali/easy-i18n/compare/v4.4.3...v4.4.4
 [4.4.3]: https://github.com/marhali/easy-i18n/compare/v4.4.2...v4.4.3
 [4.4.2]: https://github.com/marhali/easy-i18n/compare/v4.4.1...v4.4.2
 [4.4.1]: null/compare/v4.4.0...v4.4.1
