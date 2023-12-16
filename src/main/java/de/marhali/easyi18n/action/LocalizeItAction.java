@@ -4,9 +4,7 @@ import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.actionSystem.DataContext;
-import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.command.WriteCommandAction;
-import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import de.marhali.easyi18n.dialog.AddDialog;
@@ -16,14 +14,7 @@ import de.marhali.easyi18n.util.DocumentUtil;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * The LocalizeItAction class represents an IntelliJ IDEA action that localizes selected text.
- *
- * <p>When this action is performed, it retrieves the selected text from the editor, checks if it is not empty,
- * and then displays a dialog to add the selected text as a localized string key to the project.
- *
- * <p>If the selected text is empty or the project is null, the action does nothing.
- *
- * <p>This class extends the AnAction class provided by IntelliJ IDEA.
+ * Represents an action to localize text in the editor.
  */
 class LocalizeItAction extends AnAction {
 
@@ -53,6 +44,14 @@ class LocalizeItAction extends AnAction {
 
     }
 
+
+    /**
+     * Replaces the selected text in the editor with a new text generated from the provided key.
+     *
+     * @param project the project where the editor belongs
+     * @param editor the editor where the text is selected
+     * @param key the key used to generate the replacement text
+     */
     private void replaceSelectedText(Project project, @NotNull Editor editor, @NotNull String key) {
         int selectionStart = editor.getSelectionModel().getSelectionStart();
         int selectionEnd = editor.getSelectionModel().getSelectionEnd();
@@ -62,6 +61,14 @@ class LocalizeItAction extends AnAction {
         WriteCommandAction.runWriteCommandAction(editor.getProject(), () -> documentUtil.getDocument().replaceString(selectionStart, selectionEnd, replacement));
     }
 
+    /**
+     * Builds a replacement string based on the provided flavor template, key, and document util.
+     *
+     * @param flavorTemplate the flavor template string
+     * @param key the key used to generate the replacement text
+     * @param documentUtil the document util object used to determine the document type
+     * @return the built replacement string
+     */
     private String buildReplacement(String flavorTemplate, String key, DocumentUtil documentUtil) {
         if (documentUtil.isVue() || documentUtil.isJsOrTs()) return flavorTemplate + "('" + key + "')";
 

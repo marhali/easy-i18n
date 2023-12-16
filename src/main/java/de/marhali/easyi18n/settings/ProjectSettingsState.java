@@ -39,6 +39,14 @@ public class ProjectSettingsState implements ProjectSettings {
 
     // Experimental configuration
     @Property private Boolean alwaysFold;
+
+    /**
+     * The `flavorTemplate` specifies the format used for replacing strings with their i18n (internationalization) counterparts.
+     * For example:
+     * In many situations, the default representation for i18n follows the `$i18n.t('key')` pattern. However, this can vary depending on
+     * the specific framework or developers' preferences for handling i18n. The ability to dynamically change this template adds flexibility and customization
+     * to cater to different i18n handling methods.
+     */
     @Property private String flavorTemplate;
 
     public ProjectSettingsState() {
