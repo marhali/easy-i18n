@@ -33,4 +33,5 @@ public interface ProjectSettings {
 
     // Experimental Configuration
     boolean isAlwaysFold();
+    String getFlavorTemplate();
 }

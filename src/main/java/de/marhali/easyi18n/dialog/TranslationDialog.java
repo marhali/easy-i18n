@@ -37,6 +37,10 @@ abstract class TranslationDialog extends DialogWrapper {
     protected final @NotNull KeyPathConverter converter;
     protected final @NotNull Translation origin;
 
+    public JTextField getKeyField() {
+        return keyField;
+    }
+
     protected final JTextField keyField;
     protected final Map<String, JTextField> localeValueFields;
 

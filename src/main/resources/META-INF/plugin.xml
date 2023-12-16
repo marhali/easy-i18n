@@ -22,6 +22,13 @@
         >
             <add-to-group group-id="NewGroup"/>
         </action>
+        <action id="de.marhali.easyi18n.action.LocalizeItAction"
+                class="de.marhali.easyi18n.action.LocalizeItAction"
+                text="Localize It"
+                description="Apply localization to the selected string"
+                icon="/icons/translate13.svg">
+            <add-to-group group-id="EditorPopupMenu" anchor="last"/>
+        </action>
     </actions>
 
     <extensions defaultExtensionNs="com.intellij">
