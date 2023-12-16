@@ -3,9 +3,8 @@ package de.marhali.easyi18n.io.parser.yaml;
 import de.marhali.easyi18n.model.TranslationNode;
 import de.marhali.easyi18n.model.TranslationValue;
 import de.marhali.easyi18n.util.StringUtil;
-
-import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.commons.lang.math.NumberUtils;
+import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.commons.text.StringEscapeUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -53,7 +52,7 @@ public class YamlMapper {
                 if(content != null) {
                     if(YamlArrayMapper.isArray(content)) {
                         section.put(key, YamlArrayMapper.write(content));
-                    } else if(NumberUtils.isNumber(content)) {
+                    } else if(NumberUtils.isCreatable(content)) {
                         section.put(key, NumberUtils.createNumber(content));
                     } else {
                         section.put(key, StringEscapeUtils.unescapeJava(content));

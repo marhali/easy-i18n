@@ -5,9 +5,8 @@ import de.marhali.easyi18n.model.KeyPath;
 import de.marhali.easyi18n.model.TranslationValue;
 import de.marhali.easyi18n.util.KeyPathConverter;
 import de.marhali.easyi18n.util.StringUtil;
-
-import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.commons.lang.math.NumberUtils;
+import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.commons.text.StringEscapeUtils;
 
 import java.util.Map;
 
@@ -51,7 +50,7 @@ public class PropertiesMapper {
 
                 if(PropertiesArrayMapper.isArray(content)) {
                     properties.put(simpleKey, PropertiesArrayMapper.write(content));
-                } else if(NumberUtils.isNumber(content)) {
+                } else if(NumberUtils.isCreatable(content)) {
                     properties.put(simpleKey, NumberUtils.createNumber(content));
                 } else {
                     properties.put(simpleKey, StringEscapeUtils.unescapeJava(content));
