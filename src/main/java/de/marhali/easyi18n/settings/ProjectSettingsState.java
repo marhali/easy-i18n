@@ -39,6 +39,7 @@ public class ProjectSettingsState implements ProjectSettings {
 
     // Experimental configuration
     @Property private Boolean alwaysFold;
+    @Property private String flavorTemplate;
 
     public ProjectSettingsState() {
         this(new DefaultPreset());
@@ -65,6 +66,7 @@ public class ProjectSettingsState implements ProjectSettings {
         this.assistance = defaults.isAssistance();
 
         this.alwaysFold = defaults.isAlwaysFold();
+        this.flavorTemplate = defaults.getFlavorTemplate();
     }
 
     @Override
@@ -143,6 +145,11 @@ public class ProjectSettingsState implements ProjectSettings {
         return alwaysFold;
     }
 
+    @Override
+    public String getFlavorTemplate() {
+        return this.flavorTemplate;
+    }
+
     public void setLocalesDirectory(String localesDirectory) {
         this.localesDirectory = localesDirectory;
     }
@@ -202,6 +209,9 @@ public class ProjectSettingsState implements ProjectSettings {
     public void setAlwaysFold(Boolean alwaysFold) {
         this.alwaysFold = alwaysFold;
     }
+    public void setFlavorTemplate(String flavorTemplate){
+        this.flavorTemplate = flavorTemplate;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -222,7 +232,8 @@ public class ProjectSettingsState implements ProjectSettings {
                 && Objects.equals(previewLocale, that.previewLocale)
                 && Objects.equals(nestedKeys, that.nestedKeys)
                 && Objects.equals(assistance, that.assistance)
-                && Objects.equals(alwaysFold, that.alwaysFold);
+                && Objects.equals(alwaysFold, that.alwaysFold)
+                && Objects.equals(flavorTemplate,that.flavorTemplate);
     }
 
     @Override
@@ -230,7 +241,7 @@ public class ProjectSettingsState implements ProjectSettings {
         return Objects.hash(
                 localesDirectory, folderStrategy, parserStrategy, filePattern, includeSubDirs,
                 sorting, namespaceDelimiter, sectionDelimiter, contextDelimiter, pluralDelimiter,
-                defaultNamespace, previewLocale, nestedKeys, assistance, alwaysFold
+                defaultNamespace, previewLocale, nestedKeys, assistance, alwaysFold,flavorTemplate
         );
     }
 
@@ -252,6 +263,7 @@ public class ProjectSettingsState implements ProjectSettings {
                 ", nestedKeys=" + nestedKeys +
                 ", assistance=" + assistance +
                 ", alwaysFold=" + alwaysFold +
+                ", flavorTemplate=" + flavorTemplate +
                 '}';
     }
 }
