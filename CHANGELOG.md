@@ -10,6 +10,7 @@
 
 ### Changed
 
+- Treat empty translation values (e.g. "") as incomplete
 - Update dependencies
 
 ### Fixed
