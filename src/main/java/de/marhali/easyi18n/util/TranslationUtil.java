@@ -48,7 +48,8 @@ public class TranslationUtil {
      * @return true if missing values were found otherwise false
      */
     public static boolean isIncomplete(@NotNull TranslationValue value, @NotNull TranslationData data) {
-        return value.getLocaleContents().size() != data.getLocales().size();
+        return value.getLocaleContents().size() != data.getLocales().size()
+                || value.getLocaleContents().stream().anyMatch(String::isEmpty);
     }
 
     /**
