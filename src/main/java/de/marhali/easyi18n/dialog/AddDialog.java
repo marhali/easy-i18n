@@ -61,9 +61,13 @@ public class AddDialog extends TranslationDialog {
     @Override
     protected @Nullable TranslationUpdate handleExit(int exitCode) {
         if(exitCode == DialogWrapper.OK_EXIT_CODE) {
-            if(onCreated != null) onCreated.accept(this.getKeyField().getText());
+            if(onCreated != null) {
+                onCreated.accept(this.getKeyField().getText());
+            }
+
             return new TranslationCreate(getState());
         }
+
         return null;
     }
 }

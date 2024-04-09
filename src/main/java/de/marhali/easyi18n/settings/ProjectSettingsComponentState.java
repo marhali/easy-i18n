@@ -91,7 +91,6 @@ public class ProjectSettingsComponentState {
         assistance.setSelected(state.isAssistance());
 
         alwaysFold.setSelected(state.isAlwaysFold());
-
         flavorTemplate.setText(state.getFlavorTemplate());
     }
 }

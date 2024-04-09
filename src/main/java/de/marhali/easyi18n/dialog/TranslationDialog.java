@@ -37,10 +37,6 @@ abstract class TranslationDialog extends DialogWrapper {
     protected final @NotNull KeyPathConverter converter;
     protected final @NotNull Translation origin;
 
-    public JTextField getKeyField() {
-        return keyField;
-    }
-
     protected final JTextField keyField;
     protected final Map<String, JTextField> localeValueFields;
 
@@ -70,6 +66,10 @@ abstract class TranslationDialog extends DialogWrapper {
         for(String locale : InstanceManager.get(project).store().getData().getLocales()) {
             localeValueFields.put(locale, new JBTextField(value != null ? value.get(locale) : null));
         }
+    }
+
+    public JTextField getKeyField() {
+        return keyField;
     }
 
     /**

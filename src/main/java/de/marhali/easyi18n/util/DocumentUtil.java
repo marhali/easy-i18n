@@ -5,10 +5,13 @@ import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.openapi.vfs.VirtualFile;
 
-
 public class DocumentUtil {
     protected Document document;
-    FileType fileType;
+    private FileType fileType;
+
+    public DocumentUtil(Document document) {
+        setDocument(document);
+    }
 
     public Document getDocument() {
         return document;
@@ -23,10 +26,6 @@ public class DocumentUtil {
         }
     }
 
-    public DocumentUtil(Document document) {
-       setDocument(document);
-    }
-
     public boolean isJsOrTs() {
         return (fileType.getDefaultExtension().contains("js") || fileType.getDescription().contains("ts"));
     }
@@ -34,5 +33,4 @@ public class DocumentUtil {
     public boolean isVue() {
             return fileType.getDefaultExtension().contains("vue");
     }
-
 }

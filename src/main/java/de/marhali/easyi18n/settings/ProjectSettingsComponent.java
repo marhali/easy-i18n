@@ -26,7 +26,6 @@ import java.util.ResourceBundle;
 
 /**
  * Configuration panel with all possible options for this plugin.
- *
  * @author marhali
  */
 public class ProjectSettingsComponent extends ProjectSettingsComponentState {
@@ -69,7 +68,6 @@ public class ProjectSettingsComponent extends ProjectSettingsComponentState {
                 .addComponentFillVertically(new JPanel(), 0)
                 .getPanel();
     }
-
 
     private JComponent constructPresetField() {
         preset = new ComboBox<>(Preset.values());

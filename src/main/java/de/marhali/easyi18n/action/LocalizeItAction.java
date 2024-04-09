@@ -7,10 +7,12 @@ import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
+
 import de.marhali.easyi18n.dialog.AddDialog;
 import de.marhali.easyi18n.model.KeyPath;
 import de.marhali.easyi18n.settings.ProjectSettingsService;
 import de.marhali.easyi18n.util.DocumentUtil;
+
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -22,28 +24,32 @@ class LocalizeItAction extends AnAction {
     public void actionPerformed(@NotNull AnActionEvent anActionEvent) {
         DataContext dataContext = anActionEvent.getDataContext();
         Editor editor = CommonDataKeys.EDITOR.getData(dataContext);
-        if (editor == null) return;
+
+        if (editor == null) {
+            return;
+        }
+
         String text = editor.getSelectionModel().getSelectedText();
 
-        if (text == null || text.isEmpty()) return;
-
+        if (text == null || text.isEmpty()) {
+            return;
+        }
 
         if ((text.startsWith("\"") && text.endsWith("\"")) || (text.startsWith("'") && text.endsWith("'"))) {
             text = text.substring(1);
             text = text.substring(0, text.length() - 1);
 
         }
+
         Project project = anActionEvent.getProject();
+
         if (project == null) {
             throw new RuntimeException("Project is null!");
         }
 
         AddDialog dialog = new AddDialog(project, new KeyPath(text), text, (key) -> replaceSelectedText(project, editor, key));
         dialog.showAndHandle();
-
-
     }
-
 
     /**
      * Replaces the selected text in the editor with a new text generated from the provided key.

@@ -217,6 +217,7 @@ public class ProjectSettingsState implements ProjectSettings {
     public void setAlwaysFold(Boolean alwaysFold) {
         this.alwaysFold = alwaysFold;
     }
+
     public void setFlavorTemplate(String flavorTemplate){
         this.flavorTemplate = flavorTemplate;
     }
