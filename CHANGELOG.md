@@ -12,6 +12,10 @@
 
 - Update dependencies
 
+### Fixed
+
+- Define direct dependency on Apache Commons
+
 ## [4.4.4] - 2023-12-11
 
 ### Fixed
