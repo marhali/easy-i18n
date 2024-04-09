@@ -4,6 +4,14 @@
 
 ## [Unreleased]
 
+### Added
+
+- Support for IntelliJ Platform version 2024.1
+
+### Changed
+
+- Update dependencies
+
 ## [4.4.4] - 2023-12-11
 
 ### Fixed
