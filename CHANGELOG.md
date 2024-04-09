@@ -11,6 +11,9 @@
 - Build on Java 17
 - Update dependencies
 
+### Fixed
+- Define direct dependency on Apache Commons
+
 ## [4.4.1] - 2023-02-19
 
 ### Changed

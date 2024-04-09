@@ -4,8 +4,8 @@ import de.marhali.easyi18n.model.TranslationNode;
 import de.marhali.easyi18n.model.TranslationValue;
 import de.marhali.easyi18n.util.StringUtil;
 
-import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.commons.lang.math.NumberUtils;
+import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.commons.text.StringEscapeUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -43,7 +43,7 @@ public class YamlMapper {
                 // Nested node - run recursively
                 Map<String, Object> childSection = new HashMap<>();
                 write(locale, childSection, childNode);
-                if(childSection.size() > 0) {
+                if(!childSection.isEmpty()) {
                     section.put(key, childSection);
                 }
             } else {
@@ -53,7 +53,7 @@ public class YamlMapper {
                 if(content != null) {
                     if(YamlArrayMapper.isArray(content)) {
                         section.put(key, YamlArrayMapper.write(content));
-                    } else if(NumberUtils.isNumber(content)) {
+                    } else if(NumberUtils.isCreatable(content)) {
                         section.put(key, NumberUtils.createNumber(content));
                     } else {
                         section.put(key, StringEscapeUtils.unescapeJava(content));

@@ -25,6 +25,8 @@ repositories {
 dependencies {
 //    implementation(libs.annotations)
     implementation(libs.json5)
+    implementation(libs.lang3)
+    implementation(libs.text)
 }
 
 // Set the JVM language level used to build the project.

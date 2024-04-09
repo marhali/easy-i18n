@@ -2,7 +2,7 @@ package de.marhali.easyi18n.io.parser;
 
 import de.marhali.easyi18n.util.StringUtil;
 
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.text.StringEscapeUtils;
 
 import java.text.MessageFormat;
 import java.util.Iterator;

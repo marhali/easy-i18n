@@ -7,8 +7,8 @@ import de.marhali.json5.Json5Element;
 import de.marhali.json5.Json5Object;
 import de.marhali.json5.Json5Primitive;
 
-import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.commons.lang.math.NumberUtils;
+import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.commons.text.StringEscapeUtils;
 
 import java.util.Map;
 
@@ -61,7 +61,7 @@ public class Json5Mapper {
                         json.add(key, Json5ArrayMapper.write(content));
                     } else if(StringUtil.isHexString(content)) {
                         json.add(key, Json5Primitive.of(content, true));
-                    } else if(NumberUtils.isNumber(content)) {
+                    } else if(NumberUtils.isCreatable(content)) {
                         json.add(key, Json5Primitive.of(NumberUtils.createNumber(content)));
                     } else {
                         json.add(key, Json5Primitive.of(StringEscapeUtils.unescapeJava(content)));
