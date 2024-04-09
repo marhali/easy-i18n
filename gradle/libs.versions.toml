@@ -2,17 +2,21 @@
 # libraries
 annotations = "24.1.0"
 json5-java = "2.0.0"
+commons-lang3 = "3.14.0"
+commons-text = "1.11.0"
 
 # plugins
-kotlin = "1.9.21"
+kotlin = "1.9.23"
 changelog = "2.2.0"
-gradleIntelliJPlugin = "1.16.1"
-qodana = "0.1.13"
-kover = "0.7.5"
+gradleIntelliJPlugin = "1.17.2"
+qodana = "2023.3.1"
+kover = "0.7.6"
 
 [libraries]
 annotations = { group = "org.jetbrains", name = "annotations", version.ref = "annotations" }
 json5-java = { group = "de.marhali", name = "json5-java", version.ref = "json5-java" }
+commons-lang3 = { group = "org.apache.commons", name = "commons-lang3", version.ref = "commons-lang3" }
+commons-text = { group = "org.apache.commons", name = "commons-text", version.ref = "commons-text" }
 
 [plugins]
 changelog = { id = "org.jetbrains.changelog", version.ref = "changelog" }

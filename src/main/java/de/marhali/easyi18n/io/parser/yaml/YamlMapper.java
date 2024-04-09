@@ -3,6 +3,7 @@ package de.marhali.easyi18n.io.parser.yaml;
 import de.marhali.easyi18n.model.TranslationNode;
 import de.marhali.easyi18n.model.TranslationValue;
 import de.marhali.easyi18n.util.StringUtil;
+
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.text.StringEscapeUtils;
 
@@ -42,7 +43,7 @@ public class YamlMapper {
                 // Nested node - run recursively
                 Map<String, Object> childSection = new HashMap<>();
                 write(locale, childSection, childNode);
-                if(childSection.size() > 0) {
+                if(!childSection.isEmpty()) {
                     section.put(key, childSection);
                 }
             } else {

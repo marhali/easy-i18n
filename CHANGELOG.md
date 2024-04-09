@@ -4,8 +4,18 @@
 
 ## [Unreleased]
 
+### Added
+
+- Support for IntelliJ Platform version 2024.1
+
 ### Changed
+
 - Treat empty translation values (e.g. "") as incomplete
+- Update dependencies
+
+### Fixed
+
+- Define direct dependency on Apache Commons
 
 ## [4.4.4] - 2023-12-11
 
