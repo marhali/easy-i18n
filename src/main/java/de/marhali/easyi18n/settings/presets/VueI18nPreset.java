@@ -85,4 +85,9 @@ public class VueI18nPreset implements ProjectSettings {
     public boolean isAlwaysFold() {
         return false;
     }
+
+    @Override
+    public String getFlavorTemplate() {
+        return "$i18n.t";
+    }
 }

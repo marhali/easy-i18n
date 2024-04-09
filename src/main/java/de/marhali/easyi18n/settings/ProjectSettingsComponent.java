@@ -26,6 +26,7 @@ import java.util.ResourceBundle;
 
 /**
  * Configuration panel with all possible options for this plugin.
+ *
  * @author marhali
  */
 public class ProjectSettingsComponent extends ProjectSettingsComponentState {
@@ -64,9 +65,11 @@ public class ProjectSettingsComponent extends ProjectSettingsComponentState {
                 .addVerticalGap(24)
                 .addComponent(new TitledSeparator(bundle.getString("settings.experimental.title")))
                 .addComponent(constructAlwaysFoldField())
+                .addLabeledComponent(bundle.getString("settings.experimental.flavor-template"), constructFlavorTemplate(), 1, false)
                 .addComponentFillVertically(new JPanel(), 0)
                 .getPanel();
     }
+
 
     private JComponent constructPresetField() {
         preset = new ComboBox<>(Preset.values());
@@ -219,9 +222,15 @@ public class ProjectSettingsComponent extends ProjectSettingsComponentState {
         return alwaysFold;
     }
 
+    private JComponent constructFlavorTemplate() {
+        flavorTemplate = new ExtendableTextField(20);
+        flavorTemplate.setToolTipText(bundle.getString("settings.experimental.flavor-template-tooltip"));
+        return flavorTemplate;
+    }
+
     private ItemListener handleParserChange() {
         return e -> {
-            if(e.getStateChange() == ItemEvent.SELECTED) {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
                 // Automatically suggest file pattern option on parser change
                 ParserStrategyType newStrategy = ParserStrategyType.fromIndex(parserStrategy.getSelectedIndex());
                 filePattern.setText(newStrategy.getExampleFilePattern());

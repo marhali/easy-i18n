@@ -86,4 +86,9 @@ public class DefaultPreset implements ProjectSettings {
     public boolean isAlwaysFold() {
         return false;
     }
+
+    @Override
+    public String getFlavorTemplate() {
+        return "$i18n.t";
+    }
 }
