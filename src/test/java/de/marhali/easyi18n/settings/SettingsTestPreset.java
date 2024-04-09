@@ -85,4 +85,9 @@ public class SettingsTestPreset implements ProjectSettings {
     public boolean isAlwaysFold() {
         return false;
     }
+
+    @Override
+    public String getFlavorTemplate() {
+        return "";
+    }
 }

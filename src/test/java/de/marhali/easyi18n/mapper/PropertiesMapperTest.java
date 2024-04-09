@@ -237,6 +237,11 @@ public class PropertiesMapperTest extends AbstractMapperTest {
             }
 
             @Override
+            public String getFlavorTemplate() {
+                return "";
+            }
+
+            @Override
             public boolean isIncludeSubDirs() {
                 return false;
             }
