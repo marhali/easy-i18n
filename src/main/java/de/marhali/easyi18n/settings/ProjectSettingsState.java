@@ -40,6 +40,15 @@ public class ProjectSettingsState implements ProjectSettings {
     // Experimental configuration
     @Property private Boolean alwaysFold;
 
+    /**
+     * The `flavorTemplate` specifies the format used for replacing strings with their i18n (internationalization) counterparts.
+     * For example:
+     * In many situations, the default representation for i18n follows the `$i18n.t('key')` pattern. However, this can vary depending on
+     * the specific framework or developers' preferences for handling i18n. The ability to dynamically change this template adds flexibility and customization
+     * to cater to different i18n handling methods.
+     */
+    @Property private String flavorTemplate;
+
     public ProjectSettingsState() {
         this(new DefaultPreset());
     }
@@ -65,6 +74,7 @@ public class ProjectSettingsState implements ProjectSettings {
         this.assistance = defaults.isAssistance();
 
         this.alwaysFold = defaults.isAlwaysFold();
+        this.flavorTemplate = defaults.getFlavorTemplate();
     }
 
     @Override
@@ -143,6 +153,11 @@ public class ProjectSettingsState implements ProjectSettings {
         return alwaysFold;
     }
 
+    @Override
+    public String getFlavorTemplate() {
+        return this.flavorTemplate;
+    }
+
     public void setLocalesDirectory(String localesDirectory) {
         this.localesDirectory = localesDirectory;
     }
@@ -203,6 +218,10 @@ public class ProjectSettingsState implements ProjectSettings {
         this.alwaysFold = alwaysFold;
     }
 
+    public void setFlavorTemplate(String flavorTemplate){
+        this.flavorTemplate = flavorTemplate;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -222,7 +241,8 @@ public class ProjectSettingsState implements ProjectSettings {
                 && Objects.equals(previewLocale, that.previewLocale)
                 && Objects.equals(nestedKeys, that.nestedKeys)
                 && Objects.equals(assistance, that.assistance)
-                && Objects.equals(alwaysFold, that.alwaysFold);
+                && Objects.equals(alwaysFold, that.alwaysFold)
+                && Objects.equals(flavorTemplate,that.flavorTemplate);
     }
 
     @Override
@@ -230,7 +250,7 @@ public class ProjectSettingsState implements ProjectSettings {
         return Objects.hash(
                 localesDirectory, folderStrategy, parserStrategy, filePattern, includeSubDirs,
                 sorting, namespaceDelimiter, sectionDelimiter, contextDelimiter, pluralDelimiter,
-                defaultNamespace, previewLocale, nestedKeys, assistance, alwaysFold
+                defaultNamespace, previewLocale, nestedKeys, assistance, alwaysFold,flavorTemplate
         );
     }
 
@@ -252,6 +272,7 @@ public class ProjectSettingsState implements ProjectSettings {
                 ", nestedKeys=" + nestedKeys +
                 ", assistance=" + assistance +
                 ", alwaysFold=" + alwaysFold +
+                ", flavorTemplate=" + flavorTemplate +
                 '}';
     }
 }

@@ -13,12 +13,16 @@ import de.marhali.easyi18n.settings.ProjectSettingsService;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.function.Consumer;
+
 /**
  * Dialog to create a new translation with all associated locale values.
  * Supports optional prefill technique for translation key or locale value.
  * @author marhali
  */
 public class AddDialog extends TranslationDialog {
+
+    private Consumer<String> onCreated;
 
     /**
      * Constructs a new create dialog with prefilled fields
@@ -35,6 +39,16 @@ public class AddDialog extends TranslationDialog {
 
         setTitle(bundle.getString("action.add"));
     }
+    public AddDialog(@NotNull Project project, @Nullable KeyPath prefillKey, @Nullable String prefillLocale,Consumer<String> onCreated) {
+        super(project, new Translation(prefillKey != null ? prefillKey : new KeyPath(),
+                prefillLocale != null
+                        ? new TranslationValue(ProjectSettingsService.get(project).getState().getPreviewLocale(), prefillLocale)
+                        : null)
+        );
+
+        this.onCreated = onCreated;
+        setTitle(bundle.getString("action.add"));
+    }
 
     /**
      * Constructs a new create dialog without prefilled fields.
@@ -47,8 +61,13 @@ public class AddDialog extends TranslationDialog {
     @Override
     protected @Nullable TranslationUpdate handleExit(int exitCode) {
         if(exitCode == DialogWrapper.OK_EXIT_CODE) {
+            if(onCreated != null) {
+                onCreated.accept(this.getKeyField().getText());
+            }
+
             return new TranslationCreate(getState());
         }
+
         return null;
     }
 }

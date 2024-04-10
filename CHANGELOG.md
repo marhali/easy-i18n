@@ -7,6 +7,7 @@
 ### Added
 
 - Support for IntelliJ Platform version 2024.1
+- "Localize It" action to extract translations based on current selection. Thanks to @JPilson
 
 ### Changed
 

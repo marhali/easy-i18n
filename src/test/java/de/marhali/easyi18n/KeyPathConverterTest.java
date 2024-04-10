@@ -164,6 +164,11 @@ public class KeyPathConverterTest {
             }
 
             @Override
+            public String getFlavorTemplate() {
+                return "";
+            }
+
+            @Override
             public boolean isIncludeSubDirs() {
                 return false;
             }

@@ -40,6 +40,8 @@ public class ProjectSettingsComponentState {
     // Experimental configuration
     protected JCheckBox alwaysFold;
 
+    protected JTextField flavorTemplate;
+
     protected ProjectSettingsState getState() {
         // Every field needs to provide its state
         ProjectSettingsState state = new ProjectSettingsState();
@@ -63,6 +65,7 @@ public class ProjectSettingsComponentState {
         state.setAssistance(assistance.isSelected());
 
         state.setAlwaysFold(alwaysFold.isSelected());
+        state.setFlavorTemplate(flavorTemplate.getText());
 
         return state;
     }
@@ -88,5 +91,6 @@ public class ProjectSettingsComponentState {
         assistance.setSelected(state.isAssistance());
 
         alwaysFold.setSelected(state.isAlwaysFold());
+        flavorTemplate.setText(state.getFlavorTemplate());
     }
 }

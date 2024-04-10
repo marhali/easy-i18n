@@ -68,6 +68,10 @@ abstract class TranslationDialog extends DialogWrapper {
         }
     }
 
+    public JTextField getKeyField() {
+        return keyField;
+    }
+
     /**
      * Registers a callback that is called on dialog close with the final state.
      * If the user aborts the dialog no callback is called.
