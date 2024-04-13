@@ -2,7 +2,7 @@
     <extensions defaultExtensionNs="com.intellij">
         <lang.foldingBuilder
                 language="HTML"
-                implementationClass="de.marhali.easyi18n.assistance.folding.JsFoldingBuilder"
+                implementationClass="de.marhali.easyi18n.assistance.folding.XmlFoldingBuilder"
         />
 
         <lang.documentationProvider
