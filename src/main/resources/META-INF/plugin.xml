@@ -11,7 +11,7 @@
 
     <depends optional="true" config-file="de.marhali.easyi18n-kotlin.xml">org.jetbrains.kotlin</depends>
     <depends optional="true" config-file="de.marhali.easyi18n-javascript.xml">JavaScript</depends>
-    <depends optional="true" config-file="de.marhali.easyi18n-html.xml">com.intellij.modules.xml</depends>
+    <depends optional="true" config-file="de.marhali.easyi18n-xml.xml">com.intellij.modules.xml</depends>
     <depends optional="true" config-file="de.marhali.easyi18n-java.xml">com.intellij.java</depends>
     <depends optional="true" config-file="de.marhali.easyi18n-php.xml">com.jetbrains.php</depends>
 
