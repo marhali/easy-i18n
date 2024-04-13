@@ -4,6 +4,10 @@
 
 ## [Unreleased]
 
+### Fixed
+
+- Remove JavaScript usage on non-js-compliant platforms
+
 ## [4.5.0] - 2024-04-10
 
 ### Added
