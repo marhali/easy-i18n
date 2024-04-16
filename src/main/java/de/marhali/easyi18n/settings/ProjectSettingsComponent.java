@@ -1,5 +1,6 @@
 package de.marhali.easyi18n.settings;
 
+import com.google.common.base.CaseFormat;
 import com.intellij.ide.BrowserUtil;
 import com.intellij.openapi.fileChooser.FileChooserDescriptor;
 import com.intellij.openapi.project.Project;
@@ -26,6 +27,7 @@ import java.util.ResourceBundle;
 
 /**
  * Configuration panel with all possible options for this plugin.
+ *
  * @author marhali
  */
 public class ProjectSettingsComponent extends ProjectSettingsComponentState {
@@ -64,7 +66,9 @@ public class ProjectSettingsComponent extends ProjectSettingsComponentState {
                 .addVerticalGap(24)
                 .addComponent(new TitledSeparator(bundle.getString("settings.experimental.title")))
                 .addComponent(constructAlwaysFoldField())
+                .addVerticalGap(12)
                 .addLabeledComponent(bundle.getString("settings.experimental.flavor-template"), constructFlavorTemplate(), 1, false)
+                .addLabeledComponent(bundle.getString("settings.experimental.key-naming-format.title"), constructKeyCaseFormater(), 1, false)
                 .addComponentFillVertically(new JPanel(), 0)
                 .getPanel();
     }
@@ -225,6 +229,17 @@ public class ProjectSettingsComponent extends ProjectSettingsComponentState {
         flavorTemplate.setToolTipText(bundle.getString("settings.experimental.flavor-template-tooltip"));
         return flavorTemplate;
     }
+
+    private JComponent constructKeyCaseFormater() {
+        KeyCaseFormater = new ComboBox<>(bundle.getString("settings.experimental.key-naming-format.items").split(ArrayMapper.SPLITERATOR_REGEX));
+        KeyCaseFormater.setToolTipText(bundle.getString("settings.experimental.key-naming-format.tooltip"));
+        KeyCaseFormater.setMinimumAndPreferredWidth(120);
+        KeyCaseFormater.addActionListener(e -> {
+
+        });
+        return KeyCaseFormater;
+    }
+
 
     private ItemListener handleParserChange() {
         return e -> {
