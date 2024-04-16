@@ -2,6 +2,7 @@ package de.marhali.easyi18n.settings.presets;
 
 import de.marhali.easyi18n.io.parser.ParserStrategyType;
 import de.marhali.easyi18n.io.folder.FolderStrategyType;
+import de.marhali.easyi18n.settings.NamingConvention;
 import de.marhali.easyi18n.settings.ProjectSettings;
 
 import org.jetbrains.annotations.NotNull;
@@ -90,5 +91,10 @@ public class DefaultPreset implements ProjectSettings {
     @Override
     public String getFlavorTemplate() {
         return "$i18n.t";
+    }
+
+    @Override
+    public @NotNull NamingConvention getCaseFormat() {
+        return NamingConvention.CAMEL_CASE;
     }
 }

@@ -1,5 +1,6 @@
 package de.marhali.easyi18n.settings;
 
+import com.google.common.base.CaseFormat;
 import de.marhali.easyi18n.io.folder.FolderStrategyType;
 import de.marhali.easyi18n.io.parser.ParserStrategyType;
 
@@ -8,6 +9,7 @@ import org.jetbrains.annotations.Nullable;
 
 /**
  * Settings preset to test the functionality of the settings service.
+ *
  * @author marhali
  */
 public class SettingsTestPreset implements ProjectSettings {
@@ -88,6 +90,11 @@ public class SettingsTestPreset implements ProjectSettings {
 
     @Override
     public String getFlavorTemplate() {
-        return "";
+        return "t";
+    }
+
+    @Override
+    public @NotNull NamingConvention getCaseFormat() {
+        return NamingConvention.CAMEL_CASE;
     }
 }

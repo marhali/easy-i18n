@@ -1,5 +1,6 @@
 package de.marhali.easyi18n.settings;
 
+import com.google.common.base.CaseFormat;
 import de.marhali.easyi18n.io.parser.ParserStrategyType;
 import de.marhali.easyi18n.io.folder.FolderStrategyType;
 
@@ -34,4 +35,5 @@ public interface ProjectSettings {
     // Experimental Configuration
     boolean isAlwaysFold();
     String getFlavorTemplate();
+    @NotNull NamingConvention getCaseFormat();
 }
