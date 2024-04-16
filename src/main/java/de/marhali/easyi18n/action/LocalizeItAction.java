@@ -1,5 +1,6 @@
 package de.marhali.easyi18n.action;
 
+import com.google.common.base.CaseFormat;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
@@ -47,7 +48,7 @@ class LocalizeItAction extends AnAction {
             throw new RuntimeException("Project is null!");
         }
 
-        AddDialog dialog = new AddDialog(project, new KeyPath(text), text, (key) -> replaceSelectedText(project, editor, key));
+        AddDialog dialog = new AddDialog(project, new KeyPath(convertKeyToNamingCase(text, true)), text, (key) -> replaceSelectedText(project, editor, key));
         dialog.showAndHandle();
     }
 
@@ -55,8 +56,8 @@ class LocalizeItAction extends AnAction {
      * Replaces the selected text in the editor with a new text generated from the provided key.
      *
      * @param project the project where the editor belongs
-     * @param editor the editor where the text is selected
-     * @param key the key used to generate the replacement text
+     * @param editor  the editor where the text is selected
+     * @param key     the key used to generate the replacement text
      */
     private void replaceSelectedText(Project project, @NotNull Editor editor, @NotNull String key) {
         int selectionStart = editor.getSelectionModel().getSelectionStart();
@@ -71,13 +72,28 @@ class LocalizeItAction extends AnAction {
      * Builds a replacement string based on the provided flavor template, key, and document util.
      *
      * @param flavorTemplate the flavor template string
-     * @param key the key used to generate the replacement text
-     * @param documentUtil the document util object used to determine the document type
+     * @param key            the key used to generate the replacement text
+     * @param documentUtil   the document util object used to determine the document type
      * @return the built replacement string
      */
     private String buildReplacement(String flavorTemplate, String key, DocumentUtil documentUtil) {
         if (documentUtil.isVue() || documentUtil.isJsOrTs()) return flavorTemplate + "('" + key + "')";
 
         return flavorTemplate + "(\"" + key + "\")";
+    }
+
+    private String convertKeyToNamingCase(String key, boolean camelCase) {
+        String newKey = key.toLowerCase();
+        return camelCase ? convertKeyToCamelCase(newKey) : convertKeyToSnakeCase(newKey);
+    }
+
+    private String convertKeyToCamelCase(String key) {
+
+
+        return CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, key);
+    }
+
+    private String convertKeyToSnakeCase(String key) {
+        return CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.LOWER_UNDERSCORE, key);
     }
 }
