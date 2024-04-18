@@ -11,6 +11,7 @@ import com.intellij.openapi.project.Project;
 
 import de.marhali.easyi18n.dialog.AddDialog;
 import de.marhali.easyi18n.model.KeyPath;
+import de.marhali.easyi18n.settings.NamingConvention;
 import de.marhali.easyi18n.settings.ProjectSettingsService;
 import de.marhali.easyi18n.util.DocumentUtil;
 
@@ -48,7 +49,7 @@ class LocalizeItAction extends AnAction {
             throw new RuntimeException("Project is null!");
         }
 
-        AddDialog dialog = new AddDialog(project, new KeyPath(convertKeyToNamingCase(text, true)), text, (key) -> replaceSelectedText(project, editor, key));
+        AddDialog dialog = new AddDialog(project, new KeyPath(convertKeyToNamingCase(text, project)), text, (key) -> replaceSelectedText(project, editor, key));
         dialog.showAndHandle();
     }
 
@@ -82,9 +83,12 @@ class LocalizeItAction extends AnAction {
         return flavorTemplate + "(\"" + key + "\")";
     }
 
-    private String convertKeyToNamingCase(String key, boolean camelCase) {
+    private String convertKeyToNamingCase(String key,Project project) {
         String newKey = key.toLowerCase();
-        return camelCase ? convertKeyToCamelCase(newKey) : convertKeyToSnakeCase(newKey);
+        newKey = newKey.replaceAll("\\s+", "_");
+
+        NamingConvention namingConvention = ProjectSettingsService.get(project).getState().getCaseFormat();
+        return (namingConvention == NamingConvention.CAMEL_CASE) ? convertKeyToCamelCase(newKey) : convertKeyToSnakeCase(newKey);
     }
 
     private String convertKeyToCamelCase(String key) {
