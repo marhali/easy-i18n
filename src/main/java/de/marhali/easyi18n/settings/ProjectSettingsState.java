@@ -95,6 +95,7 @@ public class ProjectSettingsState implements ProjectSettings {
 
         this.alwaysFold = defaults.isAlwaysFold();
         this.flavorTemplate = defaults.getFlavorTemplate();
+        this.caseFormat = defaults.getCaseFormat();
     }
 
     @Override

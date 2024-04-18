@@ -9,6 +9,7 @@ import de.marhali.easyi18n.io.folder.FolderStrategyType;
 import de.marhali.easyi18n.settings.presets.Preset;
 
 import javax.swing.*;
+import java.util.Objects;
 
 /**
  * Mandatory for state management for the project settings component.
@@ -68,9 +69,10 @@ public class ProjectSettingsComponentState {
         state.setAssistance(assistance.isSelected());
 
         state.setAlwaysFold(alwaysFold.isSelected());
+
         state.setFlavorTemplate(flavorTemplate.getText());
 
-        state.setCaseFormat(NamingConvention.valueOf(KeyCaseFormater.getSelectedItem().toString().replace("Case", "").trim()));
+        state.setCaseFormat(NamingConvention.fromSelector(KeyCaseFormater.getSelectedItem().toString()));
 
         return state;
     }

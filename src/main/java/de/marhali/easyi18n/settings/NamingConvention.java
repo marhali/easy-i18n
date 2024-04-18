@@ -15,4 +15,8 @@ public enum NamingConvention {
     public String toString() {
         return super.name().toLowerCase();
     }
+    static public NamingConvention fromSelector(String name) {
+        String formated = name.replace(" ","_");
+        return valueOf(formated.toUpperCase());
+    }
 }
