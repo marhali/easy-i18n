@@ -5,12 +5,10 @@ import com.google.common.base.CaseFormat;
 import java.util.Arrays;
 
 public enum NamingConvention {
-    SNAKE_CASE("Snake Case"),
-
     CAMEL_CASE("Camel Case"),
-
     CAMEL_CASE_UPPERCASE("Camel Case Uppercase"),
-    ;
+    SNAKE_CASE("Snake Case"),
+    SNAKE_CASE_UPPERCASE("Snake Case Uppercase");
 
     private final String name;
 
@@ -36,5 +34,29 @@ public enum NamingConvention {
         return Arrays.stream(NamingConvention.values())
                 .map(NamingConvention::getName)
                 .toArray(String[]::new);
+    }
+
+    static public String convertKeyToConvention(String key, NamingConvention convention) {
+        String newKey = key.toLowerCase();
+        newKey = newKey.replaceAll("\\s+", "_");
+        return switch (convention) {
+            case SNAKE_CASE:
+                yield formatToSnakeCase(newKey, false);
+            case SNAKE_CASE_UPPERCASE:
+                yield formatToSnakeCase(newKey, true);
+            case CAMEL_CASE:
+                yield formatToCamelCase(newKey, false);
+            case CAMEL_CASE_UPPERCASE:
+                yield formatToCamelCase(newKey, true);
+
+        };
+    }
+
+    static private String formatToCamelCase(String key, boolean capitalized) {
+        return CaseFormat.LOWER_UNDERSCORE.to(capitalized ? CaseFormat.UPPER_CAMEL : CaseFormat.LOWER_CAMEL, key);
+    }
+
+    static private String formatToSnakeCase(String key, boolean capitalized) {
+        return CaseFormat.LOWER_UNDERSCORE.to(capitalized ? CaseFormat.UPPER_UNDERSCORE : CaseFormat.LOWER_UNDERSCORE, key);
     }
 }

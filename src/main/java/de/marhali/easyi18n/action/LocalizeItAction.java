@@ -83,21 +83,8 @@ class LocalizeItAction extends AnAction {
         return flavorTemplate + "(\"" + key + "\")";
     }
 
-    private String convertKeyToNamingCase(String key,Project project) {
-        String newKey = key.toLowerCase();
-        newKey = newKey.replaceAll("\\s+", "_");
-
-        NamingConvention namingConvention = ProjectSettingsService.get(project).getState().getCaseFormat();
-        return (namingConvention == NamingConvention.CAMEL_CASE) ? convertKeyToCamelCase(newKey) : convertKeyToSnakeCase(newKey);
+    private String convertKeyToNamingCase(String key, Project project) {
+        return NamingConvention.convertKeyToConvention(key, ProjectSettingsService.get(project).getState().getCaseFormat());
     }
 
-    private String convertKeyToCamelCase(String key) {
-
-
-        return CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, key);
-    }
-
-    private String convertKeyToSnakeCase(String key) {
-        return CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.LOWER_UNDERSCORE, key);
-    }
 }
