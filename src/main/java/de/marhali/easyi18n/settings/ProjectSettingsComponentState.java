@@ -99,6 +99,7 @@ public class ProjectSettingsComponentState {
 
         alwaysFold.setSelected(state.isAlwaysFold());
         flavorTemplate.setText(state.getFlavorTemplate());
-        KeyCaseFormater.setSelectedItem(state.getCaseFormat().name());
+        KeyCaseFormater.setSelectedItem(state.getCaseFormat().getName());
     }
+
 }

@@ -22,6 +22,7 @@ import java.util.Objects;
 
 /**
  * End-to-end test case.
+ *
  * @author marhali
  */
 public abstract class EndToEndTestCase extends BasePlatformTestCase {
@@ -57,7 +58,8 @@ public abstract class EndToEndTestCase extends BasePlatformTestCase {
         out.setLocalesDirectory(tempPath.toString());
         ProjectSettingsService.get(getProject()).setState(out);
 
-        InstanceManager.get(getProject()).store().saveToPersistenceLayer(success -> {});
+        InstanceManager.get(getProject()).store().saveToPersistenceLayer(success -> {
+        });
 
         // Compare file structure and contents
         IOFileFilter fileFilter = TrueFileFilter.INSTANCE;
@@ -73,7 +75,7 @@ public abstract class EndToEndTestCase extends BasePlatformTestCase {
 
         assertEquals(originalFiles.length, outputFiles.length);
 
-        for(int i = 0; i < originalFiles.length; i++) {
+        for (int i = 0; i < originalFiles.length; i++) {
             File originalFile = originalFiles[i];
             File outputFile = outputFiles[i];
 

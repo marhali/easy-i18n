@@ -7,6 +7,7 @@ import de.marhali.easyi18n.io.parser.properties.PropertiesMapper;
 import de.marhali.easyi18n.io.parser.properties.SortableProperties;
 import de.marhali.easyi18n.model.TranslationData;
 import de.marhali.easyi18n.model.KeyPath;
+import de.marhali.easyi18n.settings.NamingConvention;
 import de.marhali.easyi18n.settings.ProjectSettings;
 import de.marhali.easyi18n.util.KeyPathConverter;
 
@@ -19,6 +20,7 @@ import java.util.*;
 
 /**
  * Unit tests for {@link PropertiesMapper}.
+ *
  * @author marhali
  */
 public class PropertiesMapperTest extends AbstractMapperTest {
@@ -244,6 +246,11 @@ public class PropertiesMapperTest extends AbstractMapperTest {
             @Override
             public boolean isIncludeSubDirs() {
                 return false;
+            }
+
+            @Override
+            public @NotNull NamingConvention getCaseFormat() {
+                return NamingConvention.CAMEL_CASE;
             }
         });
     }

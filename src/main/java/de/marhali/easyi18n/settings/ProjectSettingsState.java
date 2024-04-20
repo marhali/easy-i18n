@@ -66,6 +66,7 @@ public class ProjectSettingsState implements ProjectSettings {
      */
     @Property
     private String flavorTemplate;
+
     @Property
     private NamingConvention caseFormat;
 

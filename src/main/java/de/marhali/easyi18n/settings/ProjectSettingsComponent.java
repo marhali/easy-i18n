@@ -231,12 +231,9 @@ public class ProjectSettingsComponent extends ProjectSettingsComponentState {
     }
 
     private JComponent constructKeyCaseFormater() {
-        KeyCaseFormater = new ComboBox<>(bundle.getString("settings.experimental.key-naming-format.items").split(ArrayMapper.SPLITERATOR_REGEX));
+        KeyCaseFormater = new ComboBox<>(NamingConvention.getEnumNames());
         KeyCaseFormater.setToolTipText(bundle.getString("settings.experimental.key-naming-format.tooltip"));
         KeyCaseFormater.setMinimumAndPreferredWidth(120);
-        KeyCaseFormater.addActionListener(e -> {
-
-        });
         return KeyCaseFormater;
     }
 
