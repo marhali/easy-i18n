@@ -10,7 +10,7 @@ import java.util.Arrays;
  */
 public enum NamingConvention {
     CAMEL_CASE("Camel Case"),
-    CAMEL_CASE_UPPERCASE("Camel Case (Uppercase)"),
+    PASCAL_CASE("Pascal Case"),
     SNAKE_CASE("Snake Case"),
     SNAKE_CASE_UPPERCASE("Snake Case (Uppercase)");
 
@@ -76,7 +76,7 @@ public enum NamingConvention {
                 yield formatToSnakeCase(newKey, true);
             case CAMEL_CASE:
                 yield formatToCamelCase(newKey, false);
-            case CAMEL_CASE_UPPERCASE:
+            case PASCAL_CASE:
                 yield formatToCamelCase(newKey, true);
 
         };
