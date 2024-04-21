@@ -1,6 +1,5 @@
 package de.marhali.easyi18n.action;
 
-import com.google.common.base.CaseFormat;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
@@ -11,7 +10,7 @@ import com.intellij.openapi.project.Project;
 
 import de.marhali.easyi18n.dialog.AddDialog;
 import de.marhali.easyi18n.model.KeyPath;
-import de.marhali.easyi18n.settings.NamingConvention;
+import de.marhali.easyi18n.settings.presets.NamingConvention;
 import de.marhali.easyi18n.settings.ProjectSettingsService;
 import de.marhali.easyi18n.util.DocumentUtil;
 
@@ -79,10 +78,16 @@ class LocalizeItAction extends AnAction {
      */
     private String buildReplacement(String flavorTemplate, String key, DocumentUtil documentUtil) {
         if (documentUtil.isVue() || documentUtil.isJsOrTs()) return flavorTemplate + "('" + key + "')";
-
         return flavorTemplate + "(\"" + key + "\")";
     }
 
+    /**
+     * Converts a given key to the specified naming convention.
+     *
+     * @param key the key to convert
+     * @param project the project where the key is being converted
+     * @return the converted key
+     */
     private String convertKeyToNamingCase(String key, Project project) {
         return NamingConvention.convertKeyToConvention(key, ProjectSettingsService.get(project).getState().getCaseFormat());
     }

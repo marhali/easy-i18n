@@ -3,7 +3,7 @@ package de.marhali.easyi18n;
 import de.marhali.easyi18n.io.parser.ParserStrategyType;
 import de.marhali.easyi18n.io.folder.FolderStrategyType;
 import de.marhali.easyi18n.model.KeyPath;
-import de.marhali.easyi18n.settings.NamingConvention;
+import de.marhali.easyi18n.settings.presets.NamingConvention;
 import de.marhali.easyi18n.settings.ProjectSettings;
 import de.marhali.easyi18n.util.KeyPathConverter;
 

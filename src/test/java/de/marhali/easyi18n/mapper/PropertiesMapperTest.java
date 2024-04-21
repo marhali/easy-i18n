@@ -7,7 +7,7 @@ import de.marhali.easyi18n.io.parser.properties.PropertiesMapper;
 import de.marhali.easyi18n.io.parser.properties.SortableProperties;
 import de.marhali.easyi18n.model.TranslationData;
 import de.marhali.easyi18n.model.KeyPath;
-import de.marhali.easyi18n.settings.NamingConvention;
+import de.marhali.easyi18n.settings.presets.NamingConvention;
 import de.marhali.easyi18n.settings.ProjectSettings;
 import de.marhali.easyi18n.util.KeyPathConverter;
 

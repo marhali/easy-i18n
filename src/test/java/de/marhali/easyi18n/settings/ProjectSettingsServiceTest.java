@@ -4,6 +4,7 @@ import com.intellij.testFramework.fixtures.BasePlatformTestCase;
 import com.intellij.util.xmlb.XmlSerializerUtil;
 
 import de.marhali.easyi18n.settings.presets.DefaultPreset;
+import de.marhali.easyi18n.settings.presets.NamingConvention;
 
 /**
  * Tests for the project settings service itself.

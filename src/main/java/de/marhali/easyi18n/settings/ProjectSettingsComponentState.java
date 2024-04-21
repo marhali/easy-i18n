@@ -1,15 +1,14 @@
 package de.marhali.easyi18n.settings;
 
-import com.google.common.base.CaseFormat;
 import com.intellij.openapi.ui.ComboBox;
 import com.intellij.openapi.ui.TextFieldWithBrowseButton;
 
 import de.marhali.easyi18n.io.parser.ParserStrategyType;
 import de.marhali.easyi18n.io.folder.FolderStrategyType;
+import de.marhali.easyi18n.settings.presets.NamingConvention;
 import de.marhali.easyi18n.settings.presets.Preset;
 
 import javax.swing.*;
-import java.util.Objects;
 
 /**
  * Mandatory for state management for the project settings component.
@@ -72,7 +71,7 @@ public class ProjectSettingsComponentState {
 
         state.setFlavorTemplate(flavorTemplate.getText());
 
-        state.setCaseFormat(NamingConvention.fromSelector(KeyCaseFormater.getSelectedItem().toString()));
+        state.setCaseFormat(NamingConvention.fromString(KeyCaseFormater.getSelectedItem().toString()));
 
         return state;
     }

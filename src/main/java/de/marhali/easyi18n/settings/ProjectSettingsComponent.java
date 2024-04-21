@@ -1,6 +1,5 @@
 package de.marhali.easyi18n.settings;
 
-import com.google.common.base.CaseFormat;
 import com.intellij.ide.BrowserUtil;
 import com.intellij.openapi.fileChooser.FileChooserDescriptor;
 import com.intellij.openapi.project.Project;
@@ -14,6 +13,7 @@ import com.intellij.util.ui.FormBuilder;
 
 import de.marhali.easyi18n.io.parser.ArrayMapper;
 import de.marhali.easyi18n.io.parser.ParserStrategyType;
+import de.marhali.easyi18n.settings.presets.NamingConvention;
 import de.marhali.easyi18n.settings.presets.Preset;
 
 import javax.swing.*;
@@ -233,7 +233,7 @@ public class ProjectSettingsComponent extends ProjectSettingsComponentState {
     private JComponent constructKeyCaseFormater() {
         KeyCaseFormater = new ComboBox<>(NamingConvention.getEnumNames());
         KeyCaseFormater.setToolTipText(bundle.getString("settings.experimental.key-naming-format.tooltip"));
-        KeyCaseFormater.setMinimumAndPreferredWidth(120);
+        KeyCaseFormater.setMinimumAndPreferredWidth(200);
         return KeyCaseFormater;
     }
 
