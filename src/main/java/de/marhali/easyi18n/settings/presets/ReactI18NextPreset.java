@@ -91,4 +91,8 @@ public class ReactI18NextPreset implements ProjectSettings {
     public String getFlavorTemplate() {
         return "$i18n.t";
     }
+    @Override
+    public @NotNull NamingConvention getCaseFormat() {
+        return NamingConvention.CAMEL_CASE;
+    }
 }

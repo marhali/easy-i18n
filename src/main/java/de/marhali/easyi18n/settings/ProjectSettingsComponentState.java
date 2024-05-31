@@ -5,12 +5,14 @@ import com.intellij.openapi.ui.TextFieldWithBrowseButton;
 
 import de.marhali.easyi18n.io.parser.ParserStrategyType;
 import de.marhali.easyi18n.io.folder.FolderStrategyType;
+import de.marhali.easyi18n.settings.presets.NamingConvention;
 import de.marhali.easyi18n.settings.presets.Preset;
 
 import javax.swing.*;
 
 /**
  * Mandatory for state management for the project settings component.
+ *
  * @author marhali
  */
 public class ProjectSettingsComponentState {
@@ -41,6 +43,7 @@ public class ProjectSettingsComponentState {
     protected JCheckBox alwaysFold;
 
     protected JTextField flavorTemplate;
+    protected ComboBox<String> KeyCaseFormater;
 
     protected ProjectSettingsState getState() {
         // Every field needs to provide its state
@@ -65,7 +68,10 @@ public class ProjectSettingsComponentState {
         state.setAssistance(assistance.isSelected());
 
         state.setAlwaysFold(alwaysFold.isSelected());
+
         state.setFlavorTemplate(flavorTemplate.getText());
+
+        state.setCaseFormat(NamingConvention.fromString(KeyCaseFormater.getSelectedItem().toString()));
 
         return state;
     }
@@ -92,5 +98,7 @@ public class ProjectSettingsComponentState {
 
         alwaysFold.setSelected(state.isAlwaysFold());
         flavorTemplate.setText(state.getFlavorTemplate());
+        KeyCaseFormater.setSelectedItem(state.getCaseFormat().getName());
     }
+
 }

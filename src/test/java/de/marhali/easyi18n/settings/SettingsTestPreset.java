@@ -3,11 +3,13 @@ package de.marhali.easyi18n.settings;
 import de.marhali.easyi18n.io.folder.FolderStrategyType;
 import de.marhali.easyi18n.io.parser.ParserStrategyType;
 
+import de.marhali.easyi18n.settings.presets.NamingConvention;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
  * Settings preset to test the functionality of the settings service.
+ *
  * @author marhali
  */
 public class SettingsTestPreset implements ProjectSettings {
@@ -88,6 +90,11 @@ public class SettingsTestPreset implements ProjectSettings {
 
     @Override
     public String getFlavorTemplate() {
-        return "";
+        return "t";
+    }
+
+    @Override
+    public @NotNull NamingConvention getCaseFormat() {
+        return NamingConvention.CAMEL_CASE;
     }
 }

@@ -6,6 +6,7 @@ import de.marhali.easyi18n.io.parser.ParserStrategyType;
 import de.marhali.easyi18n.io.folder.FolderStrategyType;
 import de.marhali.easyi18n.settings.presets.DefaultPreset;
 
+import de.marhali.easyi18n.settings.presets.NamingConvention;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -13,32 +14,48 @@ import java.util.Objects;
 
 /**
  * Represents the project-specific configuration of this plugin.
+ *
  * @author marhali
  */
 public class ProjectSettingsState implements ProjectSettings {
 
     // Resource Configuration
-    @Property private String localesDirectory;
-    @Property private FolderStrategyType folderStrategy;
-    @Property private ParserStrategyType parserStrategy;
-    @Property private String filePattern;
+    @Property
+    private String localesDirectory;
+    @Property
+    private FolderStrategyType folderStrategy;
+    @Property
+    private ParserStrategyType parserStrategy;
+    @Property
+    private String filePattern;
 
-    @Property private Boolean includeSubDirs;
-    @Property private boolean sorting;
+    @Property
+    private Boolean includeSubDirs;
+    @Property
+    private boolean sorting;
 
     // Editor configuration
-    @Property private String namespaceDelimiter;
-    @Property private String sectionDelimiter;
-    @Property private String contextDelimiter;
-    @Property private String pluralDelimiter;
-    @Property private String defaultNamespace;
-    @Property private String previewLocale;
+    @Property
+    private String namespaceDelimiter;
+    @Property
+    private String sectionDelimiter;
+    @Property
+    private String contextDelimiter;
+    @Property
+    private String pluralDelimiter;
+    @Property
+    private String defaultNamespace;
+    @Property
+    private String previewLocale;
 
-    @Property private Boolean nestedKeys;
-    @Property private Boolean assistance;
+    @Property
+    private Boolean nestedKeys;
+    @Property
+    private Boolean assistance;
 
     // Experimental configuration
-    @Property private Boolean alwaysFold;
+    @Property
+    private Boolean alwaysFold;
 
     /**
      * The `flavorTemplate` specifies the format used for replacing strings with their i18n (internationalization) counterparts.
@@ -47,7 +64,11 @@ public class ProjectSettingsState implements ProjectSettings {
      * the specific framework or developers' preferences for handling i18n. The ability to dynamically change this template adds flexibility and customization
      * to cater to different i18n handling methods.
      */
-    @Property private String flavorTemplate;
+    @Property
+    private String flavorTemplate;
+
+    @Property
+    private NamingConvention caseFormat;
 
     public ProjectSettingsState() {
         this(new DefaultPreset());
@@ -75,6 +96,7 @@ public class ProjectSettingsState implements ProjectSettings {
 
         this.alwaysFold = defaults.isAlwaysFold();
         this.flavorTemplate = defaults.getFlavorTemplate();
+        this.caseFormat = defaults.getCaseFormat();
     }
 
     @Override
@@ -158,6 +180,11 @@ public class ProjectSettingsState implements ProjectSettings {
         return this.flavorTemplate;
     }
 
+    @Override
+    public @NotNull NamingConvention getCaseFormat() {
+        return this.caseFormat;
+    }
+
     public void setLocalesDirectory(String localesDirectory) {
         this.localesDirectory = localesDirectory;
     }
@@ -218,9 +245,14 @@ public class ProjectSettingsState implements ProjectSettings {
         this.alwaysFold = alwaysFold;
     }
 
-    public void setFlavorTemplate(String flavorTemplate){
+    public void setFlavorTemplate(String flavorTemplate) {
         this.flavorTemplate = flavorTemplate;
     }
+
+    public void setCaseFormat(NamingConvention caseFormat) {
+        this.caseFormat = caseFormat;
+    }
+
 
     @Override
     public boolean equals(Object o) {
@@ -242,7 +274,8 @@ public class ProjectSettingsState implements ProjectSettings {
                 && Objects.equals(nestedKeys, that.nestedKeys)
                 && Objects.equals(assistance, that.assistance)
                 && Objects.equals(alwaysFold, that.alwaysFold)
-                && Objects.equals(flavorTemplate,that.flavorTemplate);
+                && Objects.equals(flavorTemplate, that.flavorTemplate)
+                && Objects.equals(caseFormat, that.caseFormat);
     }
 
     @Override
@@ -250,7 +283,7 @@ public class ProjectSettingsState implements ProjectSettings {
         return Objects.hash(
                 localesDirectory, folderStrategy, parserStrategy, filePattern, includeSubDirs,
                 sorting, namespaceDelimiter, sectionDelimiter, contextDelimiter, pluralDelimiter,
-                defaultNamespace, previewLocale, nestedKeys, assistance, alwaysFold,flavorTemplate
+                defaultNamespace, previewLocale, nestedKeys, assistance, alwaysFold, flavorTemplate, caseFormat
         );
     }
 
@@ -273,6 +306,7 @@ public class ProjectSettingsState implements ProjectSettings {
                 ", assistance=" + assistance +
                 ", alwaysFold=" + alwaysFold +
                 ", flavorTemplate=" + flavorTemplate +
+                ", caseFormat=" + caseFormat.toString() +
                 '}';
     }
 }

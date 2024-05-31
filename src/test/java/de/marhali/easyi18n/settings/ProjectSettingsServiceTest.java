@@ -4,9 +4,11 @@ import com.intellij.testFramework.fixtures.BasePlatformTestCase;
 import com.intellij.util.xmlb.XmlSerializerUtil;
 
 import de.marhali.easyi18n.settings.presets.DefaultPreset;
+import de.marhali.easyi18n.settings.presets.NamingConvention;
 
 /**
  * Tests for the project settings service itself.
+ *
  * @author marhali
  */
 public class ProjectSettingsServiceTest extends BasePlatformTestCase {
@@ -34,5 +36,13 @@ public class ProjectSettingsServiceTest extends BasePlatformTestCase {
 
         ProjectSettingsState after = XmlSerializerUtil.createCopy(previous);
         assertEquals("mySinglePropTest", after.getLocalesDirectory());
+    }
+
+    public void testPersistenceFormatCase() {
+        ProjectSettingsState previous = new ProjectSettingsState();
+        assertEquals(previous.getCaseFormat(), NamingConvention.CAMEL_CASE);
+        previous.setCaseFormat(NamingConvention.SNAKE_CASE);
+        ProjectSettingsState after = XmlSerializerUtil.createCopy(previous);
+        assertEquals(after.getCaseFormat(), NamingConvention.SNAKE_CASE);
     }
 }
