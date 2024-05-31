@@ -4,6 +4,10 @@
 
 ## [Unreleased]
 
+### Added
+
+- Automated key naming convention suggestion for Localize-It action. Thanks to @JPilson
+
 ## [4.5.2] - 2024-05-30
 
 ### Added
