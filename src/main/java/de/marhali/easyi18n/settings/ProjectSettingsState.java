@@ -68,6 +68,13 @@ public class ProjectSettingsState implements ProjectSettings {
     private String flavorTemplate;
 
     @Property
+    private String aiApiKey;
+    @Property
+    private String aiModel;
+    @Property
+    private String aiProxyURL;
+
+    @Property
     private NamingConvention caseFormat;
 
     public ProjectSettingsState() {
@@ -97,6 +104,9 @@ public class ProjectSettingsState implements ProjectSettings {
         this.alwaysFold = defaults.isAlwaysFold();
         this.flavorTemplate = defaults.getFlavorTemplate();
         this.caseFormat = defaults.getCaseFormat();
+        this.aiApiKey = defaults.getAiApiKey();
+        this.aiModel = defaults.getAiModal();
+        this.aiProxyURL = defaults.getAiProxyUrl();
     }
 
     @Override
@@ -183,6 +193,33 @@ public class ProjectSettingsState implements ProjectSettings {
     @Override
     public @NotNull NamingConvention getCaseFormat() {
         return this.caseFormat;
+    }
+
+    @Override
+    public String getAiApiKey() {
+        return aiApiKey;
+    }
+
+    @Override
+    public String getAiModal() {
+        return aiModel;
+    }
+
+    @Override
+    public String getAiProxyUrl() {
+        return aiProxyURL;
+    }
+
+    public void setAiApiKey(String aiApiKey) {
+        this.aiApiKey = aiApiKey;
+    }
+
+    public void setAiModel(String aiModel) {
+        this.aiModel = aiModel;
+    }
+
+    public void setAiProxyURL(String aiProxyURL) {
+        this.aiProxyURL = aiProxyURL;
     }
 
     public void setLocalesDirectory(String localesDirectory) {
@@ -275,6 +312,9 @@ public class ProjectSettingsState implements ProjectSettings {
                 && Objects.equals(assistance, that.assistance)
                 && Objects.equals(alwaysFold, that.alwaysFold)
                 && Objects.equals(flavorTemplate, that.flavorTemplate)
+                && Objects.equals(aiApiKey, that.aiApiKey)
+                && Objects.equals(aiModel, that.aiModel)
+                && Objects.equals(aiProxyURL, that.aiProxyURL)
                 && Objects.equals(caseFormat, that.caseFormat);
     }
 
@@ -283,7 +323,8 @@ public class ProjectSettingsState implements ProjectSettings {
         return Objects.hash(
                 localesDirectory, folderStrategy, parserStrategy, filePattern, includeSubDirs,
                 sorting, namespaceDelimiter, sectionDelimiter, contextDelimiter, pluralDelimiter,
-                defaultNamespace, previewLocale, nestedKeys, assistance, alwaysFold, flavorTemplate, caseFormat
+                defaultNamespace, previewLocale, nestedKeys, assistance, alwaysFold, flavorTemplate, caseFormat,
+                aiApiKey, aiModel, aiProxyURL
         );
     }
 

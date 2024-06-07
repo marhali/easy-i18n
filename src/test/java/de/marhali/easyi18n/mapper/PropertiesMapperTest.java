@@ -252,6 +252,21 @@ public class PropertiesMapperTest extends AbstractMapperTest {
             public @NotNull NamingConvention getCaseFormat() {
                 return NamingConvention.CAMEL_CASE;
             }
+
+            @Override
+            public String getAiApiKey() {
+                return "";
+            }
+
+            @Override
+            public String getAiModal() {
+                return "gpt-3.5-turbo";
+            }
+
+            @Override
+            public String getAiProxyUrl() {
+                return "https://api.openai.com/v1/chat/completions";
+            }
         });
     }
 }

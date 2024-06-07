@@ -19,19 +19,35 @@ import de.marhali.easyi18n.settings.ProjectSettings;
 import de.marhali.easyi18n.settings.ProjectSettingsService;
 import de.marhali.easyi18n.util.KeyPathConverter;
 
+import org.apache.http.util.TextUtils;
+import org.codehaus.jettison.json.JSONArray;
+import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
 import java.awt.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.*;
+import java.io.IOException;
+import java.util.concurrent.CompletableFuture;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Base for add and edit translation dialogs.
+ *
  * @author marhali
  */
 abstract class TranslationDialog extends DialogWrapper {
+    private String AI_PROXY_URL;
+    private String AI_API_KEY;
+    private String AI_MODAL;
 
     protected static final ResourceBundle bundle = ResourceBundle.getBundle("messages");
 
@@ -48,14 +64,20 @@ abstract class TranslationDialog extends DialogWrapper {
     // 添加在类成员变量部分
     private final JBTextField jsonInputField;
     private final JButton jsonProcessButton;
+    private final JBTextField textToTranslateField;
+    private final JButton translateButton;
 
     /**
      * Constructs a new translation dialog.
+     *
      * @param project Opened project
-     * @param origin Prefill translation
+     * @param origin  Prefill translation
      */
     protected TranslationDialog(@NotNull Project project, @NotNull Translation origin) {
         super(project);
+        AI_API_KEY = ProjectSettingsService.get(project).getState().getAiApiKey();
+        AI_PROXY_URL = ProjectSettingsService.get(project).getState().getAiProxyUrl();
+        AI_MODAL = ProjectSettingsService.get(project).getState().getAiModal();
 
         this.project = project;
         this.settings = ProjectSettingsService.get(project).getState();
@@ -70,14 +92,17 @@ abstract class TranslationDialog extends DialogWrapper {
         this.keyField = new JBTextField(converter.toString(origin.getKey()));
         this.localeValueFields = new HashMap<>();
 
-        for(String locale : InstanceManager.get(project).store().getData().getLocales()) {
+        for (String locale : InstanceManager.get(project).store().getData().getLocales()) {
             localeValueFields.put(locale, new JBTextField(value != null ? value.get(locale) : null));
         }
 
+        this.textToTranslateField = new JBTextField();
+        this.translateButton = new JButton(bundle.getString("translation.translate"));
         this.jsonInputField = new JBTextField();
         this.jsonInputField.setText("{\"en\":\"English\",\"zh\":\"Chinese\"}");
         this.jsonProcessButton = new JButton(bundle.getString("translation.processJson"));
 
+        translateButton.addActionListener(e -> translateText());
         jsonProcessButton.addActionListener(e -> processJsonInput());
     }
 
@@ -88,6 +113,7 @@ abstract class TranslationDialog extends DialogWrapper {
     /**
      * Registers a callback that is called on dialog close with the final state.
      * If the user aborts the dialog no callback is called.
+     *
      * @param callback Callback to register
      */
     public void registerCallback(Consumer<TranslationUpdate> callback) {
@@ -96,6 +122,7 @@ abstract class TranslationDialog extends DialogWrapper {
 
     /**
      * Implementation needs to handle exit
+     *
      * @param exitCode See {@link com.intellij.openapi.ui.DialogWrapper} for exit codes
      * @return update conclusion, null if aborted
      */
@@ -112,7 +139,7 @@ abstract class TranslationDialog extends DialogWrapper {
         int exitCode = getExitCode();
         TranslationUpdate update = handleExit(exitCode);
 
-        if(update != null) {
+        if (update != null) {
             InstanceManager.get(project).processUpdate(update);
             callbacks.forEach(callback -> callback.consume(update));
         }
@@ -120,6 +147,7 @@ abstract class TranslationDialog extends DialogWrapper {
 
     /**
      * Retrieve current modal state.
+     *
      * @return Translation
      */
     protected @NotNull Translation getState() {
@@ -127,7 +155,7 @@ abstract class TranslationDialog extends DialogWrapper {
 
         TranslationValue value = new TranslationValue();
 
-        for(Map.Entry<String, JTextField> entry : localeValueFields.entrySet()) {
+        for (Map.Entry<String, JTextField> entry : localeValueFields.entrySet()) {
             value.put(entry.getKey(), entry.getValue().getText());
         }
 
@@ -138,6 +166,7 @@ abstract class TranslationDialog extends DialogWrapper {
     protected @Nullable JComponent createCenterPanel() {
         JPanel panel = FormBuilder.createFormBuilder()
                 .addLabeledComponent(bundle.getString("translation.key"), keyField, true)
+                .addComponent(createTranslateInputPanel(), 12)
                 .addComponent(createJsonInputPanel(), 12)
                 .addComponent(createLocalesPanel(), 12)
                 .getPanel();
@@ -147,10 +176,130 @@ abstract class TranslationDialog extends DialogWrapper {
         return panel;
     }
 
+    private JComponent createTranslateInputPanel() {
+        JPanel translateInputPanel = new JPanel(new BorderLayout());
+        translateInputPanel.add(textToTranslateField, BorderLayout.CENTER);
+        translateInputPanel.add(translateButton, BorderLayout.EAST);
+
+        JPanel container = new JPanel(new BorderLayout());
+        container.setBorder(BorderFactory.createTitledBorder(
+                new EtchedBorder(), bundle.getString("translation.textToTranslate")));
+        container.add(translateInputPanel, BorderLayout.CENTER);
+
+        return container;
+    }
+
+    private boolean isRequesting = false;
+    private void translateText() {
+        if (isRequesting) {
+            return;
+        }
+        isRequesting = true;
+        String textToTranslate = textToTranslateField.getText();
+        if (textToTranslate.isEmpty()) {
+            JOptionPane.showMessageDialog(null, bundle.getString("translation.emptyText"), bundle.getString("translation.error"), JOptionPane.ERROR_MESSAGE);
+            isRequesting = false;
+            return;
+        }
+        if (TextUtils.isEmpty(AI_API_KEY)) {
+            JOptionPane.showMessageDialog(null, "Need API Key!", bundle.getString("translation.error"), JOptionPane.ERROR_MESSAGE);
+            isRequesting = false;
+            return;
+        }
+
+        CompletableFuture.runAsync(() -> {
+            HttpURLConnection connection = null;
+            try {
+                URL url = new URL(AI_PROXY_URL);
+                connection = (HttpURLConnection) url.openConnection();
+                connection.setConnectTimeout(5000); // 5 seconds for connection timeout
+                connection.setReadTimeout(30000); // 30 seconds for read timeout
+                connection.setRequestMethod("POST");
+                connection.setRequestProperty("Authorization", "Bearer " + AI_API_KEY);
+                connection.setRequestProperty("Content-Type", "application/json");
+                connection.setDoOutput(true);
+                connection.setRequestProperty("Accept", "text/event-stream");
+
+                // Generate JSON schema
+                JSONObject jsonSchema = new JSONObject();
+                for (String locale : localeValueFields.keySet()) {
+                    jsonSchema.put(locale, "");
+                }
+                // Construct prompt
+                String prompt = String.format(
+                        "MUST Translate the following text into the supported languages in the provided JSON schema format. " +
+                                "If the text is in a language other than English, infer the language and then translate. " +
+                                "Do not provide me with markdown format, only plain text. " +
+                                "Output the translation strictly as a JSON object without any additional formatting or comments.  " +
+                                "Schema: %s\n\nText: %s",
+                        jsonSchema.toString(), textToTranslate
+                );
+
+                JSONObject requestBody = new JSONObject()
+                        .put("model", AI_MODAL)
+                        .put("stream", true)
+                        .put("temperature", 0.2) // Lower value for more deterministic output
+                        .put("top_p", 0.95) // Using nucleus sampling for more deterministic output
+                        .put("messages", new JSONArray()
+                                .put(new JSONObject()
+                                        .put("role", "system")
+                                        .put("content", prompt))
+                                .put(new JSONObject()
+                                        .put("role", "user")
+                                        .put("content", textToTranslate)));
+
+                try (OutputStream os = connection.getOutputStream()) {
+                    byte[] input = requestBody.toString().getBytes(StandardCharsets.UTF_8);
+                    os.write(input, 0, input.length);
+                }
+
+                if (connection.getResponseCode() == 200) {
+                    try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
+                        String line;
+                        StringBuilder responseBuilder = new StringBuilder();
+                        while ((line = reader.readLine()) != null) {
+                            if (line.startsWith("data: ")) {
+                                line = line.substring(6);
+                                if (line.equals("[DONE]")) break;
+
+                                try {
+                                    JSONObject jsonResponse = new JSONObject(line);
+                                    String translatedText = jsonResponse.getJSONArray("choices").getJSONObject(0).getJSONObject("delta").getString("content");
+                                    responseBuilder.append(translatedText);
+                                    SwingUtilities.invokeLater(() -> jsonInputField.setText(responseBuilder.toString()));
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                        SwingUtilities.invokeLater(() -> jsonInputField.setText(responseBuilder.toString().replaceAll("```","")));
+                    }
+                } else {
+                    throw new IOException("Unexpected response code: " + connection.getResponseCode());
+                }
+            } catch (Exception e) {
+//                SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, bundle.getString("translation.translationFailed"), bundle.getString("translation.error"), JOptionPane.ERROR_MESSAGE));
+                HttpURLConnection finalConnection = connection;
+                SwingUtilities.invokeLater(() -> {
+                    try {
+                        JOptionPane.showMessageDialog(null, finalConnection != null ? finalConnection.getResponseMessage() : e.getLocalizedMessage(), bundle.getString("translation.error"), JOptionPane.ERROR_MESSAGE);
+                    } catch (IOException ex) {
+                        JOptionPane.showMessageDialog(null, e.getLocalizedMessage(), bundle.getString("translation.error"), JOptionPane.ERROR_MESSAGE);
+                    }
+                });
+            } finally {
+                if (connection != null) {
+                    connection.disconnect();
+                }
+                isRequesting = false;
+            }
+        });
+    }
+
     private JComponent createLocalesPanel() {
         FormBuilder builder = FormBuilder.createFormBuilder();
 
-        for(Map.Entry<String, JTextField> localeEntry : localeValueFields.entrySet()) {
+        for (Map.Entry<String, JTextField> localeEntry : localeValueFields.entrySet()) {
             builder.addLabeledComponent(localeEntry.getKey(), localeEntry.getValue(), 6, true);
         }
 
@@ -179,7 +328,8 @@ abstract class TranslationDialog extends DialogWrapper {
         String jsonText = jsonInputField.getText();
 
         try {
-            Map<String, String> jsonMap = new Gson().fromJson(jsonText, new TypeToken<Map<String, String>>(){}.getType());
+            Map<String, String> jsonMap = new Gson().fromJson(jsonText, new TypeToken<Map<String, String>>() {
+            }.getType());
             jsonMap.forEach((locale, value) -> {
                 JTextField field = localeValueFields.get(locale);
                 if (field != null) {
