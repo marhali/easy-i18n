@@ -43,6 +43,9 @@ public class ProjectSettingsComponentState {
     protected JCheckBox alwaysFold;
 
     protected JTextField flavorTemplate;
+    protected JTextField aiProxyURL;
+    protected JTextField aiApiKey;
+    protected JTextField aiModel;
     protected ComboBox<String> KeyCaseFormater;
 
     protected ProjectSettingsState getState() {
@@ -70,6 +73,9 @@ public class ProjectSettingsComponentState {
         state.setAlwaysFold(alwaysFold.isSelected());
 
         state.setFlavorTemplate(flavorTemplate.getText());
+        state.setAiApiKey(aiApiKey.getText());
+        state.setAiModel(aiModel.getText());
+        state.setAiProxyURL(aiProxyURL.getText());
 
         state.setCaseFormat(NamingConvention.fromString(KeyCaseFormater.getSelectedItem().toString()));
 
@@ -99,6 +105,9 @@ public class ProjectSettingsComponentState {
         alwaysFold.setSelected(state.isAlwaysFold());
         flavorTemplate.setText(state.getFlavorTemplate());
         KeyCaseFormater.setSelectedItem(state.getCaseFormat().getName());
+        aiApiKey.setText(state.getAiApiKey());
+        aiModel.setText(state.getAiModal());
+        aiProxyURL.setText(state.getAiProxyUrl());
     }
 
 }

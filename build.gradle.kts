@@ -27,6 +27,7 @@ dependencies {
     implementation(libs.json5.java)
     implementation(libs.commons.lang3)
     implementation(libs.commons.text)
+    implementation("com.google.code.gson:gson:2.8.8")
 }
 
 // Set the JVM language level used to build the project.

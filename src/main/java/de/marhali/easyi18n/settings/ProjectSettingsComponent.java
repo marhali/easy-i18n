@@ -68,6 +68,9 @@ public class ProjectSettingsComponent extends ProjectSettingsComponentState {
                 .addComponent(constructAlwaysFoldField())
                 .addVerticalGap(12)
                 .addLabeledComponent(bundle.getString("settings.experimental.flavor-template"), constructFlavorTemplate(), 1, false)
+                .addLabeledComponent("AI_PROXY_URL", constructAIProxyUrl(), 1, false)
+                .addLabeledComponent("AI_API_KEY", constructAIApiKey(), 1, false)
+                .addLabeledComponent("AI_MODEL", constructAIModel(), 1, false)
                 .addLabeledComponent(bundle.getString("settings.experimental.key-naming-format.title"), constructKeyCaseFormater(), 1, false)
                 .addComponentFillVertically(new JPanel(), 0)
                 .getPanel();
@@ -228,6 +231,19 @@ public class ProjectSettingsComponent extends ProjectSettingsComponentState {
         flavorTemplate = new ExtendableTextField(20);
         flavorTemplate.setToolTipText(bundle.getString("settings.experimental.flavor-template-tooltip"));
         return flavorTemplate;
+    }
+
+    private JComponent constructAIProxyUrl() {
+        aiProxyURL = new ExtendableTextField(20);
+        return aiProxyURL;
+    }
+    private JComponent constructAIApiKey() {
+        aiApiKey = new ExtendableTextField(20);
+        return aiApiKey;
+    }
+    private JComponent constructAIModel() {
+        aiModel = new ExtendableTextField(20);
+        return aiModel;
     }
 
     private JComponent constructKeyCaseFormater() {
