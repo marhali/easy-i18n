@@ -1,7 +1,6 @@
 package de.marhali.easyi18n.dialog;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
+import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogWrapper;
@@ -20,9 +19,7 @@ import de.marhali.easyi18n.settings.ProjectSettingsService;
 import de.marhali.easyi18n.util.KeyPathConverter;
 
 import org.apache.http.util.TextUtils;
-import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
-import org.codehaus.jettison.json.JSONObject;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -221,9 +218,9 @@ abstract class TranslationDialog extends DialogWrapper {
                 connection.setRequestProperty("Accept", "text/event-stream");
 
                 // Generate JSON schema
-                JSONObject jsonSchema = new JSONObject();
+                JsonObject jsonSchema = new JsonObject();
                 for (String locale : localeValueFields.keySet()) {
-                    jsonSchema.put(locale, "");
+                    jsonSchema.addProperty(locale, "");
                 }
                 // Construct prompt
                 String prompt = String.format(
@@ -235,18 +232,21 @@ abstract class TranslationDialog extends DialogWrapper {
                         jsonSchema.toString(), textToTranslate
                 );
 
-                JSONObject requestBody = new JSONObject()
-                        .put("model", AI_MODAL)
-                        .put("stream", true)
-                        .put("temperature", 0.2) // Lower value for more deterministic output
-                        .put("top_p", 0.95) // Using nucleus sampling for more deterministic output
-                        .put("messages", new JSONArray()
-                                .put(new JSONObject()
-                                        .put("role", "system")
-                                        .put("content", prompt))
-                                .put(new JSONObject()
-                                        .put("role", "user")
-                                        .put("content", textToTranslate)));
+                JsonObject requestBody = new JsonObject();
+                requestBody.addProperty("model", AI_MODAL);
+                requestBody.addProperty("stream", true);
+                requestBody.addProperty("temperature", 0.2); // Lower value for more deterministic output
+                requestBody.addProperty("top_p", 0.95); // Using nucleus sampling for more deterministic output
+                JsonArray jsonArray = new JsonArray();
+                JsonObject jsonObject1 = new JsonObject();
+                jsonObject1.addProperty("role", "system");
+                jsonObject1.addProperty("content", prompt);
+                jsonArray.add(jsonObject1);
+                JsonObject jsonObject2 = new JsonObject();
+                jsonObject2.addProperty("role", "user");
+                jsonObject2.addProperty("content", textToTranslate);
+                jsonArray.add(jsonObject2);
+                requestBody.add("messages", jsonArray);
 
                 try (OutputStream os = connection.getOutputStream()) {
                     byte[] input = requestBody.toString().getBytes(StandardCharsets.UTF_8);
@@ -262,13 +262,16 @@ abstract class TranslationDialog extends DialogWrapper {
                                 line = line.substring(6);
                                 if (line.equals("[DONE]")) break;
 
-                                try {
-                                    JSONObject jsonResponse = new JSONObject(line);
-                                    String translatedText = jsonResponse.getJSONArray("choices").getJSONObject(0).getJSONObject("delta").getString("content");
-                                    responseBuilder.append(translatedText);
-                                    SwingUtilities.invokeLater(() -> jsonInputField.setText(responseBuilder.toString()));
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
+                                JsonObject jsonResponse = JsonParser.parseString(line).getAsJsonObject();
+                                JsonArray choices = jsonResponse.getAsJsonArray("choices");
+                                if (choices != null && !choices.isEmpty()) {
+                                    JsonObject choice = choices.get(0).getAsJsonObject();
+                                    JsonObject delta = choice.getAsJsonObject("delta");
+                                    if (delta != null && delta.has("content")) {
+                                        String translatedText = delta.get("content").getAsString();
+                                        responseBuilder.append(translatedText);
+                                        SwingUtilities.invokeLater(() -> jsonInputField.setText(responseBuilder.toString()));
+                                    }
                                 }
                             }
                         }
