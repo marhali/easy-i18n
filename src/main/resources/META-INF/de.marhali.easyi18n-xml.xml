@@ -1,5 +1,11 @@
 <idea-plugin>
     <extensions defaultExtensionNs="com.intellij">
+
+        <psi.referenceContributor
+                language="HTML"
+                implementation="de.marhali.easyi18n.assistance.reference.XmlKeyReferenceContributor"
+        />
+
         <lang.foldingBuilder
                 language="HTML"
                 implementationClass="de.marhali.easyi18n.assistance.folding.XmlFoldingBuilder"
@@ -9,5 +15,14 @@
                 language="HTML"
                 implementationClass="de.marhali.easyi18n.assistance.documentation.CommonDocumentationProvider"
         />
+
+        <completion.contributor
+                language="HTML"
+                implementationClass="de.marhali.easyi18n.assistance.completion.XmlCompletionContributor"
+        />
+
+        <intentionAction>
+            <className>de.marhali.easyi18n.assistance.intention.XmlTranslationIntention</className>
+        </intentionAction>
     </extensions>
 </idea-plugin>
