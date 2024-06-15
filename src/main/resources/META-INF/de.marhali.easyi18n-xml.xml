@@ -21,5 +21,8 @@
                 implementationClass="de.marhali.easyi18n.assistance.completion.XmlCompletionContributor"
         />
 
+        <intentionAction>
+            <className>de.marhali.easyi18n.assistance.intention.XmlTranslationIntention</className>
+        </intentionAction>
     </extensions>
 </idea-plugin>
