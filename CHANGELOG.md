@@ -4,6 +4,15 @@
 
 ## [Unreleased]
 
+### Added
+
+- Support for IntelliJ Platform version 2024.3
+
+### Changed
+
+- Require at least IntelliJ Platform version 2023.3.8
+- Remove deprecated api usage
+
 ## [4.6.0] - 2024-05-31
 
 ### Added
