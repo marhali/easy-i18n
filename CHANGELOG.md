@@ -7,6 +7,7 @@
 ### Added
 
 - Support for IntelliJ Platform version 2024.3
+- Assistance for translation key reference and key completion in HTML files. Thanks to @Adeptius
 
 ### Changed
 
