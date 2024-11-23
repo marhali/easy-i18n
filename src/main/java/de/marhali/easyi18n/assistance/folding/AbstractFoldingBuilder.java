@@ -49,7 +49,7 @@ abstract class AbstractFoldingBuilder extends FoldingBuilderEx implements Option
     public FoldingDescriptor @NotNull [] buildFoldRegions(@NotNull PsiElement root, @NotNull Document document, boolean quick) {
 
         if(quick || !isAssistance(root.getProject())) {
-            return FoldingDescriptor.EMPTY;
+            return FoldingDescriptor.EMPTY_ARRAY;
         }
 
         List<FoldingDescriptor> descriptors = new ArrayList<>();
