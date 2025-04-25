@@ -4,6 +4,8 @@
 
 ## [Unreleased]
 
+## [4.8.0] - 2025-04-25
+
 ### Added
 
 - Support for IntelliJ Platform version 2025.1
@@ -487,7 +489,8 @@
 
 - README.md
 
-[Unreleased]: https://github.com/marhali/easy-i18n/compare/v4.7.0...HEAD
+[Unreleased]: https://github.com/marhali/easy-i18n/compare/v4.8.0...HEAD
+[4.8.0]: https://github.com/marhali/easy-i18n/compare/v4.7.0...v4.8.0
 [4.7.0]: https://github.com/marhali/easy-i18n/compare/v4.6.0...v4.7.0
 [4.6.0]: https://github.com/marhali/easy-i18n/compare/v4.5.2...v4.6.0
 [4.5.2]: https://github.com/marhali/easy-i18n/compare/v4.5.1...v4.5.2
