@@ -60,4 +60,8 @@ public interface ProjectSettings {
 
     @NotNull
     NamingConvention getCaseFormat();
+
+    String getAiApiKey();
+    String getAiModal();
+    String getAiProxyUrl();
 }

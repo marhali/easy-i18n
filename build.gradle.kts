@@ -34,8 +34,12 @@ dependencies {
     implementation(libs.json5.java)
     implementation(libs.commons.lang3)
     implementation(libs.commons.text)
+
+    implementation("com.google.code.gson:gson:2.8.8")
+    
     testImplementation(libs.junit)
     testImplementation(libs.opentest4j)
+
 
     // IntelliJ Platform Gradle Plugin Dependencies Extension - read more: https://plugins.jetbrains.com/docs/intellij/tools-intellij-platform-gradle-plugin-dependencies-extension.html
     intellijPlatform {
