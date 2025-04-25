@@ -1,5 +1,8 @@
 package de.marhali.easyi18n.dialog;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.ui.components.JBScrollPane;
@@ -42,6 +45,10 @@ abstract class TranslationDialog extends DialogWrapper {
 
     private final Set<Consumer<TranslationUpdate>> callbacks;
 
+    // 添加在类成员变量部分
+    private final JBTextField jsonInputField;
+    private final JButton jsonProcessButton;
+
     /**
      * Constructs a new translation dialog.
      * @param project Opened project
@@ -66,6 +73,12 @@ abstract class TranslationDialog extends DialogWrapper {
         for(String locale : InstanceManager.get(project).store().getData().getLocales()) {
             localeValueFields.put(locale, new JBTextField(value != null ? value.get(locale) : null));
         }
+
+        this.jsonInputField = new JBTextField();
+        this.jsonInputField.setText("{\"en\":\"English\",\"zh\":\"Chinese\"}");
+        this.jsonProcessButton = new JButton(bundle.getString("translation.processJson"));
+
+        jsonProcessButton.addActionListener(e -> processJsonInput());
     }
 
     public JTextField getKeyField() {
@@ -125,6 +138,7 @@ abstract class TranslationDialog extends DialogWrapper {
     protected @Nullable JComponent createCenterPanel() {
         JPanel panel = FormBuilder.createFormBuilder()
                 .addLabeledComponent(bundle.getString("translation.key"), keyField, true)
+                .addComponent(createJsonInputPanel(), 12)
                 .addComponent(createLocalesPanel(), 12)
                 .getPanel();
 
@@ -146,5 +160,34 @@ abstract class TranslationDialog extends DialogWrapper {
                 new EtchedBorder(), bundle.getString("translation.locales")));
 
         return scrollPane;
+    }
+
+    private JComponent createJsonInputPanel() {
+        JPanel jsonInputPanel = new JPanel(new BorderLayout());
+        jsonInputPanel.add(jsonInputField, BorderLayout.CENTER);
+        jsonInputPanel.add(jsonProcessButton, BorderLayout.EAST);
+
+        JPanel container = new JPanel(new BorderLayout());
+        container.setBorder(BorderFactory.createTitledBorder(
+                new EtchedBorder(), bundle.getString("translation.jsonInput")));
+        container.add(jsonInputPanel, BorderLayout.CENTER);
+
+        return container;
+    }
+
+    private void processJsonInput() {
+        String jsonText = jsonInputField.getText();
+
+        try {
+            Map<String, String> jsonMap = new Gson().fromJson(jsonText, new TypeToken<Map<String, String>>(){}.getType());
+            jsonMap.forEach((locale, value) -> {
+                JTextField field = localeValueFields.get(locale);
+                if (field != null) {
+                    field.setText(value);
+                }
+            });
+        } catch (JsonSyntaxException e) {
+            JOptionPane.showMessageDialog(null, bundle.getString("translation.invalidJson"), bundle.getString("translation.error"), JOptionPane.ERROR_MESSAGE);
+        }
     }
 }
