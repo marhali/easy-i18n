@@ -27,9 +27,11 @@ public class Json5ParserStrategy extends ParserStrategy {
 
     private static final Json5 JSON5 = Json5.builder(builder ->
             builder.allowInvalidSurrogate().trailingComma().indentFactor(2).build());
+    private final boolean isSaveAsStrings;
 
     public Json5ParserStrategy(@NotNull ProjectSettings settings) {
         super(settings);
+        this.isSaveAsStrings = settings.isSaveAsStrings();
     }
 
     @Override
@@ -62,7 +64,7 @@ public class Json5ParserStrategy extends ParserStrategy {
         TranslationNode targetNode = super.getTargetNode(data, file);
 
         Json5Object output = new Json5Object();
-        Json5Mapper.write(file.getLocale(), output, Objects.requireNonNull(targetNode));
+        Json5Mapper.write(file.getLocale(), output, Objects.requireNonNull(targetNode), isSaveAsStrings);
 
         return JSON5.serialize(output);
     }

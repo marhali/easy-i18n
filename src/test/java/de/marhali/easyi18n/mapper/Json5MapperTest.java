@@ -32,7 +32,7 @@ public class Json5MapperTest extends AbstractMapperTest {
         Json5Mapper.read("en", input, data.getRootNode());
 
         Json5Object output = new Json5Object();
-        Json5Mapper.write("en", output, data.getRootNode());
+        Json5Mapper.write("en", output, data.getRootNode(), false);
 
         Set<String> expect = new LinkedHashSet<>(Arrays.asList("zulu", "alpha", "bravo"));
         Assert.assertEquals(expect, output.keySet());
@@ -49,7 +49,7 @@ public class Json5MapperTest extends AbstractMapperTest {
         Json5Mapper.read("en", input, data.getRootNode());
 
         Json5Object output = new Json5Object();
-        Json5Mapper.write("en", output, data.getRootNode());
+        Json5Mapper.write("en", output, data.getRootNode(), false);
 
         Set<String> expect = new LinkedHashSet<>(Arrays.asList("alpha", "bravo", "zulu"));
         Assert.assertEquals(expect, output.keySet());
@@ -62,7 +62,7 @@ public class Json5MapperTest extends AbstractMapperTest {
         data.setTranslation(new KeyPath("escaped"), create(arrayEscaped));
 
         Json5Object output = new Json5Object();
-        Json5Mapper.write("en", output, data.getRootNode());
+        Json5Mapper.write("en", output, data.getRootNode(), false);
 
         Assert.assertTrue(output.get("simple").isJson5Array());
         Assert.assertEquals(arraySimple, Json5ArrayMapper.read(output.get("simple").getAsJson5Array()));
@@ -82,7 +82,7 @@ public class Json5MapperTest extends AbstractMapperTest {
         data.setTranslation(new KeyPath("chars"), create(specialCharacters));
 
         Json5Object output = new Json5Object();
-        Json5Mapper.write("en", output, data.getRootNode());
+        Json5Mapper.write("en", output, data.getRootNode(), false);
 
         Assert.assertEquals(specialCharacters, output.get("chars").getAsString());
 
@@ -99,7 +99,7 @@ public class Json5MapperTest extends AbstractMapperTest {
         data.setTranslation(new KeyPath("nested", "key", "section"), create("test"));
 
         Json5Object output = new Json5Object();
-        Json5Mapper.write("en", output, data.getRootNode());
+        Json5Mapper.write("en", output, data.getRootNode(), false);
 
         Assert.assertEquals("test", output.getAsJson5Object("nested").getAsJson5Object("key").get("section").getAsString());
 
@@ -115,7 +115,7 @@ public class Json5MapperTest extends AbstractMapperTest {
         data.setTranslation(new KeyPath("long.key.with.many.sections"), create("test"));
 
         Json5Object output = new Json5Object();
-        Json5Mapper.write("en", output, data.getRootNode());
+        Json5Mapper.write("en", output, data.getRootNode(), false);
 
         Assert.assertTrue(output.has("long.key.with.many.sections"));
 
@@ -131,7 +131,7 @@ public class Json5MapperTest extends AbstractMapperTest {
         data.setTranslation(new KeyPath("space"), create(leadingSpace));
 
         Json5Object output = new Json5Object();
-        Json5Mapper.write("en", output, data.getRootNode());
+        Json5Mapper.write("en", output, data.getRootNode(), false);
 
         Assert.assertEquals(leadingSpace, output.get("space").getAsString());
 
@@ -144,12 +144,29 @@ public class Json5MapperTest extends AbstractMapperTest {
     @Override
     public void testNumbers() {
         TranslationData data = new TranslationData(true);
-        data.setTranslation(new KeyPath("numbered"), create("15000"));
+        data.setTranslation(new KeyPath("numbered"), create("+90d"));
 
         Json5Object output = new Json5Object();
-        Json5Mapper.write("en", output, data.getRootNode());
+        Json5Mapper.write("en", output, data.getRootNode(), false);
 
-        Assert.assertEquals(15000, output.get("numbered").getAsNumber());
+        Assert.assertEquals(90.0, output.get("numbered").getAsNumber());
+
+        Json5Object input = new Json5Object();
+        input.addProperty("numbered", 143.23);
+        Json5Mapper.read("en", input, data.getRootNode());
+
+        Assert.assertEquals("143.23", data.getTranslation(new KeyPath("numbered")).get("en"));
+    }
+
+    @Override
+    public void testNumbersAsStrings() {
+        TranslationData data = new TranslationData(true);
+        data.setTranslation(new KeyPath("stringNumbered"), create("+90d"));
+
+        Json5Object output = new Json5Object();
+        Json5Mapper.write("en", output, data.getRootNode(), true);
+
+        Assert.assertEquals("+90d", output.get("stringNumbered").getAsString());
 
         Json5Object input = new Json5Object();
         input.addProperty("numbered", 143.23);

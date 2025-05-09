@@ -25,9 +25,10 @@ import java.util.Objects;
 public class JsonParserStrategy extends ParserStrategy {
 
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
-
+    private final boolean isSaveAsStrings;
     public JsonParserStrategy(@NotNull ProjectSettings settings) {
         super(settings);
+        this.isSaveAsStrings = settings.isSaveAsStrings();
     }
 
     @Override
@@ -57,7 +58,7 @@ public class JsonParserStrategy extends ParserStrategy {
         TranslationNode targetNode = super.getTargetNode(data, file);
 
         JsonObject output = new JsonObject();
-        JsonMapper.write(file.getLocale(), output, Objects.requireNonNull(targetNode));
+        JsonMapper.write(file.getLocale(), output, Objects.requireNonNull(targetNode), isSaveAsStrings);
 
         return GSON.toJson(output);
     }

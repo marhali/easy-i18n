@@ -27,6 +27,7 @@ public class ProjectSettingsComponentState {
 
     protected JCheckBox includeSubDirs;
     protected JCheckBox sorting;
+    protected JCheckBox saveAsStrings;
 
     // Editor configuration
     protected JTextField namespaceDelimiter;
@@ -56,6 +57,8 @@ public class ProjectSettingsComponentState {
 
         state.setIncludeSubDirs(includeSubDirs.isSelected());
         state.setSorting(sorting.isSelected());
+        state.setSaveAsStrings(saveAsStrings.isSelected());
+
 
         state.setNamespaceDelimiter(namespaceDelimiter.getText());
         state.setSectionDelimiter(sectionDelimiter.getText());
@@ -85,6 +88,7 @@ public class ProjectSettingsComponentState {
 
         includeSubDirs.setSelected(state.isIncludeSubDirs());
         sorting.setSelected(state.isSorting());
+        saveAsStrings.setSelected(state.isSaveAsStrings());
 
         namespaceDelimiter.setText(state.getNamespaceDelimiter());
         sectionDelimiter.setText(state.getSectionDelimiter());
