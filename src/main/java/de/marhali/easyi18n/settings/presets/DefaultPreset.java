@@ -43,6 +43,9 @@ public class DefaultPreset implements ProjectSettings {
     }
 
     @Override
+    public boolean isSaveAsStrings() { return false; }
+
+    @Override
     public String getNamespaceDelimiter() {
         return ":";
     }

@@ -40,7 +40,7 @@ public class PropertiesMapper {
     }
 
     public static void write(String locale, SortableProperties properties,
-                             TranslationData data, KeyPathConverter converter) {
+                             TranslationData data, KeyPathConverter converter, boolean isSaveAsStrings) {
 
         for(KeyPath key : data.getFullKeys()) {
             TranslationValue translation = data.getTranslation(key);
@@ -51,7 +51,7 @@ public class PropertiesMapper {
 
                 if(PropertiesArrayMapper.isArray(content)) {
                     properties.put(simpleKey, PropertiesArrayMapper.write(content));
-                } else if(NumberUtils.isCreatable(content)) {
+                } else if(!isSaveAsStrings && NumberUtils.isCreatable(content)) {
                     properties.put(simpleKey, NumberUtils.createNumber(content));
                 } else {
                     properties.put(simpleKey, StringEscapeUtils.unescapeJava(content));

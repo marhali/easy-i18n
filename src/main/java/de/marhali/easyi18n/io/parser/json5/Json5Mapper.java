@@ -40,7 +40,7 @@ public class Json5Mapper {
         }
     }
 
-    public static void write(String locale, Json5Object json, TranslationNode node) {
+    public static void write(String locale, Json5Object json, TranslationNode node, boolean isSaveAsStrings) {
         for(Map.Entry<String, TranslationNode> entry : node.getChildren().entrySet()) {
             String key = entry.getKey();
             TranslationNode childNode = entry.getValue();
@@ -48,7 +48,7 @@ public class Json5Mapper {
             if(!childNode.isLeaf()) {
                 // Nested node - run recursively
                 Json5Object childJson = new Json5Object();
-                write(locale, childJson, childNode);
+                write(locale, childJson, childNode, isSaveAsStrings);
                 if(childJson.size() > 0) {
                     json.add(key, childJson);
                 }
@@ -61,7 +61,7 @@ public class Json5Mapper {
                         json.add(key, Json5ArrayMapper.write(content));
                     } else if(StringUtil.isHexString(content)) {
                         json.add(key, Json5Primitive.of(content, true));
-                    } else if(NumberUtils.isCreatable(content)) {
+                    } else if(!isSaveAsStrings && NumberUtils.isCreatable(content)) {
                         json.add(key, Json5Primitive.of(NumberUtils.createNumber(content)));
                     } else {
                         json.add(key, Json5Primitive.of(StringEscapeUtils.unescapeJava(content)));

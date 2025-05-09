@@ -42,7 +42,7 @@ public class JsonMapper {
         }
     }
 
-    public static void write(String locale, JsonObject json, TranslationNode node) {
+    public static void write(String locale, JsonObject json, TranslationNode node,boolean isSaveAsString) {
         for(Map.Entry<String, TranslationNode> entry : node.getChildren().entrySet()) {
             String key = entry.getKey();
             TranslationNode childNode = entry.getValue();
@@ -50,20 +50,24 @@ public class JsonMapper {
             if(!childNode.isLeaf()) {
                 // Nested node - run recursively
                 JsonObject childJson = new JsonObject();
-                write(locale, childJson, childNode);
+                write(locale, childJson, childNode, isSaveAsString);
                 if(childJson.size() > 0) {
                     json.add(key, childJson);
                 }
             } else {
                 TranslationValue translation = childNode.getValue();
                 String content = translation.get(locale);
+                // log content
 
                 if(content != null) {
                     if(JsonArrayMapper.isArray(content)) {
+                        System.out.print("array: " + content);
                         json.add(key, JsonArrayMapper.write(content));
-                    } else if(NumberUtils.isCreatable(content)) {
+                    } else if(!isSaveAsString && NumberUtils.isCreatable(content)) {
+                        System.out.println("number: " + content);
                         json.add(key, new JsonPrimitive(NumberUtils.createNumber(content)));
                     } else {
+                        System.out.println("else: " + content);
                         json.add(key, new JsonPrimitive(StringEscapeUtils.unescapeJava(content)));
                     }
                 }

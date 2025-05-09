@@ -28,7 +28,7 @@ public class YamlMapperTest extends AbstractMapperTest {
         YamlMapper.read("en", input, data.getRootNode());
 
         Map<String, Object> output = new HashMap<>();
-        YamlMapper.write("en", output, data.getRootNode());
+        YamlMapper.write("en", output, data.getRootNode(), true);
 
         Set<String> expect = new LinkedHashSet<>(Arrays.asList("zulu", "alpha", "bravo"));
         Assert.assertEquals(expect, output.keySet());
@@ -45,7 +45,7 @@ public class YamlMapperTest extends AbstractMapperTest {
         YamlMapper.read("en", input, data.getRootNode());
 
         Map<String, Object> output = new HashMap<>();
-        YamlMapper.write("en", output, data.getRootNode());
+        YamlMapper.write("en", output, data.getRootNode(), false);
 
         Set<String> expect = new LinkedHashSet<>(Arrays.asList("alpha", "bravo", "zulu"));
         Assert.assertEquals(expect, output.keySet());
@@ -58,7 +58,7 @@ public class YamlMapperTest extends AbstractMapperTest {
         data.setTranslation(new KeyPath("escaped"), create(arrayEscaped));
 
         Map<String, Object> output = new HashMap<>();
-        YamlMapper.write("en", output, data.getRootNode());
+        YamlMapper.write("en", output, data.getRootNode(), false);
 
         Assert.assertTrue(output.get("simple") instanceof List);
         Assert.assertEquals(arraySimple, YamlArrayMapper.read((List<Object>) output.get("simple")));
@@ -78,7 +78,7 @@ public class YamlMapperTest extends AbstractMapperTest {
         data.setTranslation(new KeyPath("chars"), create(specialCharacters));
 
         Map<String, Object> output = new HashMap<>();
-        YamlMapper.write("en", output, data.getRootNode());
+        YamlMapper.write("en", output, data.getRootNode(), false);
 
         Assert.assertEquals(specialCharacters, output.get("chars"));
 
@@ -95,7 +95,7 @@ public class YamlMapperTest extends AbstractMapperTest {
         data.setTranslation(new KeyPath("nested", "key", "section"), create("test"));
 
         Map<String, Object> output = new HashMap<>();
-        YamlMapper.write("en", output, data.getRootNode());
+        YamlMapper.write("en", output, data.getRootNode(), false);
 
         Assert.assertTrue(output.containsKey("nested"));
         Assert.assertTrue(((Map<String, Object>) output.get("nested")).containsKey("key"));
@@ -114,7 +114,7 @@ public class YamlMapperTest extends AbstractMapperTest {
         data.setTranslation(new KeyPath("long.key.with.many.sections"), create("test"));
 
         Map<String, Object> output = new HashMap<>();
-        YamlMapper.write("en", output, data.getRootNode());
+        YamlMapper.write("en", output, data.getRootNode(), false);
 
         Assert.assertTrue(output.containsKey("long.key.with.many.sections"));
 
@@ -130,7 +130,7 @@ public class YamlMapperTest extends AbstractMapperTest {
         data.setTranslation(new KeyPath("space"), create(leadingSpace));
 
         Map<String, Object> output = new HashMap<>();
-        YamlMapper.write("en", output, data.getRootNode());
+        YamlMapper.write("en", output, data.getRootNode(), false);
 
         Assert.assertEquals(leadingSpace, output.get("space"));
 
@@ -143,12 +143,29 @@ public class YamlMapperTest extends AbstractMapperTest {
     @Override
     public void testNumbers() {
         TranslationData data = new TranslationData(true);
-        data.setTranslation(new KeyPath("numbered"), create("15000"));
+        data.setTranslation(new KeyPath("numbered"), create("+90d"));
 
         Map<String, Object> output = new HashMap<>();
-        YamlMapper.write("en", output, data.getRootNode());
+        YamlMapper.write("en", output, data.getRootNode(), false);
 
-        Assert.assertEquals(15000, output.get("numbered"));
+        Assert.assertEquals(90.0, output.get("numbered"));
+
+        Map<String, Object> input = new HashMap<>();
+        input.put("numbered", 143.23);
+        YamlMapper.read("en", input, data.getRootNode());
+
+        Assert.assertEquals("143.23", data.getTranslation(new KeyPath("numbered")).get("en"));
+    }
+
+    @Override
+    public void testNumbersAsStrings() {
+        TranslationData data = new TranslationData(true);
+        data.setTranslation(new KeyPath("stringNumbered"), create("+90d"));
+
+        Map<String, Object> output = new HashMap<>();
+        YamlMapper.write("en", output, data.getRootNode(), true);
+
+        Assert.assertEquals("+90d", output.get("stringNumbered"));
 
         Map<String, Object> input = new HashMap<>();
         input.put("numbered", 143.23);
