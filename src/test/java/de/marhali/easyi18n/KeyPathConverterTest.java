@@ -120,6 +120,11 @@ public class KeyPathConverterTest {
             }
 
             @Override
+            public boolean isSaveAsStrings() {
+                return false;
+            }
+
+            @Override
             public @Nullable String getNamespaceDelimiter() {
                 return namespaceDelim;
             }

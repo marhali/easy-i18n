@@ -42,6 +42,9 @@ public class VueI18nPreset implements ProjectSettings {
     }
 
     @Override
+    public boolean isSaveAsStrings() { return false; }
+
+    @Override
     public @Nullable String getNamespaceDelimiter() {
         return null;
     }

@@ -35,9 +35,11 @@ public class YamlParserStrategy extends ParserStrategy {
     }
 
     private static final Yaml YAML = new Yaml(dumperOptions());
+    private final boolean isSaveAsStrings;
 
     public YamlParserStrategy(@NotNull ProjectSettings settings) {
         super(settings);
+        this.isSaveAsStrings = settings.isSaveAsStrings();
     }
 
     @Override
@@ -65,7 +67,7 @@ public class YamlParserStrategy extends ParserStrategy {
         TranslationNode targetNode = super.getTargetNode(data, file);
 
         Map<String, Object> output = new HashMap<>();
-        YamlMapper.write(file.getLocale(), output, targetNode);
+        YamlMapper.write(file.getLocale(), output, targetNode, isSaveAsStrings);
 
         return YAML.dumpAsMap(output);
     }

@@ -39,6 +39,9 @@ public abstract class AbstractMapperTest {
     @Test
     public abstract void testNumbers();
 
+    @Test
+    public abstract void testNumbersAsStrings();
+
     protected TranslationValue create(String content) {
         return new TranslationValue("en", content);
     }

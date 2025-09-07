@@ -36,7 +36,7 @@ public class PropertiesMapperTest extends AbstractMapperTest {
         PropertiesMapper.read("en", input, data, converter(true));
 
         SortableProperties output = new SortableProperties(false);
-        PropertiesMapper.write("en", output, data, converter(true));
+        PropertiesMapper.write("en", output, data, converter(true), false);
 
         List<String> expect = Arrays.asList("zulu", "alpha", "bravo");
         Assert.assertEquals(expect, new ArrayList<>(output.keySet()));
@@ -53,7 +53,7 @@ public class PropertiesMapperTest extends AbstractMapperTest {
         PropertiesMapper.read("en", input, data, converter(true));
 
         SortableProperties output = new SortableProperties(true);
-        PropertiesMapper.write("en", output, data, converter(true));
+        PropertiesMapper.write("en", output, data, converter(true), false);
 
         List<String> expect = Arrays.asList("alpha", "bravo", "zulu");
         Assert.assertEquals(expect, new ArrayList<>(output.keySet()));
@@ -66,7 +66,7 @@ public class PropertiesMapperTest extends AbstractMapperTest {
         data.setTranslation(new KeyPath("escaped"), create(arrayEscaped));
 
         SortableProperties output = new SortableProperties(true);
-        PropertiesMapper.write("en", output, data, converter(true));
+        PropertiesMapper.write("en", output, data, converter(true), false);
 
         Assert.assertTrue(output.get("simple") instanceof String[]);
         Assert.assertEquals(arraySimple, PropertiesArrayMapper.read((String[]) output.get("simple")));
@@ -86,7 +86,7 @@ public class PropertiesMapperTest extends AbstractMapperTest {
         data.setTranslation(new KeyPath("chars"), create(specialCharacters));
 
         SortableProperties output = new SortableProperties(true);
-        PropertiesMapper.write("en", output, data, converter(true));
+        PropertiesMapper.write("en", output, data, converter(true), false);
 
         Assert.assertEquals(specialCharacters, output.get("chars"));
 
@@ -102,7 +102,7 @@ public class PropertiesMapperTest extends AbstractMapperTest {
         data.setTranslation(new KeyPath("nested", "key", "sections"), create("test"));
 
         SortableProperties output = new SortableProperties(true);
-        PropertiesMapper.write("en", output, data, converter(true));
+        PropertiesMapper.write("en", output, data, converter(true), false);
 
         Assert.assertEquals("test", output.get("nested:key.sections"));
 
@@ -119,7 +119,7 @@ public class PropertiesMapperTest extends AbstractMapperTest {
         data.setTranslation(new KeyPath("long.key.with.many.sections"), create("test"));
 
         SortableProperties output = new SortableProperties(true);
-        PropertiesMapper.write("en", output, data, converter(false));
+        PropertiesMapper.write("en", output, data, converter(false), false);
 
         Assert.assertNotNull(output.get("long.key.with.many.sections"));
 
@@ -135,7 +135,7 @@ public class PropertiesMapperTest extends AbstractMapperTest {
         data.setTranslation(new KeyPath("space"), create(leadingSpace));
 
         SortableProperties output = new SortableProperties(true);
-        PropertiesMapper.write("en", output, data, converter());
+        PropertiesMapper.write("en", output, data, converter(), false);
 
         Assert.assertEquals(leadingSpace, output.get("space"));
 
@@ -148,18 +148,36 @@ public class PropertiesMapperTest extends AbstractMapperTest {
     @Override
     public void testNumbers() {
         TranslationData data = new TranslationData(true);
-        data.setTranslation(new KeyPath("numbered"), create("15000"));
+        data.setTranslation(new KeyPath("numbered"), create("+90d"));
 
         SortableProperties output = new SortableProperties(true);
-        PropertiesMapper.write("en", output, data, converter());
+        PropertiesMapper.write("en", output, data, converter(), false);
 
-        Assert.assertEquals(15000, output.get("numbered"));
+        Assert.assertEquals(90.0, output.get("numbered"));
 
         SortableProperties input = new SortableProperties(true);
         input.put("numbered", 143.23);
         PropertiesMapper.read("en", input, data, converter());
 
         Assert.assertEquals("143.23", data.getTranslation(new KeyPath("numbered")).get("en"));
+    }
+
+    @Override
+    public void testNumbersAsStrings() {
+        TranslationData data = new TranslationData(true);
+        data.setTranslation(new KeyPath("stringNumbered"), create("+90d"));
+
+        SortableProperties output = new SortableProperties(true);
+        PropertiesMapper.write("en", output, data, converter(), true);
+
+        Assert.assertEquals("+90d", output.get("stringNumbered"));
+
+        SortableProperties input = new SortableProperties(true);
+        input.put("numbered", 143.23);
+        PropertiesMapper.read("en", input, data, converter());
+
+        Assert.assertEquals("143.23", data.getTranslation(new KeyPath("numbered")).get("en"));
+
     }
 
     private KeyPathConverter converter() {
@@ -190,6 +208,11 @@ public class PropertiesMapperTest extends AbstractMapperTest {
 
             @Override
             public boolean isSorting() {
+                return true;
+            }
+
+            @Override
+            public boolean isSaveAsStrings() {
                 return true;
             }
 

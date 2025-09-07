@@ -43,6 +43,9 @@ public class ReactI18NextPreset implements ProjectSettings {
     }
 
     @Override
+    public boolean isSaveAsStrings() { return false; }
+
+    @Override
     public @Nullable String getNamespaceDelimiter() {
         return ":";
     }

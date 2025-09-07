@@ -66,6 +66,7 @@ public class ProjectSettingsComponent extends ProjectSettingsComponentState {
                 .addVerticalGap(24)
                 .addComponent(new TitledSeparator(bundle.getString("settings.experimental.title")))
                 .addComponent(constructAlwaysFoldField())
+                .addComponent(constructSaveAsStringsField())
                 .addVerticalGap(12)
                 .addLabeledComponent(bundle.getString("settings.experimental.flavor-template"), constructFlavorTemplate(), 1, false)
                 .addLabeledComponent(bundle.getString("settings.experimental.key-naming-format.title"), constructKeyCaseFormater(), 1, false)
@@ -162,6 +163,12 @@ public class ProjectSettingsComponent extends ProjectSettingsComponentState {
         sorting = new JBCheckBox(bundle.getString("settings.resource.sorting.title"));
         sorting.setToolTipText(bundle.getString("settings.resource.sorting.tooltip"));
         return sorting;
+    }
+
+    private JComponent constructSaveAsStringsField() {
+        saveAsStrings = new JBCheckBox(bundle.getString("settings.experimental.saving-as-strings.title"));
+        saveAsStrings.setToolTipText(bundle.getString("settings.experimental.saving-as-strings.tooltip"));
+        return saveAsStrings;
     }
 
     private JPanel constructKeyStrategyPanel() {

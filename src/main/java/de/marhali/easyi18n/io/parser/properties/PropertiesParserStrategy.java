@@ -24,10 +24,12 @@ import java.io.StringWriter;
 public class PropertiesParserStrategy extends ParserStrategy {
 
     private final @NotNull KeyPathConverter converter;
+    private final boolean isSaveAsStrings;
 
     public PropertiesParserStrategy(@NotNull ProjectSettings settings) {
         super(settings);
         this.converter = new KeyPathConverter(settings);
+        this.isSaveAsStrings = settings.isSaveAsStrings();
     }
 
     @Override
@@ -57,7 +59,7 @@ public class PropertiesParserStrategy extends ParserStrategy {
         TranslationData targetData = new TranslationData(data.getLocales(), targetNode);
 
         SortableProperties output = new SortableProperties(this.settings.isSorting());
-        PropertiesMapper.write(file.getLocale(), output, targetData, converter);
+        PropertiesMapper.write(file.getLocale(), output, targetData, converter, isSaveAsStrings);
 
         try(StringWriter writer = new StringWriter()) {
             output.store(writer);

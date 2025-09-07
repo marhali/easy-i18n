@@ -30,6 +30,8 @@ public interface ProjectSettings {
 
     boolean isSorting();
 
+    boolean isSaveAsStrings();
+
     // Editor Configuration
     @Nullable
     String getNamespaceDelimiter();

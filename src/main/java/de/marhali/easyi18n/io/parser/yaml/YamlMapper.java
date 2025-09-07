@@ -34,7 +34,7 @@ public class YamlMapper {
         }
     }
 
-    public static void write(String locale, Map<String, Object> section, TranslationNode node) {
+    public static void write(String locale, Map<String, Object> section, TranslationNode node, boolean isSaveAsStrings) {
         for(Map.Entry<String, TranslationNode> entry : node.getChildren().entrySet()) {
             String key = entry.getKey();
             TranslationNode childNode = entry.getValue();
@@ -42,7 +42,7 @@ public class YamlMapper {
             if(!childNode.isLeaf()) {
                 // Nested node - run recursively
                 Map<String, Object> childSection = new HashMap<>();
-                write(locale, childSection, childNode);
+                write(locale, childSection, childNode, isSaveAsStrings);
                 if(!childSection.isEmpty()) {
                     section.put(key, childSection);
                 }
@@ -53,7 +53,7 @@ public class YamlMapper {
                 if(content != null) {
                     if(YamlArrayMapper.isArray(content)) {
                         section.put(key, YamlArrayMapper.write(content));
-                    } else if(NumberUtils.isCreatable(content)) {
+                    } else if(!isSaveAsStrings && NumberUtils.isCreatable(content)) {
                         section.put(key, NumberUtils.createNumber(content));
                     } else {
                         section.put(key, StringEscapeUtils.unescapeJava(content));

@@ -33,6 +33,8 @@ public class ProjectSettingsState implements ProjectSettings {
     private Boolean includeSubDirs;
     @Property
     private boolean sorting;
+    @Property
+    private Boolean saveAsStrings;
 
     // Editor configuration
     @Property
@@ -83,6 +85,7 @@ public class ProjectSettingsState implements ProjectSettings {
 
         this.includeSubDirs = defaults.isIncludeSubDirs();
         this.sorting = defaults.isSorting();
+        this.saveAsStrings = defaults.isSaveAsStrings();
 
         this.namespaceDelimiter = defaults.getNamespaceDelimiter();
         this.sectionDelimiter = defaults.getSectionDelimiter();
@@ -128,6 +131,9 @@ public class ProjectSettingsState implements ProjectSettings {
     public boolean isSorting() {
         return sorting;
     }
+
+    @Override
+    public boolean isSaveAsStrings() { return saveAsStrings;}
 
     @Override
     public @Nullable String getNamespaceDelimiter() {
@@ -209,6 +215,10 @@ public class ProjectSettingsState implements ProjectSettings {
         this.sorting = sorting;
     }
 
+    public void setSaveAsStrings(Boolean saveAsStrings) {
+        this.saveAsStrings = saveAsStrings;
+    }
+
     public void setNamespaceDelimiter(String namespaceDelimiter) {
         this.namespaceDelimiter = namespaceDelimiter;
     }
@@ -260,6 +270,7 @@ public class ProjectSettingsState implements ProjectSettings {
         if (o == null || getClass() != o.getClass()) return false;
         ProjectSettingsState that = (ProjectSettingsState) o;
         return sorting == that.sorting
+                && saveAsStrings == that.saveAsStrings
                 && folderStrategy == that.folderStrategy
                 && parserStrategy == that.parserStrategy
                 && Objects.equals(localesDirectory, that.localesDirectory)
@@ -282,7 +293,7 @@ public class ProjectSettingsState implements ProjectSettings {
     public int hashCode() {
         return Objects.hash(
                 localesDirectory, folderStrategy, parserStrategy, filePattern, includeSubDirs,
-                sorting, namespaceDelimiter, sectionDelimiter, contextDelimiter, pluralDelimiter,
+                sorting, saveAsStrings, namespaceDelimiter, sectionDelimiter, contextDelimiter, pluralDelimiter,
                 defaultNamespace, previewLocale, nestedKeys, assistance, alwaysFold, flavorTemplate, caseFormat
         );
     }
@@ -296,6 +307,7 @@ public class ProjectSettingsState implements ProjectSettings {
                 ", filePattern='" + filePattern + '\'' +
                 ", includeSubDirs=" + includeSubDirs +
                 ", sorting=" + sorting +
+                ", saveAsStrings=" + saveAsStrings +
                 ", namespaceDelimiter='" + namespaceDelimiter + '\'' +
                 ", sectionDelimiter='" + sectionDelimiter + '\'' +
                 ", contextDelimiter='" + contextDelimiter + '\'' +
