@@ -56,6 +56,8 @@ public class ProjectSettingsState implements ProjectSettings {
     // Experimental configuration
     @Property
     private Boolean alwaysFold;
+    @Property
+    private Boolean addBlankLine;
 
     /**
      * The `flavorTemplate` specifies the format used for replacing strings with their i18n (internationalization) counterparts.
@@ -95,6 +97,7 @@ public class ProjectSettingsState implements ProjectSettings {
         this.assistance = defaults.isAssistance();
 
         this.alwaysFold = defaults.isAlwaysFold();
+        this.addBlankLine = defaults.isAddBlankLine();
         this.flavorTemplate = defaults.getFlavorTemplate();
         this.caseFormat = defaults.getCaseFormat();
     }
@@ -176,6 +179,9 @@ public class ProjectSettingsState implements ProjectSettings {
     }
 
     @Override
+    public boolean isAddBlankLine() { return addBlankLine;}
+
+    @Override
     public String getFlavorTemplate() {
         return this.flavorTemplate;
     }
@@ -245,6 +251,8 @@ public class ProjectSettingsState implements ProjectSettings {
         this.alwaysFold = alwaysFold;
     }
 
+    public void setAddBlankLine(Boolean addBlankLine) { this.addBlankLine = addBlankLine; }
+
     public void setFlavorTemplate(String flavorTemplate) {
         this.flavorTemplate = flavorTemplate;
     }
@@ -262,6 +270,7 @@ public class ProjectSettingsState implements ProjectSettings {
         return sorting == that.sorting
                 && folderStrategy == that.folderStrategy
                 && parserStrategy == that.parserStrategy
+                && addBlankLine == that.addBlankLine
                 && Objects.equals(localesDirectory, that.localesDirectory)
                 && Objects.equals(filePattern, that.filePattern)
                 && Objects.equals(includeSubDirs, that.includeSubDirs)
@@ -283,7 +292,7 @@ public class ProjectSettingsState implements ProjectSettings {
         return Objects.hash(
                 localesDirectory, folderStrategy, parserStrategy, filePattern, includeSubDirs,
                 sorting, namespaceDelimiter, sectionDelimiter, contextDelimiter, pluralDelimiter,
-                defaultNamespace, previewLocale, nestedKeys, assistance, alwaysFold, flavorTemplate, caseFormat
+                defaultNamespace, previewLocale, nestedKeys, assistance, alwaysFold, addBlankLine, flavorTemplate, caseFormat
         );
     }
 
@@ -305,6 +314,7 @@ public class ProjectSettingsState implements ProjectSettings {
                 ", nestedKeys=" + nestedKeys +
                 ", assistance=" + assistance +
                 ", alwaysFold=" + alwaysFold +
+                ", addBlankLine=" + addBlankLine +
                 ", flavorTemplate=" + flavorTemplate +
                 ", caseFormat=" + caseFormat.toString() +
                 '}';

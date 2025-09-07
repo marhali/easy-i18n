@@ -95,6 +95,7 @@ public class IOHandler {
      */
     public void write(@NotNull TranslationData data) throws IOException {
         String localesPath = this.settings.getLocalesDirectory();
+        boolean isAddBlankLine = this.settings.isAddBlankLine();
 
         if(localesPath == null || localesPath.isEmpty()) {
             throw new EmptyLocalesDirException("Locales path must not be empty");
@@ -110,6 +111,10 @@ public class IOHandler {
                 if(content == null) {
                     // We should consider deleting the target translation file if it has no content
                     continue;
+                }
+
+                if (isAddBlankLine && !content.endsWith("\n")) {
+                    content += "\n";
                 }
 
                 Document document = FileDocumentManager.getInstance().getDocument(file.getVirtualFile());

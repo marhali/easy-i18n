@@ -88,6 +88,9 @@ public class DefaultPreset implements ProjectSettings {
     }
 
     @Override
+    public boolean isAddBlankLine() {return false; }
+
+    @Override
     public String getFlavorTemplate() {
         return "$i18n.t";
     }

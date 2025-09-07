@@ -165,6 +165,9 @@ public class KeyPathConverterTest {
             }
 
             @Override
+            public boolean isAddBlankLine() { return false; }
+
+            @Override
             public String getFlavorTemplate() {
                 return "";
             }

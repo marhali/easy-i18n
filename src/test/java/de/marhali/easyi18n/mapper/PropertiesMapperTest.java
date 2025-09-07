@@ -239,6 +239,9 @@ public class PropertiesMapperTest extends AbstractMapperTest {
             }
 
             @Override
+            public boolean isAddBlankLine() { return false; }
+
+            @Override
             public String getFlavorTemplate() {
                 return "";
             }
