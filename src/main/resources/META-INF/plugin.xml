@@ -37,10 +37,14 @@
                     icon="/icons/translate13.svg"/>
 
         <projectService serviceImplementation="de.marhali.easyi18n.settings.ProjectSettingsService"/>
+        <projectService serviceImplementation="de.marhali.easyi18n.config.project.ProjectConfigService"/>
 
         <projectConfigurable parentId="tools" instance="de.marhali.easyi18n.settings.ProjectSettingsConfigurable"
                              id="de.marhali.easyi18n.service.AppSettingsConfigurable"
                              displayName="Easy I18n" nonDefaultProject="true"/>
+
+        <projectConfigurable parentId="tools" instance="de.marhali.easyi18n.config.project.ProjectConfigConfigurable"
+                             id="de.marhali.easyi18n.config.project.ProjectConfigConfigurable" displayName="Easy I18nNext" nonDefaultProject="true"/>
 
         <notificationGroup displayType="BALLOON" id="Easy I18n Notification Group"/>
 
