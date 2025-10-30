@@ -1,53 +1,57 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin url="https://github.com/marhali/easy-i18n">
-    <id>de.marhali.easyi18n</id>
-    <name>Easy I18n</name>
-    <vendor>marhali</vendor>
+  <id>de.marhali.easyi18n</id>
+  <name>Easy I18n</name>
+  <vendor>marhali</vendor>
 
-    <!-- Product and plugin compatibility requirements -->
-    <!-- https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
-    <depends>com.intellij.modules.platform</depends>
-    <depends>com.intellij.modules.lang</depends>
+  <!-- Product and plugin compatibility requirements -->
+  <!-- https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
+  <depends>com.intellij.modules.platform</depends>
+  <depends>com.intellij.modules.lang</depends>
 
-    <depends optional="true" config-file="de.marhali.easyi18n-kotlin.xml">org.jetbrains.kotlin</depends>
-    <depends optional="true" config-file="de.marhali.easyi18n-javascript.xml">JavaScript</depends>
-    <depends optional="true" config-file="de.marhali.easyi18n-xml.xml">com.intellij.modules.xml</depends>
-    <depends optional="true" config-file="de.marhali.easyi18n-java.xml">com.intellij.java</depends>
-    <depends optional="true" config-file="de.marhali.easyi18n-php.xml">com.jetbrains.php</depends>
+  <depends optional="true" config-file="de.marhali.easyi18n-kotlin.xml">org.jetbrains.kotlin</depends>
+  <depends optional="true" config-file="de.marhali.easyi18n-javascript.xml">JavaScript</depends>
+  <depends optional="true" config-file="de.marhali.easyi18n-xml.xml">com.intellij.modules.xml</depends>
+  <depends optional="true" config-file="de.marhali.easyi18n-java.xml">com.intellij.java</depends>
+  <depends optional="true" config-file="de.marhali.easyi18n-php.xml">com.jetbrains.php</depends>
 
-    <actions>
-        <action
-                id="de.marhali.easyi18n.action.AddAction"
-                class="de.marhali.easyi18n.action.AddAction" icon="AllIcons.Actions.PreserveCaseHover"
-        >
-            <add-to-group group-id="NewGroup"/>
-        </action>
-        <action id="de.marhali.easyi18n.action.LocalizeItAction"
-                class="de.marhali.easyi18n.action.LocalizeItAction"
-                text="Localize It"
-                description="Apply localization to the selected string"
-                icon="/icons/translate13.svg">
-            <add-to-group group-id="EditorPopupMenu" anchor="last"/>
-        </action>
-    </actions>
+  <actions>
+    <action
+      id="de.marhali.easyi18n.action.AddAction"
+      class="de.marhali.easyi18n.action.AddAction" icon="AllIcons.Actions.PreserveCaseHover"
+    >
+      <add-to-group group-id="NewGroup"/>
+    </action>
+    <action id="de.marhali.easyi18n.action.LocalizeItAction"
+            class="de.marhali.easyi18n.action.LocalizeItAction"
+            text="Localize It"
+            description="Apply localization to the selected string"
+            icon="/icons/translate13.svg">
+      <add-to-group group-id="EditorPopupMenu" anchor="last"/>
+    </action>
+  </actions>
 
-    <extensions defaultExtensionNs="com.intellij">
-        <toolWindow id="Easy I18n" anchor="bottom"
-                    factoryClass="de.marhali.easyi18n.service.TranslatorToolWindowFactory"
-                    icon="/icons/translate13.svg"/>
+  <extensions defaultExtensionNs="com.intellij">
+    <toolWindow id="Easy I18n" anchor="bottom"
+                factoryClass="de.marhali.easyi18n.service.TranslatorToolWindowFactory"
+                icon="/icons/translate13.svg"/>
 
-        <projectService serviceImplementation="de.marhali.easyi18n.settings.ProjectSettingsService"/>
-        <projectService serviceImplementation="de.marhali.easyi18n.config.project.ProjectConfigService"/>
+    <projectService serviceImplementation="de.marhali.easyi18n.settings.ProjectSettingsService"/>
+    <projectService serviceImplementation="de.marhali.easyi18n.config.project.ProjectConfigService"/>
 
-        <projectConfigurable parentId="tools" instance="de.marhali.easyi18n.settings.ProjectSettingsConfigurable"
-                             id="de.marhali.easyi18n.service.AppSettingsConfigurable"
-                             displayName="Easy I18n" nonDefaultProject="true"/>
+    <projectConfigurable parentId="tools" instance="de.marhali.easyi18n.settings.ProjectSettingsConfigurable"
+                         id="de.marhali.easyi18n.service.AppSettingsConfigurable"
+                         displayName="Easy I18n" nonDefaultProject="true"/>
 
-        <projectConfigurable parentId="tools" instance="de.marhali.easyi18n.config.project.ProjectConfigConfigurable"
-                             id="de.marhali.easyi18n.config.project.ProjectConfigConfigurable" displayName="Easy I18nNext" nonDefaultProject="true"/>
+    <projectConfigurable parentId="tools" instance="de.marhali.easyi18n.config.project.ProjectConfigConfigurable"
+                         id="de.marhali.easyi18n.config.project.ProjectConfigConfigurable" displayName="Easy I18nNext"
+                         nonDefaultProject="true"/>
 
-        <notificationGroup displayType="BALLOON" id="Easy I18n Notification Group"/>
+    <notificationGroup displayType="BALLOON" id="Easy I18n Notification Group"/>
 
-        <errorHandler implementation="de.marhali.easyi18n.service.ErrorReportHandler"/>
-    </extensions>
+    <webHelpProvider implementation="de.marhali.easyi18n.help.EasyI18nWebHelpProvider" id="EasyI18nWebHelpProvider"/>
+
+
+    <errorHandler implementation="de.marhali.easyi18n.service.ErrorReportHandler"/>
+  </extensions>
 </idea-plugin>
