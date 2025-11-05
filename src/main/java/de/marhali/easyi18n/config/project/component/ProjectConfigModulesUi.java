@@ -3,7 +3,6 @@ package de.marhali.easyi18n.config.project.component;
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.project.Project;
 import com.intellij.ui.DocumentAdapter;
-import com.intellij.ui.TitledBorderWithMnemonic;
 import com.intellij.ui.TitledSeparator;
 import com.intellij.ui.components.JBLabel;
 import com.intellij.ui.components.JBTextField;
@@ -20,6 +19,7 @@ import de.marhali.easyi18n.config.project.component.module.ProjectConfigModuleUi
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
 import javax.swing.event.DocumentEvent;
 import java.awt.*;
 import java.util.ArrayList;
@@ -29,7 +29,7 @@ import java.util.List;
  * Mandatory for rendering all {@link ProjectConfigModuleUi module} elements.
  * @author marhali
  */
-public class ProjectConfigModulesUi extends BaseProjectConfigUi{
+public class ProjectConfigModulesUi extends BaseProjectConfigUi {
 
     private final List<ProjectConfigModuleUi> modules;
     private JPanel modulesPanel;
@@ -81,7 +81,6 @@ public class ProjectConfigModulesUi extends BaseProjectConfigUi{
         for (ProjectConfigModuleUi moduleUi : modules) {
             moduleUi.applyChangesToState();
             modulesState.add(moduleUi.state);
-            System.out.println("persist state: " + moduleUi.state);
         }
     }
 
@@ -175,7 +174,7 @@ public class ProjectConfigModulesUi extends BaseProjectConfigUi{
 
         // Titled border
         var border = BorderFactory.createCompoundBorder(
-            new TitledBorderWithMnemonic(moduleUi.state.getName()),
+            new TitledBorder(moduleUi.state.getName()),
             BorderFactory.createEmptyBorder(10, 10, 10, 10)
         );
 

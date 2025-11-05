@@ -56,8 +56,8 @@ public class ProjectConfig {
         this.editorAssistance = origin.editorAssistance;
         this.sorting = origin.sorting;
         this.previewLocale = origin.previewLocale;
-        this.modules = origin.modules.stream().map(ProjectConfigModule::new).toList();
-        this.fileExtMapper = origin.fileExtMapper.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, value -> new ArrayList<>(value.getValue())));
+        this.modules = new ArrayList<>(origin.modules.stream().map(ProjectConfigModule::new).toList());
+        this.fileExtMapper = new HashMap<>(origin.fileExtMapper.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, value -> new ArrayList<>(value.getValue()))));
     }
 
     public ProjectConfig() {
