@@ -66,6 +66,7 @@ public class DataStore {
                         return new TranslationData(settings.isSorting());
                     }
                 })
+                .expireWith(project)
                 .finishOnUiThread(ModalityState.defaultInstance(), loadedData -> {
                     this.data = loadedData;
 
