@@ -1,9 +1,12 @@
 package de.marhali.easyi18n;
 
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.application.ModalityState;
+import com.intellij.openapi.application.ReadAction;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Disposer;
 import com.intellij.openapi.vfs.*;
+import com.intellij.util.concurrency.AppExecutorUtil;
 
 import de.marhali.easyi18n.exception.EmptyLocalesDirException;
 import de.marhali.easyi18n.io.IOHandler;
@@ -15,6 +18,7 @@ import de.marhali.easyi18n.util.NotificationHelper;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 /**
@@ -49,21 +53,34 @@ public class DataStore {
      */
     public void loadFromPersistenceLayer(@NotNull Consumer<Boolean> successResult) {
         ProjectSettings settings = ProjectSettingsService.get(project).getState();
-        ApplicationManager.getApplication().runReadAction(() -> {
-            try {
-                this.data = new IOHandler(project, settings).read();
-                this.changeListener.updateLocalesPath(settings.getLocalesDirectory());
-                successResult.accept(true);
+        AtomicReference<Exception> errorRef = new AtomicReference<>();
 
-            } catch (Exception ex) {
-                this.data = new TranslationData(settings.isSorting());
-                successResult.accept(false);
+        ReadAction
+                .nonBlocking(() -> {
+                    try {
+                        TranslationData loadedData = new IOHandler(project, settings).read();
+                        this.changeListener.updateLocalesPath(settings.getLocalesDirectory());
+                        return loadedData;
+                    } catch (Exception ex) {
+                        errorRef.set(ex);
+                        return new TranslationData(settings.isSorting());
+                    }
+                })
+                .finishOnUiThread(ModalityState.defaultInstance(), loadedData -> {
+                    this.data = loadedData;
 
-                if(!(ex instanceof EmptyLocalesDirException)) {
-                    NotificationHelper.createIOError(settings, ex);
-                }
-            }
-        });
+                    Exception ex = errorRef.get();
+                    if (ex == null) {
+                        successResult.accept(true);
+                    } else {
+                        successResult.accept(false);
+
+                        if (!(ex instanceof EmptyLocalesDirException)) {
+                            NotificationHelper.createIOError(settings, ex);
+                        }
+                    }
+                })
+                .submit(AppExecutorUtil.getAppExecutorService());
     }
 
     /**
