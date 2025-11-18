@@ -1,5 +1,6 @@
 package de.marhali.easyi18n.config.project.component.module;
 
+import com.intellij.openapi.components.PathMacroManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.ui.TitledSeparator;
 import com.intellij.ui.components.JBTextField;
@@ -72,9 +73,13 @@ public class ProjectConfigModuleResourceUi extends BaseProjectConfigModuleUi {
     public void applyStateToComponent(ProjectConfigModule state) {
         super.applyStateToComponent(state);
 
-        pathTemplate.setText(state.getPathTemplate());
+        pathTemplate.setText(collapsePathMacros(state.getPathTemplate()));
         fileTemplate.setText(state.getFileTemplate());
         keyTemplate.setText(state.getKeyTemplate());
-        rootDirectory.setText(state.getRootDirectory());
+        rootDirectory.setText(collapsePathMacros(state.getRootDirectory()));
+    }
+
+    private String collapsePathMacros(String expandedPath) {
+        return PathMacroManager.getInstance(project).collapsePath(expandedPath);
     }
 }
