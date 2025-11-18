@@ -57,4 +57,26 @@ public class TemplateSegment {
     public ParameterTemplateSegment getAsParameter() {
         return (ParameterTemplateSegment) this;
     }
+
+    @Override
+    public String toString() {
+        if (isLiteral()) {
+            return this.getAsLiteral().toString();
+        } else if (isParameter()) {
+            return this.getAsParameter().toString();
+        } else {
+            throw new UnsupportedOperationException("Unknown template segment: " + this.getClass().getSimpleName());
+        }
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (isLiteral()) {
+            return this.getAsLiteral().equals(obj);
+        } else if (isParameter()) {
+            return this.getAsParameter().equals(obj);
+        } else {
+            throw new UnsupportedOperationException("Unknown template segment: " + this.getClass().getSimpleName());
+        }
+    }
 }
