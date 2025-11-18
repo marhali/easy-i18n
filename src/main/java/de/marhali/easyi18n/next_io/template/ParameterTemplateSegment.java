@@ -31,6 +31,10 @@ public class ParameterTemplateSegment extends TemplateSegment {
         return name;
     }
 
+    public boolean hasConstraint() {
+        return constraint != null;
+    }
+
     public @Nullable String getConstraint() {
         return constraint;
     }
