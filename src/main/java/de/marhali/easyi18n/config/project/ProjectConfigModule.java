@@ -6,6 +6,7 @@ import java.util.Objects;
 
 /**
  * Describes a configured module that has i18n support.
+ *
  * @author marhali
  */
 public class ProjectConfigModule {
@@ -22,45 +23,32 @@ public class ProjectConfigModule {
     // Resource configuration
 
     /**
-     * File folder structure.
+     * File path template syntax.
      */
-    private String fileFolderPattern;
+    private String pathTemplate;
 
     /**
-     * File content structure.
+     * File content template syntax.
      */
-    private String fileContentPattern;
+    private String fileTemplate;
 
     /**
-     * Key structure.
+     * Key template syntax.
      */
-    private String keyPattern;
+    private String keyTemplate;
 
     /**
-     * Root directory from which this configuration applies.
+     * Root directory from which this module configuration applies.
      */
     private String rootDirectory;
 
     // Editor configuration
 
     /**
-     * Delimiter between namespace and the rest of the translation.
-     */
-    private String moduleDelimiter;
-
-    /**
-     * Delimiter between namespace and section keys.
-     */
-    private String namespaceDelimiter;
-
-    /**
-     * Delimiter between section keys.
-     */
-    private String sectionDelimiter;
-
-    /**
      * Namespace to use as default if none is supplied. Can be an empty string to ignore this feature.
+     * @deprecated We do not want to force the user to label this functionality as namespace, the user should define a list of key(prefixes) that should be used
      */
+    @Deprecated
     private String defaultNamespace;
 
     /**
@@ -79,13 +67,10 @@ public class ProjectConfigModule {
      */
     public ProjectConfigModule(ProjectConfigModule origin) {
         this.name = origin.name;
-        this.fileFolderPattern = origin.fileFolderPattern;
-        this.fileContentPattern = origin.fileContentPattern;
-        this.keyPattern = origin.keyPattern;
+        this.pathTemplate = origin.pathTemplate;
+        this.fileTemplate = origin.fileTemplate;
+        this.keyTemplate= origin.keyTemplate;
         this.rootDirectory = origin.rootDirectory;
-        this.moduleDelimiter = origin.moduleDelimiter;
-        this.namespaceDelimiter = origin.namespaceDelimiter;
-        this.sectionDelimiter = origin.sectionDelimiter;
         this.defaultNamespace = origin.defaultNamespace;
         this.i18nTemplate = origin.i18nTemplate;
         this.keyNamingConvention = origin.keyNamingConvention;
@@ -101,28 +86,28 @@ public class ProjectConfigModule {
         this.name = name;
     }
 
-    public String getFileFolderPattern() {
-        return fileFolderPattern;
+    public String getPathTemplate() {
+        return pathTemplate;
     }
 
-    public void setFileFolderPattern(String fileFolderPattern) {
-        this.fileFolderPattern = fileFolderPattern;
+    public void setPathTemplate(String pathTemplate) {
+        this.pathTemplate = pathTemplate;
     }
 
-    public String getFileContentPattern() {
-        return fileContentPattern;
+    public String getFileTemplate() {
+        return fileTemplate;
     }
 
-    public void setFileContentPattern(String fileContentPattern) {
-        this.fileContentPattern = fileContentPattern;
+    public void setFileTemplate(String fileTemplate) {
+        this.fileTemplate = fileTemplate;
     }
 
-    public String getKeyPattern() {
-        return keyPattern;
+    public String getKeyTemplate() {
+        return keyTemplate;
     }
 
-    public void setKeyPattern(String keyPattern) {
-        this.keyPattern = keyPattern;
+    public void setKeyTemplate(String keyTemplate) {
+        this.keyTemplate = keyTemplate;
     }
 
     public String getRootDirectory() {
@@ -131,30 +116,6 @@ public class ProjectConfigModule {
 
     public void setRootDirectory(String rootDirectory) {
         this.rootDirectory = rootDirectory;
-    }
-
-    public String getModuleDelimiter() {
-        return moduleDelimiter;
-    }
-
-    public void setModuleDelimiter(String moduleDelimiter) {
-        this.moduleDelimiter = moduleDelimiter;
-    }
-
-    public String getNamespaceDelimiter() {
-        return namespaceDelimiter;
-    }
-
-    public void setNamespaceDelimiter(String namespaceDelimiter) {
-        this.namespaceDelimiter = namespaceDelimiter;
-    }
-
-    public String getSectionDelimiter() {
-        return sectionDelimiter;
-    }
-
-    public void setSectionDelimiter(String sectionDelimiter) {
-        this.sectionDelimiter = sectionDelimiter;
     }
 
     public String getDefaultNamespace() {
@@ -191,15 +152,12 @@ public class ProjectConfigModule {
 
     @Override
     public String toString() {
-        return "ProjectConfigResource{" +
+        return "ProjectConfigModule{" +
             "name='" + name + '\'' +
-            ", fileFolderPattern='" + fileFolderPattern + '\'' +
-            ", fileContentPattern='" + fileContentPattern + '\'' +
-            ", keyPattern='" + keyPattern + '\'' +
+            ", pathTemplate='" + pathTemplate + '\'' +
+            ", fileTemplate='" + fileTemplate + '\'' +
+            ", keyTemplate='" + keyTemplate + '\'' +
             ", rootDirectory='" + rootDirectory + '\'' +
-            ", moduleDelimiter='" + moduleDelimiter + '\'' +
-            ", namespaceDelimiter='" + namespaceDelimiter + '\'' +
-            ", sectionDelimiter='" + sectionDelimiter + '\'' +
             ", defaultNamespace='" + defaultNamespace + '\'' +
             ", i18nTemplate='" + i18nTemplate + '\'' +
             ", keyNamingConvention=" + keyNamingConvention +
@@ -209,12 +167,12 @@ public class ProjectConfigModule {
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        ProjectConfigModule that = (ProjectConfigModule) o;
-        return Objects.equals(name, that.name) && Objects.equals(fileFolderPattern, that.fileFolderPattern) && Objects.equals(fileContentPattern, that.fileContentPattern) && Objects.equals(keyPattern, that.keyPattern) && Objects.equals(rootDirectory, that.rootDirectory) && Objects.equals(moduleDelimiter, that.moduleDelimiter) && Objects.equals(namespaceDelimiter, that.namespaceDelimiter) && Objects.equals(sectionDelimiter, that.sectionDelimiter) && Objects.equals(defaultNamespace, that.defaultNamespace) && Objects.equals(i18nTemplate, that.i18nTemplate) && keyNamingConvention == that.keyNamingConvention;
+        ProjectConfigModule module = (ProjectConfigModule) o;
+        return Objects.equals(name, module.name) && Objects.equals(pathTemplate, module.pathTemplate) && Objects.equals(fileTemplate, module.fileTemplate) && Objects.equals(keyTemplate, module.keyTemplate) && Objects.equals(rootDirectory, module.rootDirectory) && Objects.equals(defaultNamespace, module.defaultNamespace) && Objects.equals(i18nTemplate, module.i18nTemplate) && keyNamingConvention == module.keyNamingConvention;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, fileFolderPattern, fileContentPattern, keyPattern, rootDirectory, moduleDelimiter, namespaceDelimiter, sectionDelimiter, defaultNamespace, i18nTemplate, keyNamingConvention);
+        return Objects.hash(name, pathTemplate, fileTemplate, keyTemplate, rootDirectory, defaultNamespace, i18nTemplate, keyNamingConvention);
     }
 }

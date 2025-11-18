@@ -5,7 +5,7 @@ import com.intellij.ui.TitledSeparator;
 import com.intellij.ui.components.JBTextField;
 import com.intellij.util.ui.FormBuilder;
 import de.marhali.easyi18n.config.project.ProjectConfig;
-import de.marhali.easyi18n.ionext.file.FileParser;
+import de.marhali.easyi18n.next_io.file.FileParser;
 
 import java.util.*;
 

@@ -11,9 +11,9 @@ import de.marhali.easyi18n.config.project.ProjectConfigModule;
  */
 public class ProjectConfigModuleResourceUi extends BaseProjectConfigModuleUi {
 
-    private JBTextField fileFolderPattern;
-    private JBTextField fileContentPattern;
-    private JBTextField keyPattern;
+    private JBTextField pathTemplate;
+    private JBTextField fileTemplate;
+    private JBTextField keyTemplate;
     private JBTextField rootDirectory;
 
     protected ProjectConfigModuleResourceUi(Project project) {
@@ -25,23 +25,23 @@ public class ProjectConfigModuleResourceUi extends BaseProjectConfigModuleUi {
         // Title
         formBuilder.addComponent(new TitledSeparator(i18n.getString("config.project.modules.item.resource.title")));
 
-        // Folder structure
-        fileFolderPattern = new JBTextField();
-        fileFolderPattern.setToolTipText(i18n.getString("config.project.modules.item.folder.tooltip"));
+        // Path template syntax
+        pathTemplate = new JBTextField();
+        pathTemplate.setToolTipText(i18n.getString("config.project.modules.item.path.tooltip"));
 
-        formBuilder.addLabeledComponent(i18n.getString("config.project.modules.item.folder.label"), fileFolderPattern, 1, false);
+        formBuilder.addLabeledComponent(i18n.getString("config.project.modules.item.path.label"), pathTemplate, 1, false);
 
-        // File structure
-        fileContentPattern = new JBTextField();
-        fileContentPattern.setToolTipText(i18n.getString("config.project.modules.item.file.tooltip"));
+        // File template syntax
+        fileTemplate = new JBTextField();
+        fileTemplate.setToolTipText(i18n.getString("config.project.modules.item.file.tooltip"));
 
-        formBuilder.addLabeledComponent(i18n.getString("config.project.modules.item.file.label"), fileContentPattern, 1, false);
+        formBuilder.addLabeledComponent(i18n.getString("config.project.modules.item.file.label"), fileTemplate, 1, false);
 
-        // Key structure
-        keyPattern = new JBTextField();
-        keyPattern.setToolTipText(i18n.getString("config.project.modules.item.key.tooltip"));
+        // Key template syntax
+        keyTemplate = new JBTextField();
+        keyTemplate.setToolTipText(i18n.getString("config.project.modules.item.key.tooltip"));
 
-        formBuilder.addLabeledComponent(i18n.getString("config.project.modules.item.key.label"), keyPattern, 1, false);
+        formBuilder.addLabeledComponent(i18n.getString("config.project.modules.item.key.label"), keyTemplate, 1, false);
 
         // Root directory
         rootDirectory = new JBTextField();
@@ -52,9 +52,9 @@ public class ProjectConfigModuleResourceUi extends BaseProjectConfigModuleUi {
 
     @Override
     public boolean isModified() {
-        var equals = fileFolderPattern.getText().equals(state.getFileFolderPattern())
-            && fileContentPattern.getText().equals(state.getFileContentPattern())
-            && keyPattern.getText().equals(state.getKeyPattern())
+        var equals = pathTemplate.getText().equals(state.getPathTemplate())
+            && fileTemplate.getText().equals(state.getFileTemplate())
+            && keyTemplate.getText().equals(state.getKeyTemplate())
             && rootDirectory.getText().equals(state.getRootDirectory());
 
         return !equals;
@@ -62,9 +62,9 @@ public class ProjectConfigModuleResourceUi extends BaseProjectConfigModuleUi {
 
     @Override
     public void applyChangesToState() {
-        state.setFileFolderPattern(fileFolderPattern.getText());
-        state.setFileContentPattern(fileContentPattern.getText());
-        state.setKeyPattern(keyPattern.getText());
+        state.setPathTemplate(pathTemplate.getText());
+        state.setFileTemplate(fileTemplate.getText());
+        state.setKeyTemplate(keyTemplate.getText());
         state.setRootDirectory(rootDirectory.getText());
     }
 
@@ -72,9 +72,9 @@ public class ProjectConfigModuleResourceUi extends BaseProjectConfigModuleUi {
     public void applyStateToComponent(ProjectConfigModule state) {
         super.applyStateToComponent(state);
 
-        fileFolderPattern.setText(state.getFileFolderPattern());
-        fileContentPattern.setText(state.getFileContentPattern());
-        keyPattern.setText(state.getKeyPattern());
+        pathTemplate.setText(state.getPathTemplate());
+        fileTemplate.setText(state.getFileTemplate());
+        keyTemplate.setText(state.getKeyTemplate());
         rootDirectory.setText(state.getRootDirectory());
     }
 }

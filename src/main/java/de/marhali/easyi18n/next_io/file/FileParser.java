@@ -1,4 +1,4 @@
-package de.marhali.easyi18n.ionext.file;
+package de.marhali.easyi18n.next_io.file;
 
 import java.util.Arrays;
 

@@ -2,7 +2,7 @@ package de.marhali.easyi18n.config.project.preset;
 
 import de.marhali.easyi18n.config.project.ProjectConfig;
 import de.marhali.easyi18n.config.project.ProjectConfigModule;
-import de.marhali.easyi18n.ionext.file.FileParser;
+import de.marhali.easyi18n.next_io.file.FileParser;
 
 import java.util.ArrayList;
 import java.util.HashMap;

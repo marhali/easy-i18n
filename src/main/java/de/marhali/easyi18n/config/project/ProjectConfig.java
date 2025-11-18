@@ -1,7 +1,7 @@
 package de.marhali.easyi18n.config.project;
 
 import de.marhali.easyi18n.config.project.preset.ProjectConfigPresetDefault;
-import de.marhali.easyi18n.ionext.file.FileParser;
+import de.marhali.easyi18n.next_io.file.FileParser;
 
 import java.util.*;
 import java.util.stream.Collectors;
