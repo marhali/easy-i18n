@@ -2,6 +2,7 @@ package de.marhali.easyi18n.config.project.preset;
 
 import de.marhali.easyi18n.config.project.KeyNamingConvention;
 import de.marhali.easyi18n.config.project.ProjectConfigModule;
+import de.marhali.easyi18n.next_io.file.FileCodec;
 
 public class ProjectConfigModulePresetDefault implements ProjectConfigModulePresetProvider{
     @Override
@@ -11,6 +12,7 @@ public class ProjectConfigModulePresetDefault implements ProjectConfigModulePres
 
         cfg.setName("default");
         cfg.setPathTemplate("");
+        cfg.setFileCodec(FileCodec.JSON);
         cfg.setFileTemplate("");
         cfg.setKeyTemplate("");
         cfg.setRootDirectory("");

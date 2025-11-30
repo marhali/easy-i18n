@@ -27,7 +27,6 @@ public class ProjectConfigUi extends BaseProjectConfigUi {
             new ProjectConfigIntroUi(project),
             new ProjectConfigPresetUi(project, applyPreset),
             new ProjectConfigCommonUi(project),
-            new ProjectConfigExtMapperUi(project),
             new ProjectConfigModulesUi(project)
         );
     }

@@ -1,10 +1,8 @@
 package de.marhali.easyi18n.config.project;
 
 import de.marhali.easyi18n.config.project.preset.ProjectConfigPresetDefault;
-import de.marhali.easyi18n.next_io.file.FileParser;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Project-level configuration state.
@@ -42,12 +40,6 @@ public class ProjectConfig {
      */
     private List<ProjectConfigModule> modules;
 
-    // File extension mapper
-    /**
-     * Maps file parser with file extensions.
-     */
-    private Map<FileParser, List<String>> fileExtMapper;
-
     /**
      * Creates a deep copy from the provided {@link ProjectConfig config}.
      * @param origin Config to copy from
@@ -57,7 +49,6 @@ public class ProjectConfig {
         this.sorting = origin.sorting;
         this.previewLocale = origin.previewLocale;
         this.modules = new ArrayList<>(origin.modules.stream().map(ProjectConfigModule::new).toList());
-        this.fileExtMapper = new HashMap<>(origin.fileExtMapper.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, value -> new ArrayList<>(value.getValue()))));
     }
 
     public ProjectConfig() {
@@ -95,14 +86,6 @@ public class ProjectConfig {
         this.modules = modules;
     }
 
-    public Map<FileParser, List<String>> getFileExtMapper() {
-        return fileExtMapper;
-    }
-
-    public void setFileExtMapper(Map<FileParser, List<String>> fileExtMapper) {
-        this.fileExtMapper = fileExtMapper;
-    }
-
     @Override
     public String toString() {
         return "ProjectConfig{" +
@@ -110,7 +93,6 @@ public class ProjectConfig {
             ", sorting=" + sorting +
             ", previewLocale='" + previewLocale + '\'' +
             ", modules=" + modules +
-            ", fileExtMapper=" + fileExtMapper +
             '}';
     }
 
@@ -118,11 +100,11 @@ public class ProjectConfig {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         ProjectConfig that = (ProjectConfig) o;
-        return editorAssistance == that.editorAssistance && sorting == that.sorting && Objects.equals(previewLocale, that.previewLocale) && Objects.equals(modules, that.modules) && Objects.equals(fileExtMapper, that.fileExtMapper);
+        return editorAssistance == that.editorAssistance && sorting == that.sorting && Objects.equals(previewLocale, that.previewLocale) && Objects.equals(modules, that.modules);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(editorAssistance, sorting, previewLocale, modules, fileExtMapper);
+        return Objects.hash(editorAssistance, sorting, previewLocale, modules);
     }
 }

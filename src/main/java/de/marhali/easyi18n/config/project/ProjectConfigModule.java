@@ -1,6 +1,7 @@
 package de.marhali.easyi18n.config.project;
 
 import de.marhali.easyi18n.config.project.preset.ProjectConfigModulePresetDefault;
+import de.marhali.easyi18n.next_io.file.FileCodec;
 
 import java.util.Objects;
 
@@ -26,6 +27,11 @@ public class ProjectConfigModule {
      * File path template syntax.
      */
     private String pathTemplate;
+
+    /**
+     * File format to use for reading / writing.
+     */
+    private FileCodec fileCodec;
 
     /**
      * File content template syntax.
@@ -68,6 +74,7 @@ public class ProjectConfigModule {
     public ProjectConfigModule(ProjectConfigModule origin) {
         this.name = origin.name;
         this.pathTemplate = origin.pathTemplate;
+        this.fileCodec = origin.fileCodec;
         this.fileTemplate = origin.fileTemplate;
         this.keyTemplate= origin.keyTemplate;
         this.rootDirectory = origin.rootDirectory;
@@ -92,6 +99,14 @@ public class ProjectConfigModule {
 
     public void setPathTemplate(String pathTemplate) {
         this.pathTemplate = pathTemplate;
+    }
+
+    public FileCodec getFileCodec() {
+        return fileCodec;
+    }
+
+    public void setFileCodec(FileCodec fileCodec) {
+        this.fileCodec = fileCodec;
     }
 
     public String getFileTemplate() {
@@ -155,6 +170,7 @@ public class ProjectConfigModule {
         return "ProjectConfigModule{" +
             "name='" + name + '\'' +
             ", pathTemplate='" + pathTemplate + '\'' +
+            ", fileCodec=" + fileCodec +
             ", fileTemplate='" + fileTemplate + '\'' +
             ", keyTemplate='" + keyTemplate + '\'' +
             ", rootDirectory='" + rootDirectory + '\'' +
@@ -168,11 +184,11 @@ public class ProjectConfigModule {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         ProjectConfigModule module = (ProjectConfigModule) o;
-        return Objects.equals(name, module.name) && Objects.equals(pathTemplate, module.pathTemplate) && Objects.equals(fileTemplate, module.fileTemplate) && Objects.equals(keyTemplate, module.keyTemplate) && Objects.equals(rootDirectory, module.rootDirectory) && Objects.equals(defaultNamespace, module.defaultNamespace) && Objects.equals(i18nTemplate, module.i18nTemplate) && keyNamingConvention == module.keyNamingConvention;
+        return Objects.equals(name, module.name) && Objects.equals(pathTemplate, module.pathTemplate) && fileCodec == module.fileCodec && Objects.equals(fileTemplate, module.fileTemplate) && Objects.equals(keyTemplate, module.keyTemplate) && Objects.equals(rootDirectory, module.rootDirectory) && Objects.equals(defaultNamespace, module.defaultNamespace) && Objects.equals(i18nTemplate, module.i18nTemplate) && keyNamingConvention == module.keyNamingConvention;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, pathTemplate, fileTemplate, keyTemplate, rootDirectory, defaultNamespace, i18nTemplate, keyNamingConvention);
+        return Objects.hash(name, pathTemplate, fileCodec, fileTemplate, keyTemplate, rootDirectory, defaultNamespace, i18nTemplate, keyNamingConvention);
     }
 }

@@ -113,6 +113,20 @@ public class PathTemplate {
         return sb.toString();
     }
 
+    /**
+     * Retrieves the specified file extension.
+     * @return file extension as {@link String} or {@code null}, if a file extension could not be extracted
+     */
+    public @Nullable String getFileExtension() {
+        int index = template.lastIndexOf(".");
+
+        if (index == -1 || index + 1 >= template.length()) {
+            return null;
+        }
+
+        return template.substring(index + 1);
+    }
+
     @Override
     public String toString() {
         return "PathTemplate{" +

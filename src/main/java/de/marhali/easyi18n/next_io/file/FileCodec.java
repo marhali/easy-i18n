@@ -1,20 +1,23 @@
 package de.marhali.easyi18n.next_io.file;
 
+import de.marhali.easyi18n.next_io.file.json.JsonFileProcessor;
+
 import java.util.Arrays;
 
 /**
- * Enumeration of every supported file (content) parser.
+ * Enumeration of every supported file (content) format.
  * Mapping between file extension and file parser is handled via configuration.
+ *
  * @author marhali
  */
-public enum FileParser {
-    JSON("JSON"),
-    JSON5("JSON5"),
-    YAML("YAML"),
-    PROPERTIES("Properties"),
+public enum FileCodec {
+    JSON("JSON", JsonFileProcessor.class),
+    JSON5("JSON5", JsonFileProcessor.class),
+    YAML("YAML", JsonFileProcessor.class),
+    PROPERTIES("Properties", JsonFileProcessor.class),
     ;
 
-    public static FileParser fromDisplayName(String displayName) {
+    public static FileCodec fromDisplayName(String displayName) {
         return Arrays.stream(values())
             .filter(parser -> parser.displayName.equals(displayName))
             .findFirst()
@@ -23,18 +26,24 @@ public enum FileParser {
 
     public static String[] displayNames() {
         return Arrays.stream(values())
-            .map(FileParser::getDisplayName)
+            .map(FileCodec::getDisplayName)
             .toArray(String[]::new);
     }
 
     private final String displayName;
+    private final Class<? extends FileProcessor> fileProcessorClass;
 
-    FileParser(String displayName) {
+    FileCodec(String displayName, Class<? extends FileProcessor> fileProcessorClass) {
         this.displayName = displayName;
+        this.fileProcessorClass = fileProcessorClass;
     }
 
     public String getDisplayName() {
         return displayName;
+    }
+
+    public Class<? extends FileProcessor> getFileProcessorClass() {
+        return this.fileProcessorClass;
     }
 
     @Override
