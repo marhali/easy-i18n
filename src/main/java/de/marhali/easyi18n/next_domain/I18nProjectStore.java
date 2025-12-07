@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -43,11 +44,11 @@ public class I18nProjectStore {
      * Retrieves a specific i18n module by name.
      * @see #hasModule(String)
      * @param moduleName Module by name to receive
-     * @return {@link I18nModuleStore} or {@link IllegalArgumentException} if the requested module is unknown
+     * @return {@link I18nModuleStore} or {@link NoSuchElementException} if the requested module is unknown
      */
     public @NotNull I18nModuleStore getModule(@NotNull String moduleName) {
         if (!hasModule(moduleName)) {
-            throw new IllegalArgumentException("Module by name '" + moduleName + "' does not exist");
+            throw new NoSuchElementException("Module by name '" + moduleName + "' does not exist");
         }
 
         return this.byModule.get(moduleName);
@@ -58,6 +59,10 @@ public class I18nProjectStore {
             moduleName,
             (module) -> new I18nModuleStore(new HashSet<>(), this.mapImplFactory.get())
         );
+    }
+
+    public @NotNull Set<String> getModuleNames() {
+        return this.byModule.keySet();
     }
 
     /**

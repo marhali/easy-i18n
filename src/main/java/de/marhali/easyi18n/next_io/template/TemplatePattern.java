@@ -1,7 +1,8 @@
 package de.marhali.easyi18n.next_io.template;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
-import java.util.Objects;
 import java.util.regex.Pattern;
 
 /**
@@ -18,10 +19,7 @@ public class TemplatePattern {
      * @param defaultParameterConstraint Regex constraint to apply if a {@link ParameterTemplateSegment} does not specify one
      * @return {@link Pattern}
      */
-    public static Pattern fromSegments(List<TemplateSegment> segments, String defaultParameterConstraint) {
-        Objects.requireNonNull(segments, "segments must not be null");
-        Objects.requireNonNull(defaultParameterConstraint, "defaultParameterConstraint must not be null");
-
+    public static @NotNull Pattern fromSegments(@NotNull List<TemplateSegment> segments, @NotNull String defaultParameterConstraint) {
         StringBuilder regex = new StringBuilder();
 
         regex.append("^");

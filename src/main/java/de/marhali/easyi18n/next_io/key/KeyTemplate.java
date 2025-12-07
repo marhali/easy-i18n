@@ -1,13 +1,13 @@
 package de.marhali.easyi18n.next_io.key;
 
 import de.marhali.easyi18n.next_domain.I18nKey;
+import de.marhali.easyi18n.next_domain.I18nParams;
 import de.marhali.easyi18n.next_io.template.TemplateParser;
 import de.marhali.easyi18n.next_io.template.TemplateSegment;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  *
@@ -29,9 +29,41 @@ public class KeyTemplate {
         this.segments = segments;
     }
 
-    // TODO: add stringify and parse methods
+    // TODO: add stringify method and parse from single string method
 
-    public @NotNull I18nKey build(@NotNull Map<String, List<String>> params) {
+    public @NotNull I18nParams parse(@NotNull I18nKey key) {
+        I18nParams params = new I18nParams();
+
+        var segmentsIterator = segments.iterator();
+        var partsIterator = key.parts().iterator();
+
+        TemplateSegment currentSegment = null;
+
+        while (partsIterator.hasNext()) {
+            var part = partsIterator.next();
+
+            while (segmentsIterator.hasNext() && (currentSegment == null || !currentSegment.isParameter())) {
+                currentSegment = segmentsIterator.next();
+            }
+
+            if (currentSegment == null || !currentSegment.isParameter()) {
+                throw new NullPointerException("Cannot associate key part '" + part + "' with any parameter template segment");
+            }
+
+            var parameter = currentSegment.getAsParameter();
+            var name = parameter.getName();
+
+            params.add(name, part);
+
+            if (partsIterator.hasNext() && segmentsIterator.hasNext()) {
+                currentSegment = null;
+            }
+        }
+
+        return params;
+    }
+
+    public @NotNull I18nKey build(@NotNull I18nParams params) {
         List<String> parts = new ArrayList<>();
 
         for (TemplateSegment segment : segments) {
@@ -43,4 +75,5 @@ public class KeyTemplate {
 
         return I18nKey.of(parts);
     }
+
 }

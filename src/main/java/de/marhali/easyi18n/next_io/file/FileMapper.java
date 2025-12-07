@@ -32,6 +32,6 @@ public abstract class FileMapper {
      * @return {@link TranslationProducer}
      */
     protected @NotNull TranslationProducer createRootProducer() {
-        return TranslationProducer.of(file.getParams(), 0);
+        return new TranslationProducer(file.getParams(), 0);
     }
 }

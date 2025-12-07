@@ -5,9 +5,9 @@ import de.marhali.easyi18n.next_io.template.TemplateParser;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Map;
 
 /**
- *
  * @author marhali
  */
 public class FileTemplate {
@@ -61,14 +61,8 @@ public class FileTemplate {
             return DEFAULT_SEGMENT_COUNT;
         }
 
-        var constraints = segment.getConstraint().split(":", 2);
-
-        if (constraints.length < 2) {
-            return DEFAULT_SEGMENT_COUNT;
-        }
-
         try {
-            return Integer.parseInt(constraints[1]);
+            return Integer.parseInt(segment.getConstraint());
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("Could not parse integer count for template parameter with name '" + segment.getName() + "'");
         }

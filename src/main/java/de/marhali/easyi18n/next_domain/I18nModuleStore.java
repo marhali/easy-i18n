@@ -1,6 +1,7 @@
 package de.marhali.easyi18n.next_domain;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 import java.util.Set;
@@ -56,6 +57,18 @@ public class I18nModuleStore {
 
     public I18nValue getOrCreateTranslation(@NotNull I18nKey key) {
         return this.byKey.computeIfAbsent(key, (_key) -> new I18nValue());
+    }
+
+    public boolean hasTranslation(@NotNull I18nKey key) {
+        return this.byKey.containsKey(key);
+    }
+
+    public @Nullable I18nValue getTranslation(@NotNull I18nKey key) {
+        return this.byKey.get(key);
+    }
+
+    public @NotNull Set<I18nKey> getKeys() {
+        return this.byKey.keySet();
     }
 
     @Override

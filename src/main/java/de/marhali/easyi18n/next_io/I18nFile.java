@@ -1,26 +1,26 @@
 package de.marhali.easyi18n.next_io;
 
 import com.intellij.openapi.vfs.VirtualFile;
-
-import java.util.Map;
+import de.marhali.easyi18n.next_domain.I18nParams;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * @author marhali
  */
 public class I18nFile {
-    private final VirtualFile file;
-    private final Map<String, String> params;
+    private final @NotNull VirtualFile file;
+    private final @NotNull I18nParams params;
 
-    public I18nFile(VirtualFile file, Map<String, String> params) {
+    public I18nFile(@NotNull VirtualFile file, @NotNull I18nParams params) {
         this.file = file;
         this.params = params;
     }
 
-    public VirtualFile getFile() {
+    public @NotNull VirtualFile getFile() {
         return file;
     }
 
-    public Map<String, String> getParams() {
+    public @NotNull I18nParams getParams() {
         return params;
     }
 

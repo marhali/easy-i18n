@@ -11,37 +11,12 @@ import java.util.regex.Pattern;
  */
 public class TemplatePatternTest {
 
+    private static final String defaultParameterDelimiter = "myDelim";
     private static final String defaultParameterConstraint = "myRegexConstraint";
 
     private static void assertPatternEquals(Pattern expected, Pattern actual) {
         Assert.assertEquals(expected.pattern(), actual.pattern());
         Assert.assertEquals(expected.flags(), actual.flags());
-    }
-
-    @Test
-    public void test_null_segments_throws() {
-        var ex = Assert.assertThrows(
-            NullPointerException.class,
-            () -> TemplatePattern.fromSegments(null, defaultParameterConstraint)
-        );
-
-        Assert.assertEquals(
-            "segments must not be null",
-            ex.getMessage()
-        );
-    }
-
-    @Test
-    public void test_null_default_parameter_constraint_throws() {
-        var ex = Assert.assertThrows(
-            NullPointerException.class,
-            () -> TemplatePattern.fromSegments(List.of(), null)
-        );
-
-        Assert.assertEquals(
-            "defaultParameterConstraint must not be null",
-            ex.getMessage()
-        );
     }
 
     @Test
@@ -77,7 +52,7 @@ public class TemplatePatternTest {
     public void test_simple_parameter_segment_returns_pattern() {
         assertPatternEquals(
             Pattern.compile("^(?<myParam>" + defaultParameterConstraint + ")$"),
-            TemplatePattern.fromSegments(List.of(TemplateSegment.fromParameter("myParam", null)), defaultParameterConstraint)
+            TemplatePattern.fromSegments(List.of(TemplateSegment.fromParameter("myParam", null, null)), defaultParameterConstraint)
         );
     }
 
@@ -85,7 +60,7 @@ public class TemplatePatternTest {
     public void test_constraint_parameter_segment_returns_pattern() {
         assertPatternEquals(
             Pattern.compile("^(?<myParam>[^/]+)$"),
-            TemplatePattern.fromSegments(List.of(TemplateSegment.fromParameter("myParam", "[^/]+")), defaultParameterConstraint)
+            TemplatePattern.fromSegments(List.of(TemplateSegment.fromParameter("myParam", null,"[^/]+")), defaultParameterConstraint)
         );
     }
 }

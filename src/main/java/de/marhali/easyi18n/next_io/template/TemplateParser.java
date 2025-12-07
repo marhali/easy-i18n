@@ -1,8 +1,9 @@
 package de.marhali.easyi18n.next_io.template;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.regex.Pattern;
 
 /**
@@ -15,7 +16,7 @@ public class TemplateParser {
     /**
      * Regex pattern to match parameter names. Must be compliant to be used for regex named group.
      */
-    private static final Pattern PARAM_NAME_PATTERN = Pattern.compile("^[A-Za-z0-9_]+$");
+    private static final @NotNull Pattern PARAM_NAME_PATTERN = Pattern.compile("^[A-Za-z0-9_]+$");
 
     /**
      * Parses the provided template string into template segments.
@@ -23,9 +24,7 @@ public class TemplateParser {
      * @param template The template syntax string
      * @return List of parsed segments left-to-right
      */
-    public static List<TemplateSegment> parseSegments(String template) {
-        Objects.requireNonNull(template, "template must not be null");
-
+    public static @NotNull List<TemplateSegment> parseSegments(@NotNull String template) {
         List<TemplateSegment> segments = new ArrayList<>();
         StringBuilder literal = new StringBuilder();
 
@@ -54,13 +53,20 @@ public class TemplateParser {
 
                 String inside = template.substring(i + 1, end);
 
-                String[] insideSplit = inside.split(":", 2);
+                String[] insideSplit = inside.split(":", 3);
 
                 String parameterName = insideSplit[0];
+                String optionalParameterDelimiter = null;
                 String optionalParameterConstraint = null;
 
-                if (insideSplit.length > 1) {
-                    optionalParameterConstraint = insideSplit[1];
+                // Extract parameter delimiter if set and not blank
+                if (insideSplit.length > 1 && !insideSplit[1].isEmpty()) {
+                    optionalParameterDelimiter = insideSplit[1];
+                }
+
+                // Extract parameter constraint if set and not blank
+                if (insideSplit.length > 2 && !insideSplit[2].isEmpty()) {
+                    optionalParameterConstraint = insideSplit[2];
                 }
 
                 if (!PARAM_NAME_PATTERN.matcher(parameterName).matches()) {
@@ -68,7 +74,7 @@ public class TemplateParser {
                         "The value must match '" + PARAM_NAME_PATTERN + "'");
                 }
 
-                segments.add(new ParameterTemplateSegment(parameterName, optionalParameterConstraint));
+                segments.add(new ParameterTemplateSegment(parameterName, optionalParameterDelimiter, optionalParameterConstraint));
                 i = end; // '}' is incremented by the loop
 
             } else {

@@ -5,6 +5,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Holds all translation values (<code>locale -> value</code>) for a specific {@link I18nKey}.
@@ -33,6 +34,10 @@ public class I18nValue {
 
     public void put(@NotNull String locale, Object value) {
         this.byLocale.put(locale, value);
+    }
+
+    public @NotNull Set<String> getLocales() {
+        return this.byLocale.keySet();
     }
 
     @Override

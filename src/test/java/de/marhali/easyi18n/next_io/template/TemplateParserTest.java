@@ -11,19 +11,6 @@ import java.util.List;
  */
 public class TemplateParserTest {
     @Test
-    public void test_null_template_throws() {
-        var ex = Assert.assertThrows(
-            NullPointerException.class,
-            () -> TemplateParser.parseSegments(null)
-        );
-
-        Assert.assertEquals(
-            "template must not be null",
-            ex.getMessage()
-        );
-    }
-
-    @Test
     public void test_empty_template_returns_empty_list() {
         Assert.assertEquals(
             new ArrayList<>(),
@@ -89,7 +76,7 @@ public class TemplateParserTest {
     @Test
     public void test_simple_parameter_template_returns_parameter_segment() {
         Assert.assertEquals(
-            new ArrayList<>(List.of(TemplateSegment.fromParameter("mySegment", null))),
+            new ArrayList<>(List.of(TemplateSegment.fromParameter("mySegment", null,null))),
             TemplateParser.parseSegments("{mySegment}")
         );
     }
@@ -97,8 +84,8 @@ public class TemplateParserTest {
     @Test
     public void test_constraint_parameter_template_returns_constraint_segment() {
         Assert.assertEquals(
-            new ArrayList<>(List.of(TemplateSegment.fromParameter("mySegment", "[^/]+"))),
-            TemplateParser.parseSegments("{mySegment:[^/]+}")
+            new ArrayList<>(List.of(TemplateSegment.fromParameter("mySegment", null,"[^/]+"))),
+            TemplateParser.parseSegments("{mySegment::[^/]+}")
         );
     }
 
@@ -107,12 +94,12 @@ public class TemplateParserTest {
         Assert.assertEquals(
             new ArrayList<>(List.of(
                 TemplateSegment.fromLiteral("some plaintext/{escapedParam}."),
-                TemplateSegment.fromParameter("simpleParam", null),
+                TemplateSegment.fromParameter("simpleParam", null,null),
                 TemplateSegment.fromLiteral("/more plain/"),
-                TemplateSegment.fromParameter("constraintParam", "myRegex"),
+                TemplateSegment.fromParameter("constraintParam", "myDelim","myRegex"),
                 TemplateSegment.fromLiteral(".trail")
             )),
-            TemplateParser.parseSegments("some plaintext/\\{escapedParam}.{simpleParam}/more plain/{constraintParam:myRegex}.trail")
+            TemplateParser.parseSegments("some plaintext/\\{escapedParam}.{simpleParam}/more plain/{constraintParam:myDelim:myRegex}.trail")
         );
     }
 }

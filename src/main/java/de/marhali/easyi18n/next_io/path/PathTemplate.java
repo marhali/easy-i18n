@@ -1,14 +1,13 @@
 package de.marhali.easyi18n.next_io.path;
 
+import de.marhali.easyi18n.next_domain.I18nParams;
 import de.marhali.easyi18n.next_io.template.TemplateParser;
 import de.marhali.easyi18n.next_io.template.TemplatePattern;
 import de.marhali.easyi18n.next_io.template.TemplateSegment;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -31,30 +30,34 @@ public class PathTemplate {
      *     <li>'.' (delimiter between file name and type)</li>
      * </ul>
      */
-    private static final String DEFAULT_PATH_CONSTRAINT = "[^/.]+";
+    private static final @NotNull String DEFAULT_PATH_CONSTRAINT = "[^/.]+";
 
     /**
      * Compiles the provided template syntax string into a bidirectional path template.
      * @param template Template syntax string
      * @return {@link PathTemplate}
      */
-    public static PathTemplate compile(String template) {
-        Objects.requireNonNull(template, "template must not be null");
-
+    public static @NotNull PathTemplate compile(@NotNull String template) {
         var segments = TemplateParser.parseSegments(template);
         var pattern = TemplatePattern.fromSegments(segments, DEFAULT_PATH_CONSTRAINT);
 
         return new PathTemplate(template, segments, pattern);
     }
 
-    private final String template;
-    private final List<TemplateSegment> segments;
-    private final Pattern pattern;
+    private final @NotNull String template;
+    private final @NotNull List<TemplateSegment> segments;
+    private final @NotNull Pattern pattern;
+    private final @NotNull PathBuilder builder;
 
-    private PathTemplate(String template, List<TemplateSegment> segments, Pattern pattern) {
+    private PathTemplate(
+        @NotNull String template,
+        @NotNull List<TemplateSegment> segments,
+        @NotNull Pattern pattern
+    ) {
         this.template = template;
         this.segments = segments;
         this.pattern = pattern;
+        this.builder = new PathBuilder(segments);
     }
 
     /**
@@ -62,55 +65,29 @@ public class PathTemplate {
      * @param path Path to match against
      * @return {@code null} if path does not match, otherwise a {@link Map} with resolved parameter values.
      */
-    public @Nullable Map<String, String> match(String path) {
-        Objects.requireNonNull(path, "path must not be null");
-
+    public @Nullable I18nParams match(@NotNull String path) {
         Matcher matcher = pattern.matcher(path);
 
         if (!matcher.matches()) {
             return null;
         }
 
-        Map<String, String> params = new HashMap<>();
+        I18nParams params = new I18nParams();
 
         for (TemplateSegment segment : segments) {
             if (segment.isParameter()) {
-                var name = segment.getAsParameter().getName();
-                params.put(name, matcher.group(name));
+                var parameter = segment.getAsParameter();
+                var parameterName = parameter.getName();
+                params.add(parameterName, parameter.splitByDelimiter(matcher.group(parameterName)));
             }
         }
 
         return params;
     }
 
-    /**
-     * Builds the path with the provided parameters and the underlying template syntax.
-     * @param params Parameters to use to build the path
-     * @return Build path
-     */
-    public String build(Map<String, ?> params) {
-        Objects.requireNonNull(params, "params must not be null");
 
-        StringBuilder sb = new StringBuilder();
-
-        for (TemplateSegment segment : segments) {
-           if (segment.isLiteral()) {
-               sb.append(segment.getAsLiteral().getLiteral());
-           } else if (segment.isParameter()) {
-               var name = segment.getAsParameter().getName();
-               var value = params.get(name);
-
-               if (value == null) {
-                   throw new NullPointerException("Parameter by key '" + name + "' must not be null");
-               }
-
-               // TODO: we might also validate the value against the parameter constraint
-
-               sb.append(value);
-           }
-        }
-
-        return sb.toString();
+    public @NotNull Set<String> build(@NotNull I18nParams params) {
+       return this.builder.build(params);
     }
 
     /**
@@ -133,6 +110,7 @@ public class PathTemplate {
             "template='" + template + '\'' +
             ", segments=" + segments +
             ", pattern=" + pattern +
+            ", builder=" + builder +
             '}';
     }
 
@@ -140,11 +118,11 @@ public class PathTemplate {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         PathTemplate that = (PathTemplate) o;
-        return Objects.equals(template, that.template) && Objects.equals(segments, that.segments) && Objects.equals(pattern, that.pattern);
+        return Objects.equals(template, that.template) && Objects.equals(segments, that.segments) && Objects.equals(pattern, that.pattern) && Objects.equals(builder, that.builder);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(template, segments, pattern);
+        return Objects.hash(template, segments, pattern, builder);
     }
 }

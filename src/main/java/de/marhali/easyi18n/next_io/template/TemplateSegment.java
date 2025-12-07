@@ -21,11 +21,12 @@ public class TemplateSegment {
     /**
      * Shorthand to construct a parameter section.
      * @param name Parameter name
-     * @param constraint Optional parameter regex constraint
+     * @param delimiter Optional parameter delimiter
+     * @param constraint Optional parameter constraint
      * @return {@link ParameterTemplateSegment}
      */
-    protected static ParameterTemplateSegment fromParameter(String name, @Nullable String constraint) {
-        return new ParameterTemplateSegment(name, constraint);
+    protected static ParameterTemplateSegment fromParameter(String name, @Nullable String delimiter, @Nullable String constraint) {
+        return new ParameterTemplateSegment(name, delimiter, constraint);
     }
 
     protected TemplateSegment() {}

@@ -1,11 +1,13 @@
 package de.marhali.easyi18n.next_io.template;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
- * Represents a template section that consists of a parameter with an optional regex constraint.
+ * Represents a template section that consists of a parameter with an optional delimiter and constraint.
  *
  * @author marhali
  */
@@ -17,18 +19,35 @@ public class ParameterTemplateSegment extends TemplateSegment {
     private final String name;
 
     /**
-     * Optional regex constraint to apply on this parameter.
+     * Optional delimiter to apply on this parameter.
      */
-    @Nullable
-    private final String constraint;
+    private final @Nullable String delimiter;
 
-    protected ParameterTemplateSegment(String name, @Nullable String constraint) {
+    /**
+     * Optional constraint to apply on this parameter.
+     */
+    private final @Nullable String constraint;
+
+    protected ParameterTemplateSegment(
+        String name,
+        @Nullable String delimiter,
+        @Nullable String constraint
+    ) {
         this.name = name;
+        this.delimiter = delimiter;
         this.constraint = constraint;
     }
 
     public String getName() {
         return name;
+    }
+
+    public boolean hasDelimiter() {
+        return delimiter != null;
+    }
+
+    public @Nullable String getDelimiter() {
+        return delimiter;
     }
 
     public boolean hasConstraint() {
@@ -39,10 +58,19 @@ public class ParameterTemplateSegment extends TemplateSegment {
         return constraint;
     }
 
+    public @NotNull List<String> splitByDelimiter(@NotNull String value) {
+        if (delimiter == null) {
+            return List.of(value);
+        }
+
+        return List.of(value.split(delimiter));
+    }
+
     @Override
     public String toString() {
         return "ParameterTemplateSegment{" +
             "name='" + name + '\'' +
+            ", delimiter='" + delimiter + '\'' +
             ", constraint='" + constraint + '\'' +
             '}';
     }
@@ -51,11 +79,11 @@ public class ParameterTemplateSegment extends TemplateSegment {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         ParameterTemplateSegment that = (ParameterTemplateSegment) o;
-        return Objects.equals(name, that.name) && Objects.equals(constraint, that.constraint);
+        return Objects.equals(name, that.name) && Objects.equals(delimiter, that.delimiter) && Objects.equals(constraint, that.constraint);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, constraint);
+        return Objects.hash(name, delimiter, constraint);
     }
 }
