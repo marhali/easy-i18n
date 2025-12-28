@@ -1,13 +1,18 @@
 package de.marhali.easyi18n.next_io.path;
 
 import de.marhali.easyi18n.next_domain.I18nParams;
+import de.marhali.easyi18n.next_domain.I18nParamsBuilder;
+import de.marhali.easyi18n.next_io.I18nPath;
 import de.marhali.easyi18n.next_io.template.TemplateParser;
 import de.marhali.easyi18n.next_io.template.TemplatePattern;
 import de.marhali.easyi18n.next_io.template.TemplateSegment;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -31,24 +36,10 @@ public class PathTemplate {
      * </ul>
      */
     private static final @NotNull String DEFAULT_PATH_CONSTRAINT = "[^/.]+";
-
-    /**
-     * Compiles the provided template syntax string into a bidirectional path template.
-     * @param template Template syntax string
-     * @return {@link PathTemplate}
-     */
-    public static @NotNull PathTemplate compile(@NotNull String template) {
-        var segments = TemplateParser.parseSegments(template);
-        var pattern = TemplatePattern.fromSegments(segments, DEFAULT_PATH_CONSTRAINT);
-
-        return new PathTemplate(template, segments, pattern);
-    }
-
     private final @NotNull String template;
     private final @NotNull List<TemplateSegment> segments;
     private final @NotNull Pattern pattern;
     private final @NotNull PathBuilder builder;
-
     private PathTemplate(
         @NotNull String template,
         @NotNull List<TemplateSegment> segments,
@@ -61,7 +52,21 @@ public class PathTemplate {
     }
 
     /**
+     * Compiles the provided template syntax string into a bidirectional path template.
+     *
+     * @param template Template syntax string
+     * @return {@link PathTemplate}
+     */
+    public static @NotNull PathTemplate compile(@NotNull String template) {
+        var segments = TemplateParser.parseSegments(template);
+        var pattern = TemplatePattern.fromSegments(segments, DEFAULT_PATH_CONSTRAINT);
+
+        return new PathTemplate(template, segments, pattern);
+    }
+
+    /**
      * Matches the provided path against the underlying template pattern.
+     *
      * @param path Path to match against
      * @return {@code null} if path does not match, otherwise a {@link Map} with resolved parameter values.
      */
@@ -72,26 +77,26 @@ public class PathTemplate {
             return null;
         }
 
-        I18nParams params = new I18nParams();
+        I18nParamsBuilder paramsBuilder = I18nParams.builder();
 
         for (TemplateSegment segment : segments) {
             if (segment.isParameter()) {
                 var parameter = segment.getAsParameter();
                 var parameterName = parameter.getName();
-                params.add(parameterName, parameter.splitByDelimiter(matcher.group(parameterName)));
+                paramsBuilder.add(parameterName, parameter.splitByDelimiter(matcher.group(parameterName)));
             }
         }
 
-        return params;
+        return paramsBuilder.build();
     }
 
-
-    public @NotNull Set<String> build(@NotNull I18nParams params) {
-       return this.builder.build(params);
+    public @NotNull Set<I18nPath> build(@NotNull I18nParams params) {
+        return builder.build(params);
     }
 
     /**
      * Retrieves the specified file extension.
+     *
      * @return file extension as {@link String} or {@code null}, if a file extension could not be extracted
      */
     public @Nullable String getFileExtension() {

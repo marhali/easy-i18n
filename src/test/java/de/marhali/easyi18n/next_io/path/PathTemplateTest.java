@@ -1,6 +1,8 @@
 package de.marhali.easyi18n.next_io.path;
 
 import de.marhali.easyi18n.next_domain.I18nParams;
+import de.marhali.easyi18n.next_io.I18nBuiltinParam;
+import de.marhali.easyi18n.next_io.I18nPath;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -26,17 +28,23 @@ public class PathTemplateTest {
 
         var params = template.match("$PROJECT_DIR$/account/de.json");
 
-        var expectedParams = new I18nParams();
-        expectedParams.add("ns", "account");
-        expectedParams.add("locale", "de");
+        var expectedParams = I18nParams.builder()
+            .add("ns", "account")
+            .add(I18nBuiltinParam.LOCALE, "de")
+            .build();
 
         Assert.assertEquals(
-           expectedParams,
+            expectedParams,
             params
         );
 
         assert params != null;
 
-        Assert.assertEquals(Set.of(inputPath), template.build(params));
+        Assert.assertEquals(
+            Set.of(I18nPath.from(inputPath, I18nParams.builder()
+                .add("ns", "account")
+                .add(I18nBuiltinParam.LOCALE, "de")
+                .build())),
+            template.build(params));
     }
 }
