@@ -6,60 +6,78 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 
 /**
- * Container to hold parsed i18n parameter values.
- * TODO: maybe split into 2 parts: I18nParams (record) and I18nParamsBuilder
+ * Container holding i18n parameter(s). Every parameter holds a list of associated values.
  *
+ * @param params Map of parameter names and associated values
  * @author marhali
  */
-public class I18nParams implements Cloneable {
-
-    private final @NotNull Map<String, List<String>> params;
+public record I18nParams(
+    @NotNull Map<String, List<String>> params
+) {
 
     public I18nParams() {
         this(new HashMap<>());
     }
 
-    private I18nParams(@NotNull Map<String, List<String>> params) {
-        this.params = params;
+    public I18nParams(@NotNull Map<String, List<String>> params) {
+        this.params = cloneParamsMap(params);
+    }
+
+    /**
+     * Construct params using the builder pattern.
+     *
+     * @return {@link I18nParamsBuilder}
+     */
+    public static I18nParamsBuilder builder() {
+        return new I18nParamsBuilder();
+    }
+
+    private static Map<String, List<String>> cloneParamsMap(@NotNull Map<String, List<String>> params) {
+        var clonedParams = new HashMap<String, List<String>>(params.size());
+
+        for (Map.Entry<String, List<String>> entry : params.entrySet()) {
+            clonedParams.put(entry.getKey(), new ArrayList<>(entry.getValue()));
+        }
+
+        return clonedParams;
     }
 
     public boolean has(@NotNull String parameterName) {
         return this.params.containsKey(parameterName);
     }
 
+    public @NotNull List<String> getOrEmpty(@NotNull String parameterName) {
+        return this.params.getOrDefault(parameterName, List.of());
+    }
+
     public @Nullable List<String> get(@NotNull String parameterName) {
         return this.params.get(parameterName);
     }
 
-    public @Nullable String getFirst(@NotNull String parameterName) {
-        return has(parameterName) ? this.params.get(parameterName).getFirst() : null;
-    }
+    public @NotNull String getOrThrowSingleton(@NotNull String parameterName) {
+        var values = this.params.get(parameterName);
 
-    public Collection<String> getOrDefault(@NotNull String parameterName, @NotNull Collection<String> orDefault) {
-        return params.containsKey(parameterName) ? params.get(parameterName) : orDefault;
-    }
+        if (values == null || values.size() != 1) {
+            throw new IllegalArgumentException("Invalid singleton value for parameter with name '" + parameterName + "'. Got: " + values);
+        }
 
-    public void add(@NotNull String parameterName, @NotNull List<String> parameterValues) {
-        this.params.computeIfAbsent(parameterName, (_key) -> new ArrayList<>())
-            .addAll(parameterValues);
-    }
-
-    public void add(@NotNull String parameterName, @NotNull String... parameterValues) {
-        this.params.computeIfAbsent(parameterName, (_key) -> new ArrayList<>())
-            .addAll(List.of(parameterValues));
-    }
-
-    public void add(@NotNull String parameterName, @NotNull String parameterValue) {
-        this.params.computeIfAbsent(parameterName, (_key) -> new ArrayList<>())
-            .add(parameterValue);
+        return values.getFirst();
     }
 
     public @NotNull Set<String> names() {
         return this.params.keySet();
     }
 
+    public int size() {
+        return this.params.size();
+    }
+
+    public @NotNull I18nParamsBuilder toBuilder() {
+        return new I18nParamsBuilder(cloneParamsMap(params));
+    }
+
     @Override
-    public String toString() {
+    public @NotNull String toString() {
         return "I18nParams{" +
             "params=" + params +
             '}';
@@ -75,20 +93,5 @@ public class I18nParams implements Cloneable {
     @Override
     public int hashCode() {
         return Objects.hashCode(params);
-    }
-
-    public int size() {
-        return this.params.size();
-    }
-
-    @Override
-    public I18nParams clone() {
-        Map<String, List<String>> clonedParams = new HashMap<>(this.params.size());
-
-        for (Map.Entry<String, List<String>> entry : params.entrySet()) {
-            clonedParams.put(entry.getKey(), new ArrayList<>(entry.getValue()));
-        }
-
-        return new I18nParams(clonedParams);
     }
 }
