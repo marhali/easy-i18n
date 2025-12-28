@@ -1,0 +1,10 @@
+# Documentation based on https://www.mkdocs.org/
+site_name: Easy I18n
+site_dir: docs-build
+theme:
+  name: material
+  logo: assets/favicon.svg
+  favicon: assets/favicon.svg
+  palette:
+    primary: black
+repo_url: https://github.com/marhali/easy-i18n
