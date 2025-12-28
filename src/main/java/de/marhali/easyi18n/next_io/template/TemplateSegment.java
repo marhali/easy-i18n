@@ -29,8 +29,6 @@ public class TemplateSegment {
         return new ParameterTemplateSegment(name, delimiter, constraint);
     }
 
-    protected TemplateSegment() {}
-
     /**
      * @return {@code true} if this section is a plaintext literal, otherwise {@code false}
      */

@@ -1,5 +1,7 @@
 package de.marhali.easyi18n.next_io.template;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Objects;
 
 /**
@@ -12,20 +14,20 @@ public class LiteralTemplateSegment extends TemplateSegment {
     /**
      * Plaintext literal that represents this section.
      */
-    private final String literal;
+    private final @NotNull String text;
 
-    protected LiteralTemplateSegment(String literal) {
-        this.literal = literal;
+    protected LiteralTemplateSegment(@NotNull String text) {
+        this.text = text;
     }
 
-    public String getLiteral() {
-        return literal;
+    public @NotNull String getText() {
+        return text;
     }
 
     @Override
     public String toString() {
         return "LiteralTemplateSegment{" +
-            "literal='" + literal + '\'' +
+            "text='" + text + '\'' +
             '}';
     }
 
@@ -33,11 +35,11 @@ public class LiteralTemplateSegment extends TemplateSegment {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         LiteralTemplateSegment that = (LiteralTemplateSegment) o;
-        return Objects.equals(literal, that.literal);
+        return Objects.equals(text, that.text);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(literal);
+        return Objects.hashCode(text);
     }
 }

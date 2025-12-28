@@ -26,7 +26,7 @@ public class TemplatePattern {
 
         for (TemplateSegment segment : segments) {
             if (segment.isLiteral()) {
-                regex.append(Pattern.quote(segment.getAsLiteral().getLiteral()));
+                regex.append(Pattern.quote(segment.getAsLiteral().getText()));
             } else if (segment.isParameter()) {
                 var parameter = segment.getAsParameter();
                 var name = parameter.getName();
