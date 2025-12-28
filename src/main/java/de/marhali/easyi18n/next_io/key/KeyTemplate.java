@@ -2,6 +2,7 @@ package de.marhali.easyi18n.next_io.key;
 
 import de.marhali.easyi18n.next_domain.I18nKey;
 import de.marhali.easyi18n.next_domain.I18nParams;
+import de.marhali.easyi18n.next_domain.I18nParamsBuilder;
 import de.marhali.easyi18n.next_io.template.TemplateParser;
 import de.marhali.easyi18n.next_io.template.TemplateSegment;
 import org.jetbrains.annotations.NotNull;
@@ -15,12 +16,6 @@ import java.util.List;
  */
 public class KeyTemplate {
 
-    public static KeyTemplate compile(@NotNull String template) {
-        var segments = TemplateParser.parseSegments(template);
-
-        return new KeyTemplate(template, segments);
-    }
-
     private final @NotNull String template;
     private final @NotNull List<TemplateSegment> segments;
 
@@ -29,10 +24,16 @@ public class KeyTemplate {
         this.segments = segments;
     }
 
+    public static KeyTemplate compile(@NotNull String template) {
+        var segments = TemplateParser.parseSegments(template);
+
+        return new KeyTemplate(template, segments);
+    }
+
     // TODO: add stringify method and parse from single string method
 
     public @NotNull I18nParams parse(@NotNull I18nKey key) {
-        I18nParams params = new I18nParams();
+        I18nParamsBuilder paramsBuilder = I18nParams.builder();
 
         var segmentsIterator = segments.iterator();
         var partsIterator = key.parts().iterator();
@@ -53,14 +54,14 @@ public class KeyTemplate {
             var parameter = currentSegment.getAsParameter();
             var name = parameter.getName();
 
-            params.add(name, part);
+            paramsBuilder.add(name, part);
 
             if (partsIterator.hasNext() && segmentsIterator.hasNext()) {
                 currentSegment = null;
             }
         }
 
-        return params;
+        return paramsBuilder.build();
     }
 
     public @NotNull I18nKey build(@NotNull I18nParams params) {
@@ -69,11 +70,10 @@ public class KeyTemplate {
         for (TemplateSegment segment : segments) {
             if (segment.isParameter()) {
                 var parameter = segment.getAsParameter();
-                parts.addAll(params.getOrDefault(parameter.getName(), List.of()));
+                parts.addAll(params.getOrEmpty(parameter.getName()));
             }
         }
 
         return I18nKey.of(parts);
     }
-
 }
