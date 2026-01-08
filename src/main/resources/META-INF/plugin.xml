@@ -15,6 +15,8 @@
   <depends optional="true" config-file="de.marhali.easyi18n-java.xml">com.intellij.java</depends>
   <depends optional="true" config-file="de.marhali.easyi18n-php.xml">com.jetbrains.php</depends>
 
+  <resource-bundle>messages.PluginBundle</resource-bundle>
+
   <actions>
     <action
       id="de.marhali.easyi18n.action.AddAction"
