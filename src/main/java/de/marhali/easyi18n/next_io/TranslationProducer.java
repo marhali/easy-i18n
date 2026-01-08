@@ -1,50 +1,45 @@
 package de.marhali.easyi18n.next_io;
 
 import de.marhali.easyi18n.next_domain.I18nKey;
+import de.marhali.easyi18n.next_domain.I18nParams;
+import de.marhali.easyi18n.next_domain.I18nParamsBuilder;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
-import java.util.stream.Collectors;
+import java.util.function.Function;
 
 /**
  * Helper class for tracking the hierarchical creation of translations.
- *
+
  * @author marhali
  */
 public record TranslationProducer(
-    @NotNull Map<String, List<String>> params,
-    int depth
+    @NotNull I18nParams params,
+    @NotNull Integer level
 ) {
-    public static TranslationProducer of(@NotNull Map<String, String> singleParams, int depth) {
-        var mappedEntries = singleParams.entrySet().stream()
-            .collect(Collectors.toMap(Map.Entry::getKey, (entry) -> List.of(entry.getValue())));
-
-        return new TranslationProducer(mappedEntries, depth);
+    public static @NotNull TranslationProducer from(@NotNull I18nParamsBuilder paramsBuilder, @NotNull Integer level) {
+        return new TranslationProducer(paramsBuilder.build(), level);
     }
 
-    public TranslationProducer putParameter(@NotNull String key, @NotNull String value) {
-        var newParams = new HashMap<>(params);
-        newParams.computeIfAbsent(key, (_key) -> new ArrayList<>()).add(value);
-
-        return new TranslationProducer(newParams, depth);
+    public @NotNull I18nParamsBuilder paramsBuilder() {
+        return params.toBuilder();
     }
 
-    public TranslationProducer increaseDepth() {
-        return new TranslationProducer(params, depth + 1);
+    public @NotNull TranslationProducer children(
+        @NotNull Function<@NotNull I18nParamsBuilder, @NotNull I18nParamsBuilder> paramsFunction,
+        @NotNull Function<Integer, Integer> levelFunction
+    ) {
+        var newParams = paramsFunction.apply(paramsBuilder()).build();
+        var newLevel = levelFunction.apply(level);
+        return new TranslationProducer(newParams, newLevel);
     }
 
     public @NotNull String locale() {
-        var locales = this.params.getOrDefault(I18nBuiltinParam.LOCALE.getParamName(), List.of());
-
-        if (locales.isEmpty()) {
-            throw new NoSuchElementException("Missing locale parameter in params: " + params);
-        }
-
         // We may validate that locales consist only of the same locale identifier
-        return locales.getFirst();
+        return params.getOrThrowSingleton(I18nBuiltinParam.LOCALE.getParamName());
     }
 
     public @NotNull I18nKey toKey(@NotNull ModuleTemplate template) {
-        return template.key(). build(params);
+        return template.key().build(params);
     }
 }

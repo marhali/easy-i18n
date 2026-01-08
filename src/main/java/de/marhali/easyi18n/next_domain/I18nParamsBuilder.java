@@ -27,6 +27,13 @@ public class I18nParamsBuilder {
         return this;
     }
 
+    public @NotNull I18nParamsBuilder mergeAll(@NotNull I18nParams params) {
+        for (Map.Entry<String, List<String>> entry : params.params().entrySet()) {
+            add(entry.getKey(), entry.getValue());
+        }
+        return this;
+    }
+
     public @NotNull I18nParamsBuilder add(@NotNull String parameterName, @NotNull String parameterValue) {
         params.computeIfAbsent(parameterName, (_key) -> new ArrayList<>()).add(parameterValue);
         return this;

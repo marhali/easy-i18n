@@ -1,70 +1,51 @@
 package de.marhali.easyi18n.next_io.file;
 
-import de.marhali.easyi18n.next_io.template.ParameterTemplateSegment;
-import de.marhali.easyi18n.next_io.template.TemplateParser;
+import de.marhali.easyi18n.next_io.template.TemplateLevelParser;
+import de.marhali.easyi18n.next_io.template.TemplatePattern;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author marhali
  */
 public class FileTemplate {
 
-    /**
-     * Default count to use if a segment does not specify how many sections it covers.
-     */
-    private static final int DEFAULT_SEGMENT_COUNT = 1;
+    private static final @NotNull String DEFAULT_FILE_CONSTRAINT = ".+";
 
     public static FileTemplate compile(@NotNull String template) {
-        var segments = TemplateParser.parseSegments(template);
-
-        var parameterSegments = segments.stream()
-            .map(segment -> {
-                if (!segment.isParameter()) {
-                    throw new IllegalArgumentException("The file template may only consist of parameter segments");
-                }
-                return segment.getAsParameter();
-            })
+        var levels = TemplateLevelParser.parseLevels(template);
+        System.out.println(levels);
+        var fileLevels = levels.stream()
+            .map((level) -> new FileTemplateLevel(level, TemplatePattern.fromSegments(level.segments(), DEFAULT_FILE_CONSTRAINT)))
             .toList();
-
-        return new FileTemplate(template, parameterSegments);
+        return new FileTemplate(template, fileLevels);
     }
 
     private final @NotNull String template;
-    private final @NotNull List<ParameterTemplateSegment> segments;
+    private final @NotNull List<@NotNull FileTemplateLevel> levels;
 
-    private FileTemplate(@NotNull String template, @NotNull List<ParameterTemplateSegment> segments) {
+    private FileTemplate(@NotNull String template, @NotNull List<@NotNull FileTemplateLevel> levels) {
         this.template = template;
-        this.segments = segments;
+        this.levels = levels;
     }
 
-    public @NotNull ParameterTemplateSegment getSegmentAtDepth(int depth) {
-        int i = 0;
-        for (ParameterTemplateSegment segment : segments) {
-            var count = getSegmentCount(segment);
-
-            if (depth < i + count) {
-                return segment;
-            }
-
-            i += count;
+    public @NotNull FileTemplateLevel getAtLevel(@NotNull Integer level) {
+        if (level < 0) {
+            throw new IllegalArgumentException("The file level cannot be less than zero");
         }
 
-        // We assume that the last segment always functions as a wildcard section with unlimited count
-        return segments.getLast().getAsParameter();
+        if (level >= levels.size()) {
+            // We assume that the last segment always functions as a wildcard section with unlimited count
+            return levels.getLast();
+        }
+
+        return levels.get(level);
     }
 
-    private int getSegmentCount(@NotNull ParameterTemplateSegment segment) {
-        if (segment.getConstraint() == null) {
-            return DEFAULT_SEGMENT_COUNT;
-        }
-
-        try {
-            return Integer.parseInt(segment.getConstraint());
-        } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Could not parse integer count for template parameter with name '" + segment.getName() + "'");
-        }
+    public @NotNull List<@NotNull FileTemplateLevel> getLevels() {
+        return this.levels;
     }
+
+    // TODO: do we still need to add build() method here? should be already contained inside the specific level
 }

@@ -6,11 +6,13 @@ import de.marhali.easyi18n.config.project.ProjectConfigModule;
 import de.marhali.easyi18n.next_domain.I18nProjectStore;
 import de.marhali.easyi18n.next_io.I18nFile;
 import de.marhali.easyi18n.next_io.ModuleTemplate;
+import de.marhali.easyi18n.next_io.TranslationConsumer;
 import de.marhali.easyi18n.next_io.file.FileProcessor;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.Set;
 
 /**
  * @author marhali
@@ -52,12 +54,33 @@ public class JsonFileProcessor extends FileProcessor {
                 return;
             }
 
-            new JsonFileMapper(module, moduleTemplate, file).read(input);
+            new JsonReader(module, moduleTemplate, file).read(input);
         }
     }
 
     @Override
-    public void write(@NotNull I18nFile file) throws Exception {
+    public void write(@NotNull I18nFile file, @NotNull Set<TranslationConsumer> consumers) throws Exception {
+        // TODO: maybe use store in tree format (I18nNode) to build the output object
+        // TODO: maybe use JsonReader and JsonWriter as helper classes for each file processor
 
+        var module = store.getOrCreateModule(moduleConfig.getName());
+        var vf = file.getFile();
+
+        var mapper = new JsonWriter(module, moduleTemplate, file);
+        System.out.println(vf);
+        System.out.println(file.getParams());
+        for (TranslationConsumer consumer : consumers) {
+            //mapper.write(consumer);
+            System.out.println(consumer);
+        }
+
+        System.out.println(GSON.toJson(mapper.getRootElement()));
+
+        /*
+        try (Writer writer = new OutputStreamWriter(vf.getOutputStream(this), vf.getCharset())) {
+            GSON.toJson(output, writer);
+        }
+
+         */
     }
 }

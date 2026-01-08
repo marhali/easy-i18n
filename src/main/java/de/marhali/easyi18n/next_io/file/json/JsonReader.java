@@ -13,9 +13,9 @@ import java.util.ArrayList;
 /**
  * @author marhali
  */
-public class JsonFileMapper extends FileMapper {
+public class JsonReader extends FileMapper {
 
-    protected JsonFileMapper(@NotNull I18nModuleStore store, @NotNull ModuleTemplate template, @NotNull I18nFile file) {
+    protected JsonReader(@NotNull I18nModuleStore store, @NotNull ModuleTemplate template, @NotNull I18nFile file) {
        super(store, template, file);
     }
 
@@ -38,13 +38,16 @@ public class JsonFileMapper extends FileMapper {
     }
 
     protected void readObject(@NotNull JsonObject object, @NotNull TranslationProducer producer) {
-        var parameter = template.file().getSegmentAtDepth(producer.depth());
-        var nestedProducer = producer.increaseDepth();
+        var fileTemplateLevel = template.file().getAtLevel(producer.level());
 
         for (String key : object.keySet()) {
-            var keyedProducer = nestedProducer.putParameter(parameter.getName(), key);
-            JsonElement value = object.get(key);
-            read(value, keyedProducer);
+            var keyParams = fileTemplateLevel.parse(key);
+            var value = object.get(key);
+            var childProducer = producer.children(
+                paramsBuilder -> paramsBuilder.mergeAll(keyParams),
+                level -> level + 1
+            );
+            read(value, childProducer);
         }
     }
 
