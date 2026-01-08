@@ -38,6 +38,10 @@
                 factoryClass="de.marhali.easyi18n.service.TranslatorToolWindowFactory"
                 icon="/icons/translate13.svg"/>
 
+    <toolWindow id="de.marhali.easyi18n.translations" anchor="bottom" icon="/icons/translate13.svg"
+                factoryClass="de.marhali.easyi18n.adapter.presentation.toolwindow.I18nToolWindowFactory"
+    />
+
     <projectService serviceImplementation="de.marhali.easyi18n.settings.ProjectSettingsService"/>
     <projectService serviceImplementation="de.marhali.easyi18n.config.project.ProjectConfigService"/>
 
