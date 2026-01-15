@@ -24,7 +24,7 @@ public class QueryDispatcher {
      * @param <R> Return type
      */
     public <Q extends Query<R>, R> void register(@NotNull Class<Q> type, @NotNull QueryHandler<Q, R> handler) {
-        handlers.put(handler.getClass(), handler);
+        handlers.put(type, handler);
     }
 
     /**
