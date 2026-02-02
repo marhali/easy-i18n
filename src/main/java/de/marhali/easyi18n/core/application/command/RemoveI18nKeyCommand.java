@@ -1,4 +1,4 @@
-package de.marhali.easyi18n.core.application.cqrs.command;
+package de.marhali.easyi18n.core.application.command;
 
 import de.marhali.easyi18n.core.application.cqrs.Command;
 import de.marhali.easyi18n.core.domain.model.I18nKey;

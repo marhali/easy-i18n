@@ -1,23 +1,22 @@
-package de.marhali.easyi18n.core.application.cqrs.command;
+package de.marhali.easyi18n.core.application.command;
 
 import de.marhali.easyi18n.core.application.cqrs.Command;
 import de.marhali.easyi18n.core.domain.model.I18nKey;
-import de.marhali.easyi18n.core.domain.model.LocaleId;
 import de.marhali.easyi18n.core.domain.model.ModuleId;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Command to delete a localized value from an existing translation.
+ * Command to update the translation key of an existing translation.
  *
  * @param moduleId Module identifier
- * @param key Translation key
- * @param locale Locale identifier
+ * @param oldKey Old translation key
+ * @param newKey New translation key
  *
  * @author marhali
  */
-public record RemoveI18nValueCommand(
+public record UpdateI18nKeyCommand(
     @NotNull ModuleId moduleId,
-    @NotNull I18nKey key,
-    @NotNull LocaleId locale
+    @NotNull I18nKey oldKey,
+    @NotNull I18nKey newKey
     ) implements Command {
 }

@@ -1,4 +1,4 @@
-package de.marhali.easyi18n.adapter.presentation.messages;
+package de.marhali.easyi18n.idea.messages;
 
 import com.intellij.DynamicBundle;
 import org.jetbrains.annotations.Nls;
