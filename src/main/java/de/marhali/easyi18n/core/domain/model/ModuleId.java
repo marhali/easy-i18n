@@ -11,5 +11,9 @@ import org.jetbrains.annotations.NotNull;
  */
 public record ModuleId(
     @NotNull String name
-) {
+) implements Comparable<ModuleId> {
+    @Override
+    public int compareTo(@NotNull ModuleId o) {
+        return this.name.compareTo(o.name);
+    }
 }

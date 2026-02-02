@@ -11,5 +11,9 @@ import org.jetbrains.annotations.NotNull;
  */
 public record LocaleId(
     @NotNull String tag
-) {
+) implements Comparable<LocaleId> {
+    @Override
+    public int compareTo(@NotNull LocaleId o) {
+        return this.tag.compareTo(o.tag);
+    }
 }
