@@ -1,9 +1,8 @@
 package de.marhali.easyi18n.core.domain.config;
 
-import de.marhali.easyi18n.config.project.KeyNamingConvention;
+import de.marhali.easyi18n.core.domain.config.preset.ProjectConfigPresetDefault;
 import de.marhali.easyi18n.core.domain.model.LocaleId;
 import de.marhali.easyi18n.core.domain.model.ModuleId;
-import de.marhali.easyi18n.next_io.file.FileCodec;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
@@ -24,34 +23,18 @@ public record ProjectConfig(
     @NotNull Boolean editorAssistance,
     @NotNull Boolean sorting,
     @NotNull LocaleId previewLocale,
-    @NotNull Map<@NotNull ModuleId, @NotNull ModuleDefinition> modules
+    @NotNull Map<@NotNull ModuleId, @NotNull ProjectConfigModule> modules
     ) {
 
-    /**
-     * Module-specific configuration options within a project.
-     *
-     * @param id Module identifier.
-     * @param pathTemplate File path template syntax.
-     * @param fileCodec File format to use for reading / writing.
-     * @param fileTemplate File content template syntax.
-     * @param keyTemplate Key template syntax.
-     * @param rootDirectory Root directory from which this module configuration applies.
-     * @param defaultNamespace Namespace to use as default if none is supplied. Can be an empty string to ignore this feature. @deprecated We do not want to force the user to label this functionality as namespace, the user should define a list of key(prefixes) that should be used
-     * @param i18nTemplate Template to apply for translation message extraction.
-     * @param keyNamingConvention Defines the used key naming convention.
-     *
-     * @author marhali
-     */
-    public record ModuleDefinition(
-        @NotNull ModuleId id,
-        @NotNull String pathTemplate,
-        @NotNull FileCodec fileCodec,
-        @NotNull String fileTemplate,
-        @NotNull String keyTemplate,
-        @NotNull String rootDirectory,
-        @NotNull @Deprecated String defaultNamespace,
-        @NotNull String i18nTemplate,
-        @NotNull KeyNamingConvention keyNamingConvention
-        ) {
+    public static @NotNull ProjectConfig fromDefaultPreset() {
+        return new ProjectConfigPresetDefault().applyPreset(null);
+    }
+
+    public static @NotNull ProjectConfigBuilder builder() {
+        return new ProjectConfigBuilder();
+    }
+
+    public @NotNull ProjectConfigBuilder toBuilder() {
+        return new ProjectConfigBuilder(this);
     }
 }

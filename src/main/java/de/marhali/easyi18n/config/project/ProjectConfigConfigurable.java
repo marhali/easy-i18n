@@ -5,8 +5,6 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.NlsContexts;
 import com.intellij.util.ui.FormBuilder;
 import de.marhali.easyi18n.config.project.component.ProjectConfigUi;
-import de.marhali.easyi18n.help.EasyI18nWebHelpProvider;
-import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -61,10 +59,5 @@ public class ProjectConfigConfigurable implements Configurable {
     @Override
     public void disposeUIResources() {
         component = null;
-    }
-
-    @Override
-    public @Nullable @NonNls String getHelpTopic() {
-        return EasyI18nWebHelpProvider.Topic.DOCS.helpTopicId();
     }
 }
