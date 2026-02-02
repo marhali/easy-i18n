@@ -1,4 +1,4 @@
-package de.marhali.easyi18n.help;
+package de.marhali.easyi18n.idea.help;
 
 import com.intellij.openapi.help.WebHelpProvider;
 import org.jetbrains.annotations.NotNull;
@@ -6,9 +6,10 @@ import org.jetbrains.annotations.Nullable;
 
 /**
  * Plugin-specific web help provider with all topics.
+ *
  * @author marhali
  */
-public class EasyI18nWebHelpProvider extends WebHelpProvider {
+public class PluginWebHelpProvider extends WebHelpProvider {
 
     @Override
     public @Nullable String getHelpPageUrl(@NotNull String helpTopicId) {

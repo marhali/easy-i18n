@@ -55,8 +55,7 @@
 
     <notificationGroup displayType="BALLOON" id="Easy I18n Notification Group"/>
 
-    <webHelpProvider implementation="de.marhali.easyi18n.help.EasyI18nWebHelpProvider" id="EasyI18nWebHelpProvider"/>
-
+    <webHelpProvider implementation="de.marhali.easyi18n.idea.help.PluginWebHelpProvider" id="de.marhali.easyi18n.PluginWebHelpProvider" />
 
     <errorHandler implementation="de.marhali.easyi18n.service.ErrorReportHandler"/>
   </extensions>
