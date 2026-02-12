@@ -3,7 +3,6 @@ package de.marhali.easyi18n.core.application.query.handler;
 import de.marhali.easyi18n.core.application.cqrs.QueryHandler;
 import de.marhali.easyi18n.core.application.query.ConfiguredModulesQuery;
 import de.marhali.easyi18n.core.domain.model.ModuleId;
-import de.marhali.easyi18n.core.domain.model.ProjectId;
 import de.marhali.easyi18n.core.ports.ProjectConfigPort;
 import org.jetbrains.annotations.NotNull;
 
@@ -23,7 +22,7 @@ public class ConfiguredModulesQueryHandler implements QueryHandler<ConfiguredMod
     }
 
     @Override
-    public Set<ModuleId> handle(@NotNull ProjectId projectId, @NotNull ConfiguredModulesQuery query) {
-        return projectConfigPort.read(projectId).modules().keySet();
+    public @NotNull Set<ModuleId> handle(@NotNull ConfiguredModulesQuery _query) {
+        return projectConfigPort.read().modules().keySet();
     }
 }
