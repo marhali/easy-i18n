@@ -1,6 +1,5 @@
 package de.marhali.easyi18n.core.application.cqrs;
 
-import de.marhali.easyi18n.core.domain.model.ProjectId;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -29,17 +28,16 @@ public final class CommandDispatcher {
     /**
      * Executes the provided command within the project using any of the registered command handlers.
      *
-     * @param projectId Project identifier
      * @param command Command to execute
      */
     @SuppressWarnings("unchecked")
-    public void dispatch(@NotNull ProjectId projectId, @NotNull Command command) {
+    public void dispatch(@NotNull Command command) {
         var handler = (CommandHandler<Command>) handlers.get(command.getClass());
 
         if (handler == null) {
             throw new IllegalStateException("No handler registered for command with name '" + command.getClass().getSimpleName() + "'");
         }
 
-        handler.handle(projectId, command);
+        handler.handle(command);
     }
 }

@@ -10,7 +10,6 @@ import de.marhali.easyi18n.core.domain.event.ProjectConfigChanged;
 import de.marhali.easyi18n.idea.config.component.ProjectConfigUi;
 import de.marhali.easyi18n.idea.event.PluginTopics;
 import de.marhali.easyi18n.idea.help.PluginWebHelpProvider;
-import de.marhali.easyi18n.idea.service.ProjectIdFactory;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -74,7 +73,7 @@ public class ProjectConfigConfigurable implements SearchableConfigurable {
         component.writeStateToComponent(nextState); // Sync UI again (e.g. update preset selection)
 
         project.getMessageBus().syncPublisher(PluginTopics.DOMAIN_EVENTS)
-            .onDomainEvent(new ProjectConfigChanged(ProjectIdFactory.from(project)));
+            .onDomainEvent(new ProjectConfigChanged());
     }
 
     @Override

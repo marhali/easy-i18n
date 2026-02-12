@@ -4,7 +4,6 @@ import de.marhali.easyi18n.core.application.cqrs.Command;
 import de.marhali.easyi18n.core.application.cqrs.CommandDispatcher;
 import de.marhali.easyi18n.core.application.cqrs.Query;
 import de.marhali.easyi18n.core.application.cqrs.QueryDispatcher;
-import de.marhali.easyi18n.core.domain.model.ProjectId;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -23,11 +22,11 @@ public final class I18nApplication {
         this.queries = queries;
     }
 
-    public void command(@NotNull ProjectId projectId, Command command) {
-        commands.dispatch(projectId, command);
+    public void command(@NotNull Command command) {
+        commands.dispatch(command);
     }
 
-    public <R> @NotNull R query(@NotNull ProjectId projectId, @NotNull Query<R> query) {
-        return queries.dispatch(projectId, query);
+    public <R> @NotNull R query(@NotNull Query<R> query) {
+        return queries.dispatch(query);
     }
 }

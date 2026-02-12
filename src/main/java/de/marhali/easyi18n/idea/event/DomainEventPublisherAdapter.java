@@ -2,7 +2,6 @@ package de.marhali.easyi18n.idea.event;
 
 import com.intellij.openapi.project.Project;
 import de.marhali.easyi18n.core.domain.event.DomainEvent;
-import de.marhali.easyi18n.core.domain.model.ProjectId;
 import de.marhali.easyi18n.core.ports.DomainEventPublisherPort;
 import org.jetbrains.annotations.NotNull;
 
@@ -20,7 +19,7 @@ public class DomainEventPublisherAdapter implements DomainEventPublisherPort {
     }
 
     @Override
-    public void publish(@NotNull ProjectId projectId, @NotNull DomainEvent event) {
+    public void publish(@NotNull DomainEvent event) {
         project.getMessageBus().syncPublisher(PluginTopics.DOMAIN_EVENTS).onDomainEvent(event);
     }
 }

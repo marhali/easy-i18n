@@ -1,6 +1,5 @@
 package de.marhali.easyi18n.core.application.cqrs;
 
-import de.marhali.easyi18n.core.domain.model.ProjectId;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -30,19 +29,18 @@ public class QueryDispatcher {
     /**
      * Executes the provided command within the project using any of the registered query handlers.
      *
-     * @param projectId Project identifier
      * @param query Query to execute
      * @return Query result
      * @param <R> Return type
      */
     @SuppressWarnings("unchecked")
-    public <R> @NotNull R dispatch(@NotNull ProjectId projectId, @NotNull Query<R> query) {
+    public <R> @NotNull R dispatch(@NotNull Query<R> query) {
         var handler = (QueryHandler<Query<R>, R>) handlers.get(query.getClass());
 
         if (handler == null) {
             throw new IllegalStateException("No handler registered for query with name '" + query.getClass().getSimpleName() + "'");
         }
 
-        return handler.handle(projectId, query);
+        return handler.handle(query);
     }
 }

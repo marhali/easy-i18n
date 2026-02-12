@@ -2,7 +2,6 @@ package de.marhali.easyi18n.idea.config;
 
 import com.intellij.openapi.project.Project;
 import de.marhali.easyi18n.core.domain.config.ProjectConfig;
-import de.marhali.easyi18n.core.domain.model.ProjectId;
 import de.marhali.easyi18n.core.ports.ProjectConfigPort;
 import org.jetbrains.annotations.NotNull;
 
@@ -20,7 +19,7 @@ public class ProjectConfigAdapter implements ProjectConfigPort {
     }
 
     @Override
-    public @NotNull ProjectConfig read(@NotNull ProjectId projectId) {
+    public @NotNull ProjectConfig read() {
         var projectConfigService = project.getService(ProjectConfigService.class);
         return projectConfigService.getDomainState();
     }
