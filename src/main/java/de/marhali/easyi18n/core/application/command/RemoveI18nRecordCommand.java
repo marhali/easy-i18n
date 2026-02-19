@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
  *
  * @author marhali
  */
-public record RemoveI18nKeyCommand(
+public record RemoveI18nRecordCommand(
     @NotNull ModuleId moduleId,
     @NotNull I18nKey key
     ) implements Command {
