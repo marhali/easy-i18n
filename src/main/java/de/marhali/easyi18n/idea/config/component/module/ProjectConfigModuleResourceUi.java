@@ -1,5 +1,6 @@
 package de.marhali.easyi18n.idea.config.component.module;
 
+import com.intellij.openapi.components.PathMacroManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.ComboBox;
 import com.intellij.ui.SimpleListCellRenderer;
@@ -87,11 +88,11 @@ public class ProjectConfigModuleResourceUi
         Objects.requireNonNull(keyTemplate, "keyTemplate must not be null");
         Objects.requireNonNull(rootDirectory, "rootDirectory must not be null");
 
-        var equals = pathTemplate.getText().equals(originState.pathTemplate())
+        var equals = expandPathMacros(pathTemplate.getText()).equals(originState.pathTemplate())
             && fileCodec.getItem().equals(originState.fileCodec())
             && fileTemplate.getText().equals(originState.fileTemplate())
             && keyTemplate.getText().equals(originState.keyTemplate())
-            && rootDirectory.getText().equals(originState.rootDirectory());
+            && expandPathMacros(rootDirectory.getText()).equals(originState.rootDirectory());
 
         return !equals;
     }
@@ -104,11 +105,11 @@ public class ProjectConfigModuleResourceUi
         Objects.requireNonNull(keyTemplate, "keyTemplate must not be null");
         Objects.requireNonNull(rootDirectory, "rootDirectory must not be null");
 
-        pathTemplate.setText(state.pathTemplate());
+        pathTemplate.setText(collapsePathMacros(state.pathTemplate()));
         fileCodec.setItem(state.fileCodec());
         fileTemplate.setText(state.fileTemplate());
         keyTemplate.setText(state.keyTemplate());
-        rootDirectory.setText(state.rootDirectory());
+        rootDirectory.setText(collapsePathMacros(state.rootDirectory()));
     }
 
     @Override
@@ -120,11 +121,11 @@ public class ProjectConfigModuleResourceUi
         Objects.requireNonNull(rootDirectory, "rootDirectory must not be null");
 
         builder
-            .pathTemplate(pathTemplate.getText())
+            .pathTemplate(expandPathMacros(pathTemplate.getText()))
             .fileCodec(fileCodec.getItem())
             .fileTemplate(fileTemplate.getText())
             .keyTemplate(keyTemplate.getText())
-            .rootDirectory(rootDirectory.getText());
+            .rootDirectory(expandPathMacros(rootDirectory.getText()));
     }
 
     private @NotNull @Nls String mapFileCodecToLabel(@NotNull FileCodec fileCodec) {
@@ -134,5 +135,13 @@ public class ProjectConfigModuleResourceUi
             case YAML ->  PluginBundle.message("config.project.modules.item.file.codec.yaml");
             case PROPERTIES -> PluginBundle.message("config.project.modules.item.file.codec.properties");
         };
+    }
+
+    private String collapsePathMacros(@NotNull String expandedPath) {
+        return PathMacroManager.getInstance(project).collapsePath(expandedPath);
+    }
+
+    private String expandPathMacros(@NotNull String path) {
+        return PathMacroManager.getInstance(project).expandPath(path);
     }
 }
