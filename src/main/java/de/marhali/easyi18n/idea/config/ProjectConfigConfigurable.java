@@ -1,15 +1,17 @@
 package de.marhali.easyi18n.idea.config;
 
+import com.intellij.openapi.application.ModalityState;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.options.SearchableConfigurable;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.NlsContexts;
 import com.intellij.util.ui.FormBuilder;
+import de.marhali.easyi18n.core.application.command.InvalidateProjectConfigCommand;
 import de.marhali.easyi18n.core.domain.config.ProjectConfig;
-import de.marhali.easyi18n.core.domain.event.ProjectConfigChanged;
 import de.marhali.easyi18n.idea.config.component.ProjectConfigUi;
-import de.marhali.easyi18n.idea.event.PluginTopics;
 import de.marhali.easyi18n.idea.help.PluginWebHelpProvider;
+import de.marhali.easyi18n.idea.service.I18nProjectService;
+import de.marhali.easyi18n.idea.service.PluginExecutorService;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -72,8 +74,16 @@ public class ProjectConfigConfigurable implements SearchableConfigurable {
 
         component.writeStateToComponent(nextState); // Sync UI again (e.g. update preset selection)
 
-        project.getMessageBus().syncPublisher(PluginTopics.DOMAIN_EVENTS)
-            .onDomainEvent(new ProjectConfigChanged());
+        project.getService(PluginExecutorService.class).runAsync(
+            () -> {
+                project.getService(I18nProjectService.class).command(new InvalidateProjectConfigCommand());
+                return null;
+            },
+            (_r) -> {},
+            (throwable) -> throwable.printStackTrace(), // TODO: show notification on failure
+            ModalityState.any(),
+            (o) -> project.isDisposed()
+        );
     }
 
     @Override
