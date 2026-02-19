@@ -11,13 +11,13 @@ import org.jetbrains.annotations.NotNull;
  *
  * @param moduleId Module identifier
  * @param key Translation key
- * @param locale Locale identifier
+ * @param localeId Locale identifier
  *
  * @author marhali
  */
 public record RemoveI18nValueCommand(
     @NotNull ModuleId moduleId,
     @NotNull I18nKey key,
-    @NotNull LocaleId locale
+    @NotNull LocaleId localeId
     ) implements Command {
 }
