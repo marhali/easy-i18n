@@ -40,6 +40,7 @@ public class DefaultModuleLoader implements ModuleLoader {
             try {
                 fileProcessorPort.readInto(config, templates, path, store);
             } catch (IOException e) {
+                // TODO: improve ex handling
                 throw new RuntimeException(e);
             }
         }
