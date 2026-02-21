@@ -43,4 +43,14 @@ public class InMemoryI18nStore implements I18nStore {
             lock.unlock();
         }
     }
+
+    @Override
+    public void holdSnapshot(@NotNull Consumer<@NotNull I18nProject> holdFn) {
+        lock.lock();
+        try {
+            holdFn.accept(snapshot);
+        } finally {
+            lock.unlock();
+        }
+    }
 }
