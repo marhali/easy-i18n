@@ -1,6 +1,5 @@
 package de.marhali.easyi18n.core.domain.model;
 
-import de.marhali.easyi18n.next_io.I18nBuiltinParam;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -44,7 +43,7 @@ public class I18nParamsBuilder {
     }
 
     public @NotNull I18nParamsBuilder add(@NotNull I18nBuiltinParam parameter, @NotNull String... parameterValues) {
-        return add(parameter.getParamName(), Arrays.asList(parameterValues));
+        return add(parameter.getParameterName(), Arrays.asList(parameterValues));
     }
 
     public @NotNull I18nParamsBuilder add(@NotNull String parameterName, @NotNull List<String> parameterValues) {
