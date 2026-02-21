@@ -24,4 +24,11 @@ public interface I18nStore {
      * @param mutateFn Mutation function
      */
     void mutate(@NotNull Consumer<@NotNull MutableI18nProject> mutateFn);
+
+    /**
+     * Holds the snapshot state until the consumer is released.
+     * Thus, the store state cannot be manipulated during the consumer is active.
+     * @param holdFn Hold function
+     */
+    void holdSnapshot(@NotNull Consumer<@NotNull I18nProject> holdFn);
 }
