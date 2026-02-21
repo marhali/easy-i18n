@@ -56,19 +56,21 @@ public final class CoreWiring {
         // Services
         CachedModuleTemplates cachedModuleTemplates = new CachedModuleTemplates(projectConfigPort);
         ModuleLoader moduleLoader = new DefaultModuleLoader(cachedModuleTemplates, pathResolverPort, fileProcessorRegistryPort);
+        ModulePersistor modulePersistor = new DefaultModulePersistor(cachedModuleTemplates, fileProcessorRegistryPort);
         EnsureLoadedService ensureLoadedService = new EnsureLoadedService(store, projectConfigPort, moduleLoader);
+        EnsurePersistService ensurePersistService = new EnsurePersistService(store, projectConfigPort, modulePersistor);
         ModuleViewProjector moduleViewProjector = new ModuleViewProjector(cachedModuleTemplates);
 
         // Commands
         var commands = new CommandDispatcher();
         commands.register(ReloadCommand.class, new ReloadCommandHandler(store, domainEventPublisherPort));
         commands.register(InvalidateProjectConfigCommand.class, new InvalidateProjectConfigCommandHandler(store, cachedModuleTemplates, domainEventPublisherPort));
-        commands.register(AddI18nRecordCommand.class, new AddI18nRecordCommandHandler(ensureLoadedService, store, domainEventPublisherPort));
-        commands.register(UpdateI18nRecordCommand.class, new UpdateI18nRecordCommandHandler(ensureLoadedService, store, domainEventPublisherPort));
-        commands.register(RemoveI18nRecordCommand.class, new RemoveI18nRecordCommandHandler(ensureLoadedService, store, domainEventPublisherPort));
-        commands.register(RemoveI18nValueCommand.class, new RemoveI18nValueCommandHandler(ensureLoadedService, store, domainEventPublisherPort));
-        commands.register(UpdateI18nKeyCommand.class, new UpdateI18nKeyCommandHandler(ensureLoadedService, store, domainEventPublisherPort));
-        commands.register(UpdateI18nValueCommand.class, new UpdateI18nValueCommandHandler(ensureLoadedService, store, domainEventPublisherPort));
+        commands.register(AddI18nRecordCommand.class, new AddI18nRecordCommandHandler(ensureLoadedService, ensurePersistService, store, domainEventPublisherPort));
+        commands.register(UpdateI18nRecordCommand.class, new UpdateI18nRecordCommandHandler(ensureLoadedService, ensurePersistService, store, domainEventPublisherPort));
+        commands.register(RemoveI18nRecordCommand.class, new RemoveI18nRecordCommandHandler(ensureLoadedService, ensurePersistService, store, domainEventPublisherPort));
+        commands.register(RemoveI18nValueCommand.class, new RemoveI18nValueCommandHandler(ensureLoadedService, ensurePersistService, store, domainEventPublisherPort));
+        commands.register(UpdateI18nKeyCommand.class, new UpdateI18nKeyCommandHandler(ensureLoadedService, ensurePersistService, store, domainEventPublisherPort));
+        commands.register(UpdateI18nValueCommand.class, new UpdateI18nValueCommandHandler(ensureLoadedService, ensurePersistService, store, domainEventPublisherPort));
 
         // Queries
         var queries = new QueryDispatcher();
