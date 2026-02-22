@@ -8,10 +8,7 @@ import de.marhali.easyi18n.core.ports.FileProcessorRegistryPort;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Module persistor using the underlying io ports.
@@ -35,9 +32,9 @@ public class DefaultModulePersistor implements ModulePersistor {
         Map<@NotNull I18nPath, @NotNull Set<TranslationConsumer>> translationsByPath = new HashMap<>();
 
         // Iterate over all translation keys within this module
-        for (Map.Entry<@NotNull I18nKey, @NotNull I18nContent> entry : store.translations().entrySet()) {
-            I18nParams keyParams = templates.key().toParams(entry.getKey());
-            Set<LocaleId> localeIds = store.translations().get(entry.getKey()).values().keySet();
+        for (Map.Entry<@NotNull I18nKey, @NotNull I18nContent> translationEntry : store.translations().entrySet()) {
+            I18nParams keyParams = templates.key().toParams(translationEntry.getKey());
+            Set<LocaleId> localeIds = store.translations().get(translationEntry.getKey()).values().keySet();
 
             // Collect necessary params for this translation key (key params & used localeIds)
             I18nParams params = I18nParams.builder()
@@ -45,12 +42,23 @@ public class DefaultModulePersistor implements ModulePersistor {
                 .add(I18nBuiltinParam.LOCALE, localeIds.stream().map(LocaleId::tag).toArray(String[]::new))
                 .build();
 
-            // Build all paths to store this translation key
+            // Build all paths to store this translation
             var paths = templates.path().buildVariants(params);
 
+            var content = translationEntry.getValue();
+
+            // Iterate over all translation file paths
             for (I18nPath path : paths) {
-                translationsByPath.computeIfAbsent(path, (_path) -> new HashSet<>())
-                    .add(new TranslationConsumer(keyParams, entry.getValue(), 0));
+                List<@NotNull String> pathAdvisedLocales = path.params().get(I18nBuiltinParam.LOCALE.getParameterName());
+                var consumersInPath = translationsByPath.computeIfAbsent(path, (_path) -> new HashSet<>());
+
+                // Stock path with locale relevant translation values
+                for (Map.Entry<@NotNull LocaleId, @NotNull I18nValue> valueEntry : content.values().entrySet()) {
+                    // If the path does not specify any locale we will add the consumer and expect locale handling within the file
+                    if (pathAdvisedLocales == null || pathAdvisedLocales.contains(valueEntry.getKey().tag())) {
+                        consumersInPath.add(TranslationConsumer.fromNew(keyParams, valueEntry.getKey(), valueEntry.getValue(), content.comment()));
+                    }
+                }
             }
         }
 

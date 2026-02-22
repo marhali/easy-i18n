@@ -5,7 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.function.Function;
 
 /**
- * Record tracking the hierarchical creation of translations.
+ * Record tracking the hierarchical creation (parsing) of translations.
  *
  * @param params Tracked params
  * @param level Tracked hierarchy

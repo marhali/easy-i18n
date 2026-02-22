@@ -44,7 +44,7 @@ public final class CoreWiring {
         ProjectConfigPort projectConfigPort = new ProjectConfigAdapter(project);
         DomainEventPublisherPort domainEventPublisherPort = new DomainEventPublisherAdapter(project);
         PathResolverPort pathResolverPort = new PathResolverAdapter(project);
-        FileSystemPort fileSystemPort = new FileSystemAdapter();
+        FileSystemPort fileSystemPort = new FileSystemAdapter(project);
         FileProcessorRegistryPort fileProcessorRegistryPort = new InMemoryFileProcessorRegistry(
             Map.of(FileCodec.JSON, () -> new JsonFileProcessor(fileSystemPort))
         );
