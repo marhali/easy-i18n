@@ -46,7 +46,7 @@ public final class CoreWiring {
         PathResolverPort pathResolverPort = new PathResolverAdapter(project);
         FileSystemPort fileSystemPort = new FileSystemAdapter();
         FileProcessorRegistryPort fileProcessorRegistryPort = new InMemoryFileProcessorRegistry(
-            Map.of(FileCodec.JSON, new JsonFileProcessor(fileSystemPort))
+            Map.of(FileCodec.JSON, () -> new JsonFileProcessor(fileSystemPort))
         );
 
         // State
