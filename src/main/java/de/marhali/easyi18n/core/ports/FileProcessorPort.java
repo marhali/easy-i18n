@@ -3,13 +3,15 @@ package de.marhali.easyi18n.core.ports;
 import de.marhali.easyi18n.core.domain.config.ProjectConfigModule;
 import de.marhali.easyi18n.core.domain.model.I18nPath;
 import de.marhali.easyi18n.core.domain.model.MutableI18nModule;
+import de.marhali.easyi18n.core.domain.model.TranslationConsumer;
 import de.marhali.easyi18n.core.domain.template.Templates;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
+import java.util.Set;
 
 /**
- * File processor port.
+ * File content processor port.
  *
  * @author marhali
  */
@@ -27,5 +29,20 @@ public interface FileProcessorPort {
         @NotNull Templates templates,
         @NotNull I18nPath path,
         @NotNull MutableI18nModule store
+    ) throws IOException;
+
+    /**
+     * Writes to the specified translation file and applies all provided translations.
+     * @param config Module config
+     * @param templates Templates
+     * @param path Translation file path
+     * @param translations Translations to store inside
+     * @throws IOException Error whilst processing the file
+     */
+    void writeFrom(
+        @NotNull ProjectConfigModule config,
+        @NotNull Templates templates,
+        @NotNull I18nPath path,
+        @NotNull Set<@NotNull TranslationConsumer> translations
     ) throws IOException;
 }

@@ -17,4 +17,12 @@ public interface FileSystemPort {
      * @throws IOException Error whilst reading the file
      */
     @NotNull String read(@NotNull String path) throws IOException;
+
+    /**
+     * Writes the given contents to the specified file.
+     * @param path File path
+     * @param content Text content of the file
+     * @throws IOException Error whilst writing the file
+     */
+    void write(@NotNull String path, @NotNull String content) throws IOException;
 }
