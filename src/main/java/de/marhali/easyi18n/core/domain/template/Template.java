@@ -7,6 +7,16 @@ import java.util.List;
 /**
  * Represents a parsed template.
  *
+ * <pre>
+ * {@code
+ * // Template definition syntax
+ * hardCodedLiteral.{placeholderName:optionalDelimiter:optionalConstraint}
+ *
+ * // Example
+ * $PROJECT_DIR$/locales/{locale::[^.]+}.json
+ * }
+ * </pre>
+ *
  * @param canonical Template syntax
  * @param elements Parsed template elements
  */
