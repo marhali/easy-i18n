@@ -37,7 +37,7 @@ public class TranslationDialog extends DialogWrapper {
     private @Nullable JBTextField keyField;
     private @Nullable JBLabel keyFieldHint;
     private @Nullable JBScrollPane valuesByLocalePane;
-    private @Nullable Map<@NotNull LocaleId, @NotNull JBTextArea> valuesByLocale;
+    private @Nullable Map<@NotNull LocaleId, @NotNull FixedExpandableTextField> valuesByLocale;
 
     /**
      * Dialogs should be instantiated by using the factory.
@@ -191,10 +191,8 @@ public class TranslationDialog extends DialogWrapper {
             builder.addComponent(emptyLabel);
         } else {
             for (LocaleId localeId : localeIds) {
-                var field = new JBTextArea();
-                field.setLineWrap(true);
-                field.setWrapStyleWord(true);
-                field.setBorder(BorderFactory.createTitledBorder(localeId.tag()));
+                var field = new FixedExpandableTextField();
+                field.setColumns(0);
                 field.setLocale(Locale.forLanguageTag(localeId.tag()));
                 valuesByLocale.put(localeId, field);
                 builder.addComponent(field, 4);
