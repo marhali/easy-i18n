@@ -4,8 +4,10 @@ import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.actionSystem.ActionToolbar;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import com.intellij.openapi.project.Project;
+import com.intellij.ui.JBColor;
 import com.intellij.ui.components.JBScrollPane;
 import com.intellij.ui.treeStructure.Tree;
+import com.intellij.util.ui.JBUI;
 import de.marhali.easyi18n.core.application.query.view.ModuleView;
 import de.marhali.easyi18n.core.domain.model.ModuleId;
 import de.marhali.easyi18n.idea.action.CollapseAllAction;
@@ -14,6 +16,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import java.awt.*;
 
 /**
  * Tree view panel for the translations tool window content tab.
@@ -35,6 +38,7 @@ public class I18nTreeViewPanel implements ViewPanel<ModuleView.Tree> {
         this.tree = new Tree();
         this.treeScrollPane = new JBScrollPane(tree);
 
+        tree.setBorder(JBUI.Borders.customLineLeft(JBColor.border()));
         tree.setRootVisible(false);
         tree.setCellRenderer(new TreeNodeRenderer());
     }
