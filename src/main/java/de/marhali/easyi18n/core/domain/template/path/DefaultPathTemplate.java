@@ -89,4 +89,26 @@ public class DefaultPathTemplate implements PathTemplate {
 
         return template.canonical().substring(index + 1);
     }
+
+    @Override
+    public @NotNull String getMostCommonParentPath() {
+        StringBuilder builder = new StringBuilder();
+
+        for (TemplateElement element : template.elements()) {
+            if (element.isLiteral()) {
+                builder.append(element.getAsLiteral().text());
+            } else {
+                // Break until we reach any non-literal template element
+                break;
+            }
+        }
+
+        String path = builder.toString();
+
+        if (path.isEmpty()) {
+            throw new IllegalArgumentException("Most common parent path for template is empty: " + template);
+        }
+
+        return path;
+    }
 }

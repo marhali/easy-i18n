@@ -46,4 +46,11 @@ public interface PathTemplate {
      * @return File extension specified by template
      */
     @NotNull String getFileExtension();
+
+    /**
+     * Retrieves the most common parent path for the template definition.
+     * In simpler terms, this will build the template until a placeholder parameter is reached.
+     * @return Parent path as string
+     */
+    @NotNull String getMostCommonParentPath();
 }
