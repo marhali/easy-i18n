@@ -4,12 +4,13 @@ import com.google.gson.*;
 import de.marhali.easyi18n.core.domain.model.I18nPath;
 import de.marhali.easyi18n.core.domain.model.I18nValue;
 import de.marhali.easyi18n.core.domain.model.TranslationConsumer;
+import de.marhali.easyi18n.core.domain.model.TranslationTarget;
 import de.marhali.easyi18n.core.domain.template.Templates;
 import de.marhali.easyi18n.infra.FileWriter;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Iterator;
-import java.util.List;
+import java.util.Set;
 
 /**
  * JSON specific writer.
@@ -26,9 +27,14 @@ public final class JsonWriter extends FileWriter {
         this.rootElement = new JsonObject();
     }
 
-    void write(@NotNull TranslationConsumer translation) {
-        List<@NotNull String> hierarchy = toFilePath(translation);
-        Iterator<String> hierarchyIterator = hierarchy.iterator();
+    void write(@NotNull Set<@NotNull TranslationConsumer> translations) {
+        for (TranslationTarget target : mapConsumersToSortedTargets(translations)) {
+            write(target);
+        }
+    }
+
+    private void write(@NotNull TranslationTarget target) {
+        Iterator<String> hierarchyIterator = target.canonicalHierarchy().iterator();
 
         JsonObject targetObject = rootElement;
         String memberName = null;
@@ -49,10 +55,10 @@ public final class JsonWriter extends FileWriter {
         }
 
         if (memberName == null) {
-            throw new IllegalStateException("Missing last hierarchical property for: " + translation);
+            throw new IllegalStateException("Missing last hierarchical property for: " + target);
         }
 
-        targetObject.add(memberName, toJsonElement(translation.value()));
+        targetObject.add(memberName, toJsonElement(target.value()));
     }
 
     @NotNull JsonElement getRootElement() {
@@ -79,7 +85,15 @@ public final class JsonWriter extends FileWriter {
     private @NotNull JsonElement toJsonPrimitive(@NotNull I18nValue.Primitive primitive) {
         return switch (primitive) {
             case I18nValue.Quoted quoted -> new JsonPrimitive(quoted.text());
-            case I18nValue.Bare bare -> JsonParser.parseString(bare.text());
+            case I18nValue.Bare bare -> {
+                var element = JsonParser.parseString(bare.text());
+
+                if (!element.isJsonPrimitive() || element.getAsJsonPrimitive().isString()) {
+                    throw new IllegalArgumentException("Invalid bare value '" + bare.text() + "'. Must be boolean, number or use quoted value");
+                }
+
+                yield element;
+            }
         };
     }
 }

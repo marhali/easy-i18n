@@ -49,14 +49,24 @@ public class DefaultModulePersistor implements ModulePersistor {
 
             // Iterate over all translation file paths
             for (I18nPath path : paths) {
-                List<@NotNull String> pathAdvisedLocales = path.params().get(I18nBuiltinParam.LOCALE.getParameterName());
+                List<String> pathAdvisedLocales = path.params().get(I18nBuiltinParam.LOCALE.getParameterName());
                 var consumersInPath = translationsByPath.computeIfAbsent(path, (_path) -> new HashSet<>());
 
                 // Stock path with locale relevant translation values
-                for (Map.Entry<@NotNull LocaleId, @NotNull I18nValue> valueEntry : content.values().entrySet()) {
+                for (Map.Entry<LocaleId, I18nValue> contentEntry : content.values().entrySet()) {
                     // If the path does not specify any locale we will add the consumer and expect locale handling within the file
-                    if (pathAdvisedLocales == null || pathAdvisedLocales.contains(valueEntry.getKey().tag())) {
-                        consumersInPath.add(TranslationConsumer.fromNew(keyParams, valueEntry.getKey(), valueEntry.getValue(), content.comment()));
+                    if (pathAdvisedLocales == null || pathAdvisedLocales.contains(contentEntry.getKey().tag())) {
+
+                        // Build keyParamsIndex with zeroed values for all relevant (non path related) params
+                        var keyParamsIndex = new HashMap<String, Integer>();
+                        for (Map.Entry<String, List<String>> keyParamsEntry : keyParams.params().entrySet()) {
+                            if (!path.params().has(keyParamsEntry.getKey())) {
+                                keyParamsIndex.put(keyParamsEntry.getKey(), 0);
+                            }
+                        }
+
+                        var consumer = new TranslationConsumer(0, keyParams, keyParamsIndex, contentEntry.getKey(), contentEntry.getValue(), content.comment());
+                        consumersInPath.add(consumer);
                     }
                 }
             }

@@ -23,6 +23,22 @@ public abstract class FileWriter {
         this.templates = templates;
     }
 
+    protected @NotNull List<@NotNull TranslationTarget> mapConsumersToSortedTargets(@NotNull Set<@NotNull TranslationConsumer> consumers) {
+        return consumers.stream()
+            .map(this::resolveTarget)
+            .sorted(TranslationTarget::compareTo)
+            .toList();
+    }
+
+    /**
+     * Resolves the 1-to-1 translation target for the given consumer.
+     * @param consumer Translation consumer
+     * @return {@link TranslationTarget}
+     */
+    protected @NotNull TranslationTarget resolveTarget(@NotNull TranslationConsumer consumer) {
+        return new TranslationTarget(toFilePath(consumer), consumer.value(), consumer.comment());
+    }
+
     /**
      * Computes the hierarchical file levels for the given translation.
      * @param consumer Translation
@@ -47,9 +63,11 @@ public abstract class FileWriter {
             // Add path params which might be necessary
             paramsBuilder.addAll(path.params());
 
-            // Resolve needed parameters with index in mind
+            // Resolve needed params at index (only keyParams are relevant here, as the others are already injected)
             for (String parameterName : neededParameterNames) {
-                paramsBuilder.add(parameterName, resolveIndexedKeyParameter(targetConsumer, parameterName));
+                if (consumer.keyParams().has(parameterName)) {
+                    paramsBuilder.add(parameterName, resolveIndexedKeyParameter(targetConsumer, parameterName));
+                }
             }
 
             // Build file level out of parameters

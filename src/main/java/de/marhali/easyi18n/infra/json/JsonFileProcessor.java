@@ -61,9 +61,8 @@ public class JsonFileProcessor implements FileProcessorPort {
     public void writeFrom(@NotNull ProjectConfigModule config, @NotNull Templates templates, @NotNull I18nPath path, @NotNull Set<@NotNull TranslationConsumer> translations) throws IOException {
         JsonWriter writer = new JsonWriter(path, templates);
 
-        for (TranslationConsumer translation : translations) {
-            writer.write(translation);
-        }
+        // TODO: ex handling?
+        writer.write(translations);
 
         String content = GSON.toJson(writer.getRootElement());
 

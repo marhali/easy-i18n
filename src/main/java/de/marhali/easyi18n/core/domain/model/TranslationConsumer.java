@@ -5,6 +5,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -67,8 +68,8 @@ public record TranslationConsumer(
      * @return {@code true} if all params are consumed, otherwise {@code false}
      */
     public boolean isIndexed() {
-        return keyParams.params().entrySet().stream()
-            .allMatch((entry) ->
-                keyParamsIndex.getOrDefault(entry.getKey(), 0) == entry.getValue().size());
+        return keyParamsIndex.entrySet().stream()
+            .allMatch(entry ->
+                entry.getValue() == Objects.requireNonNull(keyParams.get(entry.getKey())).size());
     }
 }
