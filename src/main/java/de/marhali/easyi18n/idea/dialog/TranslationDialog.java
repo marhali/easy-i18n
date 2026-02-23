@@ -7,13 +7,13 @@ import com.intellij.ui.DocumentAdapter;
 import com.intellij.ui.JBColor;
 import com.intellij.ui.components.JBLabel;
 import com.intellij.ui.components.JBScrollPane;
-import com.intellij.ui.components.JBTextArea;
 import com.intellij.ui.components.JBTextField;
 import com.intellij.util.ui.*;
 import de.marhali.easyi18n.core.domain.model.*;
 import de.marhali.easyi18n.idea.messages.PluginBundle;
 import de.marhali.easyi18n.idea.service.I18nProjectService;
 import de.marhali.easyi18n.idea.service.PluginExecutorService;
+import de.marhali.easyi18n.idea.ui.components.FixedExpandableTextField;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -70,7 +70,7 @@ public class TranslationDialog extends DialogWrapper {
 
         init();
 
-        evaluateOKActionEnabled();
+        setOKActionEnabled(false);
     }
 
     @Override
@@ -87,8 +87,7 @@ public class TranslationDialog extends DialogWrapper {
             @Override
             protected void textChanged(@NotNull DocumentEvent documentEvent) {
                 evaluateOKActionEnabled();
-                if (keyField.isEnabled() && isOKActionEnabled()) {
-                    resetI18nKeyExists();
+                if (keyField.isEnabled()) {
                     vm.checkI18nKeyExistsAsync(
                         I18nKey.of(keyField.getText()),
                         (exists) -> handleI18nKeyExists(exists),
@@ -119,8 +118,10 @@ public class TranslationDialog extends DialogWrapper {
         // Retrieve module specific set of locales
         vm.loadLocalesAsync(
             (localeIds) -> {
+                // We should be fully initialized after this
                 buildLocalesPanel(localeIds);
                 applyOrigin();
+                evaluateOKActionEnabled();
             },
             this::handleThrowable
         );
@@ -195,7 +196,14 @@ public class TranslationDialog extends DialogWrapper {
                 field.setColumns(0);
                 field.setLocale(Locale.forLanguageTag(localeId.tag()));
                 valuesByLocale.put(localeId, field);
-                builder.addComponent(field, 4);
+                builder.addLabeledComponent(localeId.tag(), field, 4, false);
+
+                field.getDocument().addDocumentListener(new DocumentAdapter() {
+                    @Override
+                    protected void textChanged(@NotNull DocumentEvent documentEvent) {
+                        evaluateOKActionEnabled();
+                    }
+                });
             }
         }
 
@@ -211,7 +219,6 @@ public class TranslationDialog extends DialogWrapper {
             keyField.setEnabled(false);
             keyField.setText(originEntry.key().canonical());
             keyField.setEnabled(true);
-            evaluateOKActionEnabled();
         }
 
         if (originEntry.content() != null) {
@@ -227,16 +234,18 @@ public class TranslationDialog extends DialogWrapper {
         }
     }
 
+    /**
+     * Evaluates the OK action and toggles the underlying enabled state.
+     * For the OK action to be enabled the key field must be filled and at least one locale value must be filled.
+     */
     private void evaluateOKActionEnabled() {
         Objects.requireNonNull(keyField, "keyField must not be null");
+        Objects.requireNonNull(valuesByLocale, "valuesByLocale must not be null");
 
-        setOKActionEnabled(!keyField.getText().isBlank());
-    }
+        var okEnabled = !keyField.getText().isBlank()
+            && valuesByLocale.values().stream().anyMatch(value -> !value.getText().isBlank());
 
-    private void resetI18nKeyExists() {
-        Objects.requireNonNull(keyFieldHint, "keyFieldHint must not be null");
-
-        keyFieldHint.setVisible(false);
+        setOKActionEnabled(okEnabled);
     }
 
     private void handleI18nKeyExists(boolean exists) {
@@ -247,5 +256,6 @@ public class TranslationDialog extends DialogWrapper {
 
     private void handleThrowable(@NotNull Throwable throwable) {
         setErrorText(PluginBundle.message("error.operation.details", throwable.getLocalizedMessage()));
+        throwable.printStackTrace(); // TODO: better logging?
     }
 }
