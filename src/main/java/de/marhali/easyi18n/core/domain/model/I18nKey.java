@@ -11,8 +11,13 @@ import org.jetbrains.annotations.NotNull;
  */
 public record I18nKey(
     @NotNull String canonical
-) {
+) implements Comparable<I18nKey>{
     public static @NotNull I18nKey of(@NotNull String canonical) {
         return new I18nKey(canonical);
+    }
+
+    @Override
+    public int compareTo(@NotNull I18nKey o) {
+        return canonical.compareTo(o.canonical);
     }
 }
