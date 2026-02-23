@@ -1,5 +1,6 @@
 package de.marhali.easyi18n.core.domain.model;
 
+import de.marhali.easyi18n.core.domain.misc.I18nValueEscaper;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
@@ -39,7 +40,7 @@ public sealed interface I18nValue permits I18nValue.Primitive, I18nValue.Array {
     record Bare(@NotNull String text) implements I18nValue.Primitive {
         @Override
         public @NotNull String toInputString() {
-            return text;
+            return I18nValueEscaper.escape(text);
         }
 
         @Override
@@ -68,7 +69,7 @@ public sealed interface I18nValue permits I18nValue.Primitive, I18nValue.Array {
     record Quoted(@NotNull String text) implements I18nValue.Primitive {
         @Override
         public @NotNull String toInputString() {
-            return "\"" + text + "\"";
+            return "\"" + I18nValueEscaper.escape(text) + "\"";
         }
 
         @Override
@@ -180,11 +181,11 @@ public sealed interface I18nValue permits I18nValue.Primitive, I18nValue.Array {
 
         // Quoted primitive
         if (input.startsWith("\"") && input.endsWith("\"")) {
-            return fromQuotedPrimitive(input.substring(1, input.length() - 1));
+            return fromQuotedPrimitive(I18nValueEscaper.unescape(input.substring(1, input.length() - 1)));
         }
 
         // Bare primitive
-        return fromBarePrimitive(input);
+        return fromBarePrimitive(I18nValueEscaper.unescape(input));
     }
 
     /**
