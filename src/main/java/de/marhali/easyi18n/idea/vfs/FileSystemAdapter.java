@@ -6,10 +6,7 @@ import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vfs.LocalFileSystem;
-import com.intellij.openapi.vfs.ReadonlyStatusHandler;
-import com.intellij.openapi.vfs.VfsUtilCore;
-import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.openapi.vfs.*;
 import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
@@ -37,10 +34,10 @@ public class FileSystemAdapter implements FileSystemPort {
 
     @Override
     public @NotNull String read(@NotNull String path) throws IOException {
-        Path nio = Path.of(path);
+        Path nioPath = Path.of(path);
 
         return ReadAction.compute(() -> {
-            VirtualFile vf = LocalFileSystem.getInstance().findFileByNioFile(nio);
+            VirtualFile vf = LocalFileSystem.getInstance().findFileByNioFile(nioPath);
 
             if (vf == null || !vf.isValid() || vf.isDirectory()) {
                 throw new IOException("Could not find VirtualFile from path: " + path);
@@ -58,20 +55,31 @@ public class FileSystemAdapter implements FileSystemPort {
 
     @Override
     public void write(@NotNull String path, @NotNull String content) throws IOException {
-        Path nio = Path.of(path);
-
-        VirtualFile vf = LocalFileSystem.getInstance().findFileByNioFile(nio);
-
-        if (vf == null || !vf.isValid() || vf.isDirectory()) {
-            throw new IOException("Could not find VirtualFile from path: " + path);
-        }
+        Path nioPath = Path.of(path);
+        String fileName = nioPath.getFileName().toString();
+        Path nioParent = Objects.requireNonNull(nioPath.getParent(), "Path has no parent: " + path);
 
         ApplicationManager.getApplication().invokeLater(() -> {
-            try {
-                WriteCommandAction.writeCommandAction(project)
-                    .withName("Apply Translation Change")
-                    .run(() -> {
-                        ReadonlyStatusHandler.OperationStatus status = ReadonlyStatusHandler.getInstance(project).ensureFilesWritable(Collections.singleton(vf));
+            if (project.isDisposed()) return;
+
+            WriteCommandAction.writeCommandAction(project)
+                .withName("Update Translation File")
+                .run(() -> {
+                    try {
+                        VirtualFile vfDir = VfsUtil.createDirectoryIfMissing(nioParent.toString());
+
+                        if (vfDir == null) {
+                            throw new IOException("Could not create parent directory: " + nioParent);
+                        }
+
+                        VirtualFile vf = vfDir.findChild(nioPath.getFileName().toString());
+
+                        if (vf == null) {
+                            vf = vfDir.createChildData(FileSystemAdapter.class, fileName);
+                        }
+
+                        ReadonlyStatusHandler.OperationStatus status = ReadonlyStatusHandler.getInstance(project)
+                            .ensureFilesWritable(Collections.singleton(vf));
 
                         if (status.hasReadonlyFiles()) {
                             throw new IllegalStateException("Cannot apply changes on files in read-only mode");
@@ -102,10 +110,12 @@ public class FileSystemAdapter implements FileSystemPort {
                         }
 
                         fdm.saveDocument(document);
-                    });
-            } catch (Throwable e) {
-                e.printStackTrace(); // TODO: ex handling
-            }
+
+                    } catch (IOException e) {
+                        // TODO: logging?
+                        e.printStackTrace();
+                    }
+                });
         });
     }
 }
