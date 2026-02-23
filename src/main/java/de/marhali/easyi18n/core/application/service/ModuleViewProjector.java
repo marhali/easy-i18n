@@ -33,14 +33,12 @@ public final class ModuleViewProjector {
         DuplicateValueIndex duplicateValueIndex = new DuplicateValueIndex();
         duplicateValueIndex.rebuild(module.translations());
 
-        // TODO: sort based on config setting
-        // TODO: maybe its enough to sort at the corresponding view: table / tree
         var entries = module.translations().entrySet().stream()
             .map((entry) -> toEntry(entry, locales, duplicateValueIndex, templates))
             .filter((entry) -> !options.filterByMissingValues() || !entry.missingLocaleIds().isEmpty())
             .filter((entry) -> !options.filterByDuplicateValues() || !entry.duplicateLocaleIds().isEmpty())
             .filter((entry) -> options.filterBySearchQuery() == null || matchesSearchQuery(entry, options.filterBySearchQuery()))
-            //.sorted(Comparator.comparing(ModuleView.Entry::key))
+            .sorted(Comparator.comparing(ModuleView.Entry::key))
             .toList();
 
         return switch (options.type()) {
