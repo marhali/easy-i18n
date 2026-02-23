@@ -4,6 +4,7 @@ import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.actionSystem.ActionToolbar;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import com.intellij.openapi.project.Project;
+import com.intellij.ui.components.JBScrollPane;
 import com.intellij.ui.treeStructure.Tree;
 import de.marhali.easyi18n.core.application.query.view.ModuleView;
 import de.marhali.easyi18n.core.domain.model.ModuleId;
@@ -25,19 +26,21 @@ public class I18nTreeViewPanel implements ViewPanel<ModuleView.Tree> {
     private final @NotNull ModuleId moduleId;
 
     private final @NotNull Tree tree;
+    private final @NotNull JBScrollPane treeScrollPane;
 
     public I18nTreeViewPanel(@NotNull Project project, @NotNull ModuleId moduleId) {
         this.project = project;
         this.moduleId = moduleId;
 
         this.tree = new Tree();
+        this.treeScrollPane = new JBScrollPane(tree);
 
         tree.setRootVisible(false);
         tree.setCellRenderer(new TreeNodeRenderer());
     }
 
     public @NotNull JComponent getComponent() {
-        return this.tree;
+        return this.treeScrollPane;
     }
 
     @Override

@@ -41,7 +41,7 @@ public class I18nTableViewPanel implements ViewPanel<ModuleView.Table> {
         this.moduleId = moduleId;
 
         this.table = new JBTable();
-        this.tableScrollPane = new JBScrollPane(this.table);
+        this.tableScrollPane = new JBScrollPane(table);
 
         table.setShowGrid(false);
         table.setIntercellSpacing(JBUI.emptySize());
@@ -106,8 +106,6 @@ public class I18nTableViewPanel implements ViewPanel<ModuleView.Table> {
     private void handleValueUpdateAsync(@NotNull Command command) {
         I18nProjectService projectService = project.getService(I18nProjectService.class);
         PluginExecutorService executorService = project.getService(PluginExecutorService.class);
-
-        System.out.println("Handle");
 
         executorService.runAsync(
             () -> {
