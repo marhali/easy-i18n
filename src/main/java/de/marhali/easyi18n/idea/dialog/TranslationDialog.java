@@ -109,6 +109,7 @@ public class TranslationDialog extends DialogWrapper {
         // Locales scroll pane
         valuesByLocalePane = new JBScrollPane();
         valuesByLocalePane.setBorder(JBUI.Borders.empty());
+        valuesByLocalePane.setFocusable(false);
         builder.addLabeledComponent(PluginBundle.message("dialog.translation.locales.title"), valuesByLocalePane, 16,true);
 
         var panel = builder.getPanel();
