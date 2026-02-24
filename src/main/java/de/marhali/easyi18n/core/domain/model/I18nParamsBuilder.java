@@ -56,10 +56,19 @@ public class I18nParamsBuilder {
         return this;
     }
 
-    public @NotNull I18nParamsBuilder removeAllExcept(@NotNull Set<String> allowedParameterNames) {
-        var paramsToRemove = new HashSet<>(params.keySet());
-        paramsToRemove.removeAll(allowedParameterNames);
-        paramsToRemove.forEach(this::remove);
+    public @NotNull I18nParamsBuilder put(@NotNull String parameterName, @NotNull List<@NotNull String> parameterValue) {
+        params.put(parameterName, parameterValue);
+        return this;
+    }
+
+    public @NotNull I18nParamsBuilder put(@NotNull I18nBuiltinParam parameter,  @NotNull List<@NotNull String> parameterValue) {
+        return put(parameter.getParameterName(), parameterValue);
+    }
+
+    public @NotNull I18nParamsBuilder removeKeys(@NotNull Set<@NotNull String> keys) {
+        for (String key : keys) {
+            params.remove(key);
+        }
         return this;
     }
 

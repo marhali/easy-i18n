@@ -4,17 +4,13 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 
 /**
  * Record tracking the hierarchical serialization (writing) of translations.
  *
  * @param level File level
- * @param keyParams Translation key parameters
- * @param keyParamsIndex Tracked key params indexes
- * @param localeId Translation target locale
+ * @param indexedParams Indexed i18n params
  * @param value Translation target value
  * @param comment Optional comment
  *
@@ -22,54 +18,47 @@ import java.util.Set;
  */
 public record TranslationConsumer(
     @NotNull Integer level,
-    @NotNull I18nParams keyParams,
-    @NotNull Map<String, Integer> keyParamsIndex,
-    @NotNull LocaleId localeId,
+    @NotNull IndexedI18nParams indexedParams,
     @NotNull I18nValue value,
     @Nullable String comment
     ) {
+
     /**
      * Shorthand to construct a new consumer
-     * @param keyParams Translation key params
-     * @param localeId Translation target locale
+     * @param params I18n params
      * @param value Translation target value
      * @param comment Optional comment
      * @return {@link TranslationConsumer}
      */
     public static @NotNull TranslationConsumer fromNew(
-        @NotNull I18nParams keyParams,
-        @NotNull LocaleId localeId,
+        @NotNull I18nParams params,
         @NotNull I18nValue value,
-        @Nullable String comment) {
-        return new TranslationConsumer(0, keyParams, new HashMap<>(), localeId, value, comment);
+        @Nullable String comment
+    ) {
+        return new TranslationConsumer(0, new IndexedI18nParams(params, new HashMap<>()), value, comment);
     }
 
     /**
      * Creates a children {@link TranslationConsumer} for the next translation file level.
-     * @param paramNamesToIncrement Parameter names whose key param indexes should be incremented by 1
+     * @param parameterNamesToIncrement Parameter names whose key param indexes should be incremented by 1
      * @return {@link TranslationConsumer}
      */
     public @NotNull TranslationConsumer withChildren(
-        @NotNull Set<@NotNull String> paramNamesToIncrement
+        @NotNull Set<@NotNull String> parameterNamesToIncrement
         ) {
-        var newLevel = level + 1;
-        var newKeyParamsIndex = new HashMap<>(keyParamsIndex);
-
-        for (String paramName : paramNamesToIncrement) {
-            newKeyParamsIndex.compute(paramName,
-                (_k, previousLevel) -> previousLevel == null ? 1 : previousLevel + 1);
-        }
-
-        return new TranslationConsumer(newLevel, keyParams, newKeyParamsIndex, localeId, value, comment);
+        return new TranslationConsumer(
+            level + 1,
+            indexedParams.withIncrementParameters(parameterNamesToIncrement),
+            value,
+            comment
+        );
     }
 
     /**
      * Checks whether this consumer is fully indexed or not.
      * @return {@code true} if all params are consumed, otherwise {@code false}
      */
-    public boolean isIndexed() {
-        return keyParamsIndex.entrySet().stream()
-            .allMatch(entry ->
-                entry.getValue() == Objects.requireNonNull(keyParams.get(entry.getKey())).size());
+    public boolean isFullyIndexed() {
+        return indexedParams.isFullyIndexed();
     }
 }

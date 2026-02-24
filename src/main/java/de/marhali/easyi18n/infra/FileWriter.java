@@ -49,7 +49,7 @@ public abstract class FileWriter {
 
         TranslationConsumer targetConsumer = consumer;
 
-        while (!targetConsumer.isIndexed()) {
+        while (!targetConsumer.isFullyIndexed()) {
             LevelledFileTemplate fileTemplateLevel = templates.file().getAtLeveL(targetConsumer.level());
 
             // Determine needed placeholder parameters for this file level
@@ -57,17 +57,9 @@ public abstract class FileWriter {
 
             I18nParamsBuilder paramsBuilder =  I18nParams.builder();
 
-            // If locale might be necessary, just add it
-            paramsBuilder.add(I18nBuiltinParam.LOCALE, targetConsumer.localeId().tag());
-
-            // Add path params which might be necessary
-            paramsBuilder.addAll(path.params());
-
-            // Resolve needed params at index (only keyParams are relevant here, as the others are already injected)
+            // Resolve needed params at index
             for (String parameterName : neededParameterNames) {
-                if (consumer.keyParams().has(parameterName)) {
-                    paramsBuilder.add(parameterName, resolveIndexedKeyParameter(targetConsumer, parameterName));
-                }
+                paramsBuilder.add(parameterName, targetConsumer.indexedParams().getParameterValueAtIndex(parameterName));
             }
 
             // Build file level out of parameters
@@ -85,23 +77,5 @@ public abstract class FileWriter {
         }
 
         return result;
-    }
-
-    /**
-     * Resolves parameter value at provided index.
-     *
-     * @param consumer Translation
-     * @param parameterName Parameter name
-     * @return Parameter value
-     */
-    private @NotNull String resolveIndexedKeyParameter(@NotNull TranslationConsumer consumer, @NotNull String parameterName) {
-        var index = consumer.keyParamsIndex().getOrDefault(parameterName, 0);
-        var parameterValues = consumer.keyParams().get(parameterName);
-
-        if (parameterValues == null || parameterValues.size() <= index) {
-            throw new IllegalStateException("Missing parameter value at index " + index + " for parameter " + parameterName);
-        }
-
-        return parameterValues.get(index);
     }
 }

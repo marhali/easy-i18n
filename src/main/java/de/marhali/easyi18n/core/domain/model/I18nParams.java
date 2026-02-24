@@ -3,10 +3,7 @@ package de.marhali.easyi18n.core.domain.model;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Container holding i18n parameter(s) with multi-value support.
@@ -38,12 +35,28 @@ public record I18nParams(
     }
 
     /**
+     * @param parameter I18n param
+     * @see I18nParams#has(String)
+     */
+    public boolean has(@NotNull I18nBuiltinParam parameter) {
+        return has(parameter.getParameterName());
+    }
+
+    /**
      * Retrieves values for a specific parameter.
      * @param parameterName The parameter name
      * @return Nullable list of parameter values
      */
     public @Nullable List<@NotNull String> get(@NotNull String parameterName) {
         return params.get(parameterName);
+    }
+
+    /**
+     * @param parameter I18n parameter
+     * @see I18nParams#get(String)
+     */
+    public @Nullable List<@NotNull String> get(@NotNull I18nBuiltinParam parameter) {
+        return get(parameter.getParameterName());
     }
 
     /**
@@ -61,6 +74,14 @@ public record I18nParams(
      */
     public boolean isEmpty() {
         return params.isEmpty();
+    }
+
+    /**
+     * Retrieves all defined parameter names.
+     * @return Set of {@link I18nKey}'s
+     */
+    public @NotNull Set<@NotNull String> keySet() {
+        return params.keySet();
     }
 
     /**

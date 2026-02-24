@@ -33,40 +33,48 @@ public class DefaultModulePersistor implements ModulePersistor {
 
         // Iterate over all translation keys within this module
         for (Map.Entry<@NotNull I18nKey, @NotNull I18nContent> translationEntry : store.translations().entrySet()) {
+            // Retrieve all params specified by the translation key
             I18nParams keyParams = templates.key().toParams(translationEntry.getKey());
-            Set<LocaleId> localeIds = store.translations().get(translationEntry.getKey()).values().keySet();
 
-            // Collect necessary params for this translation key (key params & used localeIds)
-            I18nParams params = I18nParams.builder()
+            I18nContent content = translationEntry.getValue();
+            Set<LocaleId> localeIds = content.values().keySet();
+
+            // Collect all params for this translation entry (keyParams + target locale's)
+            I18nParams allParams = I18nParams.builder()
                 .addAll(keyParams)
                 .add(I18nBuiltinParam.LOCALE, localeIds.stream().map(LocaleId::tag).toArray(String[]::new))
                 .build();
 
             // Build all paths to store this translation
-            var paths = templates.path().buildVariants(params);
+            var paths = templates.path().buildVariants(allParams);
 
-            var content = translationEntry.getValue();
-
-            // Iterate over all translation file paths
+            // Iterate over all paths for this translation
             for (I18nPath path : paths) {
-                List<String> pathAdvisedLocales = path.params().get(I18nBuiltinParam.LOCALE.getParameterName());
-                var consumersInPath = translationsByPath.computeIfAbsent(path, (_path) -> new HashSet<>());
+                // Compute storable set for consumers for this path
+                var consumersForPath = translationsByPath.computeIfAbsent(path, (_path) -> new HashSet<>());
 
-                // Stock path with locale relevant translation values
-                for (Map.Entry<LocaleId, I18nValue> contentEntry : content.values().entrySet()) {
-                    // If the path does not specify any locale we will add the consumer and expect locale handling within the file
-                    if (pathAdvisedLocales == null || pathAdvisedLocales.contains(contentEntry.getKey().tag())) {
+                // Nullable list of locales that the path specifies
+                var pathSpecifiedLocales = path.params().get(I18nBuiltinParam.LOCALE);
 
-                        // Build keyParamsIndex with zeroed values for all relevant (non path related) params
-                        var keyParamsIndex = new HashMap<String, Integer>();
-                        for (Map.Entry<String, List<String>> keyParamsEntry : keyParams.params().entrySet()) {
-                            if (!path.params().has(keyParamsEntry.getKey())) {
-                                keyParamsIndex.put(keyParamsEntry.getKey(), 0);
-                            }
-                        }
+                // Reduce allParams by path params to retrieve file content specific params
+                var fileParams = allParams.toBuilder()
+                    .removeKeys(path.params().keySet())
+                    .build();
 
-                        var consumer = new TranslationConsumer(0, keyParams, keyParamsIndex, contentEntry.getKey(), contentEntry.getValue(), content.comment());
-                        consumersInPath.add(consumer);
+                // Populate path with translation values (consumers)
+                for (Map.Entry<LocaleId, I18nValue> localeEntry : content.values().entrySet()) {
+                    // Only add localeEntry if the path does not specify any locales or contains our localeEntry localeId
+                    if (pathSpecifiedLocales == null || pathSpecifiedLocales.contains(localeEntry.getKey().tag())) {
+                        consumersForPath.add(TranslationConsumer.fromNew(
+                            // Edge case: If the path does not specify any locale, the file must specify one
+                            pathSpecifiedLocales == null
+                                ? fileParams.toBuilder()
+                                    .put(I18nBuiltinParam.LOCALE, List.of(localeEntry.getKey().tag()))
+                                    .build()
+                                : fileParams,
+                            localeEntry.getValue(),
+                            content.comment()
+                        ));
                     }
                 }
             }
