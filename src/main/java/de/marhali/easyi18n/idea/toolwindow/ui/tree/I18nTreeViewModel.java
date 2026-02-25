@@ -43,6 +43,7 @@ public class I18nTreeViewModel extends DefaultTreeModel {
                     targetChildNode = new DefaultMutableTreeNode(userObject);
                     targetNode.insert(targetChildNode, targetNode.getChildCount());
                 } else {
+                    // Reevaluate existing child node to check if missingValues might be checked
                     if (!((TreeUserObject) targetChildNode.getUserObject()).getAsNode().missingValues() && !entry.missingLocaleIds().isEmpty()) {
                         targetChildNode.setUserObject(new TreeUserObject.Node(key, true));
                     }
@@ -51,6 +52,7 @@ public class I18nTreeViewModel extends DefaultTreeModel {
                 targetNode = targetChildNode;
             }
 
+            // We always render a child for every module locale to support filling missing values
             for (LocaleId localeId : view.locales()) {
                 var value = entry.content().values().get(localeId);
                 var userData = new TreeUserObject.Leaf(localeId, value, entry.duplicateLocaleIds().contains(localeId));
