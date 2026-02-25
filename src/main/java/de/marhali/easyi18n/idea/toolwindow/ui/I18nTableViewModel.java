@@ -10,6 +10,7 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.table.AbstractTableModel;
 import java.awt.*;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Consumer;
 
 /**
@@ -78,7 +79,10 @@ public class I18nTableViewModel extends AbstractTableModel {
 
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-        onHandleUpdate.accept(new ValueUpdate((String) aValue, rowIndex, columnIndex));
+        // Only process update if value has been actually changed in comparison to previous value
+        if (!Objects.equals(getValueAt(rowIndex, columnIndex), aValue)) {
+            onHandleUpdate.accept(new ValueUpdate((String) aValue, rowIndex, columnIndex));
+        }
     }
 
     public @Nullable Color getForeground(int rowIndex, int columnIndex) {
