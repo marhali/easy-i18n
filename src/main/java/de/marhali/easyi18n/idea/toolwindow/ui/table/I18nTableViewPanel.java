@@ -1,4 +1,4 @@
-package de.marhali.easyi18n.idea.toolwindow.ui;
+package de.marhali.easyi18n.idea.toolwindow.ui.table;
 
 import com.intellij.openapi.application.ModalityState;
 import com.intellij.openapi.project.Project;
@@ -17,6 +17,7 @@ import de.marhali.easyi18n.idea.service.I18nProjectService;
 import de.marhali.easyi18n.idea.service.PluginExecutorService;
 import de.marhali.easyi18n.idea.toolwindow.listener.DeleteKeyListener;
 import de.marhali.easyi18n.idea.toolwindow.listener.PopupClickListener;
+import de.marhali.easyi18n.idea.toolwindow.ui.ViewPanel;
 import de.marhali.easyi18n.listener.ReturnKeyListener;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

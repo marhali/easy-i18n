@@ -1,4 +1,4 @@
-package de.marhali.easyi18n.idea.toolwindow.ui;
+package de.marhali.easyi18n.idea.toolwindow.ui.tree;
 
 import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.actionSystem.ActionToolbar;
@@ -12,11 +12,11 @@ import de.marhali.easyi18n.core.application.query.view.ModuleView;
 import de.marhali.easyi18n.core.domain.model.ModuleId;
 import de.marhali.easyi18n.idea.action.CollapseAllAction;
 import de.marhali.easyi18n.idea.action.ExpandAllAction;
+import de.marhali.easyi18n.idea.toolwindow.ui.ViewPanel;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
-import java.awt.*;
 
 /**
  * Tree view panel for the translations tool window content tab.

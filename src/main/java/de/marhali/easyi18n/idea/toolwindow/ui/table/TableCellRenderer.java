@@ -1,4 +1,4 @@
-package de.marhali.easyi18n.idea.toolwindow.ui;
+package de.marhali.easyi18n.idea.toolwindow.ui.table;
 
 import com.intellij.util.ui.JBUI;
 import org.jetbrains.annotations.Nullable;

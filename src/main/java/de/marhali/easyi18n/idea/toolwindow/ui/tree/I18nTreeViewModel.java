@@ -1,6 +1,5 @@
-package de.marhali.easyi18n.idea.toolwindow.ui;
+package de.marhali.easyi18n.idea.toolwindow.ui.tree;
 
-import com.intellij.ide.projectView.PresentationData;
 import de.marhali.easyi18n.core.application.query.view.ModuleView;
 import de.marhali.easyi18n.core.domain.model.LocaleId;
 import org.jetbrains.annotations.NotNull;
@@ -30,10 +29,9 @@ public class I18nTreeViewModel extends DefaultTreeModel {
                 DefaultMutableTreeNode targetChildNode = null;
                 while (childIterator.hasNext()) {
                     var child = (DefaultMutableTreeNode) childIterator.next();
-                    var childUserObjet = (PresentationData) child.getUserObject();
-                    var childKey = childUserObjet.getPresentableText();
+                    var childUserObjet = (TreeUserObject) child.getUserObject();
 
-                    if (key.equals(childKey)) {
+                    if (!childUserObjet.isLeaf() && childUserObjet.getAsNode().name().equals(key)) {
                         targetChildNode = child;
                         break;
                     }
@@ -41,9 +39,13 @@ public class I18nTreeViewModel extends DefaultTreeModel {
 
                 if (targetChildNode == null) {
                     // Children for key has not been created yet. Let's do it
-                    PresentationData userData = new PresentationData(key, null, null, null);
-                    targetChildNode = new DefaultMutableTreeNode(userData);
+                    var userObject = new TreeUserObject.Node(key, !entry.missingLocaleIds().isEmpty());
+                    targetChildNode = new DefaultMutableTreeNode(userObject);
                     targetNode.insert(targetChildNode, targetNode.getChildCount());
+                } else {
+                    if (!((TreeUserObject) targetChildNode.getUserObject()).getAsNode().missingValues() && !entry.missingLocaleIds().isEmpty()) {
+                        targetChildNode.setUserObject(new TreeUserObject.Node(key, true));
+                    }
                 }
 
                 targetNode = targetChildNode;
@@ -51,7 +53,7 @@ public class I18nTreeViewModel extends DefaultTreeModel {
 
             for (LocaleId localeId : view.locales()) {
                 var value = entry.content().values().get(localeId);
-                PresentationData userData = new PresentationData("[" + localeId.tag() + "]: " + (value != null ? value.toInputString() : ""), null, null, null);
+                var userData = new TreeUserObject.Leaf(localeId, value, entry.duplicateLocaleIds().contains(localeId));
                 targetNode.insert(new DefaultMutableTreeNode(userData), targetNode.getChildCount());
             }
         }
