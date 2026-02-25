@@ -87,6 +87,7 @@ public class I18nToolWindowPanel extends SimpleToolWindowPanel implements ViewLi
 
     @Override
     public void dispose() {
+        System.out.println("Dispose tool window panel");
         // TODO: check what to unregister
     }
 
