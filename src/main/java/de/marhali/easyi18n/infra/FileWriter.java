@@ -23,10 +23,14 @@ public abstract class FileWriter {
         this.templates = templates;
     }
 
+    /**
+     * Maps the provided list of translation consumers to actual file consumable targets.
+     * @param consumers Translation consumers
+     * @return List of {@link TranslationTarget}'s
+     */
     protected @NotNull List<@NotNull TranslationTarget> mapConsumersToSortedTargets(@NotNull Set<@NotNull TranslationConsumer> consumers) {
         return consumers.stream()
             .map(this::resolveTarget)
-            .sorted(TranslationTarget::compareTo)
             .toList();
     }
 

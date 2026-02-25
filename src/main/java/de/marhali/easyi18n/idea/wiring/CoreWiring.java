@@ -18,7 +18,7 @@ import de.marhali.easyi18n.core.application.service.*;
 import de.marhali.easyi18n.core.application.state.I18nStore;
 import de.marhali.easyi18n.core.application.state.InMemoryI18nStore;
 import de.marhali.easyi18n.core.domain.config.FileCodec;
-import de.marhali.easyi18n.core.domain.model.MapImplProvider;
+import de.marhali.easyi18n.core.domain.model.ImplementationProvider;
 import de.marhali.easyi18n.core.ports.*;
 import de.marhali.easyi18n.idea.config.ProjectConfigAdapter;
 import de.marhali.easyi18n.idea.event.DomainEventPublisherAdapter;
@@ -50,8 +50,8 @@ public final class CoreWiring {
         );
 
         // State
-        MapImplProvider mapImplProvider = new SortableMapImplProvider(projectConfigPort);
-        I18nStore store = new InMemoryI18nStore();
+        ImplementationProvider implementationProvider = new SortableImplementationProvider(projectConfigPort);
+        I18nStore store = new InMemoryI18nStore(implementationProvider);
 
         // Services
         CachedModuleTemplates cachedModuleTemplates = new CachedModuleTemplates(projectConfigPort);
@@ -66,8 +66,9 @@ public final class CoreWiring {
         commands.register(ReloadCommand.class, new ReloadCommandHandler(store, domainEventPublisherPort));
         commands.register(InvalidateProjectConfigCommand.class, new InvalidateProjectConfigCommandHandler(store, cachedModuleTemplates, domainEventPublisherPort));
         commands.register(AddI18nRecordCommand.class, new AddI18nRecordCommandHandler(ensureLoadedService, ensurePersistService, store, domainEventPublisherPort));
-        commands.register(UpdateI18nRecordCommand.class, new UpdateI18nRecordCommandHandler(ensureLoadedService, ensurePersistService, store, domainEventPublisherPort));
+        commands.register(UpdateI18nRecordCommand.class, new UpdateI18nRecordCommandHandler(implementationProvider, ensureLoadedService, ensurePersistService, store, domainEventPublisherPort));
         commands.register(RemoveI18nRecordCommand.class, new RemoveI18nRecordCommandHandler(ensureLoadedService, ensurePersistService, store, domainEventPublisherPort));
+        commands.register(RemoveI18nRecordsCommand.class, new RemoveI18nRecordsCommandHandler(ensureLoadedService, ensurePersistService, store, domainEventPublisherPort));
         commands.register(RemoveI18nValueCommand.class, new RemoveI18nValueCommandHandler(ensureLoadedService, ensurePersistService, store, domainEventPublisherPort));
         commands.register(UpdateI18nKeyCommand.class, new UpdateI18nKeyCommandHandler(ensureLoadedService, ensurePersistService, store, domainEventPublisherPort));
         commands.register(UpdateI18nValueCommand.class, new UpdateI18nValueCommandHandler(ensureLoadedService, ensurePersistService, store, domainEventPublisherPort));

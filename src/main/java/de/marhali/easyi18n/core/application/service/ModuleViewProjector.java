@@ -38,7 +38,6 @@ public final class ModuleViewProjector {
             .filter((entry) -> !options.filterByMissingValues() || !entry.missingLocaleIds().isEmpty())
             .filter((entry) -> !options.filterByDuplicateValues() || !entry.duplicateLocaleIds().isEmpty())
             .filter((entry) -> options.filterBySearchQuery() == null || matchesSearchQuery(entry, options.filterBySearchQuery()))
-            .sorted(Comparator.comparing(ModuleView.Entry::key))
             .toList();
 
         return switch (options.type()) {
@@ -74,7 +73,7 @@ public final class ModuleViewProjector {
         @NotNull Templates templates
     ) {
         Set<LocaleId> missingLocaleIds = locales.stream()
-            .filter((localeId) -> !entry.getValue().values().containsKey(localeId))
+            .filter((localeId) -> !entry.getValue().hasLocale(localeId))
             .collect(Collectors.toSet());
 
         Set<LocaleId> duplicateLocaleIds = entry.getValue().values().entrySet().stream()

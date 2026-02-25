@@ -10,6 +10,11 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
+/**
+ * Query handler for {@link TranslationByKeyQuery}.
+ *
+ * @author marhali
+ */
 public class TranslationByKeyQueryHandler implements QueryHandler<TranslationByKeyQuery, Optional<I18nContent>> {
 
     private final @NotNull EnsureLoadedService ensureLoadedService;
@@ -23,7 +28,7 @@ public class TranslationByKeyQueryHandler implements QueryHandler<TranslationByK
     @Override
     public @NotNull Optional<I18nContent> handle(@NotNull TranslationByKeyQuery query) {
         ensureLoadedService.ensureLoaded(query.moduleId());
-        I18nModule module = store.getSnapshot().getOrEmptyModule(query.moduleId());
+        I18nModule module = store.getSnapshot().getModuleOrThrow(query.moduleId());
         return Optional.ofNullable(module.getTranslation(query.key()));
     }
 }

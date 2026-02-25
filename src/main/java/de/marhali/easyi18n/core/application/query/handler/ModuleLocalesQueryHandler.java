@@ -9,6 +9,11 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;
 
+/**
+ * Query handler for {@link ModuleLocalesQuery}.
+ *
+ * @author marhali
+ */
 public class ModuleLocalesQueryHandler implements QueryHandler<ModuleLocalesQuery, @NotNull Set<LocaleId>> {
 
     private final @NotNull EnsureLoadedService ensureLoadedService;
@@ -21,9 +26,7 @@ public class ModuleLocalesQueryHandler implements QueryHandler<ModuleLocalesQuer
 
     @Override
     public @NotNull Set<LocaleId> handle(@NotNull ModuleLocalesQuery query) {
-        System.out.println("handle get locales start");
         ensureLoadedService.ensureLoaded(query.moduleId());
-        System.out.println("ensureLoaded ensured");
-        return store.getSnapshot().getOrEmptyModule(query.moduleId()).locales();
+        return store.getSnapshot().getModuleOrThrow(query.moduleId()).locales();
     }
 }

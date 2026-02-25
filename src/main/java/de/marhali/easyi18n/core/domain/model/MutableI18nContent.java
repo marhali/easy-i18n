@@ -3,7 +3,6 @@ package de.marhali.easyi18n.core.domain.model;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -15,9 +14,29 @@ import java.util.Set;
  */
 public final class MutableI18nContent {
 
-    public static @NotNull MutableI18nContent fromSnapshot(@NotNull I18nContent content) {
-        return new MutableI18nContent(new HashMap<>(content.values()), content.comment());
+    public static @NotNull MutableI18nContent fromSnapshot(
+        @NotNull ImplementationProvider implementationProvider,
+        @NotNull I18nContent content
+    ) {
+        return new MutableI18nContent(
+            implementationProvider,
+            implementationProvider.getMap(content.values()),
+            content.comment()
+        );
     }
+
+    public static @NotNull MutableI18nContent empty(@NotNull ImplementationProvider implementationProvider) {
+        return new MutableI18nContent(
+            implementationProvider,
+            implementationProvider.getMap(),
+            null
+        );
+    }
+
+    /**
+     * Implementation provider to construct {@link Map} instances.
+     */
+    private final @NotNull ImplementationProvider implementationProvider;
 
     /**
      * Translation values mapped by localeId identifier.
@@ -29,14 +48,12 @@ public final class MutableI18nContent {
      */
     private @Nullable String comment;
 
-    public MutableI18nContent() {
-        this(new HashMap<>(), null);
-    }
-
     public MutableI18nContent(
+        @NotNull ImplementationProvider implementationProvider,
         @NotNull Map<@NotNull LocaleId, @NotNull I18nValue> values,
         @Nullable String comment
     ) {
+        this.implementationProvider = implementationProvider;
         this.values = values;
         this.comment = comment;
     }
@@ -96,13 +113,14 @@ public final class MutableI18nContent {
     }
 
     public @NotNull I18nContent toSnapshot() {
-        return new I18nContent(new HashMap<>(values), comment);
+        return new I18nContent(implementationProvider.getMap(values), comment);
     }
 
     @Override
     public String toString() {
-        return "I18nContent{" +
-            "values=" + values +
+        return "MutableI18nContent{" +
+            "implementationProvider=" + implementationProvider +
+            ", values=" + values +
             ", comment='" + comment + '\'' +
             '}';
     }

@@ -1,6 +1,7 @@
 package de.marhali.easyi18n.core.domain.model;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -12,9 +13,14 @@ import java.util.stream.Collectors;
  */
 public final class MutableI18nProject {
 
-    public static @NotNull MutableI18nProject empty() {
-        return new MutableI18nProject(new HashMap<>());
+    public static @NotNull MutableI18nProject empty(@NotNull ImplementationProvider implementationProvider) {
+        return new MutableI18nProject(implementationProvider, implementationProvider.getMap());
     }
+
+    /**
+     * Implementation provider to construct {@link Map} instances.
+     */
+    private final @NotNull ImplementationProvider implementationProvider;
 
     /**
      * Map including every managed module with their translations.
@@ -22,8 +28,10 @@ public final class MutableI18nProject {
     private final @NotNull Map<@NotNull ModuleId, @NotNull MutableI18nModule> modules;
 
     public MutableI18nProject(
+        @NotNull ImplementationProvider implementationProvider,
         @NotNull Map<@NotNull ModuleId, @NotNull MutableI18nModule> modules
     ) {
+        this.implementationProvider = implementationProvider;
         this.modules = modules;
     }
 
@@ -37,17 +45,23 @@ public final class MutableI18nProject {
     }
 
     /**
-     * Retrieves a specific i18n module by name.
-     * @see #hasModule(ModuleId)
+     * Retrieves a specific i18n module by module identifier.
      * @param moduleId Module identifier
-     * @return {@link MutableI18nModule} or {@link NoSuchElementException} if the requested module is unknown
+     * @return {@link MutableI18nModule} or {@code null} if the desired module does not exist
      */
-    public @NotNull MutableI18nModule getModule(@NotNull ModuleId moduleId) {
-        if (!hasModule(moduleId)) {
-            throw new NoSuchElementException("Module by id " + moduleId + " does not exist");
-        }
-
+    public @Nullable MutableI18nModule getModule(@NotNull ModuleId moduleId) {
         return this.modules.get(moduleId);
+    }
+
+    /**
+     * Retrieves a specific i18n module by module identifier.
+     * Throws a {@link NullPointerException} if the module does not exist.
+     * @param moduleId Module identifier
+     * @return {@link MutableI18nModule}
+     */
+    public @NotNull MutableI18nModule getModuleOrThrow(@NotNull ModuleId moduleId) {
+        return Objects.requireNonNull(getModule(moduleId),
+            "Project does not contain module with id: " + moduleId);
     }
 
     /**
@@ -56,7 +70,8 @@ public final class MutableI18nProject {
      * @return {@link MutableI18nModule}
      */
     public @NotNull MutableI18nModule getOrCreateModule(@NotNull ModuleId moduleId) {
-        return this.modules.computeIfAbsent(moduleId, (_moduleId) -> MutableI18nModule.empty());
+        return this.modules.computeIfAbsent(moduleId,
+            (_moduleId) -> MutableI18nModule.empty(implementationProvider));
     }
 
     /**
@@ -87,13 +102,23 @@ public final class MutableI18nProject {
      * @return Immutable {@link I18nProject}
      */
     public @NotNull I18nProject toSnapshot() {
-        Map<@NotNull ModuleId, @NotNull I18nModule> modulesCopy = modules.entrySet().stream()
-            .collect(Collectors.toMap(
-                Map.Entry::getKey,
-                entry -> entry.getValue().toSnapshot(),
-                (contentA, contentB) -> contentA
-            ));
+        Map<ModuleId, I18nModule> snapshotModules = this.implementationProvider.getMap();
 
-        return new I18nProject(modulesCopy);
+        for (Map.Entry<ModuleId, MutableI18nModule> moduleEntry : this.modules.entrySet()) {
+            snapshotModules.put(
+                moduleEntry.getKey(),
+                moduleEntry.getValue().toSnapshot()
+            );
+        }
+
+        return new I18nProject(snapshotModules);
+    }
+
+    @Override
+    public String toString() {
+        return "MutableI18nProject{" +
+            "implementationProvider=" + implementationProvider +
+            ", modules=" + modules +
+            '}';
     }
 }

@@ -1,6 +1,7 @@
 package de.marhali.easyi18n.core.application.state;
 
 import de.marhali.easyi18n.core.domain.model.I18nProject;
+import de.marhali.easyi18n.core.domain.model.ImplementationProvider;
 import de.marhali.easyi18n.core.domain.model.MutableI18nProject;
 import org.jetbrains.annotations.NotNull;
 
@@ -20,10 +21,10 @@ public class InMemoryI18nStore implements I18nStore {
     private final @NotNull MutableI18nProject workingSet;
     private @NotNull I18nProject snapshot;
 
-    public InMemoryI18nStore() {
+    public InMemoryI18nStore(@NotNull ImplementationProvider implementationProvider) {
         this.lock = new ReentrantLock();
 
-        this.workingSet = MutableI18nProject.empty();
+        this.workingSet = MutableI18nProject.empty(implementationProvider);
         this.snapshot = I18nProject.empty();
     }
 

@@ -3,14 +3,15 @@ package de.marhali.easyi18n.core.domain.model;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Immutable i18n project.
  *
  * @param modules Project modules
  *
+ * @see MutableI18nProject
  * @author marhali
  */
 public record I18nProject(
@@ -18,10 +19,11 @@ public record I18nProject(
     ) {
 
     /**
+     * Note: The underlying {@link Map} implementation is not implementation aware - but this should be no problem for an empty snapshot
      * @return empty project
      */
     public static @NotNull I18nProject empty() {
-        return new I18nProject(new HashMap<>());
+        return new I18nProject(Map.of());
     }
 
     /**
@@ -34,20 +36,20 @@ public record I18nProject(
     }
 
     /**
-     * Retrieves the specified module or an empty module if the module is unknown.
-     * @param moduleId Module identifier
-     * @return {@link I18nModule} or an empty module if moduleId is not set
-     */
-    public @NotNull I18nModule getOrEmptyModule(@NotNull ModuleId moduleId) {
-        return modules.containsKey(moduleId) ? modules.get(moduleId) : I18nModule.empty();
-    }
-
-    /**
      * Retrieves the specified module.
      * @param moduleId Module identifier
      * @return Nullable {@link I18nModule}
      */
     public @Nullable I18nModule getModule(@NotNull ModuleId moduleId) {
         return hasModule(moduleId) ? modules.get(moduleId) : null;
+    }
+
+    /**
+     * Retrieves the specified module.
+     * @param moduleId Module identifier
+     * @return {@link I18nModule} or throws {@link NullPointerException} if unknown
+     */
+    public @NotNull I18nModule getModuleOrThrow(@NotNull ModuleId moduleId) {
+        return Objects.requireNonNull(getModule(moduleId), "Project does not contain module with: " + moduleId);
     }
 }

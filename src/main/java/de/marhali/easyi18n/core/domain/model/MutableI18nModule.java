@@ -3,11 +3,7 @@ package de.marhali.easyi18n.core.domain.model;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.*;
 
 /**
  * Module-specific translations container.
@@ -18,9 +14,18 @@ import java.util.stream.Collectors;
  */
 public final class MutableI18nModule {
 
-    public static @NotNull MutableI18nModule empty() {
-        return new MutableI18nModule(new HashSet<>(), new HashMap<>());
+    public static @NotNull MutableI18nModule empty(@NotNull ImplementationProvider implementationProvider) {
+        return new MutableI18nModule(
+            implementationProvider,
+            implementationProvider.getSet(),
+            implementationProvider.getMap()
+        );
     }
+
+    /**
+     * Implementation provider to construct {@link Map} instances.
+     */
+    private final @NotNull ImplementationProvider implementationProvider;
 
     /**
      * Set including every used language identifier for this module.
@@ -33,9 +38,11 @@ public final class MutableI18nModule {
     private final @NotNull Map<@NotNull I18nKey, @NotNull MutableI18nContent> translations;
 
     public MutableI18nModule(
+        @NotNull ImplementationProvider implementationProvider,
         @NotNull Set<@NotNull LocaleId> locales,
         @NotNull Map<@NotNull I18nKey, @NotNull MutableI18nContent> translations
     ) {
+        this.implementationProvider = implementationProvider;
         this.locales = locales;
         this.translations = translations;
     }
@@ -90,7 +97,7 @@ public final class MutableI18nModule {
      * @return {@link MutableI18nContent}
      */
     public @NotNull MutableI18nContent getOrCreateTranslation(@NotNull I18nKey key) {
-        return translations.computeIfAbsent(key, (_key) -> new MutableI18nContent());
+        return translations.computeIfAbsent(key, (_key) -> MutableI18nContent.empty(implementationProvider));
     }
 
     /**
@@ -127,18 +134,24 @@ public final class MutableI18nModule {
     }
 
     public @NotNull I18nModule toSnapshot() {
-        return new I18nModule(new HashSet<>(locales), translations.entrySet().stream()
-            .collect(Collectors.toMap(
-                Map.Entry::getKey,
-                entry -> entry.getValue().toSnapshot(),
-                (contentA, contentB) -> contentA
-            )));
+        Set<LocaleId> snapshotLocales = implementationProvider.getSet(this.locales);
+        Map<I18nKey, I18nContent> snapshotTranslations = implementationProvider.getMap(this.translations.size());
+
+        for (Map.Entry<I18nKey, MutableI18nContent> translationEntry : this.translations.entrySet()) {
+            snapshotTranslations.put(
+                translationEntry.getKey(),
+                translationEntry.getValue().toSnapshot()
+            );
+        }
+
+        return new I18nModule(snapshotLocales, snapshotTranslations);
     }
 
     @Override
     public String toString() {
         return "MutableI18nModule{" +
-            "locales=" + locales +
+            "implementationProvider=" + implementationProvider +
+            ", locales=" + locales +
             ", translations=" + translations +
             '}';
     }

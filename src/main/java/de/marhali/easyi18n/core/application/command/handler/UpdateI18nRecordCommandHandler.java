@@ -6,6 +6,7 @@ import de.marhali.easyi18n.core.application.service.EnsureLoadedService;
 import de.marhali.easyi18n.core.application.service.EnsurePersistService;
 import de.marhali.easyi18n.core.application.state.I18nStore;
 import de.marhali.easyi18n.core.domain.event.ModuleChanged;
+import de.marhali.easyi18n.core.domain.model.ImplementationProvider;
 import de.marhali.easyi18n.core.domain.model.MutableI18nContent;
 import de.marhali.easyi18n.core.ports.DomainEventPublisherPort;
 import org.jetbrains.annotations.NotNull;
@@ -17,17 +18,20 @@ import org.jetbrains.annotations.NotNull;
  */
 public class UpdateI18nRecordCommandHandler implements CommandHandler<UpdateI18nRecordCommand> {
 
+    private final @NotNull ImplementationProvider implementationProvider;
     private final @NotNull EnsureLoadedService ensureLoadedService;
     private final @NotNull EnsurePersistService ensurePersistService;
     private final @NotNull I18nStore store;
     private final @NotNull DomainEventPublisherPort domainEventPublisherPort;
 
     public UpdateI18nRecordCommandHandler(
+        @NotNull ImplementationProvider implementationProvider,
         @NotNull EnsureLoadedService ensureLoadedService,
         @NotNull EnsurePersistService ensurePersistService,
         @NotNull I18nStore store,
         @NotNull DomainEventPublisherPort domainEventPublisherPort
     ) {
+        this.implementationProvider = implementationProvider;
         this.ensureLoadedService = ensureLoadedService;
         this.ensurePersistService = ensurePersistService;
         this.store = store;
@@ -46,7 +50,8 @@ public class UpdateI18nRecordCommandHandler implements CommandHandler<UpdateI18n
                 module.removeTranslation(command.originKey());
             }
 
-            module.setTranslation(command.key(), MutableI18nContent.fromSnapshot(command.content()));
+            module.setTranslation(command.key(),
+                MutableI18nContent.fromSnapshot(implementationProvider, command.content()));
         });
         ensurePersistService.ensurePersist(command.moduleId());
         domainEventPublisherPort.publish(new ModuleChanged(command.moduleId()));

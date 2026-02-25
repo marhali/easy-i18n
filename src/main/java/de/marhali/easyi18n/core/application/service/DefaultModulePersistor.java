@@ -29,7 +29,8 @@ public class DefaultModulePersistor implements ModulePersistor {
     public void persistFrom(@NotNull ProjectConfigModule configModule, @NotNull I18nModule store) {
         Templates templates = cachedModuleTemplates.resolve(configModule.id());
 
-        Map<@NotNull I18nPath, @NotNull Set<TranslationConsumer>> translationsByPath = new HashMap<>();
+        // Collect consumable translations for every translation file - use a linked map to keep store order
+        Map<@NotNull I18nPath, @NotNull Set<TranslationConsumer>> translationsByPath = new LinkedHashMap<>();
 
         // Iterate over all translation keys within this module
         for (Map.Entry<@NotNull I18nKey, @NotNull I18nContent> translationEntry : store.translations().entrySet()) {
@@ -50,8 +51,8 @@ public class DefaultModulePersistor implements ModulePersistor {
 
             // Iterate over all paths for this translation
             for (I18nPath path : paths) {
-                // Compute storable set for consumers for this path
-                var consumersForPath = translationsByPath.computeIfAbsent(path, (_path) -> new HashSet<>());
+                // Compute storable set for consumers for this path - use linked set to keep store order
+                var consumersForPath = translationsByPath.computeIfAbsent(path, (_path) -> new LinkedHashSet<>());
 
                 // Nullable list of locales that the path specifies
                 var pathSpecifiedLocales = path.params().get(I18nBuiltinParam.LOCALE);

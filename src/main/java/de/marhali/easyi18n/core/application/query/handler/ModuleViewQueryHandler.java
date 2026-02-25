@@ -10,7 +10,8 @@ import de.marhali.easyi18n.core.domain.model.*;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Module view query handler using the underlying {@link ModuleViewProjector}.
+ * Query handler for {@link ModuleViewQuery}.
+ * Uses the underlying {@link ModuleViewProjector}.
  *
  * @author marhali
  */
@@ -29,7 +30,7 @@ public class ModuleViewQueryHandler implements QueryHandler<ModuleViewQuery, Mod
     @Override
     public @NotNull ModuleView handle(@NotNull ModuleViewQuery query) {
         ensureLoadedService.ensureLoaded(query.moduleId());
-        I18nModule module = store.getSnapshot().getOrEmptyModule(query.moduleId());
+        I18nModule module = store.getSnapshot().getModuleOrThrow(query.moduleId());
         return moduleViewProjector.project(query.moduleId(), module, query.options());
     }
 }
