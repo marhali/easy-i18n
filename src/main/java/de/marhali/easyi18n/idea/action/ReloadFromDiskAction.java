@@ -3,6 +3,7 @@ package de.marhali.easyi18n.idea.action;
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.application.ModalityState;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.DumbAwareAction;
 import de.marhali.easyi18n.core.application.command.ReloadCommand;
 import de.marhali.easyi18n.idea.messages.PluginBundle;
@@ -18,6 +19,8 @@ import java.util.Objects;
  * @author marhali
  */
 public final class ReloadFromDiskAction extends DumbAwareAction {
+
+    private static final @NotNull Logger LOGGER = Logger.getInstance(ReloadFromDiskAction.class);
 
     public ReloadFromDiskAction() {
         super(PluginBundle.message("action.reload.label"), null, AllIcons.Actions.Refresh);
@@ -35,8 +38,8 @@ public final class ReloadFromDiskAction extends DumbAwareAction {
                 projectService.command(ReloadCommand.reloadAll());
                 return null;
             },
-            (_void) -> System.out.println("reload success callback"), // TODO: what to do on success
-            (throwable) -> throwable.printStackTrace(), // TODO: proper ex handling
+            (_void) -> {}, // We expect happy path here
+            LOGGER::error,
             ModalityState.any(),
             (o) -> project.isDisposed()
         );

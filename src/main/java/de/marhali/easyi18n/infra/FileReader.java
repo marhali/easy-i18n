@@ -52,7 +52,6 @@ public abstract class FileReader {
             throw new IllegalArgumentException("Producer does not specify exactly one localeId. Instead got: " + locales);
         }
 
-        // TODO: LocaleIdFactory??
         return new LocaleId(locales.getFirst());
     }
 

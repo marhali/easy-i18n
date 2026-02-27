@@ -1,6 +1,7 @@
 package de.marhali.easyi18n.idea.dialog;
 
 import com.intellij.openapi.application.ModalityState;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.ui.DocumentAdapter;
@@ -28,6 +29,8 @@ import java.util.stream.Collectors;
  * @author marhali
  */
 public class TranslationDialog extends DialogWrapper {
+
+    private static final Logger LOGGER = Logger.getInstance(TranslationDialog.class);
 
     private final @NotNull TranslationDialogMode mode;
     private final @NotNull NullableI18nEntry originEntry;
@@ -255,7 +258,8 @@ public class TranslationDialog extends DialogWrapper {
     }
 
     private void handleThrowable(@NotNull Throwable throwable) {
-        setErrorText(PluginBundle.message("error.operation.details", throwable.getLocalizedMessage()));
-        throwable.printStackTrace(); // TODO: better logging?
+        setErrorText(PluginBundle.message("error.generic.throwable",
+            throwable.getLocalizedMessage(), "#"));
+        LOGGER.warn(throwable);
     }
 }

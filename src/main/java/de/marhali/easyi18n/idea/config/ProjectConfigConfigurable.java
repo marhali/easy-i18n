@@ -1,6 +1,7 @@
 package de.marhali.easyi18n.idea.config;
 
 import com.intellij.openapi.application.ModalityState;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.options.SearchableConfigurable;
 import com.intellij.openapi.project.Project;
@@ -25,6 +26,8 @@ import java.util.Objects;
  * @author marhali
  */
 public class ProjectConfigConfigurable implements SearchableConfigurable {
+
+    private static final @NotNull Logger LOGGER = Logger.getInstance(ProjectConfigConfigurable.class);
 
     private final @NotNull Project project;
 
@@ -79,8 +82,8 @@ public class ProjectConfigConfigurable implements SearchableConfigurable {
                 project.getService(I18nProjectService.class).command(new InvalidateProjectConfigCommand());
                 return null;
             },
-            (_r) -> {},
-            (throwable) -> throwable.printStackTrace(), // TODO: show notification on failure
+            (_r) -> {}, // We expect happy path here
+            LOGGER::error,
             ModalityState.any(),
             (o) -> project.isDisposed()
         );

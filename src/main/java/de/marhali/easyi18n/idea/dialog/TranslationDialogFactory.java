@@ -1,6 +1,7 @@
 package de.marhali.easyi18n.idea.dialog;
 
 import com.intellij.openapi.application.ModalityState;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import de.marhali.easyi18n.core.application.query.TranslationByKeyQuery;
 import de.marhali.easyi18n.core.domain.model.I18nEntry;
@@ -19,6 +20,8 @@ import java.util.function.Consumer;
  * @author marhali
  */
 public final class TranslationDialogFactory {
+
+    private static final @NotNull Logger LOGGER = Logger.getInstance(TranslationDialogFactory.class);
 
     /**
      * Instantiates a translation dialog for a new translation.
@@ -67,12 +70,12 @@ public final class TranslationDialogFactory {
         executorService.runAsync(
             () -> projectService.query(new TranslationByKeyQuery(moduleId, key)),
             (optionalContent) -> {
-                // TODO: how should be handle empty result? (missing translation might be only rare edge case)
-                optionalContent.ifPresent((content) -> onDialogConsumer.accept(
-                    createEditDialog(project, moduleId, new I18nEntry(key, content))
-                ));
+                var content = optionalContent.orElseThrow(
+                    () -> new IllegalStateException("Unknown translation for edit dialog: " + key));
+                onDialogConsumer.accept(createEditDialog(project, moduleId, new I18nEntry(key, content)));
+
             },
-            (throwable) -> throwable.printStackTrace(), // TODO: ex handling
+            LOGGER::error,
             ModalityState.defaultModalityState(),
             project.getDisposed()
         );

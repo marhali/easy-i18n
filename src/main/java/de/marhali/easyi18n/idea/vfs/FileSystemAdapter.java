@@ -3,6 +3,7 @@ package de.marhali.easyi18n.idea.vfs;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.application.ReadAction;
 import com.intellij.openapi.command.WriteCommandAction;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.project.Project;
@@ -25,6 +26,8 @@ import java.util.Objects;
  * @author marhali
  */
 public class FileSystemAdapter implements FileSystemPort {
+
+    private static final Logger LOGGER = Logger.getInstance(FileSystemAdapter.class);
 
     private final @NotNull Project project;
 
@@ -112,8 +115,7 @@ public class FileSystemAdapter implements FileSystemPort {
                         fdm.saveDocument(document);
 
                     } catch (IOException e) {
-                        // TODO: logging?
-                        e.printStackTrace();
+                        LOGGER.error(e);
                     }
                 });
         });

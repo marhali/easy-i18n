@@ -88,7 +88,6 @@ public class DefaultModulePersistor implements ModulePersistor {
             try {
                 fileProcessorPort.writeFrom(configModule, templates, path, translationsByPath.get(path));
             } catch (IOException e) {
-                // TODO: improve ex handling
                 throw new RuntimeException(e);
             }
         }

@@ -1,20 +1,25 @@
 package de.marhali.easyi18n.idea.toolwindow.viewmodel;
 
 import com.intellij.openapi.application.ModalityState;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
 import com.intellij.ui.content.ContentManager;
 import com.intellij.util.Consumer;
+import de.marhali.easyi18n.core.application.cqrs.Command;
 import de.marhali.easyi18n.core.application.query.ConfiguredModulesQuery;
 import de.marhali.easyi18n.core.application.query.ModuleViewQuery;
 import de.marhali.easyi18n.core.domain.event.DomainEvent;
 import de.marhali.easyi18n.core.domain.event.ModuleChanged;
 import de.marhali.easyi18n.core.domain.event.ProjectConfigChanged;
 import de.marhali.easyi18n.core.domain.event.ProjectReloaded;
+import de.marhali.easyi18n.core.domain.model.I18nKey;
 import de.marhali.easyi18n.core.domain.model.ModuleId;
 import de.marhali.easyi18n.idea.event.PluginTopics;
 import de.marhali.easyi18n.idea.key.PluginKey;
+import de.marhali.easyi18n.idea.notification.ToolWindowNotificationHelper;
 import de.marhali.easyi18n.idea.service.I18nProjectService;
 import de.marhali.easyi18n.idea.service.PluginExecutorService;
 import de.marhali.easyi18n.idea.toolwindow.I18nToolWindowPanel;
@@ -31,6 +36,9 @@ import java.util.*;
  */
 public final class ToolWindowViewModel implements PluginTopics.DomainListener {
 
+    private static final @NotNull Logger LOGGER = Logger.getInstance(ToolWindowViewModel.class);
+
+    private final @NotNull ToolWindow toolWindow;
     private final @NotNull Project project;
     private final @NotNull I18nProjectService projectService;
     private final @NotNull PluginExecutorService executorService;
@@ -39,11 +47,13 @@ public final class ToolWindowViewModel implements PluginTopics.DomainListener {
     private final @NotNull Map<ModuleId, ViewListener> listeners;
 
     public ToolWindowViewModel(
+        @NotNull ToolWindow toolWindow,
         @NotNull Project project,
         @NotNull I18nProjectService projectService,
         @NotNull PluginExecutorService executorService,
         @NotNull ContentManager contentManager
     ) {
+        this.toolWindow = toolWindow;
         this.project = project;
         this.projectService = projectService;
         this.executorService = executorService;
@@ -103,13 +113,30 @@ public final class ToolWindowViewModel implements PluginTopics.DomainListener {
         );
     }
 
-    public void reloadModule(@NotNull ModuleId moduleId) {
+    public void reloadModule(@NotNull ModuleId moduleId, @Nullable I18nKey key) {
         var options = state.toModuleViewOptions();
         var query = new ModuleViewQuery(moduleId, options);
 
         executorService.runAsync(
             () -> projectService.query(query),
-            (moduleView) -> dispatchEvent(moduleId, listener -> listener.onViewUpdated(moduleView)),
+            (moduleView) ->
+                dispatchEvent(moduleId, listener -> listener.onViewUpdated(moduleView, key)),
+            this::handleThrowable,
+            ModalityState.any(),
+            (o) -> contentManager.isDisposed()
+        );
+    }
+
+    public void handleCommandAsync(@NotNull Command command) {
+        I18nProjectService projectService = project.getService(I18nProjectService.class);
+        PluginExecutorService executorService = project.getService(PluginExecutorService.class);
+
+        executorService.runAsync(
+            () -> {
+                projectService.command(command);
+                return null;
+            },
+            (_void) -> {}, // We expect happy path here
             this::handleThrowable,
             ModalityState.any(),
             (o) -> contentManager.isDisposed()
@@ -137,11 +164,9 @@ public final class ToolWindowViewModel implements PluginTopics.DomainListener {
 
     @Override
     public void onDomainEvent(@NotNull DomainEvent event) {
-        System.out.println("ToolWindowViewModel#onDomainEvent: " + event);
-
         switch (event) {
             case ProjectConfigChanged() -> reloadModules();
-            case ModuleChanged(ModuleId moduleId) -> reloadModule(moduleId);
+            case ModuleChanged(ModuleId moduleId, I18nKey key) -> reloadModule(moduleId, key);
             case ProjectReloaded() -> reloadModules();
             default -> {} // We do not need to handle every event here
         }
@@ -159,7 +184,7 @@ public final class ToolWindowViewModel implements PluginTopics.DomainListener {
         mutateState(consumer);
 
         if (state.selectedModuleId != null) {
-            reloadModule(state.selectedModuleId);
+            reloadModule(state.selectedModuleId, null);
         }
 
         // Invalidate all other modules
@@ -169,7 +194,6 @@ public final class ToolWindowViewModel implements PluginTopics.DomainListener {
     }
 
     private void handleThrowable(@NotNull Throwable throwable) {
-        // TODO: proper ex handling
-        System.out.println("ToolWindowViewModel#handleThrowable: " + throwable);
+        ToolWindowNotificationHelper.showNotificationForThrowable(project, toolWindow.getId(), throwable);
     }
 }
