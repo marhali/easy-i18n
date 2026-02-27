@@ -54,7 +54,7 @@ public abstract class FileWriter {
         TranslationConsumer targetConsumer = consumer;
 
         while (!targetConsumer.isFullyIndexed()) {
-            LevelledFileTemplate fileTemplateLevel = templates.file().getAtLeveL(targetConsumer.level());
+            LevelledFileTemplate fileTemplateLevel = templates.file().getAtLevel(targetConsumer.level());
 
             // Determine needed placeholder parameters for this file level
             Set<String> neededParameterNames = fileTemplateLevel.getNeededParameterNames();

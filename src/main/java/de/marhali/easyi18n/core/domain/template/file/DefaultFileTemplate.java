@@ -50,7 +50,7 @@ import java.util.stream.Collectors;
     }
 
     @Override
-    public @NotNull LevelledFileTemplate getAtLeveL(@NotNull Integer level) {
+    public @NotNull LevelledFileTemplate getAtLevel(@NotNull Integer level) {
         if (level < 0) {
             throw new IllegalArgumentException("Level cannot be negative");
         }

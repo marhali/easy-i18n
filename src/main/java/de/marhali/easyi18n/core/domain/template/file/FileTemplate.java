@@ -16,7 +16,7 @@ public interface FileTemplate {
      * @param level Level to retrieve
      * @return {@link LevelledFileTemplate}
      */
-    @NotNull LevelledFileTemplate getAtLeveL(@NotNull Integer level);
+    @NotNull LevelledFileTemplate getAtLevel(@NotNull Integer level);
 
     /**
      * Retrieves all file template levels.
