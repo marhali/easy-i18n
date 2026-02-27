@@ -1,5 +1,6 @@
 package de.marhali.easyi18n.idea.toolwindow.ui.tree;
 
+import de.marhali.easyi18n.core.domain.model.I18nKey;
 import de.marhali.easyi18n.core.domain.model.I18nValue;
 import de.marhali.easyi18n.core.domain.model.LocaleId;
 import org.jetbrains.annotations.NotNull;
@@ -45,11 +46,13 @@ public sealed interface TreeUserObject permits TreeUserObject.Node, TreeUserObje
 
     /**
      * Leaf tree node.
+     * @param key I18n key
      * @param localeId Locale identifier
      * @param value I18n value
      * @param duplicatedValue Indicator if value is duplicated to others
      */
     record Leaf(
+        @NotNull I18nKey key,
         @NotNull LocaleId localeId,
         @Nullable I18nValue value,
         boolean duplicatedValue

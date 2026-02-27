@@ -49,6 +49,6 @@ public class RemoveI18nValueCommandHandler implements CommandHandler<RemoveI18nV
             content.remove(command.localeId());
         });
         ensurePersistService.ensurePersist(command.moduleId());
-        domainEventPublisherPort.publish(new ModuleChanged(command.moduleId()));
+        domainEventPublisherPort.publish(new ModuleChanged(command.moduleId(), command.key()));
     }
 }

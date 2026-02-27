@@ -49,6 +49,6 @@ public class UpdateI18nValueCommandHandler implements CommandHandler<UpdateI18nV
             content.put(command.localeId(), command.newValue());
         });
         ensurePersistService.ensurePersist(command.moduleId());
-        domainEventPublisherPort.publish(new ModuleChanged(command.moduleId()));
+        domainEventPublisherPort.publish(new ModuleChanged(command.moduleId(), command.key()));
     }
 }

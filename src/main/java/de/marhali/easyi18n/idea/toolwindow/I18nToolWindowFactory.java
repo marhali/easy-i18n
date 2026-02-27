@@ -27,7 +27,7 @@ public final class I18nToolWindowFactory implements ToolWindowFactory, DumbAware
         I18nProjectService projectService = project.getService(I18nProjectService.class);
         PluginExecutorService executorService = project.getService(PluginExecutorService.class);
         ContentManager contentManager = toolWindow.getContentManager();
-        ToolWindowViewModel vm = new ToolWindowViewModel(project, projectService, executorService, contentManager);
+        ToolWindowViewModel vm = new ToolWindowViewModel(toolWindow, project, projectService, executorService, contentManager);
 
         // Place all tool window actions
         toolWindow.setTitleActions(List.of(
@@ -40,7 +40,7 @@ public final class I18nToolWindowFactory implements ToolWindowFactory, DumbAware
             new FilterBySearchQueryAction(vm::setFilterBySearchQuery)
         ));
 
-        //
+        // Update selected module when the user switches between the tool window panels
         contentManager.addContentManagerListener(new ContentManagerListener() {
             @Override
             public void selectionChanged(@NotNull ContentManagerEvent event) {

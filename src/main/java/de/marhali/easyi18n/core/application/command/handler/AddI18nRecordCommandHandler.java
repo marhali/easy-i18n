@@ -48,6 +48,6 @@ public class AddI18nRecordCommandHandler implements CommandHandler<AddI18nRecord
             }
         });
         ensurePersistService.ensurePersist(command.moduleId());
-        domainEventPublisherPort.publish(new ModuleChanged(command.moduleId()));
+        domainEventPublisherPort.publish(new ModuleChanged(command.moduleId(), command.key()));
     }
 }

@@ -54,6 +54,6 @@ public class UpdateI18nRecordCommandHandler implements CommandHandler<UpdateI18n
                 MutableI18nContent.fromSnapshot(implementationProvider, command.content()));
         });
         ensurePersistService.ensurePersist(command.moduleId());
-        domainEventPublisherPort.publish(new ModuleChanged(command.moduleId()));
+        domainEventPublisherPort.publish(new ModuleChanged(command.moduleId(), command.key()));
     }
 }

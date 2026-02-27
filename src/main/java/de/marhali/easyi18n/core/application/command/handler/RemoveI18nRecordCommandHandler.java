@@ -42,6 +42,6 @@ public class RemoveI18nRecordCommandHandler implements CommandHandler<RemoveI18n
             module.removeTranslation(command.key());
         });
         ensurePersistService.ensurePersist(command.moduleId());
-        domainEventPublisherPort.publish(new ModuleChanged(command.moduleId()));
+        domainEventPublisherPort.publish(new ModuleChanged(command.moduleId(), null));
     }
 }

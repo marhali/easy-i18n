@@ -5,12 +5,14 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.SimpleToolWindowPanel;
 import de.marhali.easyi18n.core.application.query.view.ModuleView;
 import de.marhali.easyi18n.core.application.query.view.ModuleViewType;
+import de.marhali.easyi18n.core.domain.model.I18nKey;
 import de.marhali.easyi18n.core.domain.model.ModuleId;
 import de.marhali.easyi18n.idea.toolwindow.ui.table.I18nTableViewPanel;
 import de.marhali.easyi18n.idea.toolwindow.ui.tree.I18nTreeViewPanel;
 import de.marhali.easyi18n.idea.toolwindow.viewmodel.ToolWindowViewModel;
 import de.marhali.easyi18n.idea.toolwindow.viewmodel.ViewListener;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
@@ -41,8 +43,8 @@ public class I18nToolWindowPanel extends SimpleToolWindowPanel implements ViewLi
         this.moduleId = moduleId;
         this.vm = vm;
 
-        this.tablePanel = new I18nTableViewPanel(project, moduleId);
-        this.treePanel = new I18nTreeViewPanel(project, moduleId);
+        this.tablePanel = new I18nTableViewPanel(project, moduleId, vm::handleCommandAsync);
+        this.treePanel = new I18nTreeViewPanel(project, moduleId, vm::handleCommandAsync);
 
         this.cardsPanel = new JPanel(new CardLayout());
         this.cardsPanel.add(this.tablePanel.getComponent(), CARD_TABLE);
@@ -57,14 +59,14 @@ public class I18nToolWindowPanel extends SimpleToolWindowPanel implements ViewLi
     }
 
     @Override
-    public void onViewUpdated(@NotNull ModuleView moduleView) {
+    public void onViewUpdated(@NotNull ModuleView moduleView, @Nullable I18nKey key) {
         switch (moduleView) {
             case ModuleView.Table tableView -> {
-                tablePanel.setView(tableView);
+                tablePanel.setView(tableView, key);
                 showViewPanel(ModuleViewType.TABLE);
             }
             case ModuleView.Tree treeView -> {
-                treePanel.setView(treeView);
+                treePanel.setView(treeView, key);
                 showViewPanel(ModuleViewType.TREE);
             }
             default -> throw new IllegalArgumentException("Unknown module view: " + moduleView.getClass().getSimpleName());
@@ -81,14 +83,13 @@ public class I18nToolWindowPanel extends SimpleToolWindowPanel implements ViewLi
     @Override
     public void onFocusView() {
         if (!viewInitialized) {
-            vm.reloadModule(moduleId);
+            vm.reloadModule(moduleId, null);
         }
     }
 
     @Override
     public void dispose() {
-        System.out.println("Dispose tool window panel");
-        // TODO: check what to unregister
+        // There is currently no element to dispose here
     }
 
     private void showViewPanel(@NotNull ModuleViewType type) {

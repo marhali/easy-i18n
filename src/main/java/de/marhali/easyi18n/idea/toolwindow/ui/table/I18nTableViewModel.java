@@ -102,4 +102,14 @@ public class I18nTableViewModel extends AbstractTableModel {
     public @NotNull LocaleId getLocaleAtColumn(int column) {
         return localeIds.get(column - 1);
     }
+
+    public int getRowForKey(@NotNull I18nKey key) {
+        for (int i = 0; i < rows.size(); i++) {
+            if (rows.get(i).key().equals(key)) {
+                return i;
+            }
+        }
+
+        return -1;
+    }
 }

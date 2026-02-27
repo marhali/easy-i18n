@@ -40,6 +40,6 @@ public class RemoveI18nRecordsCommandHandler implements CommandHandler<RemoveI18
             }
         });
         ensurePersistService.ensurePersist(command.moduleId());
-        domainEventPublisherPort.publish(new ModuleChanged(command.moduleId()));
+        domainEventPublisherPort.publish(new ModuleChanged(command.moduleId(), null));
     }
 }

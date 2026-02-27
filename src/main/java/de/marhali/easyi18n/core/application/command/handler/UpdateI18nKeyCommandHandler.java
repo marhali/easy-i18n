@@ -50,6 +50,6 @@ public class UpdateI18nKeyCommandHandler implements CommandHandler<UpdateI18nKey
             module.setTranslation(command.newKey(), content);
         });
         ensurePersistService.ensurePersist(command.moduleId());
-        domainEventPublisherPort.publish(new ModuleChanged(command.moduleId()));
+        domainEventPublisherPort.publish(new ModuleChanged(command.moduleId(), command.newKey()));
     }
 }
