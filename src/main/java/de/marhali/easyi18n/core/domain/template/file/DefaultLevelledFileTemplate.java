@@ -32,8 +32,8 @@ public class DefaultLevelledFileTemplate implements LevelledFileTemplate {
     public @NotNull I18nParams fromCanonical(@NotNull String canonical) {
         I18nParams params = resolver.resolve(canonical);
 
-        // TODO: Commented isEmpty() because literal (hard coded segments) might not require params
-        if (params == null /*|| params.isEmpty()*/) {
+        // Only check if resolver matches. Actual params might be empty if template contains only literal elements
+        if (params == null) {
             throw new IllegalArgumentException("Cannot parse canonical file level against template: " + template.canonical());
         }
 

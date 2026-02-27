@@ -42,6 +42,7 @@ public class DefaultKeyTemplate implements KeyTemplate {
     public @NotNull I18nParams toParams(@NotNull I18nKey key) {
         I18nParams params = resolver.resolve(key.canonical());
 
+        // Other than file or path template, we can guarantee that a translation key has parameters
         if (params == null || params.isEmpty()) {
             throw new IllegalArgumentException("Cannot parse key against key template: " + key);
         }

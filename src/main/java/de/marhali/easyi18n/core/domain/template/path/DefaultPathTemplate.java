@@ -60,7 +60,8 @@ public class DefaultPathTemplate implements PathTemplate {
     public @NotNull I18nPath fromCanonical(@NotNull String canonical) {
         I18nParams params = resolver.resolve(canonical);
 
-        if (params == null || params.isEmpty()) {
+        // Only check if resolver matches. Actual params might be empty if template contains only literal elements
+        if (params == null) {
             throw new IllegalArgumentException("Cannot parse canonical path against path template: " + canonical);
         }
 
