@@ -36,9 +36,7 @@ dependencies {
     implementation(libs.commons.text)
     testImplementation(libs.junit)
     testImplementation(libs.opentest4j)
-
-    // TODO: quick fix wrong annotations lib on classpath
-    compileOnly("org.jetbrains:annotations:26.0.2-1")
+    compileOnly(libs.jetbrains.annotations)
 
     // IntelliJ Platform Gradle Plugin Dependencies Extension - read more: https://plugins.jetbrains.com/docs/intellij/tools-intellij-platform-gradle-plugin-dependencies-extension.html
     intellijPlatform {
