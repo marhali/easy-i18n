@@ -5,5 +5,10 @@ import de.marhali.easyi18n.core.domain.model.ModuleId;
 
 import java.util.Set;
 
-public class ConfiguredModulesQuery implements Query<Set<ModuleId>> {
+/**
+ * Query to retrieve all configured modules within the project.
+ *
+ * @author marhali
+ */
+public record ConfiguredModulesQuery() implements Query<Set<ModuleId>> {
 }
