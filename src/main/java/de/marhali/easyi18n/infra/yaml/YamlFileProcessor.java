@@ -1,9 +1,5 @@
-package de.marhali.easyi18n.infra.json;
+package de.marhali.easyi18n.infra.yaml;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonSyntaxException;
 import de.marhali.easyi18n.core.domain.config.ProjectConfigModule;
 import de.marhali.easyi18n.core.domain.model.I18nPath;
 import de.marhali.easyi18n.core.domain.model.MutableI18nModule;
@@ -12,26 +8,40 @@ import de.marhali.easyi18n.core.domain.template.Templates;
 import de.marhali.easyi18n.core.ports.FileProcessorPort;
 import de.marhali.easyi18n.core.ports.FileSystemPort;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.yaml.snakeyaml.DumperOptions;
+import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.error.YAMLException;
 
 import java.io.IOException;
+import java.util.Map;
 import java.util.Set;
 
 /**
- * JSON file processor.
+ * YAML file processor.
+ * Uses the SnakeYAML library for reading and writing YAML files.
  *
- * @see <a href="https://github.com/google/gson">gson</a>
+ * @see <a href="https://bitbucket.org/snakeyaml/snakeyaml">snakeyaml</a>
  * @author marhali
  */
-public class JsonFileProcessor implements FileProcessorPort {
+public class YamlFileProcessor implements FileProcessorPort {
 
-    private static final Gson GSON = new GsonBuilder()
-        .setPrettyPrinting()
-        .disableHtmlEscaping()
-        .create();
+    private static @NotNull DumperOptions dumperOptions() {
+        DumperOptions options = new DumperOptions();
+
+        options.setIndent(2);
+        options.setAllowUnicode(true);
+        options.setPrettyFlow(true);
+        options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
+
+        return options;
+    }
+
+    private static final @NotNull Yaml YAML = new Yaml(dumperOptions());
 
     private final @NotNull FileSystemPort fileSystemPort;
 
-    public JsonFileProcessor(@NotNull FileSystemPort fileSystemPort) {
+    public YamlFileProcessor(@NotNull FileSystemPort fileSystemPort) {
         this.fileSystemPort = fileSystemPort;
     }
 
@@ -39,29 +49,29 @@ public class JsonFileProcessor implements FileProcessorPort {
     public void readInto(@NotNull ProjectConfigModule config, @NotNull Templates templates, @NotNull I18nPath path, @NotNull MutableI18nModule store) throws IOException {
         String content = fileSystemPort.read(path.canonical());
 
-        JsonElement rootElement;
+        Map<@NotNull String, @Nullable Object> rootMap;
 
         try {
-            rootElement = GSON.fromJson(content, JsonElement.class);
-        } catch (JsonSyntaxException e) {
+            rootMap = YAML.load(content);
+        } catch (YAMLException e) {
             throw new RuntimeException(e);
         }
 
-        if (rootElement == null) {
+        if (rootMap == null) {
             // Skip empty files
             return;
         }
 
-        new JsonReader(path, templates, store).read(rootElement);
+        new YamlReader(path, templates, store).read(rootMap);
     }
 
     @Override
     public void writeFrom(@NotNull ProjectConfigModule config, @NotNull Templates templates, @NotNull I18nPath path, @NotNull Set<@NotNull TranslationConsumer> translations) throws IOException {
-        JsonWriter writer = new JsonWriter(path, templates);
+        YamlWriter writer = new YamlWriter(path, templates);
 
         writer.write(translations);
 
-        String content = GSON.toJson(writer.getRootElement());
+        String content = YAML.dumpAsMap(writer.getRootElement());
 
         fileSystemPort.write(path.canonical(), content);
     }

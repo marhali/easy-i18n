@@ -35,14 +35,14 @@ public final class JsonReader extends FileReader {
     }
 
     private void readObject(@NotNull JsonObject object, @NotNull TranslationProducer producer) {
-        var levelledFileTemplate = templates.file().getAtLeveL(producer.level());
+        var levelledFileTemplate = templates.file().getAtLevel(producer.level());
 
         for (String memberName : object.keySet()) {
             I18nParams memberNameParams = levelledFileTemplate.fromCanonical(memberName);
             var value = object.get(memberName);
             var childProducer = producer.withChildren(
-                builder -> builder.mergeAll(memberNameParams).build(),
-                level -> level + 1
+                (builder) -> builder.mergeAll(memberNameParams).build(),
+                (level) -> level + 1
             );
             read(value, childProducer);
         }
@@ -77,7 +77,7 @@ public final class JsonReader extends FileReader {
             return I18nValue.fromBarePrimitive(String.valueOf(primitive.getAsNumber()));
         }
 
-        throw new UnsupportedOperationException("Unsupported JsonPrimitive with class: " + primitive.getClass().getSimpleName());
+        throw new UnsupportedOperationException("Unsupported JsonPrimitive: " + primitive);
     }
 
     private void readNull(@NotNull JsonNull ignoredNull, @NotNull TranslationProducer producer) {

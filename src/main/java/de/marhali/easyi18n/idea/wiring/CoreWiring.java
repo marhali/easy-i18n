@@ -26,6 +26,9 @@ import de.marhali.easyi18n.idea.vfs.FileSystemAdapter;
 import de.marhali.easyi18n.idea.vfs.PathResolverAdapter;
 import de.marhali.easyi18n.infra.InMemoryFileProcessorRegistry;
 import de.marhali.easyi18n.infra.json.JsonFileProcessor;
+import de.marhali.easyi18n.infra.json5.Json5FileProcessor;
+import de.marhali.easyi18n.infra.properties.PropertiesFileProcessor;
+import de.marhali.easyi18n.infra.yaml.YamlFileProcessor;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
@@ -46,7 +49,12 @@ public final class CoreWiring {
         PathResolverPort pathResolverPort = new PathResolverAdapter(project);
         FileSystemPort fileSystemPort = new FileSystemAdapter(project);
         FileProcessorRegistryPort fileProcessorRegistryPort = new InMemoryFileProcessorRegistry(
-            Map.of(FileCodec.JSON, () -> new JsonFileProcessor(fileSystemPort))
+            Map.of(
+                FileCodec.JSON, () -> new JsonFileProcessor(fileSystemPort),
+                FileCodec.JSON5, () -> new Json5FileProcessor(fileSystemPort),
+                FileCodec.YAML, () -> new YamlFileProcessor(fileSystemPort),
+                FileCodec.PROPERTIES, () -> new PropertiesFileProcessor(fileSystemPort)
+            )
         );
 
         // State
@@ -71,6 +79,7 @@ public final class CoreWiring {
         commands.register(RemoveI18nRecordsCommand.class, new RemoveI18nRecordsCommandHandler(ensureLoadedService, ensurePersistService, store, domainEventPublisherPort));
         commands.register(RemoveI18nValueCommand.class, new RemoveI18nValueCommandHandler(ensureLoadedService, ensurePersistService, store, domainEventPublisherPort));
         commands.register(UpdateI18nKeyCommand.class, new UpdateI18nKeyCommandHandler(ensureLoadedService, ensurePersistService, store, domainEventPublisherPort));
+        commands.register(UpdatePartialI18nKeyCommand.class, new UpdatePartialI18nKeyCommandHandler(ensureLoadedService, ensurePersistService, store, domainEventPublisherPort));
         commands.register(UpdateI18nValueCommand.class, new UpdateI18nValueCommandHandler(ensureLoadedService, ensurePersistService, store, domainEventPublisherPort));
 
         // Queries

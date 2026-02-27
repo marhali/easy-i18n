@@ -1,9 +1,5 @@
-package de.marhali.easyi18n.infra.json;
+package de.marhali.easyi18n.infra.json5;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonSyntaxException;
 import de.marhali.easyi18n.core.domain.config.ProjectConfigModule;
 import de.marhali.easyi18n.core.domain.model.I18nPath;
 import de.marhali.easyi18n.core.domain.model.MutableI18nModule;
@@ -11,27 +7,40 @@ import de.marhali.easyi18n.core.domain.model.TranslationConsumer;
 import de.marhali.easyi18n.core.domain.template.Templates;
 import de.marhali.easyi18n.core.ports.FileProcessorPort;
 import de.marhali.easyi18n.core.ports.FileSystemPort;
+import de.marhali.json5.Json5;
+import de.marhali.json5.Json5Element;
+import de.marhali.json5.config.Json5Options;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.util.Set;
 
 /**
- * JSON file processor.
+ * JSON5 file processor.
+ * Uses the json5-java library for reading and writing JSON5 files.
  *
- * @see <a href="https://github.com/google/gson">gson</a>
+ * @see <a href="https://github.com/marhali/json5-java">json5-java</a>
  * @author marhali
  */
-public class JsonFileProcessor implements FileProcessorPort {
+public class Json5FileProcessor implements FileProcessorPort {
 
-    private static final Gson GSON = new GsonBuilder()
-        .setPrettyPrinting()
-        .disableHtmlEscaping()
-        .create();
+    protected static final @NotNull Json5Options JSON5_OPTIONS = Json5Options.builder()
+        .allowInvalidSurrogates()
+        .allowBinaryLiterals()
+        .allowOctalLiterals()
+        .allowNaN()
+        .allowInfinity()
+        .allowLongUnicodeEscapes()
+        .allowHexFloatingLiterals()
+        .trailingComma()
+        .indentFactor(2)
+        .build();
+
+    private static final @NotNull Json5 JSON5 = new Json5(JSON5_OPTIONS);
 
     private final @NotNull FileSystemPort fileSystemPort;
 
-    public JsonFileProcessor(@NotNull FileSystemPort fileSystemPort) {
+    public Json5FileProcessor(@NotNull FileSystemPort fileSystemPort) {
         this.fileSystemPort = fileSystemPort;
     }
 
@@ -39,12 +48,12 @@ public class JsonFileProcessor implements FileProcessorPort {
     public void readInto(@NotNull ProjectConfigModule config, @NotNull Templates templates, @NotNull I18nPath path, @NotNull MutableI18nModule store) throws IOException {
         String content = fileSystemPort.read(path.canonical());
 
-        JsonElement rootElement;
+        Json5Element rootElement;
 
         try {
-            rootElement = GSON.fromJson(content, JsonElement.class);
-        } catch (JsonSyntaxException e) {
-            throw new RuntimeException(e);
+            rootElement = JSON5.parse(content);
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
         }
 
         if (rootElement == null) {
@@ -52,16 +61,16 @@ public class JsonFileProcessor implements FileProcessorPort {
             return;
         }
 
-        new JsonReader(path, templates, store).read(rootElement);
+        new Json5Reader(path, templates, store).read(rootElement);
     }
 
     @Override
     public void writeFrom(@NotNull ProjectConfigModule config, @NotNull Templates templates, @NotNull I18nPath path, @NotNull Set<@NotNull TranslationConsumer> translations) throws IOException {
-        JsonWriter writer = new JsonWriter(path, templates);
+        Json5Writer writer = new Json5Writer(path, templates);
 
         writer.write(translations);
 
-        String content = GSON.toJson(writer.getRootElement());
+        String content = JSON5.serialize(writer.getRootElement());
 
         fileSystemPort.write(path.canonical(), content);
     }

@@ -1,0 +1,90 @@
+package de.marhali.easyi18n.infra.yaml;
+
+import de.marhali.easyi18n.core.domain.model.I18nPath;
+import de.marhali.easyi18n.core.domain.model.I18nValue;
+import de.marhali.easyi18n.core.domain.model.TranslationConsumer;
+import de.marhali.easyi18n.core.domain.model.TranslationTarget;
+import de.marhali.easyi18n.core.domain.template.Templates;
+import de.marhali.easyi18n.infra.FileWriter;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.*;
+
+/**
+ * YAML specific writer.
+ *
+ * @author marhali
+ */
+public final class YamlWriter extends FileWriter {
+
+    private final @NotNull Map<@NotNull String, @Nullable Object> rootElement;
+
+    YamlWriter(@NotNull I18nPath path, @NotNull Templates templates) {
+        super(path, templates);
+        this.rootElement = new LinkedHashMap<>();
+    }
+
+    void write(@NotNull Set<@NotNull TranslationConsumer> translations) {
+        for (TranslationTarget target : mapConsumersToSortedTargets(translations)) {
+            write(target);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private void write(@NotNull TranslationTarget target) {
+        Iterator<String> hierarchyIterator = target.canonicalHierarchy().iterator();
+
+        Map<String, Object> targetObject = rootElement;
+        String memberName = null;
+
+        while (hierarchyIterator.hasNext()) {
+            memberName = hierarchyIterator.next();
+            boolean hasChild = hierarchyIterator.hasNext();
+
+            if (hasChild) {
+                if (targetObject.containsKey(memberName)) {
+                    targetObject = (Map<String, Object>) targetObject.get(memberName);
+                } else {
+                    var newTargetObject = new LinkedHashMap<String, Object>();
+                    targetObject.put(memberName, newTargetObject);
+                    targetObject = newTargetObject;
+                }
+            }
+        }
+
+        if (memberName == null) {
+            throw new IllegalStateException("Missing last hierarchical property for: " + target);
+        }
+
+        targetObject.put(memberName, toYamlElement(target.value()));
+    }
+
+    @NotNull Map<@NotNull String, @Nullable Object> getRootElement() {
+        return rootElement;
+    }
+
+    private @NotNull Object toYamlElement(@NotNull I18nValue value) {
+        return switch (value) {
+            case I18nValue.Primitive primitive -> toYamlPrimitive(primitive);
+            case I18nValue.Array array -> toYamlArray(array);
+        };
+    }
+
+    private @NotNull List<@NotNull Object> toYamlArray(@NotNull I18nValue.Array array) {
+        List<Object> yamlArray = new ArrayList<>(array.elements().length);
+
+        for (I18nValue.Primitive element : array.elements()) {
+            yamlArray.add(toYamlPrimitive(element));
+        }
+
+        return yamlArray;
+    }
+
+    private @NotNull Object toYamlPrimitive(@NotNull I18nValue.Primitive primitive) {
+        return switch (primitive) {
+            case I18nValue.Quoted quoted -> "\"" + quoted.text() + "\"";
+            case I18nValue.Bare bare -> bare.text();
+        };
+    }
+}

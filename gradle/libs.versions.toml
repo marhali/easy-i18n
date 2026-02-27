@@ -1,6 +1,6 @@
 [versions]
 # libraries
-json5-java = "2.0.0"
+json5-java = "3.0.0"
 commons-lang3 = "3.18.0"
 commons-text = "1.14.0"
 junit = "4.13.2"
