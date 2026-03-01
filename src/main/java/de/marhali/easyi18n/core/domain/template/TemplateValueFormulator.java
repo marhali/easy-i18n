@@ -41,7 +41,11 @@ public record TemplateValueFormulator(
                 valueBuilder.append(value);
 
                 if (template.elements().get(valueIndex) instanceof TemplateElement.Placeholder placeholder) {
-                    paramsBuilder.add(placeholder.name(), value);
+                    if (placeholder.hasDelimiter()) {
+                        paramsBuilder.add(placeholder.name(), placeholder.splitByDelimiter(value));
+                    } else {
+                        paramsBuilder.add(placeholder.name(), value);
+                    }
                 }
             }
 
@@ -80,7 +84,9 @@ public record TemplateValueFormulator(
                         throw new NoSuchElementException("Missing values for placeholder with name '" + paramName + "'");
                     }
 
-                    values[i] = paramValues.toArray(new String[0]);
+                    values[i] = placeholder.hasDelimiter()
+                        ? new String[] { placeholder.joinByDelimiter(paramValues) }
+                        : paramValues.toArray(new String[0]);
                 }
                 default -> throw new IllegalArgumentException("Unknown template element: " + element.getClass().getSimpleName());
             }

@@ -1,6 +1,7 @@
 package de.marhali.easyi18n.core.domain.template.file;
 
 import de.marhali.easyi18n.core.domain.model.I18nParams;
+import de.marhali.easyi18n.core.domain.template.TemplateElement;
 import de.marhali.easyi18n.core.domain.template.TemplateValue;
 import org.jetbrains.annotations.NotNull;
 
@@ -29,5 +30,5 @@ public interface LevelledFileTemplate {
     /**
      * @return Set of needed parameters to build this file level
      */
-    Set<String> getNeededParameterNames();
+    @NotNull Set<TemplateElement.@NotNull Placeholder> getNeededParameters();
 }

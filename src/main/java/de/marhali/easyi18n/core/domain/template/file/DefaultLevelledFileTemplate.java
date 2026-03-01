@@ -46,10 +46,10 @@ public class DefaultLevelledFileTemplate implements LevelledFileTemplate {
     }
 
     @Override
-    public Set<String> getNeededParameterNames() {
+    public @NotNull Set<TemplateElement.@NotNull Placeholder> getNeededParameters() {
         return template.elements().stream()
             .filter(TemplateElement::isPlaceholder)
-            .map((element) -> element.getAsPlaceholder().name())
+            .map(TemplateElement::getAsPlaceholder)
             .collect(Collectors.toSet());
     }
 }

@@ -1,6 +1,7 @@
 package de.marhali.easyi18n.infra;
 
 import de.marhali.easyi18n.core.domain.model.*;
+import de.marhali.easyi18n.core.domain.template.TemplateElement;
 import de.marhali.easyi18n.core.domain.template.TemplateValue;
 import de.marhali.easyi18n.core.domain.template.Templates;
 import de.marhali.easyi18n.core.domain.template.file.LevelledFileTemplate;
@@ -57,13 +58,21 @@ public abstract class FileWriter {
             LevelledFileTemplate fileTemplateLevel = templates.file().getAtLevel(targetConsumer.level());
 
             // Determine needed placeholder parameters for this file level
-            Set<String> neededParameterNames = fileTemplateLevel.getNeededParameterNames();
+            Set<TemplateElement.Placeholder> neededParameters = fileTemplateLevel.getNeededParameters();
 
             I18nParamsBuilder paramsBuilder =  I18nParams.builder();
 
-            // Resolve needed params at index
-            for (String parameterName : neededParameterNames) {
-                paramsBuilder.add(parameterName, targetConsumer.indexedParams().getParameterValueAtIndex(parameterName));
+            for (TemplateElement.Placeholder neededParameter : neededParameters) {
+                String neededParameterName = neededParameter.name();
+
+                if (neededParameter.hasDelimiter()) {
+                    // Values for this parameter should be joined by a delimiter
+                    paramsBuilder.add(neededParameterName, targetConsumer.indexedParams().getAllParameterValues(neededParameterName));
+                } else {
+                    // Resolve needed value at current index
+                    paramsBuilder.add(neededParameterName,
+                        targetConsumer.indexedParams().getParameterValueAtIndex(neededParameterName));
+                }
             }
 
             // Build file level out of parameters
@@ -77,7 +86,7 @@ public abstract class FileWriter {
             result.add(variants.iterator().next().value());
 
             // Move to next (child) file level and increase indexes for used parameters
-            targetConsumer = targetConsumer.withChildren(neededParameterNames);
+            targetConsumer = targetConsumer.withChildren(neededParameters);
         }
 
         return result;

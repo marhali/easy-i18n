@@ -1,10 +1,9 @@
 package de.marhali.easyi18n.core.domain.model;
 
+import de.marhali.easyi18n.core.domain.template.TemplateElement;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Similar to {@link I18nParams} but tracks consumed parameters with an index.
@@ -27,6 +26,15 @@ public record IndexedI18nParams(
      */
     public int getIndexForParameter(@NotNull String parameterName) {
         return indexAtParam.getOrDefault(parameterName, 0);
+    }
+
+    /**
+     * Retrieves all parameter values for the given parameter name.
+     * @param parameterName Parameter name
+     * @return List of all mapped values or throws {@link NullPointerException} if parameter name is unknown
+     */
+    public @NotNull List<@NotNull String> getAllParameterValues(@NotNull String parameterName) {
+        return Objects.requireNonNull(params.get(parameterName), "Parameter '" + parameterName + "' has no values");
     }
 
     /**
@@ -56,17 +64,22 @@ public record IndexedI18nParams(
 
     /**
      * Increments the indexes for the given parameter names.
-     * @param parameterNamesToIncrement Parameter names to increase the index
+     * @param parametersToIncrement Parameters to increase the index
      * @return {@link IndexedI18nParams}
      */
     public @NotNull IndexedI18nParams withIncrementParameters(
-        @NotNull Set<@NotNull String> parameterNamesToIncrement
+        @NotNull Set<TemplateElement.@NotNull Placeholder> parametersToIncrement
     ) {
         var indexAtParamCopy = new HashMap<>(indexAtParam);
 
-        for (String parameterName : parameterNamesToIncrement) {
-            indexAtParamCopy.compute(parameterName, (_parameterName, previousIndex) ->
-                previousIndex == null ? 1 : previousIndex + 1);
+        for (TemplateElement.Placeholder placeholder : parametersToIncrement) {
+            indexAtParamCopy.compute(placeholder.name(), (_parameterName, previousIndex) -> {
+                if (placeholder.hasDelimiter()) {
+                    return params.getOrEmpty(placeholder.name()).size();
+                } else {
+                    return previousIndex == null ? 1: previousIndex + 1;
+                }
+            });
         }
 
         return new IndexedI18nParams(params, indexAtParamCopy);

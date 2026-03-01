@@ -1,5 +1,6 @@
 package de.marhali.easyi18n.core.domain.model;
 
+import de.marhali.easyi18n.core.domain.template.TemplateElement;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -40,15 +41,15 @@ public record TranslationConsumer(
 
     /**
      * Creates a children {@link TranslationConsumer} for the next translation file level.
-     * @param parameterNamesToIncrement Parameter names whose key param indexes should be incremented by 1
+     * @param parametersToIncrement Parameters whose key param indexes should be incremented
      * @return {@link TranslationConsumer}
      */
     public @NotNull TranslationConsumer withChildren(
-        @NotNull Set<@NotNull String> parameterNamesToIncrement
+        @NotNull Set<TemplateElement.@NotNull Placeholder> parametersToIncrement
         ) {
         return new TranslationConsumer(
             level + 1,
-            indexedParams.withIncrementParameters(parameterNamesToIncrement),
+            indexedParams.withIncrementParameters(parametersToIncrement),
             value,
             comment
         );

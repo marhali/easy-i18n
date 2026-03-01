@@ -11,7 +11,7 @@ import java.util.Set;
  */
 public class TemplateValueFormulatorTest {
     @Test
-    public void test_variants() {
+    public void test_path_template_demo() {
         var templateDefinition = "$PROJECT_DIR$/locales/{ns}/{locale}.json";
         var params = I18nParams.builder()
             .add("ns", "user", "billing")
@@ -33,6 +33,30 @@ public class TemplateValueFormulatorTest {
                     .add("ns", "billing").add("locale", "de").build()),
                 new TemplateValue("$PROJECT_DIR$/locales/billing/en.json", I18nParams.builder()
                     .add("ns", "billing").add("locale", "en").build())
+            ),
+            variants
+        );
+    }
+
+    @Test
+    public void test_placeholder_with_delimiter() {
+        var templateDefinition = "{fileKey:.}";
+        var params = I18nParams.builder()
+            .add("fileKey", "user", "billing", "label")
+            .build();
+
+        var template = TemplateDefinitionParser.parse(templateDefinition);
+        var formulator = new TemplateValueFormulator(template);
+
+        Set<TemplateValue> variants = formulator.buildVariants(params);
+
+        Assert.assertEquals(
+            Set.of(
+                new TemplateValue(
+                    "user.billing.label",
+                    I18nParams.builder()
+                        .add("fileKey", "user", "billing", "label").build()
+                )
             ),
             variants
         );
