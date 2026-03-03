@@ -66,6 +66,6 @@
       id="de.marhali.easyi18n.PluginWebHelpProvider"
     />
 
-    <errorHandler implementation="de.marhali.easyi18n.service.ErrorReportHandler"/>
+    <errorHandler implementation="de.marhali.easyi18n.idea.help.PluginErrorReportSubmitter" />
   </extensions>
 </idea-plugin>
