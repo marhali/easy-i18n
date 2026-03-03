@@ -6,6 +6,7 @@ import de.marhali.easyi18n.core.domain.template.path.PathTemplate;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
+import java.util.Set;
 
 /**
  * Port for resolving relevant translation file paths.
@@ -19,5 +20,5 @@ public interface PathResolverPort {
      * @param pathTemplate Path template
      * @return Collection of matched {@link I18nPath}s
      */
-    @NotNull Collection<@NotNull I18nPath> resolvePaths(@NotNull ProjectConfigModule module, @NotNull PathTemplate pathTemplate);
+    @NotNull Set<@NotNull I18nPath> resolvePaths(@NotNull ProjectConfigModule module, @NotNull PathTemplate pathTemplate);
 }

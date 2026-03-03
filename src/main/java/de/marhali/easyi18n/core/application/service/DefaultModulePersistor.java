@@ -5,10 +5,12 @@ import de.marhali.easyi18n.core.domain.model.*;
 import de.marhali.easyi18n.core.domain.template.Templates;
 import de.marhali.easyi18n.core.ports.FileProcessorPort;
 import de.marhali.easyi18n.core.ports.FileProcessorRegistryPort;
+import de.marhali.easyi18n.core.ports.FileSystemPort;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Module persistor using the underlying io ports.
@@ -19,14 +21,24 @@ public class DefaultModulePersistor implements ModulePersistor {
 
     private final @NotNull CachedModuleTemplates cachedModuleTemplates;
     private final @NotNull FileProcessorRegistryPort fileProcessorRegistryPort;
+    private final @NotNull TrackedI18nPathsService trackedI18nPathsService;
+    private final @NotNull FileSystemPort fileSystemPort;
 
-    public DefaultModulePersistor(@NotNull CachedModuleTemplates cachedModuleTemplates, @NotNull FileProcessorRegistryPort fileProcessorRegistryPort) {
+    public DefaultModulePersistor(
+        @NotNull CachedModuleTemplates cachedModuleTemplates,
+        @NotNull FileProcessorRegistryPort fileProcessorRegistryPort,
+        @NotNull TrackedI18nPathsService trackedI18nPathsService,
+        @NotNull FileSystemPort fileSystemPort
+    ) {
         this.cachedModuleTemplates = cachedModuleTemplates;
         this.fileProcessorRegistryPort = fileProcessorRegistryPort;
+        this.trackedI18nPathsService = trackedI18nPathsService;
+        this.fileSystemPort = fileSystemPort;
     }
 
     @Override
     public void persistFrom(@NotNull ProjectConfigModule configModule, @NotNull I18nModule store) {
+        // Resolve module specific templates
         Templates templates = cachedModuleTemplates.resolve(configModule.id());
 
         // Collect consumable translations for every translation file - use a linked map to keep store order
@@ -81,10 +93,13 @@ public class DefaultModulePersistor implements ModulePersistor {
             }
         }
 
+        // Retrieve module specific file processor
         FileProcessorPort fileProcessorPort = fileProcessorRegistryPort.get(configModule.fileCodec());
 
+        Set<@NotNull I18nPath> paths = translationsByPath.keySet();
+
         // Write to paths with mapped translations
-        for (I18nPath path : translationsByPath.keySet()) {
+        for (I18nPath path : paths) {
             try {
                 fileProcessorPort.writeFrom(configModule, templates, path, translationsByPath.get(path));
             } catch (IOException e) {
@@ -92,6 +107,20 @@ public class DefaultModulePersistor implements ModulePersistor {
             }
         }
 
-        // TODO: might be useful: track I18nPath's from last read and delete if write does not care about them anymore
+        // Leftover paths are not needed anymore (no translation targets)
+        Set<@NotNull String> leftoverPaths = trackedI18nPathsService.getTrackedPathsForModule(configModule.id())
+            .stream()
+            .filter((path) -> !paths.contains(path))
+            .map(I18nPath::canonical)
+            .collect(Collectors.toSet());
+
+        if (!leftoverPaths.isEmpty()) {
+            try {
+                // Remove all leftovers
+                fileSystemPort.bulkDelete(leftoverPaths);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 }

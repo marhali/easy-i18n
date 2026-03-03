@@ -93,8 +93,16 @@ public final class MutableI18nProject {
     /**
      * Clears all modules.
      */
-    public void clear() {
+    public void clearAll() {
         this.modules.clear();
+    }
+
+    /**
+     * Clears a specific module.
+     * @param moduleId Module identifier
+     */
+    public void clearModule(@NotNull ModuleId moduleId) {
+        this.modules.remove(moduleId);
     }
 
     /**

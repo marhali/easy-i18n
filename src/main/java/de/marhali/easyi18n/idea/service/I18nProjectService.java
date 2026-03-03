@@ -1,5 +1,6 @@
 package de.marhali.easyi18n.idea.service;
 
+import com.intellij.openapi.Disposable;
 import com.intellij.openapi.components.Service;
 import com.intellij.openapi.project.Project;
 import de.marhali.easyi18n.core.application.I18nApplication;
@@ -15,12 +16,12 @@ import org.jetbrains.annotations.NotNull;
  * @author marhali
  */
 @Service(Service.Level.PROJECT)
-public final class I18nProjectService {
+public final class I18nProjectService implements Disposable {
 
     private final @NotNull I18nApplication application;
 
     public I18nProjectService(@NotNull Project project) {
-        this.application = CoreWiring.create(project);
+        this.application = CoreWiring.create(project, this);
     }
 
     public void command(@NotNull Command command) {
@@ -29,5 +30,11 @@ public final class I18nProjectService {
 
     public <R> @NotNull R query(@NotNull Query<R> query) {
         return application.query(query);
+    }
+
+    @Override
+    public void dispose() {
+        // Implements Disposable as root disposable within the plugin
+        // Elements that needs a parent disposable over the entire lifespan of the plugin should use this disposable
     }
 }

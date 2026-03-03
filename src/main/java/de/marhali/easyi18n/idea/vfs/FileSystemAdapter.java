@@ -19,6 +19,8 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Collections;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * IntelliJ file system adapter.
@@ -114,6 +116,33 @@ public class FileSystemAdapter implements FileSystemPort {
 
                         fdm.saveDocument(document);
 
+                    } catch (IOException e) {
+                        LOGGER.error(e);
+                    }
+                });
+        });
+    }
+
+    @Override
+    public void bulkDelete(@NotNull Set<@NotNull String> paths) throws IOException {
+        Set<Path> nioPaths = paths.stream().map(Path::of).collect(Collectors.toSet());
+
+        ApplicationManager.getApplication().invokeLater(() -> {
+            if (project.isDisposed()) return;
+
+            WriteCommandAction.writeCommandAction(project)
+                .withName("Delete Translation Files")
+                .run(() -> {
+                    try {
+                        for (Path nioPath : nioPaths) {
+                            VirtualFile vf = LocalFileSystem.getInstance().findFileByNioFile(nioPath);
+
+                            if (vf == null || !vf.isValid()) {
+                                continue;
+                            }
+
+                            vf.delete(FileSystemAdapter.class);
+                        }
                     } catch (IOException e) {
                         LOGGER.error(e);
                     }

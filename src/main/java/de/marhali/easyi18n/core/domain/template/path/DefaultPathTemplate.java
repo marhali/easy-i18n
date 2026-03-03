@@ -41,6 +41,9 @@ public class DefaultPathTemplate implements PathTemplate {
     private final @NotNull TemplateValueResolver resolver;
     private final @NotNull TemplateValueFormulator formulator;
 
+    private final @NotNull String fileExtension;
+    private final @NotNull String mostCommonParentPath;
+
     public DefaultPathTemplate(
         @NotNull Template template,
         @NotNull TemplateValueResolver resolver,
@@ -49,6 +52,13 @@ public class DefaultPathTemplate implements PathTemplate {
         this.template = template;
         this.resolver = resolver;
         this.formulator = formulator;
+        this.fileExtension = computeFileExtension(template);
+        this.mostCommonParentPath = computeMostCommonParentPath(template);
+    }
+
+    @Override
+    public @NotNull Template getTemplate() {
+        return template;
     }
 
     @Override
@@ -82,6 +92,15 @@ public class DefaultPathTemplate implements PathTemplate {
 
     @Override
     public @NotNull String getFileExtension() {
+        return fileExtension;
+    }
+
+    @Override
+    public @NotNull String getMostCommonParentPath() {
+        return mostCommonParentPath;
+    }
+
+    private static @NotNull String computeFileExtension(@NotNull Template template) {
         int index = template.canonical().lastIndexOf(".");
 
         if (index == 0 || index == -1 || index + 1 >= template.canonical().length()) {
@@ -91,8 +110,7 @@ public class DefaultPathTemplate implements PathTemplate {
         return template.canonical().substring(index + 1);
     }
 
-    @Override
-    public @NotNull String getMostCommonParentPath() {
+    private static @NotNull String computeMostCommonParentPath(@NotNull Template template) {
         StringBuilder builder = new StringBuilder();
 
         for (TemplateElement element : template.elements()) {

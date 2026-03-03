@@ -23,7 +23,7 @@ public class InvalidateProjectConfigCommandHandler implements CommandHandler<Inv
 
     @Override
     public void handle(@NotNull InvalidateProjectConfigCommand command) {
-        store.mutate(MutableI18nProject::clear);
+        store.mutate(MutableI18nProject::clearAll);
         cachedModuleTemplates.invalidateAll();
         domainEventPublisherPort.publish(new ProjectConfigChanged());
     }

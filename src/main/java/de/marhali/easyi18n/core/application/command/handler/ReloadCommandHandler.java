@@ -20,7 +20,7 @@ public class ReloadCommandHandler implements CommandHandler<ReloadCommand> {
 
     @Override
     public void handle(@NotNull ReloadCommand command) {
-        store.mutate(MutableI18nProject::clear);
+        store.mutate(MutableI18nProject::clearAll);
         domainEventPublisherPort.publish(new ProjectReloaded());
     }
 }

@@ -2,6 +2,7 @@ package de.marhali.easyi18n.core.domain.template.path;
 
 import de.marhali.easyi18n.core.domain.model.I18nParams;
 import de.marhali.easyi18n.core.domain.model.I18nPath;
+import de.marhali.easyi18n.core.domain.template.Template;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -13,6 +14,12 @@ import java.util.Set;
  * @author marhali
  */
 public interface PathTemplate {
+    /**
+     * Retrieves the underlying template.
+     * @return {@link Template}
+     */
+    @NotNull Template getTemplate();
+
     /**
      * Converts the given {@link I18nPath} to its canonical file path representation.
      * @param path {@link I18nPath}

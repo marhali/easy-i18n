@@ -16,8 +16,9 @@ import de.marhali.easyi18n.core.ports.PathResolverPort;
 import org.jetbrains.annotations.NotNull;
 
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * IntellIj path resolver adapter using {@link FileTypeIndex}.
@@ -33,7 +34,7 @@ public class PathResolverAdapter implements PathResolverPort {
     }
 
     @Override
-    public @NotNull Collection<@NotNull I18nPath> resolvePaths(@NotNull ProjectConfigModule module, @NotNull PathTemplate pathTemplate) {
+    public @NotNull Set<@NotNull I18nPath> resolvePaths(@NotNull ProjectConfigModule module, @NotNull PathTemplate pathTemplate) {
         // Wait for indexes to be built (smart mode)
         DumbService.getInstance(project).waitForSmartMode();
 
@@ -66,7 +67,7 @@ public class PathResolverAdapter implements PathResolverPort {
         // Retrieve all files (paths) from the FileTypeIndex
         Collection<VirtualFile> paths = ReadAction.compute(() -> FileTypeIndex.getFiles(fileType, scope));
 
-        var result = new ArrayList<I18nPath>();
+        var result = new HashSet<I18nPath>();
 
         // Iterate over these files and check if they are applicable
         for (VirtualFile virtualFile : paths) {

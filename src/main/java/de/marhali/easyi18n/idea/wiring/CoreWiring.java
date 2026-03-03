@@ -1,5 +1,6 @@
 package de.marhali.easyi18n.idea.wiring;
 
+import com.intellij.openapi.Disposable;
 import com.intellij.openapi.project.Project;
 import de.marhali.easyi18n.core.application.I18nApplication;
 import de.marhali.easyi18n.core.application.command.*;
@@ -23,6 +24,7 @@ import de.marhali.easyi18n.core.ports.*;
 import de.marhali.easyi18n.idea.config.ProjectConfigAdapter;
 import de.marhali.easyi18n.idea.event.DomainEventPublisherAdapter;
 import de.marhali.easyi18n.idea.vfs.FileSystemAdapter;
+import de.marhali.easyi18n.idea.vfs.FileSystemListener;
 import de.marhali.easyi18n.idea.vfs.PathResolverAdapter;
 import de.marhali.easyi18n.infra.InMemoryFileProcessorRegistry;
 import de.marhali.easyi18n.infra.json.JsonFileProcessor;
@@ -42,7 +44,7 @@ public final class CoreWiring {
 
     private CoreWiring() {}
 
-    public static @NotNull I18nApplication create(@NotNull Project project) {
+    public static @NotNull I18nApplication create(@NotNull Project project, @NotNull Disposable parentDisposable) {
         // Adapters
         ProjectConfigPort projectConfigPort = new ProjectConfigAdapter(project);
         DomainEventPublisherPort domainEventPublisherPort = new DomainEventPublisherAdapter(project);
@@ -63,11 +65,14 @@ public final class CoreWiring {
 
         // Services
         CachedModuleTemplates cachedModuleTemplates = new CachedModuleTemplates(projectConfigPort);
-        ModuleLoader moduleLoader = new DefaultModuleLoader(cachedModuleTemplates, pathResolverPort, fileProcessorRegistryPort);
-        ModulePersistor modulePersistor = new DefaultModulePersistor(cachedModuleTemplates, fileProcessorRegistryPort);
+        I18nPathDetector i18nPathDetector = new I18nPathDetector(store, cachedModuleTemplates);
+        TrackedI18nPathsService trackedI18nPathsService = new TrackedI18nPathsService();
+        ModuleLoader moduleLoader = new DefaultModuleLoader(cachedModuleTemplates, pathResolverPort, fileProcessorRegistryPort, trackedI18nPathsService);
+        ModulePersistor modulePersistor = new DefaultModulePersistor(cachedModuleTemplates, fileProcessorRegistryPort, trackedI18nPathsService, fileSystemPort);
         EnsureLoadedService ensureLoadedService = new EnsureLoadedService(store, projectConfigPort, moduleLoader);
         EnsurePersistService ensurePersistService = new EnsurePersistService(store, projectConfigPort, modulePersistor);
         ModuleViewProjector moduleViewProjector = new ModuleViewProjector(cachedModuleTemplates);
+        new FileSystemListener(project, parentDisposable, i18nPathDetector);
 
         // Commands
         var commands = new CommandDispatcher();
@@ -81,6 +86,7 @@ public final class CoreWiring {
         commands.register(UpdateI18nKeyCommand.class, new UpdateI18nKeyCommandHandler(ensureLoadedService, ensurePersistService, store, domainEventPublisherPort));
         commands.register(UpdatePartialI18nKeyCommand.class, new UpdatePartialI18nKeyCommandHandler(ensureLoadedService, ensurePersistService, store, domainEventPublisherPort));
         commands.register(UpdateI18nValueCommand.class, new UpdateI18nValueCommandHandler(ensureLoadedService, ensurePersistService, store, domainEventPublisherPort));
+        commands.register(ModuleI18nPathsChangedCommand.class, new ModuleI18nPathsChangedCommandHandler(store, domainEventPublisherPort));
 
         // Queries
         var queries = new QueryDispatcher();

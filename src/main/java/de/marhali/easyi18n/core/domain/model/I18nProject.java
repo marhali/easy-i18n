@@ -5,6 +5,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * Immutable i18n project.
@@ -42,6 +43,14 @@ public record I18nProject(
      */
     public @Nullable I18nModule getModule(@NotNull ModuleId moduleId) {
         return hasModule(moduleId) ? modules.get(moduleId) : null;
+    }
+
+    /**
+     * Retrieves a list of currently loaded module identifiers.
+     * @return Set of {@link ModuleId}'s
+     */
+    public @NotNull Set<@NotNull ModuleId> getModuleIds() {
+        return modules.keySet();
     }
 
     /**
