@@ -1,7 +1,6 @@
 package de.marhali.easyi18n.idea.toolwindow.viewmodel;
 
 import com.intellij.openapi.application.ModalityState;
-import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.ui.content.Content;
@@ -35,8 +34,6 @@ import java.util.*;
  * @author marhali
  */
 public final class ToolWindowViewModel implements PluginTopics.DomainListener {
-
-    private static final @NotNull Logger LOGGER = Logger.getInstance(ToolWindowViewModel.class);
 
     private final @NotNull ToolWindow toolWindow;
     private final @NotNull Project project;
