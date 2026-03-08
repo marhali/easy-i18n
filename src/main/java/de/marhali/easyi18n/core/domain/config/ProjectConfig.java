@@ -11,7 +11,6 @@ import java.util.Map;
  * Project-specific configuration options.
  *
  * @param keyComment Indicates whether translation key can be commented or not.
- * @param editorAssistance Indicates whether editor code assistance should be enabled or not.
  * @param sorting Indicates whether translation keys should be sorted alphabetically.
  * @param previewLocale Defines the locale to be used for development and preview.
  * @param modules Configured modules.
@@ -20,7 +19,6 @@ import java.util.Map;
  */
 public record ProjectConfig(
     @NotNull Boolean keyComment,
-    @NotNull Boolean editorAssistance,
     @NotNull Boolean sorting,
     @NotNull LocaleId previewLocale,
     @NotNull Map<@NotNull ModuleId, @NotNull ProjectConfigModule> modules

@@ -58,7 +58,6 @@ public class PluginErrorReportSubmitter extends ErrorReportSubmitter {
         }
 
         bodyBuilder.append("# Config\n");
-        bodyBuilder.append("- Editor Assistance: `").append(config.editorAssistance).append("`\n");
         bodyBuilder.append("- Sorting: `").append(config.sorting).append("`\n");
         bodyBuilder.append("- Preview Locale: `").append(config.previewLocale).append("`\n");
         bodyBuilder.append("## Modules\n");

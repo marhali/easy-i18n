@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
 public class ProjectConfigBuilder {
 
     private boolean keyComment;
-    private boolean editorAssistance;
     private boolean sorting;
     private LocaleId previewLocale;
     private List<ProjectConfigModule> modules;
@@ -25,7 +24,6 @@ public class ProjectConfigBuilder {
 
     protected ProjectConfigBuilder(@NotNull ProjectConfig config) {
         this.keyComment = config.keyComment();
-        this.editorAssistance = config.editorAssistance();
         this.sorting = config.sorting();
         this.previewLocale = config.previewLocale();
         this.modules = config.modules().values().stream()
@@ -36,11 +34,6 @@ public class ProjectConfigBuilder {
 
     public @NotNull ProjectConfigBuilder keyComment(boolean keyComment) {
         this.keyComment = keyComment;
-        return this;
-    }
-
-    public @NotNull ProjectConfigBuilder editorAssistance(boolean editorAssistance) {
-        this.editorAssistance = editorAssistance;
         return this;
     }
 
@@ -74,7 +67,6 @@ public class ProjectConfigBuilder {
     public @NotNull ProjectConfig build() {
         return new ProjectConfig(
             keyComment,
-            editorAssistance,
             sorting,
             previewLocale,
             modules.stream()

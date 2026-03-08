@@ -16,7 +16,6 @@ public class ProjectConfigPresetDefault implements PresetProvider<ProjectConfig>
     public @NotNull ProjectConfig applyPreset(@Nullable ProjectConfig previousState) {
         return ProjectConfig.builder()
             // Common
-            .editorAssistance(true)
             .sorting(true)
             .previewLocale(new LocaleId("en"))
             // Modules

@@ -1,12 +1,9 @@
 package de.marhali.easyi18n.idea.config.component;
 
 import com.intellij.openapi.project.Project;
-import com.intellij.util.Consumer;
 import com.intellij.util.ui.FormBuilder;
 import de.marhali.easyi18n.core.domain.config.ProjectConfig;
 import de.marhali.easyi18n.core.domain.config.ProjectConfigBuilder;
-import de.marhali.easyi18n.core.domain.config.preset.ProjectConfigPreset;
-import de.marhali.easyi18n.idea.config.ProjectConfigService;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -23,13 +20,9 @@ public class ProjectConfigUi extends ConfigComponent<FormBuilder, ProjectConfig,
     public ProjectConfigUi(@NotNull Project project) {
         super(project);
 
-        Consumer<ProjectConfigPreset> onApplyPreset = (presetProvider) ->
-            writeStateToComponent(presetProvider.applyPreset(project.getService(ProjectConfigService.class).getDomainState()));
-
         components = List.of(
             // Register every child component here
             new ProjectConfigIntroUi(project),
-            new ProjectConfigPresetUi(project, onApplyPreset),
             new ProjectConfigCommonUi(project),
             new ProjectConfigModulesUi(project)
         );

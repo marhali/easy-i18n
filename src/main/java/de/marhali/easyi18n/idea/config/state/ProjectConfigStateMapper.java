@@ -24,7 +24,6 @@ public final class ProjectConfigStateMapper {
 
         return new ProjectConfig(
             state.keyComment,
-            state.editorAssistance,
             state.sorting,
             LocaleIdFactory.fromInput(state.previewLocale),
             modules
@@ -35,7 +34,6 @@ public final class ProjectConfigStateMapper {
         var state = new ProjectConfigState();
 
         state.keyComment = domain.keyComment();
-        state.editorAssistance = domain.editorAssistance();
         state.sorting = domain.sorting();
         state.previewLocale = domain.previewLocale().tag();
         state.modules = new HashMap<>(domain.modules().size());
