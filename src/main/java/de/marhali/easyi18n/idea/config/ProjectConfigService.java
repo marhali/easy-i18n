@@ -16,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
  */
 @Service(Service.Level.PROJECT)
 @State(
-    name = "EasyI18nProjectConfigCQRS",
+    name = "ProjectConfigService",
     storages = @Storage("easy-i18n.xml")
 )
 public final class ProjectConfigService implements PersistentStateComponent<ProjectConfigState> {
