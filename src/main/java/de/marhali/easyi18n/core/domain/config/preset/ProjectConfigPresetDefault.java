@@ -19,8 +19,7 @@ public class ProjectConfigPresetDefault implements PresetProvider<ProjectConfig>
             .sorting(true)
             .previewLocale(new LocaleId("en"))
             // Modules
-            .modules()
-            .module(_builder -> ProjectConfigModule.fromDefaultPreset())
+            .modules() // We don't define a module here to let the user add a first one
             .build();
     }
 }
