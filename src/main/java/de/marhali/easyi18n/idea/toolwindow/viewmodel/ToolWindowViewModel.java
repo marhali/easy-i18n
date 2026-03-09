@@ -21,6 +21,7 @@ import de.marhali.easyi18n.idea.key.PluginKey;
 import de.marhali.easyi18n.idea.notification.ToolWindowNotificationHelper;
 import de.marhali.easyi18n.idea.service.I18nProjectService;
 import de.marhali.easyi18n.idea.service.PluginExecutorService;
+import de.marhali.easyi18n.idea.toolwindow.I18nToolWindowEmptyPanel;
 import de.marhali.easyi18n.idea.toolwindow.I18nToolWindowPanel;
 import de.marhali.easyi18n.idea.toolwindow.I18nToolWindowState;
 import org.jetbrains.annotations.NotNull;
@@ -156,6 +157,15 @@ public final class ToolWindowViewModel implements PluginTopics.DomainListener {
             moduleContent.setPreferredFocusableComponent(modulePanel);
             moduleContent.setDisposer(modulePanel);
             contentManager.addContent(moduleContent);
+        }
+
+        // Show empty tool window panel if no modules are configured
+        if (moduleIds.isEmpty()) {
+            var emptyToolWindowPanel = new I18nToolWindowEmptyPanel(project);
+            var emptyToolWindowPanelContent = ContentFactory.getInstance()
+                .createContent(emptyToolWindowPanel, null, false);
+
+            contentManager.addContent(emptyToolWindowPanelContent);
         }
     }
 
