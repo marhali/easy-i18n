@@ -44,7 +44,7 @@ public class ProjectConfigModuleState {
             ", fileTemplate='" + fileTemplate + '\'' +
             ", keyTemplate='" + keyTemplate + '\'' +
             ", rootDirectory='" + rootDirectory + '\'' +
-            ", defaultNamespace='" + defaultNamespace + '\'' +
+            ", defaultKeyPrefixes=" + defaultKeyPrefixes +
             ", i18nTemplate='" + i18nTemplate + '\'' +
             ", keyNamingConvention=" + keyNamingConvention +
             '}';

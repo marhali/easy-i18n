@@ -16,7 +16,7 @@ public class ProjectConfigModuleBuilder {
     private String fileTemplate;
     private String keyTemplate;
     private String rootDirectory;
-    private @Deprecated String defaultNamespace;
+    private Set<@NotNull I18nKeyPrefix> defaultKeyPrefixes;
     private String i18nTemplate;
     private KeyNamingConvention keyNamingConvention;
 
@@ -29,7 +29,7 @@ public class ProjectConfigModuleBuilder {
         this.fileTemplate = module.fileTemplate();
         this.keyTemplate = module.keyTemplate();
         this.rootDirectory = module.rootDirectory();
-        this.defaultNamespace = module.defaultNamespace();
+        this.defaultKeyPrefixes = module.defaultKeyPrefixes();
         this.i18nTemplate = module.i18nTemplate();
         this.keyNamingConvention = module.keyNamingConvention();
     }
@@ -64,8 +64,17 @@ public class ProjectConfigModuleBuilder {
         return this;
     }
 
-    public @NotNull ProjectConfigModuleBuilder defaultNamespace(@NotNull String defaultNamespace) {
-        this.defaultNamespace = defaultNamespace;
+    public @NotNull ProjectConfigModuleBuilder defaultKeyPrefixes(@NotNull Set<@NotNull I18nKeyPrefix> defaultKeyPrefixes) {
+        this.defaultKeyPrefixes = defaultKeyPrefixes;
+        return this;
+    }
+
+    public @NotNull ProjectConfigModuleBuilder defaultKeyPrefixes() {
+        return defaultKeyPrefixes(new HashSet<>());
+    }
+
+    public @NotNull ProjectConfigModuleBuilder defaultKeyPrefix(@NotNull I18nKeyPrefix keyPrefix) {
+        this.defaultKeyPrefixes.add(keyPrefix);
         return this;
     }
 
@@ -89,7 +98,7 @@ public class ProjectConfigModuleBuilder {
             fileTemplate,
             keyTemplate,
             rootDirectory,
-            defaultNamespace,
+            defaultKeyPrefixes,
             i18nTemplate,
             keyNamingConvention
         );

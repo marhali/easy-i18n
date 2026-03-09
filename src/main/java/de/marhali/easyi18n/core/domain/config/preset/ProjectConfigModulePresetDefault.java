@@ -22,7 +22,7 @@ public class ProjectConfigModulePresetDefault implements PresetProvider<ProjectC
             .fileTemplate("")
             .keyTemplate("")
             .rootDirectory("")
-            .defaultNamespace("")
+            .defaultKeyPrefixes()
             .i18nTemplate("$i18n.t")
             .keyNamingConvention(KeyNamingConvention.CAMEL_CASE)
             .build();

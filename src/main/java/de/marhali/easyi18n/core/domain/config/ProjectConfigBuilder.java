@@ -53,8 +53,7 @@ public class ProjectConfigBuilder {
     }
 
     public @NotNull ProjectConfigBuilder modules() {
-        this.modules = new ArrayList<>();
-        return this;
+        return modules(new ArrayList<>());
     }
 
     public @NotNull ProjectConfigBuilder module(@NotNull Function<ProjectConfigModuleBuilder, ProjectConfigModule> builder) {

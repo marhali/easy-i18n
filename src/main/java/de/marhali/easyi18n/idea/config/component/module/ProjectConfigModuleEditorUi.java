@@ -5,17 +5,22 @@ import com.intellij.openapi.ui.ComboBox;
 import com.intellij.ui.SimpleListCellRenderer;
 import com.intellij.ui.TitledSeparator;
 import com.intellij.ui.components.JBTextField;
+import com.intellij.ui.components.fields.ExpandableTextField;
+import com.intellij.util.execution.ParametersListUtil;
 import com.intellij.util.ui.FormBuilder;
 import de.marhali.easyi18n.core.domain.config.KeyNamingConvention;
 import de.marhali.easyi18n.core.domain.config.ProjectConfigModule;
 import de.marhali.easyi18n.core.domain.config.ProjectConfigModuleBuilder;
+import de.marhali.easyi18n.core.domain.model.I18nKeyPrefix;
 import de.marhali.easyi18n.idea.config.component.ConfigComponent;
 import de.marhali.easyi18n.idea.messages.PluginBundle;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Arrays;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * @author marhali
@@ -23,7 +28,7 @@ import java.util.Objects;
 public class ProjectConfigModuleEditorUi
     extends ConfigComponent<FormBuilder, ProjectConfigModule, ProjectConfigModuleBuilder> {
 
-    private @Nullable JBTextField defaultNamespace;
+    private @Nullable ExpandableTextField defaultKeyPrefixes;
     private @Nullable JBTextField i18nTemplate;
     private @Nullable ComboBox<KeyNamingConvention> keyNamingConvention;
 
@@ -36,12 +41,13 @@ public class ProjectConfigModuleEditorUi
         // Title
         builder.addComponent(new TitledSeparator(PluginBundle.message("config.project.modules.item.editor.title")));
 
-        // Default namespace
-        defaultNamespace = new JBTextField();
-        defaultNamespace.setToolTipText(PluginBundle.message("config.project.modules.item.default-namespace.tooltip"));
+        // Default key prefixes
+        defaultKeyPrefixes = new ExpandableTextField(ParametersListUtil.COLON_LINE_PARSER, ParametersListUtil.COLON_LINE_JOINER);
+        defaultKeyPrefixes.setColumns(0);
+        defaultKeyPrefixes.setToolTipText(PluginBundle.message("config.project.modules.item.default-key-prefixes.tooltip"));
         builder.addLabeledComponent(
-            PluginBundle.message("config.project.modules.item.default-namespace.label"),
-            defaultNamespace,1, false);
+            PluginBundle.message("config.project.modules.item.default-key-prefixes.label"),
+            defaultKeyPrefixes,1, false);
 
         // I18n template
         i18nTemplate = new JBTextField();
@@ -61,11 +67,12 @@ public class ProjectConfigModuleEditorUi
 
     @Override
     public boolean isModified(@NotNull ProjectConfigModule originState) {
-        Objects.requireNonNull(defaultNamespace, "defaultNamespace cannot be null");
+        Objects.requireNonNull(defaultKeyPrefixes, "defaultKeyPrefixes cannot be null");
         Objects.requireNonNull(i18nTemplate, "i18nTemplate cannot be null");
         Objects.requireNonNull(keyNamingConvention, "keyNamingConvention cannot be null");
 
-        var equals = defaultNamespace.getText().equals(originState.defaultNamespace())
+        var equals = Arrays.stream(defaultKeyPrefixes.getText().split(";"))
+            .map(I18nKeyPrefix::of).collect(Collectors.toSet()).equals(originState.defaultKeyPrefixes())
             && i18nTemplate.getText().equals(originState.i18nTemplate())
             && keyNamingConvention.getItem().equals(originState.keyNamingConvention());
 
@@ -74,23 +81,28 @@ public class ProjectConfigModuleEditorUi
 
     @Override
     public void writeStateToComponent(@NotNull ProjectConfigModule state) {
-        Objects.requireNonNull(defaultNamespace, "defaultNamespace cannot be null");
+        Objects.requireNonNull(defaultKeyPrefixes, "defaultKeyPrefixes cannot be null");
         Objects.requireNonNull(i18nTemplate, "i18nTemplate cannot be null");
         Objects.requireNonNull(keyNamingConvention, "keyNamingConvention cannot be null");
 
-        defaultNamespace.setText(state.defaultNamespace());
+        defaultKeyPrefixes.setText(state.defaultKeyPrefixes().stream()
+            .map(I18nKeyPrefix::canonicalPrefix)
+            .collect(Collectors.joining(";")));
         i18nTemplate.setText(state.i18nTemplate());
         keyNamingConvention.setItem(state.keyNamingConvention());
     }
 
     @Override
     public void readStateFromComponent(@NotNull ProjectConfigModuleBuilder builder) {
-        Objects.requireNonNull(defaultNamespace, "defaultNamespace cannot be null");
+        Objects.requireNonNull(defaultKeyPrefixes, "defaultKeyPrefixes cannot be null");
         Objects.requireNonNull(i18nTemplate, "i18nTemplate cannot be null");
         Objects.requireNonNull(keyNamingConvention, "keyNamingConvention cannot be null");
 
         builder
-            .defaultNamespace(defaultNamespace.getText())
+            .defaultKeyPrefixes(Arrays.stream(defaultKeyPrefixes.getText().split(";"))
+                .filter(element -> !element.isBlank())
+                .map(I18nKeyPrefix::of)
+                .collect(Collectors.toSet()))
             .i18nTemplate(i18nTemplate.getText())
             .keyNamingConvention(keyNamingConvention.getItem());
     }

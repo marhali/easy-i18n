@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
  * @param fileTemplate File content template syntax.
  * @param keyTemplate Key template syntax.
  * @param rootDirectory Root directory from which this module configuration applies.
- * @param defaultNamespace Namespace to use as default if none is supplied. Can be an empty string to ignore this feature. @deprecated We do not want to force the user to label this functionality as namespace, the user should define a list of key(prefixes) that should be used
+ * @param defaultKeyPrefixes Set of default translation key prefixes.
  * @param i18nTemplate Template to apply for translation message extraction.
  * @param keyNamingConvention Defines the used key naming convention.
  *
@@ -26,7 +26,7 @@ public record ProjectConfigModule(
     @NotNull String fileTemplate,
     @NotNull String keyTemplate,
     @NotNull String rootDirectory,
-    @NotNull @Deprecated String defaultNamespace,
+    @NotNull Set<@NotNull I18nKeyPrefix> defaultKeyPrefixes,
     @NotNull String i18nTemplate,
     @NotNull KeyNamingConvention keyNamingConvention
 ) {
