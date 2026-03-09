@@ -1,6 +1,7 @@
 package de.marhali.easyi18n.idea.help;
 
 import com.intellij.openapi.help.WebHelpProvider;
+import de.marhali.easyi18n.idea.messages.PluginBundle;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -23,7 +24,7 @@ public class PluginWebHelpProvider extends WebHelpProvider {
     }
 
     public enum Topic {
-        DOCS("docs", "https://github.com/marhali/easy-i18n"),
+        DOCS("docs", PluginBundle.message("url.documentation.general")),
         ;
 
         private final String id;
