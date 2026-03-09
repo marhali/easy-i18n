@@ -104,7 +104,7 @@ public class DefaultPathTemplate implements PathTemplate {
         int index = template.canonical().lastIndexOf(".");
 
         if (index == 0 || index == -1 || index + 1 >= template.canonical().length()) {
-            throw new IllegalArgumentException("Could not extract file extension from path template: " + template.canonical());
+            throw new IllegalArgumentException("Could not extract file extension from path template: \"" + template.canonical() + "\"");
         }
 
         return template.canonical().substring(index + 1);
@@ -125,7 +125,7 @@ public class DefaultPathTemplate implements PathTemplate {
         String path = builder.toString();
 
         if (path.isEmpty()) {
-            throw new IllegalArgumentException("Most common parent path for template is empty: " + template);
+            throw new IllegalArgumentException("Most common parent path for template is empty: \"" + template + "\"");
         }
 
         return path;

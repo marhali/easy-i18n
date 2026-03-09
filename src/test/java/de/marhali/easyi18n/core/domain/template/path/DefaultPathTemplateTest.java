@@ -2,8 +2,11 @@ package de.marhali.easyi18n.core.domain.template.path;
 
 import de.marhali.easyi18n.core.domain.model.I18nBuiltinParam;
 import de.marhali.easyi18n.core.domain.model.I18nParams;
+import de.marhali.easyi18n.core.domain.model.I18nPath;
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.Set;
 
 
 /**
@@ -12,9 +15,9 @@ import org.junit.Test;
 public class DefaultPathTemplateTest {
     @Test
     public void test_match_unknown_path_returns_null() {
-        var template = DefaultPathTemplate.compile("myPath");
+        var template = DefaultPathTemplate.compile("myPath.json");
 
-        Assert.assertNull(template.matchCanonical("anyOtherPath"));
+        Assert.assertNull(template.matchCanonical("anyOtherPath.json"));
     }
 
     @Test
@@ -23,7 +26,7 @@ public class DefaultPathTemplateTest {
 
         String inputPath = "$PROJECT_DIR$/account/de.json";
 
-        var params = template.matchCanonical("$PROJECT_DIR$/account/de.json");
+        var params = template.matchCanonical(inputPath);
 
         var expectedParams = I18nParams.builder()
             .add("ns", "account")
@@ -37,8 +40,13 @@ public class DefaultPathTemplateTest {
 
         assert params != null;
 
+        var variants = template.buildVariants(params);
+
         Assert.assertEquals(
-            "",
-            template.buildVariants(params));
+            Set.of(
+                new I18nPath(inputPath, expectedParams)
+            ),
+            variants
+        );
     }
 }
