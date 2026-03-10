@@ -20,6 +20,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -71,8 +72,7 @@ public class ProjectConfigModuleEditorUi
         Objects.requireNonNull(i18nTemplate, "i18nTemplate cannot be null");
         Objects.requireNonNull(keyNamingConvention, "keyNamingConvention cannot be null");
 
-        var equals = Arrays.stream(defaultKeyPrefixes.getText().split(";"))
-            .map(I18nKeyPrefix::of).collect(Collectors.toSet()).equals(originState.defaultKeyPrefixes())
+        var equals = defaultKeyPrefixesFromInput(defaultKeyPrefixes.getText()).equals(originState.defaultKeyPrefixes())
             && i18nTemplate.getText().equals(originState.i18nTemplate())
             && keyNamingConvention.getItem().equals(originState.keyNamingConvention());
 
@@ -85,9 +85,7 @@ public class ProjectConfigModuleEditorUi
         Objects.requireNonNull(i18nTemplate, "i18nTemplate cannot be null");
         Objects.requireNonNull(keyNamingConvention, "keyNamingConvention cannot be null");
 
-        defaultKeyPrefixes.setText(state.defaultKeyPrefixes().stream()
-            .map(I18nKeyPrefix::canonicalPrefix)
-            .collect(Collectors.joining(";")));
+        defaultKeyPrefixes.setText(defaultKeyPrefixesToInput(state.defaultKeyPrefixes()));
         i18nTemplate.setText(state.i18nTemplate());
         keyNamingConvention.setItem(state.keyNamingConvention());
     }
@@ -99,10 +97,7 @@ public class ProjectConfigModuleEditorUi
         Objects.requireNonNull(keyNamingConvention, "keyNamingConvention cannot be null");
 
         builder
-            .defaultKeyPrefixes(Arrays.stream(defaultKeyPrefixes.getText().split(";"))
-                .filter(element -> !element.isBlank())
-                .map(I18nKeyPrefix::of)
-                .collect(Collectors.toSet()))
+            .defaultKeyPrefixes(defaultKeyPrefixesFromInput(defaultKeyPrefixes.getText()))
             .i18nTemplate(i18nTemplate.getText())
             .keyNamingConvention(keyNamingConvention.getItem());
     }
@@ -114,5 +109,18 @@ public class ProjectConfigModuleEditorUi
             case SNAKE_CASE -> PluginBundle.message("config.project.modules.item.key-naming-convention.snake_case");
             case SNAKE_CASE_UPPERCASE -> PluginBundle.message("config.project.modules.item.key-naming-convention.snake_case_uppercase");
         };
+    }
+
+    private @NotNull Set<@NotNull I18nKeyPrefix> defaultKeyPrefixesFromInput(@NotNull String input) {
+        return Arrays.stream(input.split(";"))
+            .filter(element -> !element.isBlank())
+            .map(I18nKeyPrefix::of)
+            .collect(Collectors.toSet());
+    }
+
+    private @NotNull String defaultKeyPrefixesToInput(@NotNull Set<@NotNull I18nKeyPrefix> defaultKeyPrefixes) {
+        return defaultKeyPrefixes.stream()
+            .map(I18nKeyPrefix::canonicalPrefix)
+            .collect(Collectors.joining(";"));
     }
 }

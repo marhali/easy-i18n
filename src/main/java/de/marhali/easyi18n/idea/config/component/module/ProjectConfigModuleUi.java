@@ -33,7 +33,8 @@ public class ProjectConfigModuleUi
             // Register every child component here
             new ProjectConfigModulePresetUi(project, onApplyPreset),
             new ProjectConfigModuleResourceUi(project),
-            new ProjectConfigModuleEditorUi(project)
+            new ProjectConfigModuleEditorUi(project),
+            new ProjectConfigModuleEditorRulesUi(project)
         );
     }
 
