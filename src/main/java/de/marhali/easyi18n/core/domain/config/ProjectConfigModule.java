@@ -1,8 +1,13 @@
 package de.marhali.easyi18n.core.domain.config;
 
 import de.marhali.easyi18n.core.domain.config.preset.ProjectConfigModulePresetDefault;
+import de.marhali.easyi18n.core.domain.model.I18nKeyPrefix;
 import de.marhali.easyi18n.core.domain.model.ModuleId;
+import de.marhali.easyi18n.core.domain.rules.EditorRule;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
+import java.util.Set;
 
 /**
  * Module-specific configuration options within a project.
@@ -16,6 +21,7 @@ import org.jetbrains.annotations.NotNull;
  * @param defaultKeyPrefixes Set of default translation key prefixes.
  * @param i18nTemplate Template to apply for translation message extraction.
  * @param keyNamingConvention Defines the used key naming convention.
+ * @param editorRules Editor assistance rules
  *
  * @author marhali
  */
@@ -28,8 +34,9 @@ public record ProjectConfigModule(
     @NotNull String rootDirectory,
     @NotNull Set<@NotNull I18nKeyPrefix> defaultKeyPrefixes,
     @NotNull String i18nTemplate,
-    @NotNull KeyNamingConvention keyNamingConvention
-) {
+    @NotNull KeyNamingConvention keyNamingConvention,
+    @NotNull List<@NotNull EditorRule> editorRules
+    ) {
     public static @NotNull ProjectConfigModule fromDefaultPreset() {
         return new ProjectConfigModulePresetDefault().applyPreset(null);
     }

@@ -1,7 +1,14 @@
 package de.marhali.easyi18n.core.domain.config;
 
+import de.marhali.easyi18n.core.domain.model.I18nKeyPrefix;
 import de.marhali.easyi18n.core.domain.model.ModuleId;
+import de.marhali.easyi18n.core.domain.rules.EditorRule;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Builder pattern to construct a {@link ProjectConfigModule}.
@@ -19,6 +26,7 @@ public class ProjectConfigModuleBuilder {
     private Set<@NotNull I18nKeyPrefix> defaultKeyPrefixes;
     private String i18nTemplate;
     private KeyNamingConvention keyNamingConvention;
+    private List<EditorRule> editorRules;
 
     protected ProjectConfigModuleBuilder() {}
 
@@ -32,6 +40,7 @@ public class ProjectConfigModuleBuilder {
         this.defaultKeyPrefixes = module.defaultKeyPrefixes();
         this.i18nTemplate = module.i18nTemplate();
         this.keyNamingConvention = module.keyNamingConvention();
+        this.editorRules = module.editorRules();
     }
 
     public @NotNull ProjectConfigModuleBuilder id(@NotNull ModuleId id) {
@@ -88,6 +97,20 @@ public class ProjectConfigModuleBuilder {
         return this;
     }
 
+    public @NotNull ProjectConfigModuleBuilder editorRules(@NotNull List<@NotNull EditorRule> editorRules) {
+        this.editorRules = editorRules;
+        return this;
+    }
+
+    public @NotNull ProjectConfigModuleBuilder editorRules() {
+        return editorRules(new ArrayList<>());
+    }
+
+    public @NotNull ProjectConfigModuleBuilder editorRule(@NotNull EditorRule editorRule) {
+        this.editorRules.add(editorRule);
+        return this;
+    }
+
     // Last
 
     public @NotNull ProjectConfigModule build() {
@@ -100,7 +123,8 @@ public class ProjectConfigModuleBuilder {
             rootDirectory,
             defaultKeyPrefixes,
             i18nTemplate,
-            keyNamingConvention
+            keyNamingConvention,
+            editorRules
         );
     }
 }

@@ -1,5 +1,8 @@
 package de.marhali.easyi18n.idea.config.state;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.Map;
 import java.util.Objects;
 
@@ -9,12 +12,25 @@ import java.util.Objects;
  * @author marhali
  */
 public class ProjectConfigState {
-    public Boolean keyComment;
-    public Boolean sorting;
-    public String previewLocale;
-    public Map<String, ProjectConfigModuleState> modules;
+    public @Nullable Boolean keyComment;
+    public @Nullable Boolean sorting;
+    public @Nullable String previewLocale;
+    public @Nullable Map<@NotNull String, @NotNull ProjectConfigModuleState> modules;
 
+    @Deprecated
     public ProjectConfigState() {}
+
+    public ProjectConfigState(
+        @Nullable Boolean keyComment,
+        @Nullable Boolean sorting,
+        @Nullable String previewLocale,
+        @Nullable Map<@NotNull String, @NotNull ProjectConfigModuleState> modules
+    ) {
+        this.keyComment = keyComment;
+        this.sorting = sorting;
+        this.previewLocale = previewLocale;
+        this.modules = modules;
+    }
 
     @Override
     public boolean equals(Object o) {
