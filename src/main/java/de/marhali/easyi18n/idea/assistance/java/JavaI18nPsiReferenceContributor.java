@@ -42,7 +42,7 @@ public class JavaI18nPsiReferenceContributor extends PsiReferenceContributor {
             I18nProjectService projectService = project.getService(I18nProjectService.class);
 
             JavaEditorElementExtractor extractor = new JavaEditorElementExtractor();
-            EditorElement editorElement = extractor.extract(psiLiteralExpression);
+            EditorElement editorElement = extractor.extract(psiLiteralExpression, psiLiteralExpression.getContainingFile());
 
             if (editorElement == null) {
                 return PsiReference.EMPTY_ARRAY;

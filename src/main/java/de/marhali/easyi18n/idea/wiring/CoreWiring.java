@@ -94,6 +94,7 @@ public final class CoreWiring {
         queries.register(ModuleViewQuery.class, new ModuleViewQueryHandler(ensureLoadedService, store, moduleViewProjector));
         queries.register(EditorElementModuleQuery.class, new EditorElementModuleQueryHandler(editorElementModuleResolver));
         queries.register(EditorElementI18nEntryPreviewQuery.class, new EditorElementI18nEntryPreviewQueryHandler(store, cachedModuleRules, keyResolver, projectConfigPort));
+        queries.register(EditorElementSuggestionsQuery.class, new EditorElementSuggestionsQueryHandler(store, cachedModuleRules, projectConfigPort));
 
         return new I18nApplication(commands, queries);
     }

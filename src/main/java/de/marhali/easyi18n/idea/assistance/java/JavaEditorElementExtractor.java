@@ -17,9 +17,9 @@ import java.util.Set;
  *
  * @author marhali
  */
-public final class JavaEditorElementExtractor implements EditorElementExtractor<PsiLiteralExpression> {
+public final class JavaEditorElementExtractor implements EditorElementExtractor<PsiLiteralExpression, PsiFile> {
 
-    public @Nullable EditorElement extract(@NotNull PsiLiteralExpression literal) {
+    public @Nullable EditorElement extract(@NotNull PsiLiteralExpression literal, @Nullable PsiFile psiFile) {
         Object rawValue = literal.getValue();
 
         if (!(rawValue instanceof String stringValue)) {
@@ -40,7 +40,7 @@ public final class JavaEditorElementExtractor implements EditorElementExtractor<
         );
 
         builder.staticallyKnown(true);
-        builder.filePath(extractFilePath(literal));
+        builder.filePath(extractFilePath(psiFile));
         builder.inTestSources(isInTestSources(literal));
         builder.importSources(extractImportSources(literal));
 
@@ -224,8 +224,7 @@ public final class JavaEditorElementExtractor implements EditorElementExtractor<
         return imports;
     }
 
-    private @Nullable String extractFilePath(@NotNull PsiLiteralExpression literal) {
-        PsiFile file = literal.getContainingFile();
+    private @Nullable String extractFilePath(@Nullable PsiFile file) {
         if (file == null) {
             return null;
         }

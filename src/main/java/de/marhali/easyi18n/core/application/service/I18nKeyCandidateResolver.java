@@ -39,21 +39,6 @@ public class I18nKeyCandidateResolver {
         return null;
     }
 
-    public @NotNull Set<@NotNull I18nEntry> resolveVariants(@NotNull ModuleId moduleId, @NotNull I18nKeyCandidate keyCandidate) {
-        I18nModule moduleStore = store.getSnapshot().getModuleOrThrow(moduleId);
-        Set<@NotNull I18nEntry> variants = new LinkedHashSet<>();
-
-        for (I18nKey key : constructKeys(moduleId, keyCandidate)) {
-            for (I18nKey keyInStore : moduleStore.translations().keySet()) {
-                if (keyInStore.isSubvariant(key)) {
-                    variants.add(new I18nEntry(keyInStore, Objects.requireNonNull(moduleStore.getTranslation(keyInStore))));
-                }
-            }
-        }
-
-        return variants;
-    }
-
     private @NotNull Set<@NotNull I18nKey> constructKeys(@NotNull ModuleId moduleId, @NotNull I18nKeyCandidate keyCandidate) {
         var keys = new HashSet<I18nKey>();
 

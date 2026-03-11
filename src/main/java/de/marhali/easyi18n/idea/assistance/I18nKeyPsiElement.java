@@ -85,4 +85,8 @@ public class I18nKeyPsiElement extends FakePsiElement implements SyntheticElemen
     public boolean isValid() {
         return !project.isDisposed() && contextPointer.getElement() != null;
     }
+
+    public @NotNull I18nEntryPreview getEntryPreview() {
+        return entryPreview;
+    }
 }
