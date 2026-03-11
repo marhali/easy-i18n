@@ -22,10 +22,20 @@ public final class I18nApplication {
         this.queries = queries;
     }
 
+    /**
+     * Executes the provided command.
+     * @param command Command to execute
+     */
     public void command(@NotNull Command command) {
         commands.dispatch(command);
     }
 
+    /**
+     * Executes the provided query.
+     * @param query Query to execute
+     * @return Query result
+     * @param <R> Query result type
+     */
     public <R> @NotNull R query(@NotNull Query<R> query) {
         return queries.dispatch(query);
     }

@@ -7,14 +7,8 @@ import de.marhali.easyi18n.core.application.command.*;
 import de.marhali.easyi18n.core.application.command.handler.*;
 import de.marhali.easyi18n.core.application.cqrs.CommandDispatcher;
 import de.marhali.easyi18n.core.application.cqrs.QueryDispatcher;
-import de.marhali.easyi18n.core.application.query.ConfiguredModulesQuery;
-import de.marhali.easyi18n.core.application.query.ModuleLocalesQuery;
-import de.marhali.easyi18n.core.application.query.ModuleViewQuery;
-import de.marhali.easyi18n.core.application.query.TranslationByKeyQuery;
-import de.marhali.easyi18n.core.application.query.handler.ConfiguredModulesQueryHandler;
-import de.marhali.easyi18n.core.application.query.handler.ModuleLocalesQueryHandler;
-import de.marhali.easyi18n.core.application.query.handler.ModuleViewQueryHandler;
-import de.marhali.easyi18n.core.application.query.handler.TranslationByKeyQueryHandler;
+import de.marhali.easyi18n.core.application.query.*;
+import de.marhali.easyi18n.core.application.query.handler.*;
 import de.marhali.easyi18n.core.application.service.*;
 import de.marhali.easyi18n.core.application.state.I18nStore;
 import de.marhali.easyi18n.core.application.state.InMemoryI18nStore;
@@ -65,6 +59,7 @@ public final class CoreWiring {
 
         // Services
         CachedModuleTemplates cachedModuleTemplates = new CachedModuleTemplates(projectConfigPort);
+        CachedModuleRules cachedModuleRules = new CachedModuleRules(projectConfigPort);
         I18nPathDetector i18nPathDetector = new I18nPathDetector(store, cachedModuleTemplates);
         TrackedI18nPathsService trackedI18nPathsService = new TrackedI18nPathsService();
         ModuleLoader moduleLoader = new DefaultModuleLoader(cachedModuleTemplates, pathResolverPort, fileProcessorRegistryPort, trackedI18nPathsService);
@@ -72,12 +67,15 @@ public final class CoreWiring {
         EnsureLoadedService ensureLoadedService = new EnsureLoadedService(store, projectConfigPort, moduleLoader);
         EnsurePersistService ensurePersistService = new EnsurePersistService(store, projectConfigPort, modulePersistor);
         ModuleViewProjector moduleViewProjector = new ModuleViewProjector(cachedModuleTemplates);
+        EditorElementModuleResolver editorElementModuleResolver = new EditorElementModuleResolver(projectConfigPort);
+        I18nKeyCandidateResolver keyResolver = new I18nKeyCandidateResolver(projectConfigPort, store);
         new FileSystemListener(project, parentDisposable, i18nPathDetector);
 
         // Commands
         var commands = new CommandDispatcher();
         commands.register(ReloadCommand.class, new ReloadCommandHandler(store, domainEventPublisherPort));
-        commands.register(InvalidateProjectConfigCommand.class, new InvalidateProjectConfigCommandHandler(store, cachedModuleTemplates, domainEventPublisherPort));
+        commands.register(InvalidateProjectConfigCommand.class, new InvalidateProjectConfigCommandHandler(store, cachedModuleTemplates, cachedModuleRules, domainEventPublisherPort));
+        commands.register(EnsureModuleLoadedCommand.class, new EnsureModuleLoadedCommandHandler(ensureLoadedService));
         commands.register(AddI18nRecordCommand.class, new AddI18nRecordCommandHandler(ensureLoadedService, ensurePersistService, store, domainEventPublisherPort));
         commands.register(UpdateI18nRecordCommand.class, new UpdateI18nRecordCommandHandler(implementationProvider, ensureLoadedService, ensurePersistService, store, domainEventPublisherPort));
         commands.register(RemoveI18nRecordCommand.class, new RemoveI18nRecordCommandHandler(ensureLoadedService, ensurePersistService, store, domainEventPublisherPort));
@@ -94,6 +92,8 @@ public final class CoreWiring {
         queries.register(ModuleLocalesQuery.class, new ModuleLocalesQueryHandler(ensureLoadedService, store));
         queries.register(TranslationByKeyQuery.class, new TranslationByKeyQueryHandler(ensureLoadedService, store));
         queries.register(ModuleViewQuery.class, new ModuleViewQueryHandler(ensureLoadedService, store, moduleViewProjector));
+        queries.register(EditorElementModuleQuery.class, new EditorElementModuleQueryHandler(editorElementModuleResolver));
+        queries.register(EditorElementI18nEntryPreviewQuery.class, new EditorElementI18nEntryPreviewQueryHandler(store, cachedModuleRules, keyResolver, projectConfigPort));
 
         return new I18nApplication(commands, queries);
     }

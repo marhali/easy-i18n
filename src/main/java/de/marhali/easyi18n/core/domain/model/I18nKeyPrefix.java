@@ -25,6 +25,10 @@ public record I18nKeyPrefix(
         return key.canonical().startsWith(canonicalPrefix);
     }
 
+    public @NotNull I18nKey withCandidate(@NotNull I18nKeyCandidate keyCandidate) {
+        return I18nKey.of(canonicalPrefix + keyCandidate.canonical());
+    }
+
     @Override
     public int compareTo(@NotNull I18nKeyPrefix o) {
         return canonicalPrefix.compareTo(o.canonicalPrefix);

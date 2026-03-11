@@ -24,10 +24,16 @@ public final class I18nProjectService implements Disposable {
         this.application = CoreWiring.create(project, this);
     }
 
+    /**
+     * @see I18nApplication#command(Command)
+     */
     public void command(@NotNull Command command) {
         application.command(command);
     }
 
+    /**
+     * @see I18nApplication#query(Query)
+     */
     public <R> @NotNull R query(@NotNull Query<R> query) {
         return application.query(query);
     }
