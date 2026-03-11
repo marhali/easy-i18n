@@ -8,6 +8,11 @@ import de.marhali.easyi18n.core.domain.model.MutableI18nProject;
 import de.marhali.easyi18n.core.ports.DomainEventPublisherPort;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Command handler for {@link ReloadCommand}.
+ *
+ * @author marhali
+ */
 public class ReloadCommandHandler implements CommandHandler<ReloadCommand> {
 
     private final @NotNull I18nStore store;
