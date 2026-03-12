@@ -11,11 +11,13 @@ import com.intellij.psi.*;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.ProcessingContext;
 import de.marhali.easyi18n.core.application.cqrs.PossiblyUnavailable;
-import de.marhali.easyi18n.core.application.query.EditorElementModuleQuery;
 import de.marhali.easyi18n.core.application.query.EditorElementSuggestionsQuery;
+import de.marhali.easyi18n.core.application.query.ModuleIdByEditorFilePathQuery;
 import de.marhali.easyi18n.core.domain.model.I18nEntryPreview;
 import de.marhali.easyi18n.core.domain.model.ModuleId;
 import de.marhali.easyi18n.core.domain.rules.EditorElement;
+import de.marhali.easyi18n.core.domain.rules.EditorFilePath;
+import de.marhali.easyi18n.idea.assistance.EditorFilePathExtractor;
 import de.marhali.easyi18n.idea.icons.PluginIcon;
 import de.marhali.easyi18n.idea.service.I18nProjectService;
 import de.marhali.easyi18n.idea.service.ScheduledModuleLoaderService;
@@ -51,20 +53,22 @@ public class JavaI18nCompletionContributor extends CompletionContributor {
 
                     I18nProjectService projectService = project.getService(I18nProjectService.class);
 
-                    JavaEditorElementExtractor extractor = new JavaEditorElementExtractor();
-                    EditorElement editorElement = extractor.extract(literal, completionParameters.getOriginalFile());
+                    EditorFilePath editorFilePath = EditorFilePathExtractor.extract(completionParameters.getOriginalFile());
 
-                    if (editorElement == null) {
-                        return;
-                    }
-
-                    Optional<ModuleId> moduleIdResponse = projectService.query(new EditorElementModuleQuery(editorElement));
+                    Optional<ModuleId> moduleIdResponse = projectService.query(new ModuleIdByEditorFilePathQuery(editorFilePath));
 
                     if (moduleIdResponse.isEmpty()) {
                         return;
                     }
 
                     ModuleId moduleId = moduleIdResponse.get();
+
+                    JavaEditorElementExtractor extractor = new JavaEditorElementExtractor();
+                    EditorElement editorElement = extractor.extract(literal, completionParameters.getOriginalFile(), false);
+
+                    if (editorElement == null) {
+                        return;
+                    }
 
                     PossiblyUnavailable<Optional<List<I18nEntryPreview>>> entriesResponse =
                         projectService.query(new EditorElementSuggestionsQuery(moduleId, editorElement));
