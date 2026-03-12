@@ -19,7 +19,7 @@ import java.util.Set;
  */
 public final class JavaEditorElementExtractor implements EditorElementExtractor<PsiLiteralExpression, PsiFile> {
 
-    public @Nullable EditorElement extract(@NotNull PsiLiteralExpression literal, @Nullable PsiFile psiFile) {
+    public @Nullable EditorElement extract(@NotNull PsiLiteralExpression literal, @Nullable PsiFile psiFile, boolean quick) {
         Object rawValue = literal.getValue();
 
         if (!(rawValue instanceof String stringValue)) {
@@ -45,9 +45,27 @@ public final class JavaEditorElementExtractor implements EditorElementExtractor<
         builder.importSources(extractImportSources(literal));
 
         switch (triggerKind) {
-            case CALL_ARGUMENT -> fillCallArgumentFacts(literal, builder);
-            case DECLARATION_TARGET -> fillDeclarationFacts(literal, builder);
-            case RETURN_VALUE -> fillReturnFacts(literal, builder);
+            case CALL_ARGUMENT -> {
+                if (quick) {
+                    fillCallArgumentFactsQuick(literal, builder);
+                } else {
+                    fillCallArgumentFacts(literal, builder);
+                }
+            }
+            case DECLARATION_TARGET -> {
+                if (quick) {
+                    fillDeclarationFactsQuick(literal, builder);
+                } else {
+                    fillDeclarationFacts(literal, builder);
+                }
+            }
+            case RETURN_VALUE -> {
+                if (quick) {
+                    fillReturnFactsQuick(literal, builder);
+                } else {
+                    fillReturnFacts(literal, builder);
+                }
+            }
             case PROPERTY_VALUE -> fillPropertyFacts(literal, builder);
             case UNKNOWN -> {
                 return null;
@@ -55,6 +73,51 @@ public final class JavaEditorElementExtractor implements EditorElementExtractor<
         }
 
         return builder.build();
+    }
+
+    private void fillCallArgumentFactsQuick(@NotNull PsiLiteralExpression literal, @NotNull EditorElement.Builder builder) {
+        PsiExpressionList expressionList = PsiTreeUtil.getParentOfType(literal, PsiExpressionList.class, false);
+        if (expressionList == null) return;
+
+        PsiMethodCallExpression methodCall = PsiTreeUtil.getParentOfType(expressionList, PsiMethodCallExpression.class, false);
+        if (methodCall == null) return;
+
+        PsiExpression[] expressions = expressionList.getExpressions();
+        for (int i = 0; i < expressions.length; i++) {
+            if (expressions[i] == literal) {
+                builder.argumentIndex(i);
+                break;
+            }
+        }
+
+        PsiReferenceExpression methodExpression = methodCall.getMethodExpression();
+        builder.callableName(methodExpression.getReferenceName());
+
+        PsiExpression qualifierExpression = methodExpression.getQualifierExpression();
+        if (qualifierExpression != null) {
+            PsiType qualifierType = qualifierExpression.getType();
+            if (qualifierType != null) {
+                builder.receiverTypeFqn(qualifierType.getCanonicalText());
+            }
+        }
+    }
+
+    private void fillDeclarationFactsQuick(@NotNull PsiLiteralExpression literal, @NotNull EditorElement.Builder builder) {
+        PsiVariable variable = PsiTreeUtil.getParentOfType(literal, PsiVariable.class, false);
+        if (variable != null && variable.getInitializer() == literal) {
+            builder.declarationName(variable.getName());
+            PsiType type = variable.getType();
+            builder.declarationType(type != null ? type.getCanonicalText() : null);
+        }
+    }
+
+    private void fillReturnFactsQuick(@NotNull PsiLiteralExpression literal, @NotNull EditorElement.Builder builder) {
+        PsiMethod method = PsiTreeUtil.getParentOfType(literal, PsiMethod.class, false);
+        if (method == null) return;
+
+        builder.callableName(method.getName());
+        PsiType returnType = method.getReturnType();
+        builder.declarationType(returnType != null ? returnType.getCanonicalText() : null);
     }
 
     private @NotNull TriggerKind detectTriggerKind(@NotNull PsiLiteralExpression literal, @NotNull PsiElement parent) {
