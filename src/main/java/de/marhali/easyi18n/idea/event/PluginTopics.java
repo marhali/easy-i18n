@@ -12,6 +12,7 @@ import org.jetbrains.annotations.NotNull;
 public interface PluginTopics {
     Topic<DomainListener> DOMAIN_EVENTS = Topic.create("Domain Events", DomainListener.class);
 
+    @FunctionalInterface
     interface DomainListener {
         void onDomainEvent(@NotNull DomainEvent event);
     }
