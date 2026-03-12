@@ -82,7 +82,7 @@ public final class I18nRuleEngine {
             case PROPERTY_NAME -> matchesText(editorElement.propertyName(), constraint);
             case PROPERTY_PATH -> matchesText(editorElement.propertyPath(), constraint);
             case IMPORT_SOURCE -> matchesAny(editorElement.importSources(), constraint);
-            case FILE_PATH -> matchesText(editorElement.filePath(), constraint);
+            case FILE_PATH -> matchesText(editorElement.filePath().canonical(), constraint);
             case IN_TEST_SOURCES -> matchesBoolean(editorElement.inTestSources(), constraint);
             case TEXT_PATTERN, EXCLUDE -> matchesText(editorElement.literalValue(), constraint);
         };

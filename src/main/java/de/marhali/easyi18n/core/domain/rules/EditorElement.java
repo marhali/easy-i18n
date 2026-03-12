@@ -34,7 +34,7 @@ public final class EditorElement {
     private final @Nullable String propertyPath;
 
     private final @NotNull Set<String> importSources;
-    private final @Nullable String filePath;
+    private final @NotNull EditorFilePath filePath;
     private final boolean inTestSources;
 
     private EditorElement(Builder builder) {
@@ -81,7 +81,7 @@ public final class EditorElement {
     public @Nullable String propertyName() { return propertyName; }
     public @Nullable String propertyPath() { return propertyPath; }
     public @NotNull Set<String> importSources() { return importSources; }
-    public @Nullable String filePath() { return filePath; }
+    public @NotNull EditorFilePath filePath() { return filePath; }
     public boolean inTestSources() { return inTestSources; }
 
     public static final class Builder {
@@ -102,7 +102,7 @@ public final class EditorElement {
         private String propertyName;
         private String propertyPath;
         private Set<String> importSources = Collections.emptySet();
-        private String filePath;
+        private EditorFilePath filePath;
         private boolean inTestSources;
 
         private Builder(EditorLanguage language,
@@ -176,7 +176,7 @@ public final class EditorElement {
         }
 
         public @NotNull Builder filePath(@Nullable String value) {
-            this.filePath = value;
+            this.filePath = new EditorFilePath(value);
             return this;
         }
 

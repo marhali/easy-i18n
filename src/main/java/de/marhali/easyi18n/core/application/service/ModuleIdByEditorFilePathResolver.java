@@ -3,6 +3,7 @@ package de.marhali.easyi18n.core.application.service;
 import de.marhali.easyi18n.core.domain.config.ProjectConfigModule;
 import de.marhali.easyi18n.core.domain.model.ModuleId;
 import de.marhali.easyi18n.core.domain.rules.EditorElement;
+import de.marhali.easyi18n.core.domain.rules.EditorFilePath;
 import de.marhali.easyi18n.core.ports.ProjectConfigPort;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -14,28 +15,28 @@ import java.util.Map;
  *
  * @author marhali
  */
-public class EditorElementModuleResolver {
+public class ModuleIdByEditorFilePathResolver {
 
     private final @NotNull ProjectConfigPort projectConfigPort;
 
-    public EditorElementModuleResolver(@NotNull ProjectConfigPort projectConfigPort) {
+    public ModuleIdByEditorFilePathResolver(@NotNull ProjectConfigPort projectConfigPort) {
         this.projectConfigPort = projectConfigPort;
     }
 
     /**
-     * Resolves the associated module identifier for the given editor element.
-     * @param editorElement Editor element
-     * @return {@link ModuleId} or {@code null} if the editor element cannot be associated with any translation module
+     * Resolves the associated module identifier for the given editor file path.
+     * @param editorFilePath Editor file path
+     * @return {@link ModuleId} or {@code null} if the editor file path cannot be associated with any translation module
      */
-    public @Nullable ModuleId resolve(@NotNull EditorElement editorElement) {
-        String filePath = editorElement.filePath();
+    public @Nullable ModuleId resolve(@NotNull EditorFilePath editorFilePath) {
+        String canonicalFilePath = editorFilePath.canonical();
 
-        if (filePath == null) {
+        if (canonicalFilePath == null) {
             return null;
         }
 
         for (Map.Entry<@NotNull ModuleId, @NotNull ProjectConfigModule> entry : projectConfigPort.read().modules().entrySet()) {
-            if (filePath.startsWith(entry.getValue().rootDirectory())) {
+            if (canonicalFilePath.startsWith(entry.getValue().rootDirectory())) {
                 // First match wins
                 return entry.getKey();
             }

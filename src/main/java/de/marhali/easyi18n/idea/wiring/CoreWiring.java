@@ -67,7 +67,7 @@ public final class CoreWiring {
         EnsureLoadedService ensureLoadedService = new EnsureLoadedService(store, projectConfigPort, moduleLoader);
         EnsurePersistService ensurePersistService = new EnsurePersistService(store, projectConfigPort, modulePersistor);
         ModuleViewProjector moduleViewProjector = new ModuleViewProjector(cachedModuleTemplates);
-        EditorElementModuleResolver editorElementModuleResolver = new EditorElementModuleResolver(projectConfigPort);
+        ModuleIdByEditorFilePathResolver moduleIdByEditorFilePathResolver = new ModuleIdByEditorFilePathResolver(projectConfigPort);
         I18nKeyCandidateResolver keyResolver = new I18nKeyCandidateResolver(projectConfigPort, store);
         new FileSystemListener(project, parentDisposable, i18nPathDetector);
 
@@ -92,7 +92,7 @@ public final class CoreWiring {
         queries.register(ModuleLocalesQuery.class, new ModuleLocalesQueryHandler(ensureLoadedService, store));
         queries.register(TranslationByKeyQuery.class, new TranslationByKeyQueryHandler(ensureLoadedService, store));
         queries.register(ModuleViewQuery.class, new ModuleViewQueryHandler(ensureLoadedService, store, moduleViewProjector));
-        queries.register(EditorElementModuleQuery.class, new EditorElementModuleQueryHandler(editorElementModuleResolver));
+        queries.register(ModuleIdByEditorFilePathQuery.class, new ModuleIdByEditorFilePathQueryHandler(moduleIdByEditorFilePathResolver));
         queries.register(EditorElementI18nEntryPreviewQuery.class, new EditorElementI18nEntryPreviewQueryHandler(store, cachedModuleRules, keyResolver, projectConfigPort));
         queries.register(EditorElementSuggestionsQuery.class, new EditorElementSuggestionsQueryHandler(store, cachedModuleRules, projectConfigPort));
 

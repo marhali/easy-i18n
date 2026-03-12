@@ -5,11 +5,12 @@ import com.intellij.patterns.PlatformPatterns;
 import com.intellij.psi.*;
 import com.intellij.util.ProcessingContext;
 import de.marhali.easyi18n.core.application.cqrs.PossiblyUnavailable;
-import de.marhali.easyi18n.core.application.query.EditorElementModuleQuery;
 import de.marhali.easyi18n.core.application.query.EditorElementI18nEntryPreviewQuery;
+import de.marhali.easyi18n.core.application.query.ModuleIdByEditorFilePathQuery;
 import de.marhali.easyi18n.core.domain.model.I18nEntryPreview;
 import de.marhali.easyi18n.core.domain.model.ModuleId;
 import de.marhali.easyi18n.core.domain.rules.*;
+import de.marhali.easyi18n.idea.assistance.EditorFilePathExtractor;
 import de.marhali.easyi18n.idea.assistance.I18nKeyPsiReference;
 import de.marhali.easyi18n.idea.service.I18nProjectService;
 import de.marhali.easyi18n.idea.service.ScheduledModuleLoaderService;
@@ -33,7 +34,7 @@ public class JavaI18nPsiReferenceContributor extends PsiReferenceContributor {
 
         @Override
         public PsiReference @NotNull [] getReferencesByElement(@NotNull PsiElement psiElement, @NotNull ProcessingContext processingContext) {
-            if (!(psiElement instanceof PsiLiteralExpression psiLiteralExpression)) {
+            if (!(psiElement instanceof PsiLiteralExpression literal)) {
                 return PsiReference.EMPTY_ARRAY;
             }
 
@@ -41,14 +42,9 @@ public class JavaI18nPsiReferenceContributor extends PsiReferenceContributor {
 
             I18nProjectService projectService = project.getService(I18nProjectService.class);
 
-            JavaEditorElementExtractor extractor = new JavaEditorElementExtractor();
-            EditorElement editorElement = extractor.extract(psiLiteralExpression, psiLiteralExpression.getContainingFile());
+            EditorFilePath editorFilePath = EditorFilePathExtractor.extract(literal.getContainingFile());
 
-            if (editorElement == null) {
-                return PsiReference.EMPTY_ARRAY;
-            }
-
-            Optional<ModuleId> moduleIdResponse = projectService.query(new EditorElementModuleQuery(editorElement));
+            Optional<ModuleId> moduleIdResponse = projectService.query(new ModuleIdByEditorFilePathQuery(editorFilePath));
 
             if (moduleIdResponse.isEmpty()) {
                 // No associated translation module for the editor element
@@ -56,6 +52,13 @@ public class JavaI18nPsiReferenceContributor extends PsiReferenceContributor {
             }
 
             ModuleId moduleId = moduleIdResponse.get();
+
+            JavaEditorElementExtractor extractor = new JavaEditorElementExtractor();
+            EditorElement editorElement = extractor.extract(literal, literal.getContainingFile(), false);
+
+            if (editorElement == null) {
+                return PsiReference.EMPTY_ARRAY;
+            }
 
             PossiblyUnavailable<Optional<I18nEntryPreview>> entryResponse =
                 projectService.query(new EditorElementI18nEntryPreviewQuery(moduleId, editorElement));
@@ -68,7 +71,7 @@ public class JavaI18nPsiReferenceContributor extends PsiReferenceContributor {
 
             if (entryResponse.result() != null && entryResponse.result().isPresent()) {
                 return new PsiReference[] {
-                    new I18nKeyPsiReference<>(psiLiteralExpression, moduleId, entryResponse.result().orElseThrow())
+                    new I18nKeyPsiReference<>(literal, moduleId, entryResponse.result().orElseThrow())
                 };
             }
 
