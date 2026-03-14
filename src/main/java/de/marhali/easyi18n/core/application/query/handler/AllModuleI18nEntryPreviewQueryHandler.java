@@ -2,53 +2,36 @@ package de.marhali.easyi18n.core.application.query.handler;
 
 import de.marhali.easyi18n.core.application.cqrs.PossiblyUnavailable;
 import de.marhali.easyi18n.core.application.cqrs.SynchronousQueryHandler;
-import de.marhali.easyi18n.core.application.query.EditorElementSuggestionsQuery;
-import de.marhali.easyi18n.core.application.service.CachedModuleRules;
+import de.marhali.easyi18n.core.application.query.AllModuleI18nEntryPreviewQuery;
 import de.marhali.easyi18n.core.application.state.I18nStore;
 import de.marhali.easyi18n.core.domain.config.ProjectConfig;
 import de.marhali.easyi18n.core.domain.model.*;
-import de.marhali.easyi18n.core.domain.rules.EditorElement;
-import de.marhali.easyi18n.core.domain.rules.I18nRuleEngine;
-import de.marhali.easyi18n.core.domain.rules.RuleMatch;
 import de.marhali.easyi18n.core.ports.ProjectConfigPort;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
 /**
- * Query handler for {@link EditorElementSuggestionsQuery}.
+ * Query handler for {@link AllModuleI18nEntryPreviewQuery}.
  *
  * @author marhali
  */
-public class EditorElementSuggestionsQueryHandler
-    implements SynchronousQueryHandler<EditorElementSuggestionsQuery, Optional<List<I18nEntryPreview>>> {
+public class AllModuleI18nEntryPreviewQueryHandler implements SynchronousQueryHandler<AllModuleI18nEntryPreviewQuery, List<I18nEntryPreview>> {
 
     private final @NotNull I18nStore store;
-    private final @NotNull CachedModuleRules cachedModuleRules;
     private final @NotNull ProjectConfigPort projectConfigPort;
 
-    public EditorElementSuggestionsQueryHandler(@NotNull I18nStore store, @NotNull CachedModuleRules cachedModuleRules, @NotNull ProjectConfigPort projectConfigPort) {
+    public AllModuleI18nEntryPreviewQueryHandler(@NotNull I18nStore store, @NotNull ProjectConfigPort projectConfigPort) {
         this.store = store;
-        this.cachedModuleRules = cachedModuleRules;
         this.projectConfigPort = projectConfigPort;
     }
 
     @Override
-    public @NotNull PossiblyUnavailable<Optional<List<I18nEntryPreview>>> handle(@NotNull EditorElementSuggestionsQuery query) {
+    public @NotNull PossiblyUnavailable<List<I18nEntryPreview>> handle(@NotNull AllModuleI18nEntryPreviewQuery query) {
         ModuleId moduleId = query.moduleId();
-        EditorElement editorElement = query.editorElement();
 
         if (!store.getSnapshot().hasModule(moduleId)) {
             return PossiblyUnavailable.unavailable();
-        }
-
-        I18nRuleEngine ruleEngine = cachedModuleRules.resolve(moduleId);
-
-        RuleMatch match = ruleEngine.match(editorElement);
-
-        if (!match.matched()) {
-            // Defined editor rules are not applicable to editor element
-            return PossiblyUnavailable.available(Optional.empty());
         }
 
         ProjectConfig projectConfig = projectConfigPort.read();
@@ -71,6 +54,6 @@ public class EditorElementSuggestionsQueryHandler
             }
         }
 
-        return PossiblyUnavailable.available(Optional.of(entries));
+        return PossiblyUnavailable.available(entries);
     }
 }
