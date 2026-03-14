@@ -33,7 +33,22 @@ public final class TranslationDialogFactory {
         @NotNull Project project,
         @NotNull ModuleId moduleId
     ) {
-        return new TranslationDialog(project, moduleId, TranslationDialogMode.ADD, NullableI18nEntry.empty());
+        return createAddDialog(project, moduleId, NullableI18nEntry.empty());
+    }
+
+    /**
+     * Instantiates a translation dialog for a new translation with prefilled values.
+     * @param project Opened project
+     * @param moduleId Module identifier
+     * @param originEntry Prefilled translation entry
+     * @return {@link TranslationDialog}
+     */
+    public static @NotNull TranslationDialog createAddDialog(
+        @NotNull Project project,
+        @NotNull ModuleId moduleId,
+        @NotNull NullableI18nEntry originEntry
+    ) {
+        return new TranslationDialog(project, moduleId, TranslationDialogMode.ADD, originEntry);
     }
 
     /**
