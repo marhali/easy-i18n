@@ -13,6 +13,7 @@ import java.util.Arrays;
  */
 public enum I18nBuiltinParam {
     LOCALE("locale"),
+    I18N_KEY("i18nKey")
     ;
 
     /**

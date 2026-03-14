@@ -88,13 +88,17 @@ public final class CoreWiring {
 
         // Queries
         var queries = new QueryDispatcher();
+        queries.register(PreviewLocaleIdQuery.class, new PreviewLocaleIdQueryHandler(projectConfigPort));
         queries.register(ConfiguredModulesQuery.class, new ConfiguredModulesQueryHandler(projectConfigPort));
         queries.register(ModuleLocalesQuery.class, new ModuleLocalesQueryHandler(ensureLoadedService, store));
         queries.register(TranslationByKeyQuery.class, new TranslationByKeyQueryHandler(ensureLoadedService, store));
         queries.register(ModuleViewQuery.class, new ModuleViewQueryHandler(ensureLoadedService, store, moduleViewProjector));
+        queries.register(I18nEntryByKeyCandidateQuery.class, new I18nEntryByKeyCandidateQueryHandler(store, keyResolver));
+        queries.register(I18nEntryPreviewQuery.class, new I18nEntryPreviewQueryHandler(store, keyResolver, projectConfigPort));
+        queries.register(AllModuleI18nEntryPreviewQuery.class, new AllModuleI18nEntryPreviewQueryHandler(store, projectConfigPort));
         queries.register(ModuleIdByEditorFilePathQuery.class, new ModuleIdByEditorFilePathQueryHandler(moduleIdByEditorFilePathResolver));
-        queries.register(EditorElementI18nEntryPreviewQuery.class, new EditorElementI18nEntryPreviewQueryHandler(store, cachedModuleRules, keyResolver, projectConfigPort));
-        queries.register(EditorElementSuggestionsQuery.class, new EditorElementSuggestionsQueryHandler(store, cachedModuleRules, projectConfigPort));
+        queries.register(MatchEditorElementQuery.class, new MatchEditorElementQueryHandler(cachedModuleRules));
+        queries.register(FilledI18nFlavorQuery.class, new FilledI18nFlavorQueryHandler(cachedModuleTemplates));
 
         return new I18nApplication(commands, queries);
     }
