@@ -9,6 +9,7 @@ import com.intellij.ui.JBColor;
 import com.intellij.ui.components.JBLabel;
 import com.intellij.ui.components.JBScrollPane;
 import com.intellij.ui.components.JBTextField;
+import com.intellij.util.Consumer;
 import com.intellij.util.ui.*;
 import de.marhali.easyi18n.core.domain.model.*;
 import de.marhali.easyi18n.idea.messages.PluginBundle;
@@ -35,6 +36,7 @@ public class TranslationDialog extends DialogWrapper {
     private final @NotNull TranslationDialogMode mode;
     private final @NotNull NullableI18nEntry originEntry;
 
+    private final @NotNull Set<@NotNull Consumer<@NotNull I18nEntry>> callbacks;
     private final @NotNull DialogViewModel vm;
 
     private @Nullable JBTextField keyField;
@@ -60,6 +62,7 @@ public class TranslationDialog extends DialogWrapper {
         var projectService = project.getService(I18nProjectService.class);
         var executorService = project.getService(PluginExecutorService.class);
 
+        this.callbacks = new HashSet<>();
         this.vm = new DialogViewModel(projectService, executorService, moduleId, ModalityState.stateForComponent(getRootPane()), getDisposable(), (o) -> isDisposed());
 
         this.originEntry = originEntry;
@@ -163,9 +166,26 @@ public class TranslationDialog extends DialogWrapper {
             mode,
             entry,
             originEntry,
-            (_void) -> super.doOKAction(),
+            (_void) -> {
+                // Handle dialog internals
+                super.doOKAction();
+
+                // Notify registered callbacks about freshly created translation entry
+                callbacks.forEach((callback) -> callback.consume(entry));
+            },
             this::handleThrowable
         );
+    }
+
+    /**
+     * Registers a callback that is consumed when the user submits the dialog (OK Action).
+     * Any other action will not call the consumer.
+     * In order to take effect the callbacks need to be registered before the dialog is opened.
+     *
+     * @param callback Consumer to register
+     */
+    public void registerCallback(@NotNull Consumer<@NotNull I18nEntry> callback) {
+        callbacks.add(callback);
     }
 
     protected void doDeleteAction() {
