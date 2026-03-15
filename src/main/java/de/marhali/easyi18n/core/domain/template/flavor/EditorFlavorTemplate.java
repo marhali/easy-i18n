@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
  *
  * @author marhali
  */
-public interface I18nFlavorTemplate {
+public interface EditorFlavorTemplate {
     /**
      * Constructs a translation flavor for the given translation key.
      * @param key Translation key

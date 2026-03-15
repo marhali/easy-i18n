@@ -3,7 +3,7 @@ package de.marhali.easyi18n.core.application.service;
 import de.marhali.easyi18n.core.domain.model.ModuleId;
 import de.marhali.easyi18n.core.domain.template.Templates;
 import de.marhali.easyi18n.core.domain.template.file.DefaultFileTemplate;
-import de.marhali.easyi18n.core.domain.template.flavor.DefaultI18nFlavorTemplate;
+import de.marhali.easyi18n.core.domain.template.flavor.DefaultEditorFlavorTemplate;
 import de.marhali.easyi18n.core.domain.template.key.DefaultKeyTemplate;
 import de.marhali.easyi18n.core.domain.template.path.DefaultPathTemplate;
 import de.marhali.easyi18n.core.ports.ProjectConfigPort;
@@ -66,7 +66,7 @@ public class CachedModuleTemplates {
         var pathTemplate = DefaultPathTemplate.compile(moduleConfig.pathTemplate());
         var fileTemplate = DefaultFileTemplate.compile(moduleConfig.fileTemplate());
         var keyTemplate = DefaultKeyTemplate.compile(moduleConfig.keyTemplate());
-        var flavorTemplate = DefaultI18nFlavorTemplate.compile(moduleConfig.i18nTemplate());
+        var flavorTemplate = DefaultEditorFlavorTemplate.compile(moduleConfig.editorFlavorTemplate());
 
         return new Templates(pathTemplate, fileTemplate, keyTemplate, flavorTemplate);
     }

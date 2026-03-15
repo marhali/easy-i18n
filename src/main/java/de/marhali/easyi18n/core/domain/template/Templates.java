@@ -1,7 +1,7 @@
 package de.marhali.easyi18n.core.domain.template;
 
 import de.marhali.easyi18n.core.domain.template.file.FileTemplate;
-import de.marhali.easyi18n.core.domain.template.flavor.I18nFlavorTemplate;
+import de.marhali.easyi18n.core.domain.template.flavor.EditorFlavorTemplate;
 import de.marhali.easyi18n.core.domain.template.key.KeyTemplate;
 import de.marhali.easyi18n.core.domain.template.path.PathTemplate;
 import org.jetbrains.annotations.NotNull;
@@ -20,6 +20,6 @@ public record Templates(
     @NotNull PathTemplate path,
     @NotNull FileTemplate file,
     @NotNull KeyTemplate key,
-    @NotNull I18nFlavorTemplate flavor
+    @NotNull EditorFlavorTemplate flavor
     ) {
 }

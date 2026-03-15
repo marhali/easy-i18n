@@ -30,8 +30,7 @@ public final class ProjectConfigModuleStateMapper {
             state.defaultKeyPrefixes != null
                 ? state.defaultKeyPrefixes.stream().map(I18nKeyPrefix::of).collect(Collectors.toSet())
                 : DEFAULTS.defaultKeyPrefixes(),
-            Optional.ofNullable(state.i18nTemplate).orElse(DEFAULTS.i18nTemplate()),
-            Optional.ofNullable(state.keyNamingConvention).orElse(DEFAULTS.keyNamingConvention()),
+            Optional.ofNullable(state.editorFlavorTemplate).orElse(DEFAULTS.editorFlavorTemplate()),
             state.editorRules != null
                 ? state.editorRules.stream().map(EditorRuleStateMapper::toDomain).toList()
                 : DEFAULTS.editorRules()
@@ -47,8 +46,7 @@ public final class ProjectConfigModuleStateMapper {
             domain.keyTemplate(),
             domain.rootDirectory(),
             domain.defaultKeyPrefixes().stream().map(I18nKeyPrefix::canonicalPrefix).collect(Collectors.toSet()),
-            domain.i18nTemplate(),
-            domain.keyNamingConvention(),
+            domain.editorFlavorTemplate(),
             domain.editorRules().stream().map(EditorRuleStateMapper::fromDomain).toList()
         );
     }

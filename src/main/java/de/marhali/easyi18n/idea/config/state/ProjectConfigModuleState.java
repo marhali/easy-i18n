@@ -1,7 +1,6 @@
 package de.marhali.easyi18n.idea.config.state;
 
 import de.marhali.easyi18n.core.domain.config.FileCodec;
-import de.marhali.easyi18n.core.domain.config.KeyNamingConvention;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -22,8 +21,7 @@ public class ProjectConfigModuleState {
     public @Nullable String keyTemplate;
     public @Nullable String rootDirectory;
     public @Nullable Set<@NotNull String> defaultKeyPrefixes;
-    public @Nullable String i18nTemplate;
-    public @Nullable KeyNamingConvention keyNamingConvention;
+    public @Nullable String editorFlavorTemplate;
     public @Nullable List<@NotNull EditorRuleState> editorRules;
 
     @Deprecated
@@ -37,8 +35,7 @@ public class ProjectConfigModuleState {
         @Nullable String keyTemplate,
         @Nullable String rootDirectory,
         @Nullable Set<@NotNull String> defaultKeyPrefixes,
-        @Nullable String i18nTemplate,
-        @Nullable KeyNamingConvention keyNamingConvention,
+        @Nullable String editorFlavorTemplate,
         @Nullable List<@NotNull EditorRuleState> editorRules
     ) {
         this.id = id;
@@ -48,8 +45,7 @@ public class ProjectConfigModuleState {
         this.keyTemplate = keyTemplate;
         this.rootDirectory = rootDirectory;
         this.defaultKeyPrefixes = defaultKeyPrefixes;
-        this.i18nTemplate = i18nTemplate;
-        this.keyNamingConvention = keyNamingConvention;
+        this.editorFlavorTemplate = editorFlavorTemplate;
         this.editorRules = editorRules;
     }
 
@@ -64,8 +60,7 @@ public class ProjectConfigModuleState {
             && Objects.equals(keyTemplate, that.keyTemplate)
             && Objects.equals(rootDirectory, that.rootDirectory)
             && Objects.equals(defaultKeyPrefixes, that.defaultKeyPrefixes)
-            && Objects.equals(i18nTemplate, that.i18nTemplate)
-            && keyNamingConvention == that.keyNamingConvention
+            && Objects.equals(editorFlavorTemplate, that.editorFlavorTemplate)
             && Objects.equals(editorRules, that.editorRules);
     }
 
@@ -74,7 +69,7 @@ public class ProjectConfigModuleState {
         return Objects.hash(
             id, pathTemplate, fileCodec, fileTemplate,
             keyTemplate, rootDirectory, defaultKeyPrefixes,
-            i18nTemplate, keyNamingConvention, editorRules
+            editorFlavorTemplate, editorRules
         );
     }
 
@@ -88,8 +83,7 @@ public class ProjectConfigModuleState {
             ", keyTemplate='" + keyTemplate + '\'' +
             ", rootDirectory='" + rootDirectory + '\'' +
             ", defaultKeyPrefixes=" + defaultKeyPrefixes +
-            ", i18nTemplate='" + i18nTemplate + '\'' +
-            ", keyNamingConvention=" + keyNamingConvention +
+            ", editorFlavorTemplate='" + editorFlavorTemplate + '\'' +
             ", editorRules=" + editorRules +
             '}';
     }

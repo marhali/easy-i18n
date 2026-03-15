@@ -1,7 +1,6 @@
 package de.marhali.easyi18n.core.domain.config.preset;
 
 import de.marhali.easyi18n.core.domain.config.FileCodec;
-import de.marhali.easyi18n.core.domain.config.KeyNamingConvention;
 import de.marhali.easyi18n.core.domain.config.ProjectConfigModule;
 import de.marhali.easyi18n.core.domain.model.ModuleId;
 import org.jetbrains.annotations.NotNull;
@@ -23,8 +22,7 @@ public class ProjectConfigModulePresetDefault implements PresetProvider<ProjectC
             .keyTemplate("")
             .rootDirectory("")
             .defaultKeyPrefixes()
-            .i18nTemplate("$i18n.t")
-            .keyNamingConvention(KeyNamingConvention.CAMEL_CASE)
+            .editorFlavorTemplate("$i18n.t(\"{i18nKey}\")")
             .editorRules()
             .build();
     }

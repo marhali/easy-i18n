@@ -24,8 +24,7 @@ public class ProjectConfigModuleBuilder {
     private String keyTemplate;
     private String rootDirectory;
     private Set<@NotNull I18nKeyPrefix> defaultKeyPrefixes;
-    private String i18nTemplate;
-    private KeyNamingConvention keyNamingConvention;
+    private String editorFlavorTemplate;
     private List<EditorRule> editorRules;
 
     protected ProjectConfigModuleBuilder() {}
@@ -38,8 +37,7 @@ public class ProjectConfigModuleBuilder {
         this.keyTemplate = module.keyTemplate();
         this.rootDirectory = module.rootDirectory();
         this.defaultKeyPrefixes = module.defaultKeyPrefixes();
-        this.i18nTemplate = module.i18nTemplate();
-        this.keyNamingConvention = module.keyNamingConvention();
+        this.editorFlavorTemplate = module.editorFlavorTemplate();
         this.editorRules = module.editorRules();
     }
 
@@ -87,13 +85,8 @@ public class ProjectConfigModuleBuilder {
         return this;
     }
 
-    public @NotNull ProjectConfigModuleBuilder i18nTemplate(@NotNull String i18nTemplate) {
-        this.i18nTemplate = i18nTemplate;
-        return this;
-    }
-
-    public @NotNull ProjectConfigModuleBuilder keyNamingConvention(@NotNull KeyNamingConvention keyNamingConvention) {
-        this.keyNamingConvention = keyNamingConvention;
+    public @NotNull ProjectConfigModuleBuilder editorFlavorTemplate(@NotNull String editorFlavorTemplate) {
+        this.editorFlavorTemplate = editorFlavorTemplate;
         return this;
     }
 
@@ -122,8 +115,7 @@ public class ProjectConfigModuleBuilder {
             keyTemplate,
             rootDirectory,
             defaultKeyPrefixes,
-            i18nTemplate,
-            keyNamingConvention,
+            editorFlavorTemplate,
             editorRules
         );
     }

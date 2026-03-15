@@ -19,8 +19,7 @@ import java.util.Set;
  * @param keyTemplate Key template syntax.
  * @param rootDirectory Root directory from which this module configuration applies.
  * @param defaultKeyPrefixes Set of default translation key prefixes.
- * @param i18nTemplate Template to apply for translation message extraction.
- * @param keyNamingConvention Defines the used key naming convention.
+ * @param editorFlavorTemplate Template to apply for translation message extraction.
  * @param editorRules Editor assistance rules
  *
  * @author marhali
@@ -33,8 +32,7 @@ public record ProjectConfigModule(
     @NotNull String keyTemplate,
     @NotNull String rootDirectory,
     @NotNull Set<@NotNull I18nKeyPrefix> defaultKeyPrefixes,
-    @NotNull String i18nTemplate,
-    @NotNull KeyNamingConvention keyNamingConvention,
+    @NotNull String editorFlavorTemplate,
     @NotNull List<@NotNull EditorRule> editorRules
     ) {
     public static @NotNull ProjectConfigModule fromDefaultPreset() {

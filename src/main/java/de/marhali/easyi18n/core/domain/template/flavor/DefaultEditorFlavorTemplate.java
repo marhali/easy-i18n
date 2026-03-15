@@ -11,22 +11,22 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 /**
- * Default implementation for {@link I18nFlavorTemplate}.
+ * Default implementation for {@link EditorFlavorTemplate}.
  *
  * @author marhali
  */
-public class DefaultI18nFlavorTemplate implements I18nFlavorTemplate{
+public class DefaultEditorFlavorTemplate implements EditorFlavorTemplate {
 
-    public static @NotNull DefaultI18nFlavorTemplate compile(@NotNull String templateDefinition) {
+    public static @NotNull DefaultEditorFlavorTemplate compile(@NotNull String templateDefinition) {
         var template = TemplateDefinitionParser.parse(templateDefinition);
         var formulator = new TemplateValueFormulator(template);
-        return new DefaultI18nFlavorTemplate(template, formulator);
+        return new DefaultEditorFlavorTemplate(template, formulator);
     }
 
     private final @NotNull Template template;
     private final @NotNull TemplateValueFormulator formulator;
 
-    public DefaultI18nFlavorTemplate(@NotNull Template template, @NotNull TemplateValueFormulator formulator) {
+    public DefaultEditorFlavorTemplate(@NotNull Template template, @NotNull TemplateValueFormulator formulator) {
         this.template = template;
         this.formulator = formulator;
     }
