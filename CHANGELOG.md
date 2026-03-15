@@ -10,7 +10,7 @@ PLEASE CHECK THE MIGRATION GUIDE ON https://easy-i18n.github.io/migration/v5/ BE
 ### Added
 
 - Highly customizable configuration options using a templating system
-- Support for multiple translation modules within a single IDEA project
+- Support for multiple translation modules within a single project
 - Configuration support to define target editor elements to apply fine-grained i18n assistance
 - Quick fix intention action to create a new translation
 - Check if translation key exists in add translation dialog
