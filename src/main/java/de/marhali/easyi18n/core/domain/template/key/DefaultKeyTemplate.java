@@ -39,6 +39,11 @@ public class DefaultKeyTemplate implements KeyTemplate {
     }
 
     @Override
+    public @NotNull Template getTemplate() {
+        return template;
+    }
+
+    @Override
     public @NotNull I18nParams toParams(@NotNull I18nKey key) {
         I18nParams params = resolver.resolve(key.canonical());
 
