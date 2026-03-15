@@ -7,6 +7,8 @@ Easy I18n is a plugin based on the [IntelliJ Platform SDK](https://plugins.jetbr
 This plugin offers a wide range of [configuration options](configuration/index.md) to adapt to the specific requirements of the project.
 However, to help you get started quickly, there are a variety of [presets](configuration/presets.md) for common use cases.
 
+___
+
 ## Features
 
 - Support for Multi-Module projects, ideally for monorepos
@@ -23,6 +25,8 @@ However, to help you get started quickly, there are a variety of [presets](confi
     - Extract translation action to localize hard-coded literals
     - Documentation provider to preview translation values
     - Folding of translation keys with preview locale value
+
+___
 
 ## Builtin Support
 
