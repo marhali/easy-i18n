@@ -8,9 +8,11 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiLiteralExpression;
 import com.intellij.psi.util.PsiTreeUtil;
 import de.marhali.easyi18n.core.application.cqrs.PossiblyUnavailable;
-import de.marhali.easyi18n.core.application.query.EditorElementI18nEntryPreviewQuery;
+import de.marhali.easyi18n.core.application.query.I18nEntryPreviewQuery;
+import de.marhali.easyi18n.core.application.query.MatchEditorElementQuery;
 import de.marhali.easyi18n.core.application.query.ModuleIdByEditorFilePathQuery;
 import de.marhali.easyi18n.core.domain.model.I18nEntryPreview;
+import de.marhali.easyi18n.core.domain.model.I18nKeyCandidate;
 import de.marhali.easyi18n.core.domain.model.ModuleId;
 import de.marhali.easyi18n.core.domain.rules.EditorElement;
 import de.marhali.easyi18n.core.domain.rules.EditorFilePath;
@@ -28,14 +30,19 @@ import java.util.Optional;
 public class I18nDocumentationTargetProvider implements DocumentationTargetProvider {
     @Override
     public @NotNull List<? extends @NotNull DocumentationTarget> documentationTargets(@NotNull PsiFile file, int offset) {
-
         PsiElement leaf = file.findElementAt(offset);
+
         if (leaf == null) {
             return List.of();
         }
 
         PsiLiteralExpression literal = PsiTreeUtil.getParentOfType(leaf, PsiLiteralExpression.class, false);
         if (literal == null) {
+            return List.of();
+        }
+
+        Object value = literal.getValue();
+        if (!(value instanceof String key) || key.isBlank()) {
             return List.of();
         }
 
@@ -61,8 +68,14 @@ public class I18nDocumentationTargetProvider implements DocumentationTargetProvi
             return List.of();
         }
 
-        PossiblyUnavailable<Optional<I18nEntryPreview>> entryResponse =
-            projectService.query(new EditorElementI18nEntryPreviewQuery(moduleId, editorElement));
+        Boolean editorElementMatched = projectService.query(new MatchEditorElementQuery(moduleId, editorElement));
+
+        if (!editorElementMatched) {
+            return List.of();
+        }
+
+        PossiblyUnavailable<Optional<I18nEntryPreview>> entryResponse
+            = projectService.query(new I18nEntryPreviewQuery(moduleId, I18nKeyCandidate.of(key)));
 
         if (!entryResponse.available()) {
             // Response is not available - module is not loaded yet

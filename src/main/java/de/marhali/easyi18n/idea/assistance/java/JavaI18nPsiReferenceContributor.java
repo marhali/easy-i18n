@@ -5,9 +5,11 @@ import com.intellij.patterns.PlatformPatterns;
 import com.intellij.psi.*;
 import com.intellij.util.ProcessingContext;
 import de.marhali.easyi18n.core.application.cqrs.PossiblyUnavailable;
-import de.marhali.easyi18n.core.application.query.EditorElementI18nEntryPreviewQuery;
+import de.marhali.easyi18n.core.application.query.I18nEntryPreviewQuery;
+import de.marhali.easyi18n.core.application.query.MatchEditorElementQuery;
 import de.marhali.easyi18n.core.application.query.ModuleIdByEditorFilePathQuery;
 import de.marhali.easyi18n.core.domain.model.I18nEntryPreview;
+import de.marhali.easyi18n.core.domain.model.I18nKeyCandidate;
 import de.marhali.easyi18n.core.domain.model.ModuleId;
 import de.marhali.easyi18n.core.domain.rules.*;
 import de.marhali.easyi18n.idea.assistance.EditorFilePathExtractor;
@@ -38,6 +40,11 @@ public class JavaI18nPsiReferenceContributor extends PsiReferenceContributor {
                 return PsiReference.EMPTY_ARRAY;
             }
 
+            Object value = literal.getValue();
+            if (!(value instanceof String key) || key.isBlank()) {
+                return PsiReference.EMPTY_ARRAY;
+            }
+
             Project project = psiElement.getProject();
 
             I18nProjectService projectService = project.getService(I18nProjectService.class);
@@ -60,8 +67,15 @@ public class JavaI18nPsiReferenceContributor extends PsiReferenceContributor {
                 return PsiReference.EMPTY_ARRAY;
             }
 
-            PossiblyUnavailable<Optional<I18nEntryPreview>> entryResponse =
-                projectService.query(new EditorElementI18nEntryPreviewQuery(moduleId, editorElement));
+            Boolean editorElementMatched = projectService.query(new MatchEditorElementQuery(moduleId, editorElement));
+
+            if (!editorElementMatched) {
+                // Not targeted by editor rules
+                return PsiReference.EMPTY_ARRAY;
+            }
+
+            PossiblyUnavailable<Optional<I18nEntryPreview>> entryResponse
+                = projectService.query(new I18nEntryPreviewQuery(moduleId, I18nKeyCandidate.of(key)));
 
             if (!entryResponse.available()) {
                 // Response is not available - module is not loaded yet

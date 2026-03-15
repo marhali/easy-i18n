@@ -10,9 +10,11 @@ import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.*;
 import de.marhali.easyi18n.core.application.cqrs.PossiblyUnavailable;
-import de.marhali.easyi18n.core.application.query.EditorElementI18nEntryPreviewQuery;
+import de.marhali.easyi18n.core.application.query.I18nEntryPreviewQuery;
+import de.marhali.easyi18n.core.application.query.MatchEditorElementQuery;
 import de.marhali.easyi18n.core.application.query.ModuleIdByEditorFilePathQuery;
 import de.marhali.easyi18n.core.domain.model.I18nEntryPreview;
+import de.marhali.easyi18n.core.domain.model.I18nKeyCandidate;
 import de.marhali.easyi18n.core.domain.model.ModuleId;
 import de.marhali.easyi18n.core.domain.rules.EditorElement;
 import de.marhali.easyi18n.core.domain.rules.EditorFilePath;
@@ -68,9 +70,15 @@ public class JavaI18nFoldingBuilder extends FoldingBuilderEx implements DumbAwar
                     return;
                 }
 
-                PossiblyUnavailable<Optional<I18nEntryPreview>> entryResponse =
-                    projectService.query(new EditorElementI18nEntryPreviewQuery(moduleId, editorElement));
+                Boolean editorElementMatched = projectService.query(new MatchEditorElementQuery(moduleId, editorElement));
 
+                if (editorElementMatched) {
+                    // Not targeted by editor rules
+                    return;
+                }
+
+                PossiblyUnavailable<Optional<I18nEntryPreview>> entryResponse
+                    = projectService.query(new I18nEntryPreviewQuery(moduleId, I18nKeyCandidate.of(key)));
 
                 if (!entryResponse.available() || entryResponse.result() == null) {
                     // Response is not available - module is not loaded yet

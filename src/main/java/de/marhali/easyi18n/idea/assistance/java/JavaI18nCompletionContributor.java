@@ -11,7 +11,8 @@ import com.intellij.psi.*;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.ProcessingContext;
 import de.marhali.easyi18n.core.application.cqrs.PossiblyUnavailable;
-import de.marhali.easyi18n.core.application.query.EditorElementSuggestionsQuery;
+import de.marhali.easyi18n.core.application.query.AllModuleI18nEntryPreviewQuery;
+import de.marhali.easyi18n.core.application.query.MatchEditorElementQuery;
 import de.marhali.easyi18n.core.application.query.ModuleIdByEditorFilePathQuery;
 import de.marhali.easyi18n.core.domain.model.I18nEntryPreview;
 import de.marhali.easyi18n.core.domain.model.ModuleId;
@@ -70,8 +71,15 @@ public class JavaI18nCompletionContributor extends CompletionContributor {
                         return;
                     }
 
-                    PossiblyUnavailable<Optional<List<I18nEntryPreview>>> entriesResponse =
-                        projectService.query(new EditorElementSuggestionsQuery(moduleId, editorElement));
+                    Boolean editorElementMatched = projectService.query(new MatchEditorElementQuery(moduleId, editorElement));
+
+                    if (!editorElementMatched) {
+                        // Not targeted by editor rules
+                        return;
+                    }
+
+                    PossiblyUnavailable<List<I18nEntryPreview>> entriesResponse
+                        = projectService.query(new AllModuleI18nEntryPreviewQuery(moduleId));
 
                     if (!entriesResponse.available()) {
                         // Response is not available - module is not loaded yet
@@ -83,7 +91,7 @@ public class JavaI18nCompletionContributor extends CompletionContributor {
                         return;
                     }
 
-                    List<I18nEntryPreview> suggestions = entriesResponse.result().get();
+                    List<I18nEntryPreview> suggestions = entriesResponse.result();
 
                     Object rawValue = literal.getValue();
 
