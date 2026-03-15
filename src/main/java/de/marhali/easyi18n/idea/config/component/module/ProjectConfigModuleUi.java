@@ -9,6 +9,7 @@ import de.marhali.easyi18n.core.domain.config.preset.ProjectConfigModulePreset;
 import de.marhali.easyi18n.core.domain.model.ModuleId;
 import de.marhali.easyi18n.idea.config.ProjectConfigService;
 import de.marhali.easyi18n.idea.config.component.ConfigComponent;
+import de.marhali.easyi18n.idea.help.SuggestModulePresetUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -28,10 +29,18 @@ public class ProjectConfigModuleUi
         Consumer<ProjectConfigModulePreset> onApplyPreset = (presetProvider) ->
             writeStateToComponent(presetProvider.applyPreset(project.getService(ProjectConfigService.class).getDomainState().modules().get(moduleId)));
 
+        Runnable onSuggestPreset = () -> {
+            ProjectConfigModuleBuilder builder = ProjectConfigModule.builder();
+            readStateFromComponent(builder);
+            ProjectConfigModule config = builder.build();
+
+            SuggestModulePresetUtil.suggest(project, config);
+        };
+
         this.moduleId = moduleId;
         this.components = List.of(
             // Register every child component here
-            new ProjectConfigModulePresetUi(project, onApplyPreset),
+            new ProjectConfigModulePresetUi(project, onApplyPreset, onSuggestPreset),
             new ProjectConfigModuleResourceUi(project),
             new ProjectConfigModuleEditorUi(project),
             new ProjectConfigModuleEditorRulesUi(project)

@@ -3,6 +3,7 @@ package de.marhali.easyi18n.idea.config.component.module;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.ComboBox;
 import com.intellij.ui.SimpleListCellRenderer;
+import com.intellij.ui.components.ActionLink;
 import com.intellij.util.Consumer;
 import com.intellij.util.ui.FormBuilder;
 import de.marhali.easyi18n.core.domain.config.ProjectConfigModule;
@@ -25,14 +26,20 @@ public class ProjectConfigModulePresetUi
     extends ConfigComponent<FormBuilder, ProjectConfigModule, ProjectConfigModuleBuilder> {
 
     private final @NotNull Consumer<ProjectConfigModulePreset> onApplyPreset;
+    private final @NotNull Runnable onSuggestPreset;
     private boolean suppressEvents;
 
     private @Nullable ComboBox<ProjectConfigModulePreset> preset;
 
-    protected ProjectConfigModulePresetUi(@NotNull Project project, @NotNull Consumer<ProjectConfigModulePreset> onApplyPreset) {
+    protected ProjectConfigModulePresetUi(
+        @NotNull Project project,
+        @NotNull Consumer<ProjectConfigModulePreset> onApplyPreset,
+        @NotNull Runnable onSuggestPreset
+    ) {
         super(project);
 
         this.onApplyPreset = onApplyPreset;
+        this.onSuggestPreset = onSuggestPreset;
         this.suppressEvents = false;
     }
 
@@ -47,6 +54,12 @@ public class ProjectConfigModulePresetUi
         builder.addLabeledComponent(
             PluginBundle.message("config.project.modules.preset.label"),
             preset, 1, false
+        );
+
+        // Suggest Preset
+        builder.addComponent(new ActionLink(
+            PluginBundle.message("config.project.modules.preset.suggest"),
+            (ActionListener) (e) -> onSuggestPreset.run())
         );
 
         // Listener
@@ -65,7 +78,8 @@ public class ProjectConfigModulePresetUi
     @Override
     public boolean isModified(@NotNull ProjectConfigModule originState) {
         // This is a stateless child
-        return false;    }
+        return false;
+    }
 
     @Override
     public void writeStateToComponent(@NotNull ProjectConfigModule state) {
