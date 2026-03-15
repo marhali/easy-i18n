@@ -1,27 +1,5 @@
 <idea-plugin>
     <extensions defaultExtensionNs="com.intellij">
-        <intentionAction>
-            <className>de.marhali.easyi18n.assistance.intention.KtTranslationIntention</className>
-        </intentionAction>
 
-        <psi.referenceContributor
-                language="kotlin"
-                implementation="de.marhali.easyi18n.assistance.reference.KtKeyReferenceContributor"
-        />
-
-        <lang.documentationProvider
-                language="kotlin"
-                implementationClass="de.marhali.easyi18n.assistance.documentation.CommonDocumentationProvider"
-        />
-
-        <completion.contributor
-                language="kotlin"
-                implementationClass="de.marhali.easyi18n.assistance.completion.KtCompletionContributor"
-        />
-
-        <lang.foldingBuilder
-                language="kotlin"
-                implementationClass="de.marhali.easyi18n.assistance.folding.KtFoldingBuilder"
-        />
     </extensions>
 </idea-plugin>

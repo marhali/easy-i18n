@@ -14,9 +14,9 @@ import de.marhali.easyi18n.core.domain.model.I18nValue;
 import de.marhali.easyi18n.core.domain.model.ModuleId;
 import de.marhali.easyi18n.idea.dialog.TranslationDialogFactory;
 import de.marhali.easyi18n.idea.toolwindow.listener.DeleteKeyListener;
+import de.marhali.easyi18n.idea.toolwindow.listener.EnterKeyListener;
 import de.marhali.easyi18n.idea.toolwindow.listener.PopupClickListener;
 import de.marhali.easyi18n.idea.toolwindow.ui.ViewPanel;
-import de.marhali.easyi18n.listener.ReturnKeyListener;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -58,7 +58,7 @@ public class I18nTableViewPanel implements ViewPanel<ModuleView.Table> {
         table.setRowHeight(JBUI.scale(28));
         table.setDefaultRenderer(Object.class, new TableCellRenderer());
         table.addMouseListener(new PopupClickListener((_e) -> showRowAsDialog(table.getSelectedRow())));
-        table.addKeyListener(new ReturnKeyListener(() -> showRowAsDialog(table.getSelectedRow())));
+        table.addKeyListener(new EnterKeyListener(() -> showRowAsDialog(table.getSelectedRow())));
         table.addKeyListener(new DeleteKeyListener(() -> handleDeleteRows(table.getSelectedRows())));
     }
 

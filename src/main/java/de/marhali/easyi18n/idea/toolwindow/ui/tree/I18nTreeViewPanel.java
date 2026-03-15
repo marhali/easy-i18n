@@ -23,10 +23,10 @@ import de.marhali.easyi18n.core.domain.model.ModuleId;
 import de.marhali.easyi18n.idea.action.CollapseAllAction;
 import de.marhali.easyi18n.idea.action.ExpandAllAction;
 import de.marhali.easyi18n.idea.dialog.TranslationDialogFactory;
+import de.marhali.easyi18n.idea.toolwindow.listener.DeleteKeyListener;
+import de.marhali.easyi18n.idea.toolwindow.listener.EnterKeyListener;
 import de.marhali.easyi18n.idea.toolwindow.listener.PopupClickListener;
 import de.marhali.easyi18n.idea.toolwindow.ui.ViewPanel;
-import de.marhali.easyi18n.listener.DeleteKeyListener;
-import de.marhali.easyi18n.listener.ReturnKeyListener;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -79,7 +79,7 @@ public class I18nTreeViewPanel implements ViewPanel<ModuleView.Tree> {
         tree.setCellRenderer(new TreeNodeRenderer());
         tree.setEditable(true);
         tree.addMouseListener(new PopupClickListener((_e) -> showSelectionAsDialog()));
-        tree.addKeyListener(new ReturnKeyListener(this::showSelectionAsDialog));
+        tree.addKeyListener(new EnterKeyListener(this::showSelectionAsDialog));
         tree.addKeyListener(new DeleteKeyListener(this::handleDeleteSelections));
     }
 
