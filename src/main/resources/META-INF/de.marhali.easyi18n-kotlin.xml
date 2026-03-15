@@ -1,5 +1,42 @@
 <idea-plugin>
-    <extensions defaultExtensionNs="com.intellij">
+  <extensions defaultExtensionNs="com.intellij">
+    <psi.referenceContributor
+      language="kotlin"
+      implementation="de.marhali.easyi18n.idea.assistance.kotlin.KotlinI18nPsiReferenceContributor"
+    />
 
-    </extensions>
+    <completion.contributor
+      language="kotlin"
+      implementationClass="de.marhali.easyi18n.idea.assistance.kotlin.KotlinI18nCompletionContributor"
+    />
+
+    <platform.backend.documentation.targetProvider
+      implementation="de.marhali.easyi18n.idea.assistance.I18nDocumentationTargetProvider"
+    />
+
+    <lang.foldingBuilder
+      language="kotlin"
+      implementationClass="de.marhali.easyi18n.idea.assistance.kotlin.KotlinI18nFoldingBuilder"
+    />
+
+    <localInspection
+      language="kotlin"
+      shortName="UnresolvedI18nKey"
+      enabledByDefault="true"
+      level="ERROR"
+      implementationClass="de.marhali.easyi18n.idea.assistance.kotlin.KotlinI18nKeyLocalInspection"
+      bundle="messages.PluginBundle"
+      groupKey="editor.intention.family"
+      key="editor.intention.unresolved.title"
+    />
+
+    <intentionAction>
+      <className>de.marhali.easyi18n.idea.assistance.kotlin.KotlinExtractTranslationIntention</className>
+      <language>kotlin</language>
+      <bundleName>messages.PluginBundle</bundleName>
+      <skipBeforeAfter>true</skipBeforeAfter>
+      <categoryKey>editor.intention.family</categoryKey>
+      <descriptionDirectoryName>extract</descriptionDirectoryName>
+    </intentionAction>
+  </extensions>
 </idea-plugin>
