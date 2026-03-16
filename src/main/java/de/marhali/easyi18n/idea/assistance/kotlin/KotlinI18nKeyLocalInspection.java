@@ -21,6 +21,7 @@ import de.marhali.easyi18n.idea.messages.PluginBundle;
 import de.marhali.easyi18n.idea.service.I18nProjectService;
 import de.marhali.easyi18n.idea.service.ScheduledModuleLoaderService;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.jetbrains.kotlin.psi.KtLiteralStringTemplateEntry;
 import org.jetbrains.kotlin.psi.KtStringTemplateEntry;
 import org.jetbrains.kotlin.psi.KtStringTemplateExpression;
@@ -32,6 +33,11 @@ import java.util.Optional;
  * @author marhali
  */
 public class KotlinI18nKeyLocalInspection extends LocalInspectionTool {
+
+    @Override
+    public @Nullable String getDescriptionFileName() {
+        return "UnresolvedI18nKey";
+    }
 
     @Override
     public @NotNull PsiElementVisitor buildVisitor(@NotNull ProblemsHolder holder, boolean isOnTheFly) {
