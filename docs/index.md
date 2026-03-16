@@ -2,7 +2,7 @@
 
 Easy I18n is a plugin based on the [IntelliJ Platform SDK](https://plugins.jetbrains.com/docs/intellij/welcome.html) to handle the process of [internationalization](https://en.wikipedia.org/wiki/Internationalization_and_localization) in your project.
 
-> Translating large projects using your favorite IDE has never been easier!
+> **Translating large projects using your favorite IDE has never been easier!**
 
 This plugin offers a wide range of [configuration options](configuration/index.md) to adapt to the specific requirements of the project.
 However, to help you get started quickly, there are a variety of [presets](configuration/presets.md) for common use cases.
