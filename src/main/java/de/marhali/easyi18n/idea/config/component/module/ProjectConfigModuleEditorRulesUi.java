@@ -145,8 +145,10 @@ public class ProjectConfigModuleEditorRulesUi
         @NotNull JBTable table, @NotNull EditorRuleTableModel ruleTableModel,
         @NotNull EditorRuleConstraintTableModel constraintTableModel, @NotNull EditorRuleConstraint newConstraint) {
         var selectedRuleRow = table.getSelectedRow();
-        ruleTableModel.addConstraintToRow(selectedRuleRow, newConstraint);
-        constraintTableModel.setConstraints(selectedRuleRow, ruleTableModel.getRuleAtArow(selectedRuleRow).constraints());
+        if (selectedRuleRow > -1) { // Only add constraint if a rule is selected
+            ruleTableModel.addConstraintToRow(selectedRuleRow, newConstraint);
+            constraintTableModel.setConstraints(selectedRuleRow, ruleTableModel.getRuleAtArow(selectedRuleRow).constraints());
+        }
     }
 
     private static void addNewRule(@NotNull JBTable table, @NotNull EditorRuleTableModel tableModel,
