@@ -21,7 +21,7 @@
 
     <localInspection
       language="kotlin"
-      shortName="UnresolvedI18nKey"
+      shortName="UnresolvedI18nKeyKotlin"
       enabledByDefault="true"
       level="ERROR"
       implementationClass="de.marhali.easyi18n.idea.assistance.kotlin.KotlinI18nKeyLocalInspection"

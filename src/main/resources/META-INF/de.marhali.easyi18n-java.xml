@@ -21,7 +21,7 @@
 
     <localInspection
       language="JAVA"
-      shortName="UnresolvedI18nKey"
+      shortName="UnresolvedI18nKeyJava"
       enabledByDefault="true"
       level="ERROR"
       implementationClass="de.marhali.easyi18n.idea.assistance.java.JavaI18nKeyLocalInspection"
