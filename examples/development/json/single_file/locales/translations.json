@@ -1,0 +1,198 @@
+{
+  "de_DE": {
+    "primitive": {
+      "boolean": {
+        "truthy": true,
+        "falsy": false
+      },
+      "number": {
+        "zero": 0,
+        "positive": 187,
+        "negative": -187,
+        "float": 1.87
+      },
+      "string": {
+        "sample": "Eine beispielhafte Zeichenkette.",
+        "escaped": "\nIch bin eine Zeichenkette mit Escape-Sequenzen\"",
+        "multiline": "\nIch bin eine\nmehrzeilige\nZeichenkette\n\n"
+      },
+      "nullish": null
+    },
+    "object": {
+      "deeply": {
+        "nested": {
+          "structure": {
+            "description": "Eine tief verschachtelte Zeichenkette."
+          }
+        }
+      },
+      "hybrid.flat.structure": "Eine teils verschachtelte & teils flache Zeichenkette"
+    },
+    "array": [
+      true,
+      false,
+      0,
+      187,
+      -187,
+      1.87,
+      "Eine andere Zeichenkette"
+    ],
+    "only.flat.structure": "Eine super flache Zeichenkette",
+    "missingValues": {
+      "only": {
+        "de_DE": "Ein Wert, der nur bei de_DE gesetzt ist."
+      }
+    },
+    "duplicated": {
+      "alpha": "Ein doppelter Wert.",
+      "bravo": "Ein doppelter Wert."
+    }
+  },
+  "en_GB": {
+    "primitive": {
+      "boolean": {
+        "truthy": true,
+        "falsy": false
+      },
+      "number": {
+        "zero": 0,
+        "positive": 187,
+        "negative": -187,
+        "float": 1.87
+      },
+      "string": {
+        "sample": "An exemplary string.",
+        "escaped": "\nI am a string with escape sequences\"",
+        "multiline": "\nI am a\nmultiline\nstring\n\n"
+      },
+      "nullish": null
+    },
+    "object": {
+      "deeply": {
+        "nested": {
+          "structure": {
+            "description": "A deeply nested string."
+          }
+        }
+      },
+      "hybrid.flat.structure": "A partly nested & partly flat string"
+    },
+    "array": [
+      true,
+      false,
+      0,
+      187,
+      -187,
+      1.87,
+      "Another string"
+    ],
+    "only.flat.structure": "A super flat string",
+    "missingValues": {
+      "only": {
+        "en_GB": "A value that is only set for en_GB."
+      }
+    },
+    "duplicated": {
+      "alpha": "A duplicate value.",
+      "bravo": "A duplicate value."
+    }
+  },
+  "es_ES": {
+    "primitive": {
+      "boolean": {
+        "truthy": true,
+        "falsy": false
+      },
+      "number": {
+        "zero": 0,
+        "positive": 187,
+        "negative": -187,
+        "float": 1.87
+      },
+      "string": {
+        "sample": "Una cadena de ejemplo.",
+        "escaped": "\nSoy una cadena con secuencias de escape\"",
+        "multiline": "\nSoy una\ncadena\nmultilínea\n\n"
+      },
+      "nullish": null
+    },
+    "object": {
+      "deeply": {
+        "nested": {
+          "structure": {
+            "description": "Una cadena profundamente anidada."
+          }
+        }
+      },
+      "hybrid.flat.structure": "Una cadena en parte anidada y en parte plana"
+    },
+    "array": [
+      true,
+      false,
+      0,
+      187,
+      -187,
+      1.87,
+      "Otra cadena"
+    ],
+    "only.flat.structure": "Una cadena súper plana",
+    "missingValues": {
+      "only": {
+        "es_ES": "Un valor que solo está establecido para es_ES."
+      }
+    },
+    "duplicated": {
+      "alpha": "Un valor duplicado.",
+      "bravo": "Un valor duplicado."
+    }
+  },
+  "fr_FR": {
+    "primitive": {
+      "boolean": {
+        "truthy": true,
+        "falsy": false
+      },
+      "number": {
+        "zero": 0,
+        "positive": 187,
+        "negative": -187,
+        "float": 1.87
+      },
+      "string": {
+        "sample": "Une chaîne d'exemple.",
+        "escaped": "\nJe suis une chaîne avec des séquences d'échappement\"",
+        "multiline": "\nJe suis une\nchaîne\nmultiligne\n\n"
+      },
+      "nullish": null
+    },
+    "object": {
+      "deeply": {
+        "nested": {
+          "structure": {
+            "description": "Une chaîne profondément imbriquée."
+          }
+        }
+      },
+      "hybrid.flat.structure": "Une chaîne en partie imbriquée et en partie plate"
+    },
+    "array": [
+      true,
+      false,
+      0,
+      187,
+      -187,
+      1.87,
+      "Une autre chaîne"
+    ],
+    "only.flat.structure": "Une chaîne très plate",
+    "missingValues": {
+      "only": {
+        "fr_FR": "Une valeur définie uniquement pour fr_FR."
+      }
+    },
+    "duplicated": {
+      "alpha": "Une valeur dupliquée.",
+      "bravo": "Une valeur dupliquée."
+    }
+  }
+}
