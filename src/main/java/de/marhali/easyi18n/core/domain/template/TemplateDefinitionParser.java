@@ -47,7 +47,7 @@ public final class TemplateDefinitionParser {
                     literal.setLength(0);
                 }
 
-                int end = templateDefinition.indexOf('}', i + 1);
+                int end = findMatchingClosingBrace(templateDefinition, i);
 
                 if (end == -1) {
                     throw new IllegalArgumentException("Missing closing parameter segment ('}') in template '" + templateDefinition + "'");
@@ -68,7 +68,7 @@ public final class TemplateDefinitionParser {
 
                 // Extract parameter constraint if set and not blank
                 if (insideSplit.length > 2 && !insideSplit[2].isEmpty()) {
-                    optionalParameterConstraint = insideSplit[2];
+                    optionalParameterConstraint = unescapeBraces(insideSplit[2]);
                 }
 
                 if (!PARAM_NAME_PATTERN.matcher(parameterName).matches()) {
@@ -89,5 +89,43 @@ public final class TemplateDefinitionParser {
         }
 
         return new Template(templateDefinition, segments);
+    }
+
+    /**
+     * Finds the matching closing brace for a placeholder, correctly handling nested braces.
+     * Nested braces inside the constraint part must be escaped with backslash or will be counted.
+     *
+     * @param template The template string
+     * @param openPos Position of the opening brace
+     * @return Position of the matching closing brace, or -1 if not found
+     */
+    private static int findMatchingClosingBrace(@NotNull String template, int openPos) {
+        int depth = 1;
+        for (int i = openPos + 1; i < template.length(); i++) {
+            char c = template.charAt(i);
+            boolean escaped = i > 0 && template.charAt(i - 1) == '\\';
+
+            if (c == '{' && !escaped) {
+                depth++;
+            } else if (c == '}' && !escaped) {
+                depth--;
+                if (depth == 0) {
+                    return i;
+                }
+            }
+        }
+        return -1;
+    }
+
+    /**
+     * Removes escape characters from braces in the constraint string.
+     *
+     * @param constraint The constraint string potentially containing escaped braces
+     * @return The constraint with escape characters removed from braces
+     */
+    private static @NotNull String unescapeBraces(@NotNull String constraint) {
+        return constraint
+            .replace("\\{", "{")
+            .replace("\\}", "}");
     }
 }

@@ -10,6 +10,39 @@ import java.util.List;
  */
 public class TemplateDefinitionParserTest {
     @Test
+    public void testComplexConstraint() {
+        String template = "$PROJECT_DIR$/locales/{pathNamespace}/{locale::[a-z]{2}_[A-Z]{2}}.json";
+        Assert.assertEquals(
+            new Template(
+                template,
+                List.of(
+                    TemplateElement.fromLiteral("$PROJECT_DIR$/locales/"),
+                    TemplateElement.fromPlaceholder("pathNamespace", null, null),
+                    TemplateElement.fromLiteral("/"),
+                    TemplateElement.fromPlaceholder("locale", null, "[a-z]{2}_[A-Z]{2}"),
+                    TemplateElement.fromLiteral(".json")
+                )
+            ),
+            TemplateDefinitionParser.parse(template)
+        );
+    }
+
+    @Test
+    public void testEscapedBracesInConstraint() {
+        // When braces need to be literal in constraint (not for counting), escape them
+        String template = "{param::\\{literal\\}}";
+        Assert.assertEquals(
+            new Template(
+                template,
+                List.of(
+                    TemplateElement.fromPlaceholder("param", null, "{literal}")
+                )
+            ),
+            TemplateDefinitionParser.parse(template)
+        );
+    }
+
+    @Test
     public void test_empty_template_returns_empty_list() {
         Assert.assertEquals(
             new Template("", List.of()),
