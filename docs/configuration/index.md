@@ -53,6 +53,7 @@ _Editor Configuration_
 #### I18n flavor template
 - **Description**: Replacement string to apply if a hard-coded literal is extracted to a translation.
 - **Example**: `ResourceBundle.getBundle("xyz").getString("{i18nKey}")`
+- See also []()
 
 #### Key assistance rule
 - **Description**: Rules for matching specific editor elements to enable in-editor assistance.
