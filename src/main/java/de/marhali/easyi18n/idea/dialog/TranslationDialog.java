@@ -16,11 +16,13 @@ import de.marhali.easyi18n.idea.messages.PluginBundle;
 import de.marhali.easyi18n.idea.service.I18nProjectService;
 import de.marhali.easyi18n.idea.service.PluginExecutorService;
 import de.marhali.easyi18n.idea.ui.components.FixedExpandableTextField;
+import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
+import java.awt.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -32,6 +34,9 @@ import java.util.stream.Collectors;
 public class TranslationDialog extends DialogWrapper {
 
     private static final Logger LOGGER = Logger.getInstance(TranslationDialog.class);
+
+    private static final @NotNull JBDimension MINIMUM_SIZE = new JBDimension(200, 150);
+    private static final @NotNull JBDimension DEFAULT_SIZE = new JBDimension(400, 300);
 
     private final @NotNull TranslationDialogMode mode;
     private final @NotNull NullableI18nEntry originEntry;
@@ -118,8 +123,7 @@ public class TranslationDialog extends DialogWrapper {
         builder.addLabeledComponent(PluginBundle.message("dialog.translation.locales.title"), valuesByLocalePane, 16,true);
 
         var panel = builder.getPanel();
-        panel.setMinimumSize(new JBDimension(200, 150));
-        panel.setPreferredSize(new JBDimension(400, 300));
+        panel.setMinimumSize(MINIMUM_SIZE);
 
         // Retrieve module specific set of locales
         vm.loadLocalesAsync(
@@ -175,6 +179,16 @@ public class TranslationDialog extends DialogWrapper {
             },
             this::handleThrowable
         );
+    }
+
+    @Override
+    public @Nullable Dimension getInitialSize() {
+        return DEFAULT_SIZE;
+    }
+
+    @Override
+    protected @NonNls @Nullable String getDimensionServiceKey() {
+        return "de.marhali.easyi18n.idea.dialog.TranslationDialog";
     }
 
     /**

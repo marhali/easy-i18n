@@ -14,6 +14,7 @@ PLEASE CHECK THE MIGRATION GUIDE ON https://easy-i18n.github.io/migration/v5/ BE
 - Configuration support to define target editor elements to apply fine-grained i18n assistance
 - Quick fix intention action to create a new translation
 - Check if translation key exists in add translation dialog
+- Remember last size for translation dialogs
 
 ### Changed
 
