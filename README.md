@@ -16,7 +16,9 @@
   <h3 align="center">Easy I18n</h3>
 
   <p align="center">
-    <a href="https://github.com/marhali/easy-i18n/tree/main/example">Examples</a>
+    <a href="https://easy-i18n.github.io">Documentation</a>
+    ·
+    <a href="https://github.com/marhali/easy-i18n/tree/main/examples">Examples</a>
     ·
     <a href="https://github.com/marhali/easy-i18n/issues/new?labels=bug">Report Bug</a>
     ·
@@ -25,81 +27,82 @@
 </div>
 
 <!-- Plugin description -->
-This is a plugin for easier management of translation files for projects that need to be translated into different languages. Translating large projects has never been so easy with your favorite IDE!
+Easy I18n is a plugin based on the [IntelliJ Platform SDK](https://plugins.jetbrains.com/docs/intellij/welcome.html) to handle the process of [internationalization](https://en.wikipedia.org/wiki/Internationalization_and_localization) in your project.
 
-This plugin can be used for any project based on one of the formats and structures listed below.
+> **Translating large projects using your favorite IDE has never been easier!**
+
+This plugin offers a wide range of [configuration options](configuration/index.md) to adapt to the specific requirements of the project.
+However, to help you get started quickly, there are a variety of [presets](configuration/presets.md) for common use cases.
+
+___
 
 ## Features
-- UI Tool-Window which supports _tree-view_ and _table-view_
-- Easily **`Add`** / **`Edit`** / **`Delete`** translations
-- Filter all translations with _full-text-search_ support
-- Editor Assistance: translation intention, completion-contributor, key-annotation and -folding
-- Translation key sorting and nesting can be configured
-- Extensive configuration options: locales directory, preferred locale, key delimiters
-- Missing language translations will be indicated red
-- Automatically reloads translation data if any locale file was changed
+
+- Support for Multi-Module projects, ideally for monorepos
+- [Translations Tool Window](components/tool-window.md) to manage all your translations in a single place
+    - Visualize as _tree_ or _table_ view
+    - Filter by _full-text-search_ query
+    - Filter and highlighting of _duplicate_ or _missing_ translation values
+- Easily **Add** / **Edit** or **Delete** translations via the [Translation Dialog](components/dialog.md) or [Tool Window](components/tool-window.md)
+- Configuring of translation sources using a powerful [template syntax](configuration/template-syntax.md)
+- Fine-grained editor assistance using user-defined [rules](configuration/editor-rules.md)
+    - Referencing of translation keys to quickly jump the [Translation Dialog](components/dialog.md)
+    - Inspection to find unresolved translation keys
+    - Quickfix intention action to add translations
+    - Extract translation action to localize hard-coded literals
+    - Documentation provider to preview translation values
+    - Folding of translation keys with preview locale value
 
 ## Builtin Support
+
 ### File Types
-**<kbd>JSON</kbd>** - **<kbd>JSON5</kbd>** - **<kbd>YAML</kbd>** - **<kbd>Properties</kbd>**
 
-### Folder Structure
-- Single Directory: All translation files are within one directory 
-- Modularized (**<kbd>Locale</kbd>** \ **<kbd>Namespace</kbd>**)
-- Modularized (**<kbd>Namespace</kbd>** \ **<kbd>Locale</kbd>**)
+`JSON` - `JSON5` - `YAML` - `Properties`
 
-### Language Support
-**<kbd>JavaScript / TypeScript</kbd>** - **<kbd>Vue</kbd>** - **<kbd>Java</kbd>** - **<kbd>Kotlin</kbd>** - **<kbd>PHP</kbd>**
+### Editor Language Assistance
 
+`JavaScript` - `TypeScript` - `JSX` - `TSX` - `Vue` - `Java` - `Kotlin` - `PHP`
 <!-- Plugin description end -->
 
-## Installation
+---
 
-- Using IDE built-in plugin system:
+## Getting Started
 
-  <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>Marketplace</kbd> > <kbd>Search for "easy-i18n"</kbd> >
-  <kbd>Install Plugin</kbd>
+### Installation
 
-- Manually:
+#### Using built-in plugin catalog inside your IDE  _(recommended)_
 
-  Download the [latest release](https://github.com/marhali/easy-i18n/releases/latest) and install it manually using
-  <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> > <kbd>Install plugin from disk...</kbd>
+<kbd>Settings / Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>Marketplace</kbd> > <kbd>Search for "easy-i18n"</kbd> > <kbd>Install Plugin</kbd>
 
+#### Manual
 
+Download the [latest release](https://github.com/marhali/easy-i18n/releases/latest) and install it manually using <kbd>Settings / Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> > <kbd>Install plugin from disk...</kbd>
 
-<!-- PLUGIN CONFIGURATION -->
-## Configuration
-- Install plugin. See **_Installation_** section
-- Create a directory that will contain all translation files
-- Create your individual translation files (e.g. _en.json_, _de.json_). See examples if you need assistance.
-- Click on the `Settings` action inside the EasyI18n Tool-Window (<kbd>View</kbd> > <kbd>Tool Windows</kbd> > <kbd>Easy I18n</kbd>)
-- Specify locales directory
-- Select folder structure and file parser to apply to your translation files
-- Translations can now be created / edited or deleted
+### Configuration
 
+- Show the [Translations Tool Window](components/tool-window.md) if not already in displayed via <kbd>View</kbd> > <kbd>Tool Windows</kbd> > <kbd>Translations</kbd>
+- Go to the plugin configuration via the <kbd>⚙️</kbd> action inside the tool window or by visiting <kbd>Settings / Preferences</kbd> > <kbd>Tools</kbd> > <kbd>Easy I18n</kbd>
+- Configure common options like sorting or preview locale
+- Add your first module and optionally select one of the existing presets to get started easily
 
-<!-- USAGE EXAMPLES -->
+**Hurray 🎉🥳 You are now ready to manage your translations**
+
+Fore more detailed instructions see the [configuration overview](configuration/index.md).
+
 ## Screenshots
-![Tree View](https://raw.githubusercontent.com/marhali/easy-i18n/main/example/images/tree-view.PNG)
-![TableView](https://raw.githubusercontent.com/marhali/easy-i18n/main/example/images/table-view.PNG)
-![KeyCompletion](https://raw.githubusercontent.com/marhali/easy-i18n/main/example/images/key-completion.PNG)
-![KeyAnnotation](https://raw.githubusercontent.com/marhali/easy-i18n/main/example/images/key-annotation.PNG)
-![KeyEdit](https://raw.githubusercontent.com/marhali/easy-i18n/main/example/images/key-edit.PNG)
-![Settings](https://raw.githubusercontent.com/marhali/easy-i18n/main/example/images/settings.PNG)
 
-_For more examples, please refer to the [Examples Directory](https://github.com/marhali/easy-i18n/tree/main/example)._
+![Translation Tool Window Table View](docs/assets/snippets/tool-window-table.png "Tool Window Table View")
+![Translation Tool Window Tree View](docs/assets/snippets/tool-window-tree.png "Tool Window Tree View")
 
+![Add Translation Dialog](docs/assets/snippets/translation-dialog-add.png "Add Translation Dialog")
+![Edit Translation Dialog](docs/assets/snippets/translation-dialog-edit.png "Edit Translation Dialog")
+
+_For more examples, please refer to the [examples](https://github.com/marhali/easy-i18n/tree/main/examples)._
 
 <!-- ROADMAP -->
 ## Roadmap
 
-- [X] JSON5 Support
-- [X] Configurable namespace and section separators
-- [X] Define default namespace to use if none was provided
-- [X] Enhance editor code assistance
-- [ ] XML Support
-- [X] Mark duplicate translation values
-- [ ] Python language assistance
+TBA
 
 See the [open issues](https://github.com/marhali/easy-i18n/issues) for a full list of proposed features (and known issues).
 
@@ -118,18 +121,10 @@ Don't forget to give the project a star! Thanks again!
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-
-
-
-
 <!-- LICENSE -->
 ## License
 
 Distributed under the MIT License. See `LICENSE` for more information.
-
-
-
-
 
 <!-- CONTACT -->
 ## Contact
@@ -137,8 +132,6 @@ Distributed under the MIT License. See `LICENSE` for more information.
 Marcel Haßlinger - [@marhali_de](https://twitter.com/marhali_de) - [Portfolio Website](https://marhali.de)
 
 Project Link: [https://github.com/marhali/easy-i18n](https://github.com/marhali/easy-i18n)
-
-
 
 <!-- DONATION -->
 ## Donation
