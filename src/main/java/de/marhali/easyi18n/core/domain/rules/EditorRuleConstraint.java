@@ -23,9 +23,9 @@ public record EditorRuleConstraint(
         // Not really a preset here but consistency is key
         return new EditorRuleConstraint(
             RuleConstraintType.STATIC_ONLY,
-            "default",
+            "value",
             TextMatchMode.EXACT,
-            true
+            false
         );
     }
 

@@ -27,12 +27,12 @@ public record EditorRule(
     public static @NotNull EditorRule fromDefaultPreset() {
         // Not really a preset here but consistency is key
         return new EditorRule(
-            "default-rule",
+            "rule-01",
             Set.of(),
             TriggerKind.UNKNOWN,
             List.of(),
             0,
-            true
+            false
         );
     }
 
