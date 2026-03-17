@@ -8,9 +8,9 @@ import de.marhali.easyi18n.core.domain.rules.RuleCompiler;
 import de.marhali.easyi18n.core.ports.ProjectConfigPort;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Cache for module-specific {@link I18nRuleEngine}'s.
@@ -23,7 +23,7 @@ public class CachedModuleRules {
     private final @NotNull Map<@NotNull ModuleId, @NotNull I18nRuleEngine> cache;
 
     public CachedModuleRules(@NotNull ProjectConfigPort projectConfigPort) {
-        this(projectConfigPort, new HashMap<>());
+        this(projectConfigPort, new ConcurrentHashMap<>());
     }
 
     public CachedModuleRules(@NotNull ProjectConfigPort projectConfigPort, @NotNull Map<@NotNull ModuleId, @NotNull I18nRuleEngine> cache) {
