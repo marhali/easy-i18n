@@ -10,15 +10,20 @@ import java.nio.charset.StandardCharsets;
  */
 public final class WebUtil {
 
+    /**
+     * GitHub seems to have a maximum request url length limit of 8191 chars.
+     */
+    private static final int GITHUB_REQUEST_URL_LIMIT = 8191;
+
     private WebUtil() {}
 
     public static @NotNull String createOpenGitHubIssueUrl(@NotNull String title, @NotNull String labels, @NotNull String body) {
         String url = "https://github.com/marhali/easy-i18n/issues/new?title="
             + encodeParam(title) + "&labels=" + encodeParam(labels) + "&body=" + encodeParam(body);
 
-        if(url.length() > 8201) {
-            // Consider github request url limit
-            return url.substring(0, 8201);
+        if (url.length() > GITHUB_REQUEST_URL_LIMIT) {
+            // Trim url if length exceeds maximum limit constraint
+            return url.substring(0, GITHUB_REQUEST_URL_LIMIT);
         }
 
         return url;
