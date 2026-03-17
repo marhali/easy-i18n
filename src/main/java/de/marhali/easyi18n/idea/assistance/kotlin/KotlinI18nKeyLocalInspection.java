@@ -65,7 +65,7 @@ public class KotlinI18nKeyLocalInspection extends LocalInspectionTool {
                 ModuleId moduleId = moduleIdResponse.get();
 
                 KotlinEditorElementExtractor extractor = new KotlinEditorElementExtractor();
-                EditorElement editorElement = extractor.extract(literal, literal.getContainingFile(), false);
+                EditorElement editorElement = extractor.extract(literal, literal.getContainingFile());
 
                 if (editorElement == null) {
                     return;

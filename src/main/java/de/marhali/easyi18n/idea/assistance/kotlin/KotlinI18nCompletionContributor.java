@@ -68,7 +68,7 @@ public class KotlinI18nCompletionContributor extends CompletionContributor {
                     ModuleId moduleId = moduleIdResponse.get();
 
                     KotlinEditorElementExtractor extractor = new KotlinEditorElementExtractor();
-                    EditorElement editorElement = extractor.extract(literal, completionParameters.getOriginalFile(), false);
+                    EditorElement editorElement = extractor.extract(literal, completionParameters.getOriginalFile());
 
                     if (editorElement == null) {
                         return;

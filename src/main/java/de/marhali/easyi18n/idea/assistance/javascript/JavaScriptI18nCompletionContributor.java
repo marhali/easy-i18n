@@ -75,7 +75,7 @@ public class JavaScriptI18nCompletionContributor extends CompletionContributor {
                     ModuleId moduleId = moduleIdResponse.get();
 
                     JavaScriptEditorElementExtractor extractor = new JavaScriptEditorElementExtractor(language);
-                    EditorElement editorElement = extractor.extract(literal, completionParameters.getOriginalFile(), false);
+                    EditorElement editorElement = extractor.extract(literal, completionParameters.getOriginalFile());
 
                     if (editorElement == null) {
                         return;

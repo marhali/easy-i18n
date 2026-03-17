@@ -67,7 +67,7 @@ public class KotlinExtractTranslationIntention extends PsiElementBaseIntentionAc
         literal.putUserData(PluginKey.MODULE_ID, moduleId);
 
         KotlinEditorElementExtractor extractor = new KotlinEditorElementExtractor();
-        EditorElement editorElement = extractor.extract(literal, literal.getContainingFile(), false);
+        EditorElement editorElement = extractor.extract(literal, literal.getContainingFile());
 
         if (editorElement == null) {
             return true;

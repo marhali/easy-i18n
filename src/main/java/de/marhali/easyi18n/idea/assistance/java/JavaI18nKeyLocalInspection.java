@@ -60,7 +60,7 @@ public class JavaI18nKeyLocalInspection extends LocalInspectionTool {
                 ModuleId moduleId = moduleIdResponse.get();
 
                 JavaEditorElementExtractor extractor = new JavaEditorElementExtractor();
-                EditorElement editorElement = extractor.extract(literal, literal.getContainingFile(), false);
+                EditorElement editorElement = extractor.extract(literal, literal.getContainingFile());
 
                 if (editorElement == null) {
                     return;

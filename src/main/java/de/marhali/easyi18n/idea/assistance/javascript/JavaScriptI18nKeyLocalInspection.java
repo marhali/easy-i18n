@@ -78,7 +78,7 @@ public class JavaScriptI18nKeyLocalInspection extends LocalInspectionTool {
                 ModuleId moduleId = moduleIdResponse.get();
 
                 JavaScriptEditorElementExtractor extractor = new JavaScriptEditorElementExtractor(language);
-                EditorElement editorElement = extractor.extract(literal, literal.getContainingFile(), false);
+                EditorElement editorElement = extractor.extract(literal, literal.getContainingFile());
 
                 if (editorElement == null) {
                     return;

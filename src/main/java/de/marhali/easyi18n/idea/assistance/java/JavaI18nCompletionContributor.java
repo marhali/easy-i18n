@@ -65,7 +65,7 @@ public class JavaI18nCompletionContributor extends CompletionContributor {
                     ModuleId moduleId = moduleIdResponse.get();
 
                     JavaEditorElementExtractor extractor = new JavaEditorElementExtractor();
-                    EditorElement editorElement = extractor.extract(literal, completionParameters.getOriginalFile(), false);
+                    EditorElement editorElement = extractor.extract(literal, completionParameters.getOriginalFile());
 
                     if (editorElement == null) {
                         return;

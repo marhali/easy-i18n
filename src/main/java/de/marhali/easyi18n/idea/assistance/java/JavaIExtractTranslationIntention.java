@@ -66,7 +66,7 @@ public class JavaIExtractTranslationIntention extends PsiElementBaseIntentionAct
         literal.putUserData(PluginKey.MODULE_ID, moduleId);
 
         JavaEditorElementExtractor extractor = new JavaEditorElementExtractor();
-        EditorElement editorElement = extractor.extract(literal, literal.getContainingFile(), false);
+        EditorElement editorElement = extractor.extract(literal, literal.getContainingFile());
 
         if (editorElement == null) {
             return true;

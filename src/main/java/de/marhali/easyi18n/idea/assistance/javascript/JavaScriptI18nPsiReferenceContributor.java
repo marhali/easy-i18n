@@ -85,7 +85,7 @@ public class JavaScriptI18nPsiReferenceContributor extends PsiReferenceContribut
             ModuleId moduleId = moduleIdResponse.get();
 
             JavaScriptEditorElementExtractor extractor = new JavaScriptEditorElementExtractor(language);
-            EditorElement editorElement = extractor.extract(literal, literal.getContainingFile(), false);
+            EditorElement editorElement = extractor.extract(literal, literal.getContainingFile());
 
             if (editorElement == null) {
                 return PsiReference.EMPTY_ARRAY;
