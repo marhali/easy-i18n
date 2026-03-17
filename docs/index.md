@@ -26,8 +26,6 @@ ___
     - Documentation provider to preview translation values
     - Folding of translation keys with preview locale value
 
-___
-
 ## Builtin Support
 
 ### File Types
