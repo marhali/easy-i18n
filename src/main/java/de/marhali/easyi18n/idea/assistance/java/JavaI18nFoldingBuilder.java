@@ -11,12 +11,10 @@ import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.*;
 import de.marhali.easyi18n.core.application.cqrs.PossiblyUnavailable;
 import de.marhali.easyi18n.core.application.query.I18nEntryPreviewQuery;
-import de.marhali.easyi18n.core.application.query.MatchEditorElementQuery;
 import de.marhali.easyi18n.core.application.query.ModuleIdByEditorFilePathQuery;
 import de.marhali.easyi18n.core.domain.model.I18nEntryPreview;
 import de.marhali.easyi18n.core.domain.model.I18nKeyCandidate;
 import de.marhali.easyi18n.core.domain.model.ModuleId;
-import de.marhali.easyi18n.core.domain.rules.EditorElement;
 import de.marhali.easyi18n.core.domain.rules.EditorFilePath;
 import de.marhali.easyi18n.idea.assistance.EditorFilePathExtractor;
 import de.marhali.easyi18n.idea.service.I18nProjectService;
@@ -64,21 +62,8 @@ public class JavaI18nFoldingBuilder extends FoldingBuilderEx implements DumbAwar
                     return;
                 }
 
-                EditorElement editorElement = extractor.extract(literal, literal.getContainingFile(), quick);
-
-                if (editorElement == null) {
-                    return;
-                }
-
-                Boolean editorElementMatched = projectService.query(new MatchEditorElementQuery(moduleId, editorElement));
-
-                if (editorElementMatched) {
-                    // Not targeted by editor rules
-                    return;
-                }
-
-                PossiblyUnavailable<Optional<I18nEntryPreview>> entryResponse
-                    = projectService.query(new I18nEntryPreviewQuery(moduleId, I18nKeyCandidate.of(key)));
+                PossiblyUnavailable<Optional<I18nEntryPreview>> entryResponse =
+                    projectService.query(new I18nEntryPreviewQuery(moduleId, I18nKeyCandidate.of(key)));
 
                 if (!entryResponse.available() || entryResponse.result() == null) {
                     // Response is not available - module is not loaded yet
@@ -97,17 +82,15 @@ public class JavaI18nFoldingBuilder extends FoldingBuilderEx implements DumbAwar
                 }
 
                 String placeholder = sanitizePlaceholder(entryPreview.previewValue().toInputString());
+                TextRange literalTextRange = literal.getTextRange();
 
-                TextRange valueRange = ElementManipulators.getValueTextRange(literal)
-                    .shiftRight(literal.getTextRange().getStartOffset());
-
-                if (valueRange.isEmpty()) {
+                if (literalTextRange.isEmpty()) {
                     return;
                 }
 
                 descriptors.add(new FoldingDescriptor(
                     literal.getNode(),
-                    valueRange,
+                    literalTextRange,
                     null,
                     placeholder,
                     Boolean.TRUE,
@@ -135,7 +118,6 @@ public class JavaI18nFoldingBuilder extends FoldingBuilderEx implements DumbAwar
         }
         return value
             .replace("\n", "\\n")
-            .replace("\r", "")
-            .replace("\"", "\\\"");
+            .replace("\r", "");
     }
 }

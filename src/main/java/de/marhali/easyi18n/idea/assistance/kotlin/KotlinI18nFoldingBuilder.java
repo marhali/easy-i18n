@@ -69,19 +69,6 @@ public class KotlinI18nFoldingBuilder extends FoldingBuilderEx implements DumbAw
                     return;
                 }
 
-                EditorElement editorElement = extractor.extract(literal, literal.getContainingFile(), quick);
-
-                if (editorElement == null) {
-                    return;
-                }
-
-                Boolean editorElementMatched = projectService.query(new MatchEditorElementQuery(moduleId, editorElement));
-
-                if (editorElementMatched) {
-                    // Not targeted by editor rules
-                    return;
-                }
-
                 PossiblyUnavailable<Optional<I18nEntryPreview>> entryResponse
                     = projectService.query(new I18nEntryPreviewQuery(moduleId, I18nKeyCandidate.of(key)));
 

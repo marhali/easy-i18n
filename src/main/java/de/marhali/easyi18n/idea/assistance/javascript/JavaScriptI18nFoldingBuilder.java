@@ -14,12 +14,10 @@ import com.intellij.psi.ElementManipulators;
 import com.intellij.psi.PsiElement;
 import de.marhali.easyi18n.core.application.cqrs.PossiblyUnavailable;
 import de.marhali.easyi18n.core.application.query.I18nEntryPreviewQuery;
-import de.marhali.easyi18n.core.application.query.MatchEditorElementQuery;
 import de.marhali.easyi18n.core.application.query.ModuleIdByEditorFilePathQuery;
 import de.marhali.easyi18n.core.domain.model.I18nEntryPreview;
 import de.marhali.easyi18n.core.domain.model.I18nKeyCandidate;
 import de.marhali.easyi18n.core.domain.model.ModuleId;
-import de.marhali.easyi18n.core.domain.rules.EditorElement;
 import de.marhali.easyi18n.core.domain.rules.EditorFilePath;
 import de.marhali.easyi18n.core.domain.rules.EditorLanguage;
 import de.marhali.easyi18n.idea.assistance.EditorFilePathExtractor;
@@ -80,19 +78,6 @@ public class JavaScriptI18nFoldingBuilder extends FoldingBuilderEx implements Du
 
                 String key = literal.getStringValue();
                 if (key == null || key.isBlank()) {
-                    return;
-                }
-
-                EditorElement editorElement = extractor.extract(literal, literal.getContainingFile(), quick);
-
-                if (editorElement == null) {
-                    return;
-                }
-
-                Boolean editorElementMatched = projectService.query(new MatchEditorElementQuery(moduleId, editorElement));
-
-                if (editorElementMatched) {
-                    // Not targeted by editor rules
                     return;
                 }
 

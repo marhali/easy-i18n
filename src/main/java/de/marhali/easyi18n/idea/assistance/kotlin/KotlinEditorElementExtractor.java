@@ -21,7 +21,7 @@ import java.util.Set;
  */
 public final class KotlinEditorElementExtractor implements EditorElementExtractor<KtStringTemplateExpression, PsiFile> {
 
-    public @Nullable EditorElement extract(@NotNull KtStringTemplateExpression literal, @Nullable PsiFile psiFile, boolean quick) {
+    public @Nullable EditorElement extract(@NotNull KtStringTemplateExpression literal, @Nullable PsiFile psiFile) {
         String stringValue = extractStringValue(literal);
 
         if (stringValue == null) {
@@ -47,27 +47,9 @@ public final class KotlinEditorElementExtractor implements EditorElementExtracto
         builder.importSources(extractImportSources(literal));
 
         switch (triggerKind) {
-            case CALL_ARGUMENT -> {
-                if (quick) {
-                    fillCallArgumentFactsQuick(literal, builder);
-                } else {
-                    fillCallArgumentFacts(literal, builder);
-                }
-            }
-            case DECLARATION_TARGET -> {
-                if (quick) {
-                    fillDeclarationFactsQuick(literal, builder);
-                } else {
-                    fillDeclarationFacts(literal, builder);
-                }
-            }
-            case RETURN_VALUE -> {
-                if (quick) {
-                    fillReturnFactsQuick(literal, builder);
-                } else {
-                    fillReturnFacts(literal, builder);
-                }
-            }
+            case CALL_ARGUMENT -> fillCallArgumentFacts(literal, builder);
+            case DECLARATION_TARGET ->  fillDeclarationFacts(literal, builder);
+            case RETURN_VALUE -> fillReturnFacts(literal, builder);
             case PROPERTY_VALUE -> fillPropertyFacts(literal, builder);
             case UNKNOWN -> {
                 return null;
@@ -96,57 +78,6 @@ public final class KotlinEditorElementExtractor implements EditorElementExtracto
             }
         }
         return sb.toString();
-    }
-
-    private void fillCallArgumentFactsQuick(@NotNull KtStringTemplateExpression literal, @NotNull EditorElement.Builder builder) {
-        KtValueArgumentList argumentList = findParentOfType(literal, KtValueArgumentList.class);
-        if (argumentList == null) return;
-
-        KtCallExpression callExpression = findParentOfType(argumentList, KtCallExpression.class);
-        if (callExpression == null) return;
-
-        // Find argument index
-        int index = 0;
-        for (KtValueArgument argument : argumentList.getArguments()) {
-            if (isDescendant(literal, argument)) {
-                builder.argumentIndex(index);
-                break;
-            }
-            index++;
-        }
-
-        KtExpression callee = callExpression.getCalleeExpression();
-        if (callee != null) {
-            builder.callableName(callee.getText());
-        }
-
-        // Try to get receiver type
-        PsiElement parent = callExpression.getParent();
-        if (parent instanceof KtDotQualifiedExpression dotExpr) {
-            KtExpression receiver = dotExpr.getReceiverExpression();
-            if (receiver != null) {
-                // Quick mode: just use the text representation
-                builder.receiverTypeFqn(receiver.getText());
-            }
-        }
-    }
-
-    private void fillDeclarationFactsQuick(@NotNull KtStringTemplateExpression literal, @NotNull EditorElement.Builder builder) {
-        KtProperty property = findParentOfType(literal, KtProperty.class);
-        if (property != null && isDescendant(literal, property.getInitializer())) {
-            builder.declarationName(property.getName());
-            KtTypeReference typeRef = property.getTypeReference();
-            builder.declarationType(typeRef != null ? typeRef.getText() : null);
-        }
-    }
-
-    private void fillReturnFactsQuick(@NotNull KtStringTemplateExpression literal, @NotNull EditorElement.Builder builder) {
-        KtNamedFunction function = findParentOfType(literal, KtNamedFunction.class);
-        if (function == null) return;
-
-        builder.callableName(function.getName());
-        KtTypeReference returnType = function.getTypeReference();
-        builder.declarationType(returnType != null ? returnType.getText() : null);
     }
 
     private @NotNull TriggerKind detectTriggerKind(@NotNull KtStringTemplateExpression literal, @NotNull PsiElement parent) {

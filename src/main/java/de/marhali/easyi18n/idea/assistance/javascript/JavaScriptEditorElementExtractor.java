@@ -31,7 +31,7 @@ public final class JavaScriptEditorElementExtractor implements EditorElementExtr
         this.language = language;
     }
 
-    public @Nullable EditorElement extract(@NotNull JSLiteralExpression literal, @Nullable PsiFile psiFile, boolean quick) {
+    public @Nullable EditorElement extract(@NotNull JSLiteralExpression literal, @Nullable PsiFile psiFile) {
         if (!literal.isStringLiteral()) {
             return null;
         }
@@ -60,27 +60,9 @@ public final class JavaScriptEditorElementExtractor implements EditorElementExtr
         builder.importSources(extractImportSources(literal));
 
         switch (triggerKind) {
-            case CALL_ARGUMENT -> {
-                if (quick) {
-                    fillCallArgumentFactsQuick(literal, builder);
-                } else {
-                    fillCallArgumentFacts(literal, builder);
-                }
-            }
-            case DECLARATION_TARGET -> {
-                if (quick) {
-                    fillDeclarationFactsQuick(literal, builder);
-                } else {
-                    fillDeclarationFacts(literal, builder);
-                }
-            }
-            case RETURN_VALUE -> {
-                if (quick) {
-                    fillReturnFactsQuick(literal, builder);
-                } else {
-                    fillReturnFacts(literal, builder);
-                }
-            }
+            case CALL_ARGUMENT -> fillCallArgumentFacts(literal, builder);
+            case DECLARATION_TARGET -> fillDeclarationFacts(literal, builder);
+            case RETURN_VALUE -> fillReturnFacts(literal, builder);
             case PROPERTY_VALUE -> fillPropertyFacts(literal, builder);
             case UNKNOWN -> {
                 return null;
@@ -88,53 +70,6 @@ public final class JavaScriptEditorElementExtractor implements EditorElementExtr
         }
 
         return builder.build();
-    }
-
-    private void fillCallArgumentFactsQuick(@NotNull JSLiteralExpression literal, @NotNull EditorElement.Builder builder) {
-        JSArgumentList argumentList = findParentOfType(literal, JSArgumentList.class);
-        if (argumentList == null) return;
-
-        JSCallExpression callExpression = findParentOfType(argumentList, JSCallExpression.class);
-        if (callExpression == null) return;
-
-        // Find argument index
-        JSExpression[] arguments = argumentList.getArguments();
-        for (int i = 0; i < arguments.length; i++) {
-            if (isDescendant(literal, arguments[i])) {
-                builder.argumentIndex(i);
-                break;
-            }
-        }
-
-        JSExpression methodExpression = callExpression.getMethodExpression();
-        if (methodExpression instanceof JSReferenceExpression refExpr) {
-            builder.callableName(refExpr.getReferenceName());
-
-            JSExpression qualifier = refExpr.getQualifier();
-            if (qualifier != null) {
-                builder.receiverTypeFqn(qualifier.getText());
-            }
-        }
-    }
-
-    private void fillDeclarationFactsQuick(@NotNull JSLiteralExpression literal, @NotNull EditorElement.Builder builder) {
-        JSVariable variable = findParentOfType(literal, JSVariable.class);
-        if (variable != null && isDescendant(literal, variable.getInitializer())) {
-            builder.declarationName(variable.getName());
-            if (variable instanceof TypeScriptVariable tsVar) {
-                JSType type = tsVar.getJSType();
-                builder.declarationType(type != null ? type.getTypeText() : null);
-            }
-        }
-    }
-
-    private void fillReturnFactsQuick(@NotNull JSLiteralExpression literal, @NotNull EditorElement.Builder builder) {
-        JSFunction function = findParentOfType(literal, JSFunction.class);
-        if (function == null) return;
-
-        builder.callableName(function.getName());
-        JSType returnType = function.getReturnType();
-        builder.declarationType(returnType != null ? returnType.getTypeText() : null);
     }
 
     private @NotNull TriggerKind detectTriggerKind(@NotNull JSLiteralExpression literal, @NotNull PsiElement parent) {

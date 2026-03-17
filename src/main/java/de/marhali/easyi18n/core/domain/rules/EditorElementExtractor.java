@@ -16,8 +16,7 @@ public interface EditorElementExtractor<E, F> {
      * Extracts the underlying editor element.
      * @param element Underlying editor element
      * @param file Underlying editor file
-     * @param quick Whether expensive lookups should be skipped or not
      * @return {@link EditorElement} or {@code null} if value could not be extracted
      */
-    @Nullable EditorElement extract(@NotNull E element, @Nullable F file, boolean quick);
+    @Nullable EditorElement extract(@NotNull E element, @Nullable F file);
 }
