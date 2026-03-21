@@ -10,5 +10,6 @@ public enum TextMatchMode {
     PREFIX,
     SUFFIX,
     CONTAINS,
-    REGEX
+    REGEX,
+    ;
 }
