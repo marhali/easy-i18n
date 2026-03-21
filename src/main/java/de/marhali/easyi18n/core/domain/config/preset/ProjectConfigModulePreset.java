@@ -1,6 +1,7 @@
 package de.marhali.easyi18n.core.domain.config.preset;
 
 import de.marhali.easyi18n.core.domain.config.ProjectConfigModule;
+import de.marhali.easyi18n.core.domain.config.preset.impl.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -13,12 +14,21 @@ import org.jetbrains.annotations.Nullable;
 public enum ProjectConfigModulePreset {
     DEFAULT(ProjectConfigModulePresetDefault.class),
     CUSTOM(ProjectConfigModulePresetCustom.class),
+    // Custom framework specific implementations
+    ANGULAR_NGX_TRANSLATE(AngularNgxTranslateModulePreset.class),
+    RAILS(RailsModulePreset.class),
+    VUE_I18N(VueI18nModulePreset.class),
+    REACT_I18NEXT(ReactI18nextModulePreset.class),
+    SPRING_BOOT(SpringBootModulePreset.class),
+    LARAVEL(LaravelModulePreset.class),
     ;
 
     public static @NotNull ProjectConfigModulePreset determineFromState(@NotNull ProjectConfigModule state) {
         if (state.equals(DEFAULT.applyPreset(state))) {
             return DEFAULT;
-        } // TODO: other cases
+        }
+
+        // We could check all other cases here, but the benefits for this would not make much impact
 
         return CUSTOM;
     }
