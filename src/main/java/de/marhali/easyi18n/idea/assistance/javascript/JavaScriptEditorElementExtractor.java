@@ -23,7 +23,7 @@ import java.util.Set;
  *
  * @author marhali
  */
-public final class JavaScriptEditorElementExtractor implements EditorElementExtractor<JSLiteralExpression, PsiFile> {
+public class JavaScriptEditorElementExtractor implements EditorElementExtractor<JSLiteralExpression, PsiFile> {
 
     private final EditorLanguage language;
 
