@@ -34,4 +34,4 @@ ___
 
 ### Editor Language Assistance
 
-`JavaScript` - `TypeScript` - `JSX` - `TSX` - `Vue` - `Java` - `Kotlin` - `PHP`
+`HTML/XML` - `JS(X)` - `TS(X)` - `Vue` - `Svelte` - `PHP` - `Ruby` - `Rust` - `Go` - `Dart` - `Python` - `Kotlin` - `Java`

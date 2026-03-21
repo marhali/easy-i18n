@@ -12,6 +12,14 @@ public enum EditorLanguage {
     TYPESCRIPT,
     PHP,
     XML,
+    HTML,
+    VUE,
+    GO,
+    DART,
+    RUST,
+    PYTHON,
+    SVELTE,
+    RUBY,
     UNKNOWN,
     ;
 }
