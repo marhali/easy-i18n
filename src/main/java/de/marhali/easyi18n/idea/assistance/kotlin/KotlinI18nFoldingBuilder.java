@@ -8,16 +8,13 @@ import com.intellij.openapi.project.DumbAware;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.psi.ElementManipulators;
 import com.intellij.psi.PsiElement;
 import de.marhali.easyi18n.core.application.cqrs.PossiblyUnavailable;
 import de.marhali.easyi18n.core.application.query.I18nEntryPreviewQuery;
-import de.marhali.easyi18n.core.application.query.MatchEditorElementQuery;
 import de.marhali.easyi18n.core.application.query.ModuleIdByEditorFilePathQuery;
 import de.marhali.easyi18n.core.domain.model.I18nEntryPreview;
 import de.marhali.easyi18n.core.domain.model.I18nKeyCandidate;
 import de.marhali.easyi18n.core.domain.model.ModuleId;
-import de.marhali.easyi18n.core.domain.rules.EditorElement;
 import de.marhali.easyi18n.core.domain.rules.EditorFilePath;
 import de.marhali.easyi18n.idea.assistance.EditorFilePathExtractor;
 import de.marhali.easyi18n.idea.service.I18nProjectService;
@@ -56,7 +53,6 @@ public class KotlinI18nFoldingBuilder extends FoldingBuilderEx implements DumbAw
 
         ModuleModificationTracker moduleModificationTracker = project.getService(ModuleModificationTracker.class);
         ModuleId moduleId = moduleIdResponse.get();
-        KotlinEditorElementExtractor extractor = new KotlinEditorElementExtractor();
         List<FoldingDescriptor> descriptors = new ArrayList<>();
 
         root.accept(new KtTreeVisitorVoid() {
@@ -89,17 +85,15 @@ public class KotlinI18nFoldingBuilder extends FoldingBuilderEx implements DumbAw
                 }
 
                 String placeholder = sanitizePlaceholder(entryPreview.previewValue().toInputString());
+                TextRange literalRange = literal.getTextRange();
 
-                TextRange valueRange = ElementManipulators.getValueTextRange(literal)
-                    .shiftRight(literal.getTextRange().getStartOffset());
-
-                if (valueRange.isEmpty()) {
+                if (literalRange.isEmpty()) {
                     return;
                 }
 
                 descriptors.add(new FoldingDescriptor(
                     literal.getNode(),
-                    valueRange,
+                    literalRange,
                     null,
                     placeholder,
                     Boolean.TRUE,
