@@ -1,0 +1,42 @@
+<idea-plugin>
+  <extensions defaultExtensionNs="com.intellij">
+    <psi.referenceContributor
+      language="Dart"
+      implementation="de.marhali.easyi18n.idea.assistance.dart.DartI18nPsiReferenceContributor"
+    />
+
+    <completion.contributor
+      language="Dart"
+      implementationClass="de.marhali.easyi18n.idea.assistance.dart.DartI18nCompletionContributor"
+    />
+
+    <platform.backend.documentation.targetProvider
+      implementation="de.marhali.easyi18n.idea.assistance.dart.DartI18nDocumentationTargetProvider"
+    />
+
+    <lang.foldingBuilder
+      language="Dart"
+      implementationClass="de.marhali.easyi18n.idea.assistance.dart.DartI18nFoldingBuilder"
+    />
+
+    <localInspection
+      language="Dart"
+      shortName="UnresolvedI18nKeyDart"
+      enabledByDefault="true"
+      level="ERROR"
+      implementationClass="de.marhali.easyi18n.idea.assistance.dart.DartI18nKeyLocalInspection"
+      bundle="messages.PluginBundle"
+      groupKey="editor.intention.family"
+      key="editor.intention.unresolved.title"
+    />
+
+    <intentionAction>
+      <className>de.marhali.easyi18n.idea.assistance.dart.DartExtractTranslationIntention</className>
+      <language>Dart</language>
+      <bundleName>messages.PluginBundle</bundleName>
+      <skipBeforeAfter>true</skipBeforeAfter>
+      <categoryKey>editor.intention.family</categoryKey>
+      <descriptionDirectoryName>extract</descriptionDirectoryName>
+    </intentionAction>
+  </extensions>
+</idea-plugin>
