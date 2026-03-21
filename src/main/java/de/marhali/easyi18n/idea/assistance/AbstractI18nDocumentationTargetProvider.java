@@ -5,8 +5,6 @@ import com.intellij.platform.backend.documentation.DocumentationTarget;
 import com.intellij.platform.backend.documentation.DocumentationTargetProvider;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiLiteralExpression;
-import com.intellij.psi.util.PsiTreeUtil;
 import de.marhali.easyi18n.core.application.cqrs.PossiblyUnavailable;
 import de.marhali.easyi18n.core.application.query.I18nEntryPreviewQuery;
 import de.marhali.easyi18n.core.application.query.MatchEditorElementQuery;
@@ -16,60 +14,56 @@ import de.marhali.easyi18n.core.domain.model.I18nKeyCandidate;
 import de.marhali.easyi18n.core.domain.model.ModuleId;
 import de.marhali.easyi18n.core.domain.rules.EditorElement;
 import de.marhali.easyi18n.core.domain.rules.EditorFilePath;
-import de.marhali.easyi18n.idea.assistance.java.JavaEditorElementExtractor;
 import de.marhali.easyi18n.idea.service.I18nProjectService;
 import de.marhali.easyi18n.idea.service.ScheduledModuleLoaderService;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Optional;
 
 /**
+ * Abstract base for language-specific i18n documentation target providers.
+ *
  * @author marhali
  */
-public class I18nDocumentationTargetProvider implements DocumentationTargetProvider {
+public abstract class AbstractI18nDocumentationTargetProvider implements DocumentationTargetProvider {
+
+    /**
+     * Extract an {@link EditorElement} from the leaf PSI element at the cursor.
+     * Return {@code null} if the element is not an i18n string literal candidate.
+     */
+    protected abstract @Nullable EditorElement extractEditorElement(@NotNull PsiElement leaf, @NotNull PsiFile file);
+
     @Override
     public @NotNull List<? extends @NotNull DocumentationTarget> documentationTargets(@NotNull PsiFile file, int offset) {
         PsiElement leaf = file.findElementAt(offset);
-
         if (leaf == null) {
             return List.of();
         }
 
-        PsiLiteralExpression literal = PsiTreeUtil.getParentOfType(leaf, PsiLiteralExpression.class, false);
-        if (literal == null) {
+        EditorElement editorElement = extractEditorElement(leaf, file);
+        if (editorElement == null) {
             return List.of();
         }
 
-        Object value = literal.getValue();
-        if (!(value instanceof String key) || key.isBlank()) {
+        String key = editorElement.literalValue();
+        if (key.isBlank()) {
             return List.of();
         }
 
         Project project = file.getProject();
-
         I18nProjectService projectService = project.getService(I18nProjectService.class);
-
-        EditorFilePath editorFilePath = EditorFilePathExtractor.extract(literal.getContainingFile());
+        EditorFilePath editorFilePath = EditorFilePathExtractor.extract(file);
 
         Optional<ModuleId> moduleIdResponse = projectService.query(new ModuleIdByEditorFilePathQuery(editorFilePath));
-
         if (moduleIdResponse.isEmpty()) {
-            // No associated translation module for the editor element
             return List.of();
         }
 
         ModuleId moduleId = moduleIdResponse.get();
 
-        JavaEditorElementExtractor extractor = new JavaEditorElementExtractor();
-        EditorElement editorElement = extractor.extract(literal, literal.getContainingFile());
-
-        if (editorElement == null) {
-            return List.of();
-        }
-
         Boolean editorElementMatched = projectService.query(new MatchEditorElementQuery(moduleId, editorElement));
-
         if (!editorElementMatched) {
             return List.of();
         }
@@ -78,8 +72,7 @@ public class I18nDocumentationTargetProvider implements DocumentationTargetProvi
             = projectService.query(new I18nEntryPreviewQuery(moduleId, I18nKeyCandidate.of(key)));
 
         if (!entryResponse.available()) {
-            // Response is not available - module is not loaded yet
-            project.getService(ScheduledModuleLoaderService.class).loadModule(moduleId); // Schedule module load
+            project.getService(ScheduledModuleLoaderService.class).loadModule(moduleId);
             return List.of();
         }
 
@@ -87,8 +80,6 @@ public class I18nDocumentationTargetProvider implements DocumentationTargetProvi
             return List.of();
         }
 
-        I18nEntryPreview entryPreview = entryResponse.result().get();
-
-        return List.of(new I18nKeyDocumentationTarget(file, moduleId, entryPreview));
+        return List.of(new I18nKeyDocumentationTarget(file, moduleId, entryResponse.result().get()));
     }
 }

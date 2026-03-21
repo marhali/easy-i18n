@@ -72,11 +72,14 @@
       <descriptionDirectoryName>extract</descriptionDirectoryName>
     </intentionAction>
 
-    <!-- Shared Documentation Provider -->
-    <!--
+    <!-- JavaScript Documentation Provider -->
     <platform.backend.documentation.targetProvider
-      implementation="de.marhali.easyi18n.idea.assistance.I18nDocumentationTargetProvider"
+      implementation="de.marhali.easyi18n.idea.assistance.javascript.JavaScriptI18nDocumentationTargetProvider"
     />
-    -->
+
+    <!-- TypeScript Documentation Provider -->
+    <platform.backend.documentation.targetProvider
+      implementation="de.marhali.easyi18n.idea.assistance.javascript.TypeScriptI18nDocumentationTargetProvider"
+    />
   </extensions>
 </idea-plugin>

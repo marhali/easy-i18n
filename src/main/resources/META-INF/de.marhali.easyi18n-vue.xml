@@ -1,0 +1,42 @@
+<idea-plugin>
+  <extensions defaultExtensionNs="com.intellij">
+    <psi.referenceContributor
+      language="Vue"
+      implementation="de.marhali.easyi18n.idea.assistance.vue.VueI18nPsiReferenceContributor"
+    />
+
+    <completion.contributor
+      language="Vue"
+      implementationClass="de.marhali.easyi18n.idea.assistance.vue.VueI18nCompletionContributor"
+    />
+
+    <platform.backend.documentation.targetProvider
+      implementation="de.marhali.easyi18n.idea.assistance.vue.VueI18nDocumentationTargetProvider"
+    />
+
+    <lang.foldingBuilder
+      language="Vue"
+      implementationClass="de.marhali.easyi18n.idea.assistance.vue.VueI18nFoldingBuilder"
+    />
+
+    <localInspection
+      language="Vue"
+      shortName="UnresolvedI18nKeyVue"
+      enabledByDefault="true"
+      level="ERROR"
+      implementationClass="de.marhali.easyi18n.idea.assistance.vue.VueI18nKeyLocalInspection"
+      bundle="messages.PluginBundle"
+      groupKey="editor.intention.family"
+      key="editor.intention.unresolved.title"
+    />
+
+    <intentionAction>
+      <className>de.marhali.easyi18n.idea.assistance.vue.VueExtractTranslationIntention</className>
+      <language>Vue</language>
+      <bundleName>messages.PluginBundle</bundleName>
+      <skipBeforeAfter>true</skipBeforeAfter>
+      <categoryKey>editor.intention.family</categoryKey>
+      <descriptionDirectoryName>extract</descriptionDirectoryName>
+    </intentionAction>
+  </extensions>
+</idea-plugin>
