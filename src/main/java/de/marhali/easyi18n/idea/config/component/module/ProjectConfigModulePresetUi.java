@@ -102,6 +102,7 @@ public class ProjectConfigModulePresetUi
         return switch (preset) {
             case DEFAULT -> PluginBundle.message("config.project.modules.preset.item.default");
             case CUSTOM -> PluginBundle.message("config.project.modules.preset.item.custom");
+            default -> preset.name();
         };
     }
 }
