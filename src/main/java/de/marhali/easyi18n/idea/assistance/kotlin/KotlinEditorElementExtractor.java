@@ -2,8 +2,10 @@ package de.marhali.easyi18n.idea.assistance.kotlin;
 
 import com.intellij.openapi.roots.ProjectFileIndex;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
+import com.intellij.psi.PsiMethod;
 import de.marhali.easyi18n.core.domain.rules.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -137,17 +139,29 @@ public final class KotlinEditorElementExtractor implements EditorElementExtracto
         KtExpression callee = callExpression.getCalleeExpression();
         if (callee != null) {
             builder.callableName(callee.getText());
+        }
 
-            // Try to resolve the reference for FQN
-            if (callee instanceof KtNameReferenceExpression nameRef) {
-                for (var ref : nameRef.getReferences()) {
-                    if (ref instanceof KtSimpleNameReference simpleRef) {
-                        PsiElement resolved = simpleRef.resolve();
-                        if (resolved instanceof KtNamedFunction resolvedFunction) {
-                            KtClassOrObject containingClass = findParentOfType(resolvedFunction, KtClassOrObject.class);
-                            if (containingClass != null && containingClass.getFqName() != null) {
-                                builder.callableFqn(containingClass.getFqName().asString() + "." + resolvedFunction.getName());
-                            }
+        // Resolve callee to extract FQN and receiver type.
+        // Prefer resolving via the called method — works for Java interop without requiring
+        // an explicit type annotation on the receiver variable.
+        String resolvedReceiverFqn = null;
+        if (callee instanceof KtNameReferenceExpression nameRef) {
+            for (var ref : nameRef.getReferences()) {
+                if (ref instanceof KtSimpleNameReference simpleRef) {
+                    PsiElement resolved = simpleRef.resolve();
+                    if (resolved instanceof KtNamedFunction resolvedFunction) {
+                        // Kotlin function
+                        KtClassOrObject containingClass = findParentOfType(resolvedFunction, KtClassOrObject.class);
+                        if (containingClass != null && containingClass.getFqName() != null) {
+                            builder.callableFqn(containingClass.getFqName().asString() + "." + resolvedFunction.getName());
+                        }
+                    } else if (resolved instanceof PsiMethod psiMethod) {
+                        // Java method called from Kotlin — get the containing class FQN directly
+                        PsiClass containingClass = psiMethod.getContainingClass();
+                        if (containingClass != null && containingClass.getQualifiedName() != null) {
+                            String classFqn = containingClass.getQualifiedName();
+                            builder.callableFqn(classFqn + "." + psiMethod.getName());
+                            resolvedReceiverFqn = classFqn;
                         }
                     }
                 }
@@ -159,9 +173,68 @@ public final class KotlinEditorElementExtractor implements EditorElementExtracto
         if (callParent instanceof KtDotQualifiedExpression dotExpr) {
             KtExpression receiver = dotExpr.getReceiverExpression();
             if (receiver != null) {
-                builder.receiverTypeFqn(receiver.getText());
+                if (resolvedReceiverFqn != null) {
+                    // Already resolved from the method's containing class (Java interop case)
+                    builder.receiverTypeFqn(resolvedReceiverFqn);
+                } else {
+                    // Fall back: resolve via variable's declared type + imports (Kotlin-to-Kotlin case)
+                    String typeFqn = resolveReceiverTypeFqn(receiver);
+                    builder.receiverTypeFqn(typeFqn != null ? typeFqn : receiver.getText());
+                }
             }
         }
+    }
+
+    /**
+     * Resolves the fully qualified type name of a receiver expression.
+     * For {@code bundle.getString("key")} with {@code val bundle: ResourceBundle},
+     * returns {@code "java.util.ResourceBundle"} instead of the raw variable name {@code "bundle"}.
+     */
+    private @Nullable String resolveReceiverTypeFqn(@NotNull KtExpression receiver) {
+        if (!(receiver instanceof KtNameReferenceExpression nameRef)) {
+            return null;
+        }
+
+        // Resolve the variable/parameter declaration
+        String simpleTypeName = null;
+        for (var ref : nameRef.getReferences()) {
+            if (ref instanceof KtSimpleNameReference simpleRef) {
+                PsiElement resolved = simpleRef.resolve();
+                simpleTypeName = extractDeclaredTypeName(resolved);
+                if (simpleTypeName != null) {
+                    break;
+                }
+            }
+        }
+
+        if (simpleTypeName == null) {
+            return null;
+        }
+
+        // Look up the FQN in the file's import directives
+        KtFile ktFile = findParentOfType(receiver, KtFile.class);
+        if (ktFile != null) {
+            for (KtImportDirective directive : ktFile.getImportDirectives()) {
+                org.jetbrains.kotlin.name.FqName fqName = directive.getImportedFqName();
+                if (fqName != null && fqName.shortName().asString().equals(simpleTypeName)) {
+                    return fqName.asString();
+                }
+            }
+        }
+
+        return simpleTypeName;
+    }
+
+    private @Nullable String extractDeclaredTypeName(@Nullable PsiElement resolved) {
+        if (resolved instanceof KtProperty property) {
+            KtTypeReference typeRef = property.getTypeReference();
+            return typeRef != null ? typeRef.getText() : null;
+        }
+        if (resolved instanceof KtParameter parameter) {
+            KtTypeReference typeRef = parameter.getTypeReference();
+            return typeRef != null ? typeRef.getText() : null;
+        }
+        return null;
     }
 
     private void fillDeclarationFacts(@NotNull KtStringTemplateExpression literal, @NotNull EditorElement.Builder builder) {
