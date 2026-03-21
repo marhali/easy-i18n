@@ -11,7 +11,7 @@
     />
 
     <platform.backend.documentation.targetProvider
-      implementation="de.marhali.easyi18n.idea.assistance.I18nDocumentationTargetProvider"
+      implementation="de.marhali.easyi18n.idea.assistance.java.JavaI18nDocumentationTargetProvider"
     />
 
     <lang.foldingBuilder
