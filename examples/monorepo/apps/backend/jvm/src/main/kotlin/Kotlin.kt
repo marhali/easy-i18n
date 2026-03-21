@@ -1,6 +1,6 @@
 import java.util.ResourceBundle
 
-val bundle = ResourceBundle.getBundle("messages")
+val bundle: ResourceBundle = ResourceBundle.getBundle("messages")
 
 // Call argument (rule-01: bundle.getString(), receiver type ResourceBundle, argument index 0)
 
@@ -13,7 +13,7 @@ fun showAll() {
     // Resolved keys → folding, hover documentation, and Ctrl+Click reference work
     println(bundle.getString("user:object.deeply.nested.structure.description"))
     println(bundle.getString("billing:object.deeply.nested.structure.description"))
-    println(bundle.getString("common:object.hybrid.flat.structure"))
+    println(bundle.getString("common:object.hybrid\\.flat\\.structure"))
 
     // Unresolved keys → inspection error
     println(bundle.getString("common:does.not.exist"))
