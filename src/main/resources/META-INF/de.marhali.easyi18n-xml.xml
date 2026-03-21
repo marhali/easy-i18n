@@ -1,5 +1,85 @@
 <idea-plugin>
-    <extensions defaultExtensionNs="com.intellij">
+  <extensions defaultExtensionNs="com.intellij">
+    <!-- HTML -->
 
-    </extensions>
+    <psi.referenceContributor
+      language="HTML"
+      implementation="de.marhali.easyi18n.idea.assistance.html.HtmlI18nPsiReferenceContributor"
+    />
+
+    <completion.contributor
+      language="HTML"
+      implementationClass="de.marhali.easyi18n.idea.assistance.html.HtmlI18nCompletionContributor"
+    />
+
+    <platform.backend.documentation.targetProvider
+      implementation="de.marhali.easyi18n.idea.assistance.html.HtmlI18nDocumentationTargetProvider"
+    />
+
+    <lang.foldingBuilder
+      language="HTML"
+      implementationClass="de.marhali.easyi18n.idea.assistance.html.HtmlI18nFoldingBuilder"
+    />
+
+    <localInspection
+      language="HTML"
+      shortName="UnresolvedI18nKeyHtml"
+      enabledByDefault="true"
+      level="ERROR"
+      implementationClass="de.marhali.easyi18n.idea.assistance.html.HtmlI18nKeyLocalInspection"
+      bundle="messages.PluginBundle"
+      groupKey="editor.intention.family"
+      key="editor.intention.unresolved.title"
+    />
+
+    <intentionAction>
+      <className>de.marhali.easyi18n.idea.assistance.html.HtmlExtractTranslationIntention</className>
+      <language>HTML</language>
+      <bundleName>messages.PluginBundle</bundleName>
+      <skipBeforeAfter>true</skipBeforeAfter>
+      <categoryKey>editor.intention.family</categoryKey>
+      <descriptionDirectoryName>extract</descriptionDirectoryName>
+    </intentionAction>
+
+    <!-- XML -->
+
+    <psi.referenceContributor
+      language="XML"
+      implementation="de.marhali.easyi18n.idea.assistance.xml.XmlI18nPsiReferenceContributor"
+    />
+
+    <completion.contributor
+      language="XML"
+      implementationClass="de.marhali.easyi18n.idea.assistance.xml.XmlI18nCompletionContributor"
+    />
+
+    <platform.backend.documentation.targetProvider
+      implementation="de.marhali.easyi18n.idea.assistance.xml.XmlI18nDocumentationTargetProvider"
+    />
+
+    <lang.foldingBuilder
+      language="XML"
+      implementationClass="de.marhali.easyi18n.idea.assistance.xml.XmlI18nFoldingBuilder"
+    />
+
+    <localInspection
+      language="XML"
+      shortName="UnresolvedI18nKeyXml"
+      enabledByDefault="true"
+      level="ERROR"
+      implementationClass="de.marhali.easyi18n.idea.assistance.xml.XmlI18nKeyLocalInspection"
+      bundle="messages.PluginBundle"
+      groupKey="editor.intention.family"
+      key="editor.intention.unresolved.title"
+    />
+
+    <intentionAction>
+      <className>de.marhali.easyi18n.idea.assistance.xml.XmlExtractTranslationIntention</className>
+      <language>XML</language>
+      <bundleName>messages.PluginBundle</bundleName>
+      <skipBeforeAfter>true</skipBeforeAfter>
+      <categoryKey>editor.intention.family</categoryKey>
+      <descriptionDirectoryName>extract</descriptionDirectoryName>
+    </intentionAction>
+  </extensions>
 </idea-plugin>
