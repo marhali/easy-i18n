@@ -15,6 +15,15 @@ A blank starting point with all fields empty. Use this when you want to configur
 
 ---
 
+### Custom
+
+Preserves the current module configuration unchanged.
+This preset is automatically selected if you customize your configuration.
+
+---
+
+## Framework-agnostic Presets
+
 ### Rails
 
 Ruby on Rails with the standard [I18n gem](https://guides.rubyonrails.org/i18n.html).
@@ -99,6 +108,4 @@ Ruby on Rails with the standard [I18n gem](https://guides.rubyonrails.org/i18n.h
 
 ---
 
-### Custom
-
-Preserves the current module configuration unchanged. Select this preset when you have manually configured the module and do not want to overwrite any settings.
+Is there a preset missing, or does a configuration not quite fit the framework? [Let me know on GitHub!](https://github.com/marhali/easy-i18n)
