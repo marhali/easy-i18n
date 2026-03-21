@@ -18,6 +18,7 @@ PLEASE CHECK THE MIGRATION GUIDE ON https://easy-i18n.github.io/migration/v5/ BE
 
 ### Changed
 
+- Reworked editor assistance and added support for the most common languages
 - Optimized translation value type mapping (used in translation dialog & tool window)
 
 ### Fixed
