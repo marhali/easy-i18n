@@ -9,8 +9,8 @@ import de.marhali.easyi18n.core.application.command.EnsureModuleLoadedCommand;
 import de.marhali.easyi18n.core.domain.model.ModuleId;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Responsible for scheduling module loading using debounce mechanism.
@@ -29,7 +29,7 @@ public final class ScheduledModuleLoaderService {
 
     public ScheduledModuleLoaderService(@NotNull Project project) {
         this.project = project;
-        this.alarms = new HashMap<>();
+        this.alarms = new ConcurrentHashMap<>();
     }
 
     /**
