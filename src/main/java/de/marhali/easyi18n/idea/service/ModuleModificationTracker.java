@@ -3,6 +3,7 @@ package de.marhali.easyi18n.idea.service;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.components.Service;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.util.ModificationTracker;
 import com.intellij.openapi.util.SimpleModificationTracker;
 import de.marhali.easyi18n.core.domain.event.ModuleChanged;
 import de.marhali.easyi18n.core.domain.event.ProjectConfigChanged;
@@ -36,7 +37,7 @@ public final class ModuleModificationTracker implements Disposable {
                         trackers.clear();
                     }
                     case ProjectReloaded ignored -> trackers.forEach((_moduleId, tracker) -> tracker.incModificationCount());
-                    case ModuleChanged moduleChanged -> get(moduleChanged.moduleId()).incModificationCount();
+                    case ModuleChanged moduleChanged -> getOrCompute(moduleChanged.moduleId()).incModificationCount();
                     default -> {} // We do not need to handle every event here
                 }
         });
@@ -47,7 +48,11 @@ public final class ModuleModificationTracker implements Disposable {
         // Needed to connect to message bus
     }
 
-    public @NotNull SimpleModificationTracker get(@NotNull ModuleId moduleId) {
+    public @NotNull ModificationTracker get(@NotNull ModuleId moduleId) {
+        return getOrCompute(moduleId);
+    }
+
+    private @NotNull SimpleModificationTracker getOrCompute(@NotNull ModuleId moduleId) {
         return trackers.computeIfAbsent(moduleId, (_moduleId) -> new SimpleModificationTracker());
     }
 }
