@@ -11,8 +11,8 @@ import de.marhali.easyi18n.core.domain.model.ModuleId;
 import de.marhali.easyi18n.idea.event.PluginTopics;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Simple modification tracker that increments when state changing domain-level events occur.
@@ -25,7 +25,7 @@ public final class ModuleModificationTracker implements Disposable {
     private final @NotNull Map<@NotNull ModuleId, @NotNull SimpleModificationTracker> trackers;
 
     public ModuleModificationTracker(@NotNull Project project) {
-        this.trackers = new HashMap<>();
+        this.trackers = new ConcurrentHashMap<>();
 
         project.getMessageBus().connect(this).subscribe(PluginTopics.DOMAIN_EVENTS,
             (PluginTopics.DomainListener) event -> {
