@@ -9,11 +9,18 @@
   <depends>com.intellij.modules.platform</depends>
   <depends>com.intellij.modules.lang</depends>
 
-  <depends optional="true" config-file="de.marhali.easyi18n-kotlin.xml">org.jetbrains.kotlin</depends>
+  <depends optional="true" config-file="de.marhali.easyi18n-dart.xml">Dart</depends>
+  <depends optional="true" config-file="de.marhali.easyi18n-python.xml">PythonCore</depends>
   <depends optional="true" config-file="de.marhali.easyi18n-javascript.xml">JavaScript</depends>
   <depends optional="true" config-file="de.marhali.easyi18n-xml.xml">com.intellij.modules.xml</depends>
   <depends optional="true" config-file="de.marhali.easyi18n-java.xml">com.intellij.java</depends>
   <depends optional="true" config-file="de.marhali.easyi18n-php.xml">com.jetbrains.php</depends>
+  <depends optional="true" config-file="de.marhali.easyi18n-rust.xml">com.jetbrains.rust</depends>
+  <depends optional="true" config-file="de.marhali.easyi18n-ruby.xml">org.jetbrains.plugins.ruby</depends>
+  <depends optional="true" config-file="de.marhali.easyi18n-kotlin.xml">org.jetbrains.kotlin</depends>
+  <depends optional="true" config-file="de.marhali.easyi18n-vue.xml">org.jetbrains.plugins.vue</depends>
+  <depends optional="true" config-file="de.marhali.easyi18n-go.xml">org.jetbrains.plugins.go</depends>
+  <depends optional="true" config-file="de.marhali.easyi18n-svelte.xml">dev.blachut.svelte.lang</depends>
 
   <resource-bundle>messages.PluginBundle</resource-bundle>
 
