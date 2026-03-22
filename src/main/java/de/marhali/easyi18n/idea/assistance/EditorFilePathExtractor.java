@@ -21,6 +21,15 @@ public final class EditorFilePathExtractor {
 
     public static @NotNull EditorFilePath extract(@NotNull PsiFile psiFile) {
         VirtualFile virtualFile = psiFile.getVirtualFile();
+        if (virtualFile == null || !virtualFile.isInLocalFileSystem()) {
+            // PsiFile may be an injected language fragment whose VirtualFile is synthetic
+            // (e.g. Vue template {{ }} expressions produce a LightVirtualFile at "/Vue.vue.int").
+            // Climb up to the actual host file via the PSI context.
+            PsiElement context = psiFile.getContext();
+            if (context != null) {
+                return extract(context.getContainingFile());
+            }
+        }
         return new EditorFilePath(virtualFile != null ? virtualFile.getPath() : null);
     }
 }
