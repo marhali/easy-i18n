@@ -14,11 +14,11 @@ PLEASE CHECK THE MIGRATION GUIDE ON https://easy-i18n.github.io/migration/v5/ BE
 - Configuration support to define target editor elements to apply fine-grained i18n assistance
 - Quick fix intention action to create a new translation
 - Check if translation key exists in add translation dialog
+- Language support for: Svelte, Ruby, Rust, Go, Dart, Python
 - Remember last size for translation dialogs
 
 ### Changed
 
-- Reworked editor assistance and added support for the most common languages
 - Optimized translation value type mapping (used in translation dialog & tool window)
 
 ### Fixed
