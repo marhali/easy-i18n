@@ -1,6 +1,6 @@
 <idea-plugin>
   <extensions defaultExtensionNs="com.intellij">
-    <!-- JavaScript Support -->
+    <!-- JavaScript & JS like Support -->
     <psi.referenceContributor
       language="JavaScript"
       implementation="de.marhali.easyi18n.idea.assistance.javascript.JavaScriptI18nPsiReferenceContributor"
@@ -30,42 +30,6 @@
     <intentionAction>
       <className>de.marhali.easyi18n.idea.assistance.javascript.JavaScriptExtractTranslationIntention</className>
       <language>JavaScript</language>
-      <bundleName>messages.PluginBundle</bundleName>
-      <skipBeforeAfter>true</skipBeforeAfter>
-      <categoryKey>editor.intention.family</categoryKey>
-      <descriptionDirectoryName>extract</descriptionDirectoryName>
-    </intentionAction>
-
-    <!-- TypeScript Support -->
-    <psi.referenceContributor
-      language="TypeScript"
-      implementation="de.marhali.easyi18n.idea.assistance.javascript.TypeScriptI18nPsiReferenceContributor"
-    />
-
-    <completion.contributor
-      language="TypeScript"
-      implementationClass="de.marhali.easyi18n.idea.assistance.javascript.TypeScriptI18nCompletionContributor"
-    />
-
-    <lang.foldingBuilder
-      language="TypeScript"
-      implementationClass="de.marhali.easyi18n.idea.assistance.javascript.TypeScriptI18nFoldingBuilder"
-    />
-
-    <localInspection
-      language="TypeScript"
-      shortName="UnresolvedI18nKeyTypeScript"
-      enabledByDefault="true"
-      level="ERROR"
-      implementationClass="de.marhali.easyi18n.idea.assistance.javascript.TypeScriptI18nKeyLocalInspection"
-      bundle="messages.PluginBundle"
-      groupKey="editor.intention.family"
-      key="editor.intention.unresolved.title"
-    />
-
-    <intentionAction>
-      <className>de.marhali.easyi18n.idea.assistance.javascript.TypeScriptExtractTranslationIntention</className>
-      <language>TypeScript</language>
       <bundleName>messages.PluginBundle</bundleName>
       <skipBeforeAfter>true</skipBeforeAfter>
       <categoryKey>editor.intention.family</categoryKey>

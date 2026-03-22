@@ -84,7 +84,12 @@ public class JavaScriptI18nPsiReferenceContributor extends PsiReferenceContribut
 
             ModuleId moduleId = moduleIdResponse.get();
 
-            JavaScriptEditorElementExtractor extractor = new JavaScriptEditorElementExtractor(language);
+            // TypeScript is a JavaScript dialect — detect actual language at runtime
+            // to avoid duplicate references when language="JavaScript" also runs for TS files.
+            EditorLanguage effectiveLang = (language == EditorLanguage.JAVASCRIPT
+                    && "TypeScript".equals(literal.getContainingFile().getLanguage().getID()))
+                ? EditorLanguage.TYPESCRIPT : language;
+            JavaScriptEditorElementExtractor extractor = new JavaScriptEditorElementExtractor(effectiveLang);
             EditorElement editorElement = extractor.extract(literal, literal.getContainingFile());
 
             if (editorElement == null) {

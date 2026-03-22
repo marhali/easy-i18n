@@ -74,7 +74,8 @@ public class JavaScriptI18nCompletionContributor extends CompletionContributor {
 
                     ModuleId moduleId = moduleIdResponse.get();
 
-                    JavaScriptEditorElementExtractor extractor = new JavaScriptEditorElementExtractor(language);
+                    EditorLanguage effectiveLang = effectiveLanguage(completionParameters.getOriginalFile());
+                    JavaScriptEditorElementExtractor extractor = new JavaScriptEditorElementExtractor(effectiveLang);
                     EditorElement editorElement = extractor.extract(literal, completionParameters.getOriginalFile());
 
                     if (editorElement == null) {
@@ -158,6 +159,14 @@ public class JavaScriptI18nCompletionContributor extends CompletionContributor {
         int newTailOffset = startOffset + newText.length();
         context.setTailOffset(newTailOffset);
         context.getEditor().getCaretModel().moveToOffset(newTailOffset);
+    }
+
+    private @NotNull EditorLanguage effectiveLanguage(@NotNull com.intellij.psi.PsiFile file) {
+        if (language == EditorLanguage.JAVASCRIPT
+                && "TypeScript".equals(file.getLanguage().getID())) {
+            return EditorLanguage.TYPESCRIPT;
+        }
+        return language;
     }
 
     @SuppressWarnings("unchecked")

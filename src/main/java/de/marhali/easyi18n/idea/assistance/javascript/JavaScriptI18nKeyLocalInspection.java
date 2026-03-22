@@ -50,6 +50,9 @@ public class JavaScriptI18nKeyLocalInspection extends LocalInspectionTool {
 
     @Override
     public @NotNull PsiElementVisitor buildVisitor(@NotNull ProblemsHolder holder, boolean isOnTheFly) {
+        // TypeScript is a JavaScript dialect — IntelliJ also runs language="JavaScript" extensions
+        // for TypeScript files. Detect the actual language once per file to avoid duplicate markers.
+        EditorLanguage effectiveLang = effectiveLanguage(holder.getFile());
         return new JSElementVisitor() {
             @Override
             public void visitJSLiteralExpression(@NotNull JSLiteralExpression literal) {
@@ -77,7 +80,7 @@ public class JavaScriptI18nKeyLocalInspection extends LocalInspectionTool {
 
                 ModuleId moduleId = moduleIdResponse.get();
 
-                JavaScriptEditorElementExtractor extractor = new JavaScriptEditorElementExtractor(language);
+                JavaScriptEditorElementExtractor extractor = new JavaScriptEditorElementExtractor(effectiveLang);
                 EditorElement editorElement = extractor.extract(literal, literal.getContainingFile());
 
                 if (editorElement == null) {
@@ -113,5 +116,18 @@ public class JavaScriptI18nKeyLocalInspection extends LocalInspectionTool {
                 );
             }
         };
+    }
+
+    /**
+     * Returns the language to use for rule matching.
+     * When this extension runs as a JavaScript dialect extension (e.g. on TypeScript files),
+     * the actual file language is detected at runtime instead of using the constructor default.
+     */
+    protected EditorLanguage effectiveLanguage(@NotNull com.intellij.psi.PsiFile file) {
+        if (language == EditorLanguage.JAVASCRIPT
+                && "TypeScript".equals(file.getLanguage().getID())) {
+            return EditorLanguage.TYPESCRIPT;
+        }
+        return language;
     }
 }

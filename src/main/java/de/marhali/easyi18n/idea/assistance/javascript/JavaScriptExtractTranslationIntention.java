@@ -79,7 +79,10 @@ public class JavaScriptExtractTranslationIntention extends PsiElementBaseIntenti
         ModuleId moduleId = moduleIdResponse.get();
         literal.putUserData(PluginKey.MODULE_ID, moduleId);
 
-        JavaScriptEditorElementExtractor extractor = new JavaScriptEditorElementExtractor(language);
+        EditorLanguage effectiveLang = (language == EditorLanguage.JAVASCRIPT
+                && "TypeScript".equals(containingFile.getLanguage().getID()))
+            ? EditorLanguage.TYPESCRIPT : language;
+        JavaScriptEditorElementExtractor extractor = new JavaScriptEditorElementExtractor(effectiveLang);
         EditorElement editorElement = extractor.extract(literal, literal.getContainingFile());
 
         if (editorElement == null) {
