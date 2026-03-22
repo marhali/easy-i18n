@@ -102,16 +102,15 @@ public class JavaScriptI18nFoldingBuilder extends FoldingBuilderEx implements Du
 
                 String placeholder = sanitizePlaceholder(entryPreview.previewValue().toInputString());
 
-                TextRange valueRange = ElementManipulators.getValueTextRange(literal)
-                    .shiftRight(literal.getTextRange().getStartOffset());
+                TextRange literalRange = literal.getTextRange();
 
-                if (valueRange.isEmpty()) {
+                if (literalRange.isEmpty()) {
                     return;
                 }
 
                 descriptors.add(new FoldingDescriptor(
                     literal.getNode(),
-                    valueRange,
+                    literalRange,
                     null,
                     placeholder,
                     Boolean.TRUE,
@@ -139,7 +138,6 @@ public class JavaScriptI18nFoldingBuilder extends FoldingBuilderEx implements Du
         }
         return value
             .replace("\n", "\\n")
-            .replace("\r", "")
-            .replace("\"", "\\\"");
+            .replace("\r", "");
     }
 }
