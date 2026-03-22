@@ -10,10 +10,6 @@
       implementationClass="de.marhali.easyi18n.idea.assistance.vue.VueI18nCompletionContributor"
     />
 
-    <platform.backend.documentation.targetProvider
-      implementation="de.marhali.easyi18n.idea.assistance.vue.VueI18nDocumentationTargetProvider"
-    />
-
     <lang.foldingBuilder
       language="Vue"
       implementationClass="de.marhali.easyi18n.idea.assistance.vue.VueI18nFoldingBuilder"

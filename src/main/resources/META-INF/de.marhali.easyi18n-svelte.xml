@@ -10,10 +10,6 @@
       implementationClass="de.marhali.easyi18n.idea.assistance.svelte.SvelteI18nCompletionContributor"
     />
 
-    <platform.backend.documentation.targetProvider
-      implementation="de.marhali.easyi18n.idea.assistance.svelte.SvelteI18nDocumentationTargetProvider"
-    />
-
     <lang.foldingBuilder
       language="Svelte"
       implementationClass="de.marhali.easyi18n.idea.assistance.svelte.SvelteI18nFoldingBuilder"
