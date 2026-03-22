@@ -132,7 +132,7 @@ public class JavaScriptI18nFoldingBuilder extends FoldingBuilderEx implements Du
         return true;
     }
 
-    private static @NotNull String sanitizePlaceholder(@NotNull String value) {
+    protected static @NotNull String sanitizePlaceholder(@NotNull String value) {
         if (value.isBlank()) {
             return StringUtil.THREE_DOTS;
         }

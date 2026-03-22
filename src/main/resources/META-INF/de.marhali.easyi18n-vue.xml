@@ -1,10 +1,12 @@
 <idea-plugin>
   <extensions defaultExtensionNs="com.intellij">
+    <!-- folding for <template /> section -->
     <lang.foldingBuilder
-      language="VueExpr"
-      implementationClass="de.marhali.easyi18n.idea.assistance.vue.VueI18nFoldingBuilder"
+      language="Vue"
+      implementationClass="de.marhali.easyi18n.idea.assistance.vue.VueTemplateI18nFoldingBuilder"
     />
 
+    <!-- folding for <script /> section -->
     <lang.foldingBuilder
       language="Vue"
       implementationClass="de.marhali.easyi18n.idea.assistance.vue.VueI18nFoldingBuilder"
