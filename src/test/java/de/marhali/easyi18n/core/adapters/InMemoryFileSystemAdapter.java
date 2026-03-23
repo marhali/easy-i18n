@@ -40,6 +40,10 @@ public class InMemoryFileSystemAdapter implements FileSystemPort {
         contents.put(path, content);
     }
 
+    public Map<@NotNull String, @NotNull String> getSnapshot() {
+        return new HashMap<>(contents);
+    }
+
     public void clear() {
         contents.clear();
     }
