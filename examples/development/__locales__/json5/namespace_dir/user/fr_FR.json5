@@ -1,0 +1,56 @@
+{
+  primitive:{
+    boolean: {
+      truthy: true,
+      falsy: false,
+    },
+    number: {
+      zero: 0,
+      positive: +187,
+      neutral: 187,
+      negative: -187,
+      float: 1.87,
+      infinity: Infinity,
+      negativeInfinity: -Infinity,
+      hex: 0xabcdef,
+      leading_point: .187,
+    },
+    string: {
+      sample: "Une chaîne d'exemple.",
+      "escaped": "\nJe suis une chaîne avec des séquences d'échappement\"",
+      "multiline": "\nJe suis une\nchaîne\nmultiligne\n\n"
+    },
+    "nullish": null
+  },
+  "object": {
+    "deeply": {
+      "nested": {
+        "structure": {
+          "description": "Une chaîne profondément imbriquée."
+        }
+      }
+    },
+    "hybrid.flat.structure": "Une chaîne en partie imbriquée et en partie plate"
+  },
+  "array": [
+    true,
+    false,
+    0,
+    187,
+    +187,
+    -187,
+    1.87,
+    0xabcdef,
+    "Une autre chaîne",
+  ],
+  "only.flat.structure": "Une chaîne super plate",
+  "missingValues": {
+    "only": {
+      "de_DE": "Une valeur définie uniquement pour fr_FR."
+    }
+  },
+  "duplicated": {
+    "alpha": "Une valeur en double.",
+    "bravo": "Une valeur en double."
+  }
+}

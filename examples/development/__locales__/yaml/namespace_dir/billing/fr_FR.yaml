@@ -1,0 +1,35 @@
+primitive:
+  boolean:
+    truthy: true
+    falsy: false
+  number:
+    zero: 0
+    positive: 187
+    negative: -187
+    float: 1.87
+  string:
+    sample: "Une chaîne d'exemple."
+    escaped: "\nJe suis une chaîne avec des séquences d'échappement\""
+    multiline: "\nJe suis une\nchaîne\nmultiligne\n\n"
+  nullish: null
+object:
+  deeply:
+    nested:
+      structure:
+        description: "Une chaîne profondément imbriquée."
+  hybrid.flat.structure: "Une chaîne partiellement imbriquée et partiellement plate"
+array:
+  - true
+  - false
+  - 0
+  - 187
+  - -187
+  - 1.87
+  - "Une autre chaîne"
+only.flat.structure: "Une chaîne super plate"
+missingValues:
+  only:
+    fr_FR: "Une valeur définie uniquement pour fr_FR."
+duplicated:
+  alpha: "Une valeur dupliquée."
+  bravo: "Une valeur dupliquée."

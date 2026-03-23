@@ -1,0 +1,56 @@
+{
+  primitive:{
+    boolean: {
+      truthy: true,
+      falsy: false,
+    },
+    number: {
+      zero: 0,
+      positive: +187,
+      neutral: 187,
+      negative: -187,
+      float: 1.87,
+      infinity: Infinity,
+      negativeInfinity: -Infinity,
+      hex: 0xabcdef,
+      leading_point: .187,
+    },
+    string: {
+      sample: "Eine beispielhafte Zeichenkette.",
+      "escaped": "\nIch bin eine Zeichenkette mit Escape-Sequenzen\"",
+      "multiline": "\nIch bin eine\nmehrzeilige\nZeichenkette\n\n"
+    },
+    "nullish": null
+  },
+  "object": {
+    "deeply": {
+      "nested": {
+        "structure": {
+          "description": "Eine tief verschachtelte Zeichenkette."
+        }
+      }
+    },
+    "hybrid.flat.structure": "Eine teils verschachtelte & teils flache Zeichenkette"
+  },
+  "array": [
+    true,
+    false,
+    0,
+    187,
+    +187,
+    -187,
+    1.87,
+    0xabcdef,
+    "Eine andere Zeichenkette",
+  ],
+  "only.flat.structure": "Eine super flache Zeichenkette",
+  "missingValues": {
+    "only": {
+      "de_DE": "Ein Wert, der nur bei de_DE gesetzt ist."
+    }
+  },
+  "duplicated": {
+    "alpha": "Ein doppelter Wert.",
+    "bravo": "Ein doppelter Wert."
+  }
+}

@@ -1,0 +1,56 @@
+{
+  primitive:{
+    boolean: {
+      truthy: true,
+      falsy: false,
+    },
+    number: {
+      zero: 0,
+      positive: +187,
+      neutral: 187,
+      negative: -187,
+      float: 1.87,
+      infinity: Infinity,
+      negativeInfinity: -Infinity,
+      hex: 0xabcdef,
+      leading_point: .187,
+    },
+    string: {
+      sample: "Una cadena de ejemplo.",
+      "escaped": "\nSoy una cadena con secuencias de escape\"",
+      "multiline": "\nSoy una\ncadena\nmultilínea\n\n"
+    },
+    "nullish": null
+  },
+  "object": {
+    "deeply": {
+      "nested": {
+        "structure": {
+          "description": "Una cadena profundamente anidada."
+        }
+      }
+    },
+    "hybrid.flat.structure": "Una cadena en parte anidada & en parte plana"
+  },
+  "array": [
+    true,
+    false,
+    0,
+    187,
+    +187,
+    -187,
+    1.87,
+    0xabcdef,
+    "Otra cadena",
+  ],
+  "only.flat.structure": "Una cadena súper plana",
+  "missingValues": {
+    "only": {
+      "de_DE": "Un valor que solo está establecido en es_ES."
+    }
+  },
+  "duplicated": {
+    "alpha": "Un valor duplicado.",
+    "bravo": "Un valor duplicado."
+  }
+}
