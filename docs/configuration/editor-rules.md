@@ -31,12 +31,12 @@ When the cursor lands on a string literal, the extractor for that language build
 
 ### Language
 - **Description**: Set of programming languages this rule applies to. Leave empty to apply the rule to all languages.
-- **Type**: Set of [`EditorLanguage`](../../src/main/java/de/marhali/easyi18n/core/domain/rules/EditorLanguage.java)
+- **Type**: Set of [`EditorLanguage`](https://github.com/marhali/easy-i18n/tree/main/src/main/java/de/marhali/easyi18n/core/domain/rules/EditorLanguage.java)
 - **Supported values**: `JAVA`, `KOTLIN`, `JAVASCRIPT`, `TYPESCRIPT`, `PHP`, `XML`, `HTML`, `VUE`, `GO`, `DART`, `RUST`, `PYTHON`, `SVELTE`, `RUBY`
 
 ### Trigger
 - **Description**: Syntactic position of the string literal that activates the rule.
-- **Type**: [`TriggerKind`](../../src/main/java/de/marhali/easyi18n/core/domain/rules/TriggerKind.java)
+- **Type**: [`TriggerKind`](https://github.com/marhali/easy-i18n/tree/main/src/main/java/de/marhali/easyi18n/core/domain/rules/TriggerKind.java)
 - **Options**:
 
 | Value                | Description                                                              | Examples                                          |
@@ -65,7 +65,7 @@ Each rule can have any number of constraints. **All constraints must pass** for 
 
 ### Type
 - **Description**: Which piece of context to inspect.
-- **Type**: [`RuleConstraintType`](../../src/main/java/de/marhali/easyi18n/core/domain/rules/RuleConstraintType.java)
+- **Type**: [`RuleConstraintType`](https://github.com/marhali/easy-i18n/tree/main/src/main/java/de/marhali/easyi18n/core/domain/rules/RuleConstraintType.java)
 
 #### Context constraints
 
@@ -126,7 +126,7 @@ Each rule can have any number of constraints. **All constraints must pass** for 
 
 ### Match Mode
 - **Description**: Algorithm used to compare the constraint value against the actual value.
-- **Type**: [`TextMatchMode`](../../src/main/java/de/marhali/easyi18n/core/domain/rules/TextMatchMode.java)
+- **Type**: [`TextMatchMode`](https://github.com/marhali/easy-i18n/tree/main/src/main/java/de/marhali/easyi18n/core/domain/rules/TextMatchMode.java)
 
 | Mode       | Behaviour                                                                                                |
 |------------|----------------------------------------------------------------------------------------------------------|
