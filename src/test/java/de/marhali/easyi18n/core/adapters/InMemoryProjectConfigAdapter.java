@@ -9,7 +9,11 @@ import org.jetbrains.annotations.NotNull;
  */
 public class InMemoryProjectConfigAdapter implements ProjectConfigPort {
 
-    private final @NotNull ProjectConfig projectConfig;
+    private @NotNull ProjectConfig projectConfig;
+
+    public InMemoryProjectConfigAdapter() {
+        this(ProjectConfig.fromDefaultPreset());
+    }
 
     public InMemoryProjectConfigAdapter(@NotNull ProjectConfig projectConfig) {
         this.projectConfig = projectConfig;
@@ -18,5 +22,9 @@ public class InMemoryProjectConfigAdapter implements ProjectConfigPort {
     @Override
     public @NotNull ProjectConfig read() {
         return projectConfig;
+    }
+
+    public void updateProjectConfig(@NotNull ProjectConfig projectConfig) {
+        this.projectConfig = projectConfig;
     }
 }
