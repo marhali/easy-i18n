@@ -1,9 +1,7 @@
 package de.marhali.easyi18n.idea.assistance.xml;
 
 import com.intellij.codeInsight.completion.*;
-import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
-import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.patterns.PlatformPatterns;
@@ -18,6 +16,7 @@ import de.marhali.easyi18n.core.domain.model.I18nEntryPreview;
 import de.marhali.easyi18n.core.domain.model.ModuleId;
 import de.marhali.easyi18n.core.domain.rules.EditorElement;
 import de.marhali.easyi18n.core.domain.rules.EditorFilePath;
+import de.marhali.easyi18n.idea.assistance.AbstractI18nCompletionContributor;
 import de.marhali.easyi18n.idea.assistance.EditorFilePathExtractor;
 import de.marhali.easyi18n.idea.icons.PluginIcon;
 import de.marhali.easyi18n.idea.service.I18nProjectService;
@@ -30,7 +29,7 @@ import java.util.Optional;
 /**
  * @author marhali
  */
-public class XmlI18nCompletionContributor extends CompletionContributor {
+public class XmlI18nCompletionContributor extends AbstractI18nCompletionContributor {
 
     public XmlI18nCompletionContributor() {
         extend(
@@ -94,10 +93,6 @@ public class XmlI18nCompletionContributor extends CompletionContributor {
 
                     String currentValue = attributeValue.getValue();
 
-                    if (currentValue == null) {
-                        currentValue = "";
-                    }
-
                     TextRange valueRange = attributeValue.getValueTextRange();
                     int caretOffset = completionParameters.getOffset();
                     if (caretOffset < valueRange.getStartOffset()) {
@@ -114,7 +109,7 @@ public class XmlI18nCompletionContributor extends CompletionContributor {
 
                     for (I18nEntryPreview suggestion : suggestions) {
                         LookupElementBuilder builder = LookupElementBuilder.create(suggestion.key().canonical())
-                            .withInsertHandler(XmlI18nCompletionContributor::replaceCompletionRange)
+                            .withInsertHandler(AbstractI18nCompletionContributor::replaceCompletionRange)
                             .withPresentableText(suggestion.key().canonical())
                             .withIcon(PluginIcon.TRANSLATE_ICON);
 
@@ -127,35 +122,5 @@ public class XmlI18nCompletionContributor extends CompletionContributor {
                 }
             }
         );
-    }
-
-    private static void replaceCompletionRange(@NotNull InsertionContext context, @NotNull LookupElement item) {
-        Document document = context.getDocument();
-
-        int startOffset = context.getStartOffset();
-        int endOffset = context.getTailOffset();
-
-        if (startOffset < 0 || endOffset < startOffset || endOffset > document.getTextLength()) {
-            return;
-        }
-
-        String newText = item.getLookupString();
-        document.replaceString(startOffset, endOffset, newText);
-
-        int newTailOffset = startOffset + newText.length();
-        context.setTailOffset(newTailOffset);
-        context.getEditor().getCaretModel().moveToOffset(newTailOffset);
-    }
-
-    @SuppressWarnings("unchecked")
-    private static <T extends PsiElement> T findParentOfType(@NotNull PsiElement element, @NotNull Class<T> type) {
-        PsiElement current = element;
-        while (current != null) {
-            if (type.isInstance(current)) {
-                return (T) current;
-            }
-            current = current.getParent();
-        }
-        return null;
     }
 }

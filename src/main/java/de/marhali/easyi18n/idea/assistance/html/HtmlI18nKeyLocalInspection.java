@@ -1,42 +1,18 @@
 package de.marhali.easyi18n.idea.assistance.html;
 
-import com.intellij.codeInspection.LocalInspectionTool;
 import com.intellij.codeInspection.ProblemsHolder;
-import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.XmlElementVisitor;
 import com.intellij.psi.xml.XmlAttributeValue;
-import de.marhali.easyi18n.core.application.cqrs.PossiblyUnavailable;
-import de.marhali.easyi18n.core.application.query.GuessNullableI18nEntryQuery;
-import de.marhali.easyi18n.core.application.query.I18nEntryPreviewQuery;
-import de.marhali.easyi18n.core.application.query.MatchEditorElementQuery;
-import de.marhali.easyi18n.core.application.query.ModuleIdByEditorFilePathQuery;
-import de.marhali.easyi18n.core.domain.model.I18nEntryPreview;
-import de.marhali.easyi18n.core.domain.model.I18nKeyCandidate;
-import de.marhali.easyi18n.core.domain.model.ModuleId;
-import de.marhali.easyi18n.core.domain.model.NullableI18nEntry;
 import de.marhali.easyi18n.core.domain.rules.EditorElement;
-import de.marhali.easyi18n.core.domain.rules.EditorFilePath;
-import de.marhali.easyi18n.idea.assistance.EditorFilePathExtractor;
-import de.marhali.easyi18n.idea.assistance.I18nKeyQuickFixIntentionAction;
-import de.marhali.easyi18n.idea.messages.PluginBundle;
-import de.marhali.easyi18n.idea.service.I18nProjectService;
-import de.marhali.easyi18n.idea.service.ScheduledModuleLoaderService;
+import de.marhali.easyi18n.idea.assistance.AbstractI18nKeyLocalInspection;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.Optional;
 
 /**
  * @author marhali
  */
-public class HtmlI18nKeyLocalInspection extends LocalInspectionTool {
-
-    @Override
-    public @Nullable String getDescriptionFileName() {
-        return "UnresolvedI18nKey";
-    }
+public class HtmlI18nKeyLocalInspection extends AbstractI18nKeyLocalInspection {
 
     @Override
     public @NotNull PsiElementVisitor buildVisitor(@NotNull ProblemsHolder holder, boolean isOnTheFly) {
@@ -48,56 +24,14 @@ public class HtmlI18nKeyLocalInspection extends LocalInspectionTool {
                 }
 
                 String key = attributeValue.getValue();
-                if (key == null || key.isBlank()) {
+                if (key.isBlank()) {
                     return;
                 }
-
-                Project project = attributeValue.getProject();
-
-                I18nProjectService projectService = project.getService(I18nProjectService.class);
-
-                EditorFilePath editorFilePath = EditorFilePathExtractor.extract(attributeValue.getContainingFile());
-
-                Optional<ModuleId> moduleIdResponse = projectService.query(new ModuleIdByEditorFilePathQuery(editorFilePath));
-
-                if (moduleIdResponse.isEmpty()) {
-                    return;
-                }
-
-                ModuleId moduleId = moduleIdResponse.get();
 
                 HtmlEditorElementExtractor extractor = new HtmlEditorElementExtractor();
                 EditorElement editorElement = extractor.extract(attributeValue, attributeValue.getContainingFile());
 
-                if (editorElement == null) {
-                    return;
-                }
-
-                Boolean editorElementMatched = projectService.query(new MatchEditorElementQuery(moduleId, editorElement));
-
-                if (!editorElementMatched) {
-                    return;
-                }
-
-                PossiblyUnavailable<Optional<I18nEntryPreview>> entryResponse
-                    = projectService.query(new I18nEntryPreviewQuery(moduleId, I18nKeyCandidate.of(key)));
-
-                if (!entryResponse.available()) {
-                    project.getService(ScheduledModuleLoaderService.class).loadModule(moduleId);
-                    return;
-                }
-
-                if (entryResponse.result() == null || entryResponse.result().isPresent()) {
-                    return;
-                }
-
-                NullableI18nEntry entry = projectService.query(new GuessNullableI18nEntryQuery(moduleId, key));
-
-                holder.registerProblem(
-                    attributeValue,
-                    PluginBundle.message("editor.intention.unresolved.description", key),
-                    new I18nKeyQuickFixIntentionAction(attributeValue, moduleId, entry)
-                );
+                checkI18nLiteral(attributeValue, key, editorElement, attributeValue.getContainingFile(), holder);
             }
         };
     }

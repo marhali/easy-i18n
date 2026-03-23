@@ -1,15 +1,12 @@
 package de.marhali.easyi18n.idea.assistance.rust;
 
 import com.intellij.codeInsight.completion.*;
-import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
-import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.patterns.PlatformPatterns;
 import com.intellij.psi.PsiElement;
 import com.intellij.util.ProcessingContext;
-import org.rust.lang.core.psi.RsLitExpr;
 import de.marhali.easyi18n.core.application.cqrs.PossiblyUnavailable;
 import de.marhali.easyi18n.core.application.query.AllModuleI18nEntryPreviewQuery;
 import de.marhali.easyi18n.core.application.query.MatchEditorElementQuery;
@@ -18,11 +15,13 @@ import de.marhali.easyi18n.core.domain.model.I18nEntryPreview;
 import de.marhali.easyi18n.core.domain.model.ModuleId;
 import de.marhali.easyi18n.core.domain.rules.EditorElement;
 import de.marhali.easyi18n.core.domain.rules.EditorFilePath;
+import de.marhali.easyi18n.idea.assistance.AbstractI18nCompletionContributor;
 import de.marhali.easyi18n.idea.assistance.EditorFilePathExtractor;
 import de.marhali.easyi18n.idea.icons.PluginIcon;
 import de.marhali.easyi18n.idea.service.I18nProjectService;
 import de.marhali.easyi18n.idea.service.ScheduledModuleLoaderService;
 import org.jetbrains.annotations.NotNull;
+import org.rust.lang.core.psi.RsLitExpr;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,7 +29,7 @@ import java.util.Optional;
 /**
  * @author marhali
  */
-public class RustI18nCompletionContributor extends CompletionContributor {
+public class RustI18nCompletionContributor extends AbstractI18nCompletionContributor {
 
     public RustI18nCompletionContributor() {
         extend(
@@ -117,7 +116,7 @@ public class RustI18nCompletionContributor extends CompletionContributor {
 
                     for (I18nEntryPreview suggestion : entriesResponse.result()) {
                         LookupElementBuilder builder = LookupElementBuilder.create(suggestion.key().canonical())
-                            .withInsertHandler(RustI18nCompletionContributor::replaceCompletionRange)
+                            .withInsertHandler(AbstractI18nCompletionContributor::replaceCompletionRange)
                             .withPresentableText(suggestion.key().canonical())
                             .withIcon(PluginIcon.TRANSLATE_ICON);
 
@@ -130,34 +129,5 @@ public class RustI18nCompletionContributor extends CompletionContributor {
                 }
             }
         );
-    }
-
-    private static void replaceCompletionRange(@NotNull InsertionContext context, @NotNull LookupElement item) {
-        Document document = context.getDocument();
-        int startOffset = context.getStartOffset();
-        int endOffset = context.getTailOffset();
-
-        if (startOffset < 0 || endOffset < startOffset || endOffset > document.getTextLength()) {
-            return;
-        }
-
-        String newText = item.getLookupString();
-        document.replaceString(startOffset, endOffset, newText);
-
-        int newTailOffset = startOffset + newText.length();
-        context.setTailOffset(newTailOffset);
-        context.getEditor().getCaretModel().moveToOffset(newTailOffset);
-    }
-
-    @SuppressWarnings("unchecked")
-    private static <T extends PsiElement> T findParentOfType(@NotNull PsiElement element, @NotNull Class<T> type) {
-        PsiElement current = element;
-        while (current != null) {
-            if (type.isInstance(current)) {
-                return (T) current;
-            }
-            current = current.getParent();
-        }
-        return null;
     }
 }

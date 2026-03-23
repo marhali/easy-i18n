@@ -36,6 +36,17 @@
       <descriptionDirectoryName>extract</descriptionDirectoryName>
     </intentionAction>
 
+    <!-- TypeScript needs additional folding registrations -->
+    <lang.foldingBuilder
+      language="TypeScript"
+      implementationClass="de.marhali.easyi18n.idea.assistance.javascript.JavaScriptI18nFoldingBuilder"
+    />
+
+    <lang.foldingBuilder
+      language="TypeScript JSX"
+      implementationClass="de.marhali.easyi18n.idea.assistance.javascript.JavaScriptI18nFoldingBuilder"
+    />
+
     <!-- Documentation Provider (handles JavaScript, TypeScript, Vue, Svelte) -->
     <platform.backend.documentation.targetProvider
       implementation="de.marhali.easyi18n.idea.assistance.javascript.JavaScriptI18nDocumentationTargetProvider"

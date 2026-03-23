@@ -1,8 +1,5 @@
 package de.marhali.easyi18n.idea.assistance.html;
 
-import com.intellij.codeInsight.intention.PsiElementBaseIntentionAction;
-import com.intellij.codeInspection.util.IntentionFamilyName;
-import com.intellij.codeInspection.util.IntentionName;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
@@ -20,11 +17,11 @@ import de.marhali.easyi18n.core.domain.model.ModuleId;
 import de.marhali.easyi18n.core.domain.model.NullableI18nEntry;
 import de.marhali.easyi18n.core.domain.rules.EditorElement;
 import de.marhali.easyi18n.core.domain.rules.EditorFilePath;
+import de.marhali.easyi18n.idea.assistance.AbstractExtractTranslationIntention;
 import de.marhali.easyi18n.idea.assistance.EditorFilePathExtractor;
 import de.marhali.easyi18n.idea.dialog.TranslationDialog;
 import de.marhali.easyi18n.idea.dialog.TranslationDialogFactory;
 import de.marhali.easyi18n.idea.key.PluginKey;
-import de.marhali.easyi18n.idea.messages.PluginBundle;
 import de.marhali.easyi18n.idea.service.I18nProjectService;
 import org.jetbrains.annotations.NotNull;
 
@@ -33,7 +30,7 @@ import java.util.Optional;
 /**
  * @author marhali
  */
-public class HtmlExtractTranslationIntention extends PsiElementBaseIntentionAction {
+public class HtmlExtractTranslationIntention extends AbstractExtractTranslationIntention {
 
     @Override
     public boolean isAvailable(@NotNull Project project, Editor editor, @NotNull PsiElement psiElement) {
@@ -126,32 +123,5 @@ public class HtmlExtractTranslationIntention extends PsiElementBaseIntentionActi
         });
 
         dialog.show();
-    }
-
-    @Override
-    public @NotNull @IntentionFamilyName String getFamilyName() {
-        return PluginBundle.message("editor.intention.extract.title");
-    }
-
-    @Override
-    public @NotNull @IntentionName String getText() {
-        return PluginBundle.message("editor.intention.extract.title");
-    }
-
-    @Override
-    public boolean startInWriteAction() {
-        return false;
-    }
-
-    @SuppressWarnings("unchecked")
-    private <T extends PsiElement> T findParentOfType(@NotNull PsiElement element, @NotNull Class<T> type) {
-        PsiElement current = element;
-        while (current != null) {
-            if (type.isInstance(current)) {
-                return (T) current;
-            }
-            current = current.getParent();
-        }
-        return null;
     }
 }
