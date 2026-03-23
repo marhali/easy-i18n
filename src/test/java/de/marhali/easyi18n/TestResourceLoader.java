@@ -16,7 +16,7 @@ public final class TestResourceLoader {
      * @return Resource file content
      * @throws IOException Could not read file
      */
-    public static @NotNull String getAsString(String resourcePath) throws IOException {
+    public static @NotNull String getResourceAsString(String resourcePath) throws IOException {
         try (InputStream stream = TestResourceLoader.class.getClassLoader().getResourceAsStream(resourcePath)) {
             if (stream == null) {
                 throw new IOException("Test resource not found: " + resourcePath);
