@@ -21,15 +21,16 @@ public final class YamlReader extends FileReader {
         super(path, templates, store);
     }
 
-    void read(@NotNull Map<String, @Nullable Object> map) {
+    void read(@NotNull Map<Object, @Nullable Object> map) {
         readMap(map, createRootProducer());
     }
 
     @SuppressWarnings("unchecked")
-    private void readMap(@NotNull Map<@NotNull String, @Nullable Object> map, @NotNull TranslationProducer producer) {
+    private void readMap(@NotNull Map<@NotNull Object, @Nullable Object> map, @NotNull TranslationProducer producer) {
         var levelledFileTemplate = templates.file().getAtLevel(producer.level());
 
-        for (String memberName : map.keySet()) {
+        for (Object memberNameObject : map.keySet()) {
+            var memberName = String.valueOf(memberNameObject);
             I18nParams memberNameParams = levelledFileTemplate.fromCanonical(memberName);
             var value = map.get(memberName);
             var childProducer = producer.withChildren(
@@ -38,7 +39,7 @@ public final class YamlReader extends FileReader {
             );
 
             if (value instanceof Map) {
-                readMap((Map<String, Object>) value, childProducer);
+                readMap((Map<Object, Object>) value, childProducer);
             } else if (value instanceof List) {
                 readArray((List<Object>) value, childProducer);
             } else {
@@ -68,6 +69,10 @@ public final class YamlReader extends FileReader {
     }
 
     private @NotNull I18nValue.Primitive readPrimitiveValue(@Nullable Object value) {
-        return I18nValue.fromBarePrimitive(String.valueOf(value));
+        if (value instanceof String str) {
+            return I18nValue.fromQuotedPrimitive(str);
+        } else {
+            return I18nValue.fromBarePrimitive(String.valueOf(value));
+        }
     }
 }

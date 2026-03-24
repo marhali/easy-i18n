@@ -64,7 +64,7 @@ public final class YamlWriter extends FileWriter {
         return rootElement;
     }
 
-    private @NotNull Object toYamlElement(@NotNull I18nValue value) {
+    private @Nullable Object toYamlElement(@NotNull I18nValue value) {
         return switch (value) {
             case I18nValue.Primitive primitive -> toYamlPrimitive(primitive);
             case I18nValue.Array array -> toYamlArray(array);
@@ -81,10 +81,7 @@ public final class YamlWriter extends FileWriter {
         return yamlArray;
     }
 
-    private @NotNull Object toYamlPrimitive(@NotNull I18nValue.Primitive primitive) {
-        return switch (primitive) {
-            case I18nValue.Quoted quoted -> "\"" + quoted.text() + "\"";
-            case I18nValue.Bare bare -> bare.text();
-        };
+    private Object toYamlPrimitive(@NotNull I18nValue.Primitive primitive) {
+        return YamlFileProcessor.YAML.load(primitive.getText());
     }
 }
