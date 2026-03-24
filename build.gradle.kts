@@ -32,8 +32,6 @@ repositories {
 // Dependencies are managed with Gradle version catalog - read more: https://docs.gradle.org/current/userguide/version_catalogs.html
 dependencies {
     implementation(libs.json5.java)
-    implementation(libs.commons.lang3)
-    implementation(libs.commons.text)
     testImplementation(libs.junit)
     testImplementation(libs.opentest4j)
     compileOnly(libs.jetbrains.annotations)
