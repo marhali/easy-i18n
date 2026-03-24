@@ -34,6 +34,7 @@ public class Json5FileProcessor implements FileProcessorPort {
         .allowHexFloatingLiterals()
         .trailingComma()
         .indentFactor(2)
+        .quoteless()
         .build();
 
     private static final @NotNull Json5 JSON5 = new Json5(JSON5_OPTIONS);
