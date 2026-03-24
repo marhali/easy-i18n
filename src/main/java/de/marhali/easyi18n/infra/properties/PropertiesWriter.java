@@ -1,5 +1,6 @@
 package de.marhali.easyi18n.infra.properties;
 
+import com.intellij.openapi.util.text.StringUtil;
 import de.marhali.easyi18n.core.domain.model.I18nPath;
 import de.marhali.easyi18n.core.domain.model.I18nValue;
 import de.marhali.easyi18n.core.domain.model.TranslationConsumer;
@@ -40,19 +41,22 @@ public final class PropertiesWriter extends FileWriter {
     }
 
     private void write(@NotNull TranslationTarget target) {
-        // Properties are only flat files
-        // TODO: canonicalHierarchy is not appropriate for our flat thingy yet
-        // TODO: we could try one hierarchy level that is properly rebuild?
+        // Properties files only have flat keys
         assert target.canonicalHierarchy().size() == 1;
-        properties.put(target.canonicalHierarchy().getFirst(), toPropertiesValue(target.value()));
+        var key = StringUtil.escapeStringCharacters(target.canonicalHierarchy().getFirst());
+        properties.put(key, toPropertiesValue(target.value()));
+    }
+
+    private @NotNull Object toPrimitiveValue(@NotNull I18nValue.Primitive primitive) {
+        return StringUtil.escapeStringCharacters(primitive.getText());
     }
 
     private @NotNull Object toPropertiesValue(@NotNull I18nValue value) {
         return switch (value) {
             case I18nValue.Array array -> Arrays.stream(array.elements())
-                .map(I18nValue.Primitive::getText)
+                .map(this::toPrimitiveValue)
                 .toArray();
-            case I18nValue.Primitive primitive -> primitive.getText();
+            case I18nValue.Primitive primitive -> toPrimitiveValue(primitive);
         };
     }
 }
