@@ -8,7 +8,6 @@ import de.marhali.easyi18n.core.domain.template.Templates;
 import de.marhali.easyi18n.infra.FileWriter;
 import de.marhali.json5.*;
 import de.marhali.json5.stream.Json5Lexer;
-import de.marhali.json5.stream.Json5Parser;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.StringReader;
@@ -91,9 +90,10 @@ public final class Json5Writer extends FileWriter {
                 Json5Element element;
 
                 try {
-                    var reader = new StringReader(bare.text());
+                    // Quickfix to properly parse Json5Primitive from a string value
+                    var reader = new StringReader(bare.text() + ",");
                     var lexer = new Json5Lexer(reader, Json5FileProcessor.JSON5_OPTIONS);
-                    element = Json5Parser.parse(lexer);
+                    element = lexer.nextValue();
                     reader.close();
                 } catch (Exception ex) {
                     throw new RuntimeException(ex);
