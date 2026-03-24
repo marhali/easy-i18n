@@ -27,6 +27,7 @@ public class JsonFileProcessor implements FileProcessorPort {
     private static final Gson GSON = new GsonBuilder()
         .setPrettyPrinting()
         .disableHtmlEscaping()
+        .serializeNulls()
         .create();
 
     private final @NotNull FileSystemPort fileSystemPort;
