@@ -72,14 +72,14 @@ public final class Json5Reader extends FileReader {
             return I18nValue.fromBarePrimitive(String.valueOf(primitive.getAsBoolean()));
         } else if (primitive.isString()) {
             return I18nValue.fromQuotedPrimitive(primitive.getAsString());
-        } else if (primitive.isNumber()) {
-            return I18nValue.fromBarePrimitive(String.valueOf(primitive.getAsNumber()));
-        } else if (primitive.isBinaryNumber()) {
+        }  else if (primitive.isBinaryNumber()) {
             return I18nValue.fromBarePrimitive(primitive.getAsBinaryString());
         } else if (primitive.isOctalNumber()) {
             return I18nValue.fromBarePrimitive(primitive.getAsOctalString());
         } else if (primitive.isHexNumber()) {
             return I18nValue.fromBarePrimitive(primitive.getAsHexString());
+        } else if (primitive.isNumber()) {
+                return I18nValue.fromBarePrimitive(String.valueOf(primitive.getAsNumber()));
         } else if (primitive.isInstant()) {
             return I18nValue.fromBarePrimitive(primitive.getAsInstant().toString());
         }
