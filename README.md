@@ -101,7 +101,8 @@ _For more examples, please refer to the [examples](examples/README.md)._
 <!-- ROADMAP -->
 ## Roadmap
 
-TBA
+- Support JS / TS files as translation resources
+- Rename translations right from the editor
 
 See the [open issues](https://github.com/marhali/easy-i18n/issues) for a full list of proposed features (and known issues).
 
