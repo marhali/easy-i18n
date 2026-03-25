@@ -1,7 +1,6 @@
 package de.marhali.easyi18n.core.domain.config.preset;
 
 import de.marhali.easyi18n.core.domain.config.ProjectConfig;
-import de.marhali.easyi18n.core.domain.config.ProjectConfigModule;
 import de.marhali.easyi18n.core.domain.model.LocaleId;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

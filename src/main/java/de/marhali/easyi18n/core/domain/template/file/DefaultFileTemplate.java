@@ -9,18 +9,17 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.stream.Collectors;
 
-  /**
-   * Standard implementation for the file template.
-   *
-   * @author marhali
-   */
-  public class DefaultFileTemplate implements FileTemplate {
-      /**
-       * Shorthand to construct the file template by the template definition.
-       * @param fileTemplateDefinition Template definition
-       * @return {@link DefaultFileTemplate}
-       */
-      public static @NotNull DefaultFileTemplate compile(@NotNull String fileTemplateDefinition) {
+/**
+ * Standard implementation for the file template.
+ *
+ * @author marhali
+ */
+public class DefaultFileTemplate implements FileTemplate {
+    /**
+     * Shorthand to construct the file template by the template definition.* @param fileTemplateDefinition Template definition
+     * @return {@link DefaultFileTemplate}
+     */
+    public static @NotNull DefaultFileTemplate compile(@NotNull String fileTemplateDefinition) {
         var template = LevelledTemplateDefinitionParser.parse(fileTemplateDefinition);
 
         List<LevelledFileTemplate> levels = template.levels().stream()
@@ -28,7 +27,7 @@ import java.util.stream.Collectors;
                 level,
                 RegExpTemplateValueResolver.fromTemplate(level, DEFAULT_FILE_CONSTRAINT),
                 new TemplateValueFormulator(level)
-            )).collect(Collectors.toUnmodifiableList());
+        )).collect(Collectors.toUnmodifiableList());
 
         return new DefaultFileTemplate(template, levels);
     }

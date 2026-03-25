@@ -8,7 +8,6 @@ import de.marhali.easyi18n.core.domain.model.ModuleId;
 import de.marhali.easyi18n.core.domain.rules.EditorLanguage;
 import de.marhali.easyi18n.core.domain.rules.EditorRule;
 import de.marhali.easyi18n.core.domain.rules.EditorRuleConstraint;
-import de.marhali.easyi18n.idea.config.state.EditorRuleState;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;

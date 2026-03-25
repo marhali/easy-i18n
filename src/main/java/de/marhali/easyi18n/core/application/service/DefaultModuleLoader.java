@@ -10,7 +10,6 @@ import de.marhali.easyi18n.core.ports.PathResolverPort;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
-import java.util.Collection;
 import java.util.Set;
 
 /**

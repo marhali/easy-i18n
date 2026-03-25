@@ -6,7 +6,6 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.util.PsiTreeUtil;
 import org.rust.lang.core.psi.*;
-import org.rust.lang.core.psi.ext.*;
 import de.marhali.easyi18n.core.domain.rules.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

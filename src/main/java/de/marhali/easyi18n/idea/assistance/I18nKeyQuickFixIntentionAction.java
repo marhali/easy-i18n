@@ -11,7 +11,6 @@ import de.marhali.easyi18n.core.domain.model.ModuleId;
 import de.marhali.easyi18n.core.domain.model.NullableI18nEntry;
 import de.marhali.easyi18n.idea.dialog.TranslationDialogFactory;
 import de.marhali.easyi18n.idea.messages.PluginBundle;
-import org.apache.maven.model.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

@@ -4,7 +4,6 @@ import de.marhali.easyi18n.core.domain.model.I18nKey;
 import de.marhali.easyi18n.core.domain.model.I18nParams;
 import de.marhali.easyi18n.core.domain.template.Template;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 

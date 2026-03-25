@@ -45,7 +45,7 @@ public class EditorRuleState {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         EditorRuleState that = (EditorRuleState) o;
-        return priority == that.priority && excludeRule == that.excludeRule && Objects.equals(id, that.id) && Objects.equals(languages, that.languages) && triggerKind == that.triggerKind && Objects.equals(constraints, that.constraints);
+        return Objects.equals(priority, that.priority) && excludeRule == that.excludeRule && Objects.equals(id, that.id) && Objects.equals(languages, that.languages) && triggerKind == that.triggerKind && Objects.equals(constraints, that.constraints);
     }
 
     @Override
