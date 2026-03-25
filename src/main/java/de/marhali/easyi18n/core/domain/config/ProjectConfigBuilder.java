@@ -61,6 +61,11 @@ public class ProjectConfigBuilder {
         return this;
     }
 
+    public @NotNull ProjectConfigBuilder module(@NotNull ProjectConfigModule module) {
+        modules.add(module);
+        return this;
+    }
+
     // Last
 
     public @NotNull ProjectConfig build() {
