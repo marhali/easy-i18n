@@ -1,9 +1,6 @@
   package de.marhali.easyi18n.core.domain.template.file;
 
-import de.marhali.easyi18n.core.domain.template.LevelledTemplate;
-import de.marhali.easyi18n.core.domain.template.LevelledTemplateDefinitionParser;
-import de.marhali.easyi18n.core.domain.template.RegExpTemplateValueResolver;
-import de.marhali.easyi18n.core.domain.template.TemplateValueFormulator;
+import de.marhali.easyi18n.core.domain.template.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -65,5 +62,17 @@ public class DefaultFileTemplate implements FileTemplate {
     @Override
     public @NotNull List<LevelledFileTemplate> getLevels() {
         return levels;
+    }
+
+    @Override
+    public boolean needsParameter(@NotNull String parameterName) {
+        for (LevelledFileTemplate level : levels) {
+            for (TemplateElement.Placeholder neededParameter : level.getNeededParameters()) {
+                if (neededParameter.name().equals(parameterName)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

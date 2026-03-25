@@ -80,7 +80,8 @@ public class DefaultModulePersistor implements ModulePersistor {
                     if (pathSpecifiedLocales == null || pathSpecifiedLocales.contains(localeEntry.getKey().tag())) {
                         consumersForPath.add(TranslationConsumer.fromNew(
                             // Edge case: If the path does not specify any locale, the file must specify one
-                            pathSpecifiedLocales == null
+                            // 2. Edge case: Locale is defined in path and file (two times, same locale)
+                            pathSpecifiedLocales == null || templates.file().needsParameter(I18nBuiltinParam.LOCALE)
                                 ? fileParams.toBuilder()
                                     .put(I18nBuiltinParam.LOCALE, List.of(localeEntry.getKey().tag()))
                                     .build()

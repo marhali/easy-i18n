@@ -4,6 +4,8 @@ import de.marhali.easyi18n.core.domain.model.*;
 import de.marhali.easyi18n.core.domain.template.Templates;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashSet;
+
 /**
  * File reader superclass.
  *
@@ -48,7 +50,7 @@ public abstract class FileReader {
         var localeIdParamName = I18nBuiltinParam.LOCALE.getParameterName();
         var locales = producer.params().get(localeIdParamName);
 
-        if (locales == null || locales.size() != 1) {
+        if (locales == null || new HashSet<>(locales).size() != 1) {
             throw new IllegalArgumentException("Producer does not specify exactly one localeId. Instead got: " + locales);
         }
 

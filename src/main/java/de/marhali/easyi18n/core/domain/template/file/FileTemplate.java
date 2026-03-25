@@ -1,5 +1,6 @@
 package de.marhali.easyi18n.core.domain.template.file;
 
+import de.marhali.easyi18n.core.domain.model.I18nBuiltinParam;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -23,4 +24,18 @@ public interface FileTemplate {
      * @return List of {@link LevelledFileTemplate}
      */
     @NotNull List<LevelledFileTemplate> getLevels();
+
+    /**
+     * Checks whether the given parameter name is needed at any file template level or not.
+     * @param parameterName Parameter name
+     * @return {@code true} if parameter name is needed at any level, otherwise {@code false}
+     */
+    boolean needsParameter(@NotNull String parameterName);
+
+    /**
+     * @see #needsParameter(String) 
+     */
+    default boolean needsParameter(@NotNull I18nBuiltinParam parameter) {
+        return needsParameter(parameter.getParameterName());
+    }
 }
