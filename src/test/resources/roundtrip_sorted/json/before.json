@@ -1,0 +1,18 @@
+{
+  "de": {
+    "zebra": "Zebra",
+    "9": "Neun",
+    "apple": "Apfel",
+    "0": "Null",
+    "$": "Sonderzeichen",
+    "mango": "Mango"
+  },
+  "en": {
+    "zebra": "Zebra",
+    "9": "Nine",
+    "apple": "Apple",
+    "0": "Zero",
+    "$": "Special char",
+    "mango": "Mango"
+  }
+}

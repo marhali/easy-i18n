@@ -1,51 +1,18 @@
 package de.marhali.easyi18n.core.application.service;
 
-import de.marhali.easyi18n.core.application.state.I18nStore;
-import de.marhali.easyi18n.core.domain.config.ProjectConfig;
-import de.marhali.easyi18n.core.domain.config.ProjectConfigModule;
-import de.marhali.easyi18n.core.domain.model.I18nModule;
 import de.marhali.easyi18n.core.domain.model.ModuleId;
-import de.marhali.easyi18n.core.ports.ProjectConfigPort;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Service that is mandatory for ensuring that requested modules are saved to the persistence layer.
+ * Definition for a service to ensure that a requested module is persisted.
  *
  * @author marhali
  */
-public final class EnsurePersistService {
-
-    private final @NotNull I18nStore store;
-    private final @NotNull ProjectConfigPort projectConfigPort;
-    private final @NotNull ModulePersistor modulePersistor;
-
-    public EnsurePersistService(@NotNull I18nStore store, @NotNull ProjectConfigPort projectConfigPort, @NotNull ModulePersistor modulePersistor) {
-        this.store = store;
-        this.projectConfigPort = projectConfigPort;
-        this.modulePersistor = modulePersistor;
-    }
-
+public interface EnsurePersistService {
     /**
      * Ensures that the provided module is persisted.
      *
      * @param moduleId Module identifier
      */
-    public void ensurePersist(@NotNull ModuleId moduleId) {
-        ProjectConfig projectConfig = projectConfigPort.read();
-        ProjectConfigModule moduleConfig = projectConfig.modules().get(moduleId);
-
-        if (moduleConfig == null) {
-            throw new IllegalArgumentException("Module'" + moduleId + " is not configured");
-        }
-
-        store.holdSnapshot((project) -> {
-            I18nModule module = project.getModule(moduleId);
-
-            if (module == null) {
-                throw new IllegalStateException("Module " + moduleId + " is not loaded");
-            }
-
-            modulePersistor.persistFrom(moduleConfig, module);
-        });
-    }
+    void ensurePersist(@NotNull ModuleId moduleId);
 }

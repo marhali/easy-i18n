@@ -64,8 +64,8 @@ public final class CoreWiring {
         TrackedI18nPathsService trackedI18nPathsService = new TrackedI18nPathsService();
         ModuleLoader moduleLoader = new DefaultModuleLoader(cachedModuleTemplates, pathResolverPort, fileProcessorRegistryPort, trackedI18nPathsService);
         ModulePersistor modulePersistor = new DefaultModulePersistor(cachedModuleTemplates, fileProcessorRegistryPort, trackedI18nPathsService, fileSystemPort);
-        EnsureLoadedService ensureLoadedService = new EnsureLoadedService(store, projectConfigPort, moduleLoader);
-        EnsurePersistService ensurePersistService = new EnsurePersistService(store, projectConfigPort, modulePersistor);
+        EnsureLoadedService ensureLoadedService = new DefaultEnsureLoadedService(store, projectConfigPort, moduleLoader);
+        EnsurePersistService ensurePersistService = new DefaultEnsurePersistService(store, projectConfigPort, modulePersistor);
         ModuleViewProjector moduleViewProjector = new ModuleViewProjector(cachedModuleTemplates);
         ModuleIdByEditorFilePathResolver moduleIdByEditorFilePathResolver = new ModuleIdByEditorFilePathResolver(projectConfigPort);
         I18nKeyCandidateResolver keyResolver = new I18nKeyCandidateResolver(projectConfigPort, store);

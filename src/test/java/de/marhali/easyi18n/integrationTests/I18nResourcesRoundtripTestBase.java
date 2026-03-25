@@ -11,6 +11,8 @@ import org.jetbrains.annotations.NotNull;
 import org.junit.Assert;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 import static de.marhali.easyi18n.TestResourceLoader.getResourceAsString;
@@ -43,6 +45,33 @@ public abstract class I18nResourcesRoundtripTestBase {
         wiring.pathResolver.add(moduleId, path);
 
         return path;
+    }
+
+    protected void assertSortedRoundtrip(
+        @NotNull IntegrationTestWiring wiring,
+        @NotNull Map<@NotNull I18nPath, @NotNull String> afterResourcePaths
+    ) throws IOException {
+        wiring.ensureLoadedService.ensureLoaded(moduleId);
+
+        var moduleSnapshot = wiring.store.getSnapshot().getModule(moduleId);
+
+        Assert.assertNotNull("Module snapshot should not be null", moduleSnapshot);
+        Assert.assertFalse("Module snapshot should contain actual translations",
+            moduleSnapshot.translations().isEmpty());
+
+        wiring.fileSystem.clear();
+
+        wiring.ensurePersistService.ensurePersist(moduleId);
+
+        var afterWriteSnapshot = wiring.fileSystem.getSnapshot();
+
+        Map<String, String> expectedSnapshot = new HashMap<>();
+        for (var entry : afterResourcePaths.entrySet()) {
+            expectedSnapshot.put(entry.getKey().canonical(), getResourceAsString(entry.getValue()));
+        }
+
+        Assert.assertEquals("File system snapshot should match sorted 'after' resource files",
+            expectedSnapshot, afterWriteSnapshot);
     }
 
     protected void assertLosslessRoundtrip(@NotNull IntegrationTestWiring wiring) {

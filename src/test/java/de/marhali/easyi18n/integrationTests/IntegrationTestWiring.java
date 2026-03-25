@@ -5,10 +5,6 @@ import de.marhali.easyi18n.core.adapters.InMemoryFileSystemAdapter;
 import de.marhali.easyi18n.core.adapters.InMemoryPathResolverAdapter;
 import de.marhali.easyi18n.core.adapters.InMemoryProjectConfigAdapter;
 import de.marhali.easyi18n.core.application.I18nApplication;
-import de.marhali.easyi18n.core.application.command.EnsureModuleLoadedCommand;
-import de.marhali.easyi18n.core.application.command.ReloadCommand;
-import de.marhali.easyi18n.core.application.command.handler.EnsureModuleLoadedCommandHandler;
-import de.marhali.easyi18n.core.application.command.handler.ReloadCommandHandler;
 import de.marhali.easyi18n.core.application.cqrs.CommandDispatcher;
 import de.marhali.easyi18n.core.application.cqrs.QueryDispatcher;
 import de.marhali.easyi18n.core.application.service.*;
@@ -40,8 +36,11 @@ public class IntegrationTestWiring {
     public final @NotNull CachedModuleTemplates cachedModuleTemplates;
     public final @NotNull InMemoryDomainEventPublisherAdapter eventPublisher;
     public final @NotNull I18nStore store;
-    public final @NotNull EnsureLoadedService ensureLoadedService;
-    public final @NotNull EnsurePersistService ensurePersistService;
+    public final @NotNull DefaultEnsureLoadedService ensureLoadedService;
+    public final @NotNull DefaultEnsurePersistService ensurePersistService;
+
+    public final @NotNull CommandDispatcher commands;
+    public final @NotNull QueryDispatcher queries;
     public final @NotNull I18nApplication application;
 
     public IntegrationTestWiring() {
@@ -70,13 +69,12 @@ public class IntegrationTestWiring {
             cachedModuleTemplates, fileProcessorRegistry, trackedI18nPaths, fileSystem
         );
 
-        ensureLoadedService = new EnsureLoadedService(store, projectConfig, moduleLoader);
-        ensurePersistService = new EnsurePersistService(store, projectConfig, modulePersistor);
+        ensureLoadedService = new DefaultEnsureLoadedService(store, projectConfig, moduleLoader);
+        ensurePersistService = new DefaultEnsurePersistService(store, projectConfig, modulePersistor);
 
-        var commands = new CommandDispatcher();
-        commands.register(ReloadCommand.class, new ReloadCommandHandler(store, eventPublisher));
-        commands.register(EnsureModuleLoadedCommand.class, new EnsureModuleLoadedCommandHandler(ensureLoadedService));
+        commands = new CommandDispatcher();
+        queries = new QueryDispatcher();
 
-        application = new I18nApplication(commands, new QueryDispatcher());
+        application = new I18nApplication(commands, queries);
     }
 }

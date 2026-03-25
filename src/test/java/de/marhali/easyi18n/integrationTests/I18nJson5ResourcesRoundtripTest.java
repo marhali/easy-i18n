@@ -94,7 +94,7 @@ public class I18nJson5ResourcesRoundtripTest extends I18nResourcesRoundtripTestB
     }
 
     @Test
-    public void test_roundtrip_single_file()  throws IOException {
+    public void test_roundtrip_single_file() throws IOException {
         var config = projectConfigBuilder
             .modules(List.of(
                 moduleConfigBuilder
