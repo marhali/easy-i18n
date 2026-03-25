@@ -7,10 +7,10 @@ jetbrains-annotations = "26.1.0"
 
 # plugins
 changelog = "2.5.0"
-intelliJPlatform = "2.11.0"
-kotlin = "2.3.0"
-kover = "0.9.5"
-qodana = "2025.3.1"
+intelliJPlatform = "2.13.1"
+kotlin = "2.3.20"
+kover = "0.9.7"
+qodana = "2025.3.2"
 
 [libraries]
 json5-java = { group = "de.marhali", name = "json5-java", version.ref = "json5-java" }
