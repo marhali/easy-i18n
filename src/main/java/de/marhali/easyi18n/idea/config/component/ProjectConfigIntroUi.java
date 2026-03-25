@@ -25,7 +25,7 @@ public class ProjectConfigIntroUi extends ConfigComponent<FormBuilder, ProjectCo
         builder.addComponent(new JBLabel(PluginBundle.message("config.project.intro.description")));
         builder.addComponent(new ActionLink(
             PluginBundle.message("config.project.intro.documentation-link"),
-            (ActionListener) (event) -> BrowserUtil.browse("https://github.com/marhali/easy-i18n"))
+            (ActionListener) (event) -> BrowserUtil.browse(PluginBundle.message("url.documentation.general")))
         );
     }
 

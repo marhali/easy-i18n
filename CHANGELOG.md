@@ -5,7 +5,7 @@
 ## [Unreleased]
 
 THIS IS A MAJOR RELEASE. MOST OF THE PLUGIN COMPONENTS HAVE BEEN REWRITTEN.
-PLEASE CHECK THE MIGRATION GUIDE ON https://easy-i18n.github.io/migration/v5/ BEFORE UPDATING.
+PLEASE CHECK THE MIGRATION GUIDE ON https://marhali.github.io/easy-i18n/migration/v5/ BEFORE UPDATING.
 
 ### Added
 

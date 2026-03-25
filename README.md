@@ -16,7 +16,6 @@
   <h3 align="center">Easy I18n</h3>
 
   <p align="center">
-    <a href="https://easy-i18n.github.io">Documentation</a>
     ·
     <a href="https://github.com/marhali/easy-i18n/tree/main/examples">Examples</a>
     ·
@@ -31,22 +30,22 @@ Easy I18n is a plugin based on the [IntelliJ Platform SDK](https://plugins.jetbr
 
 > **Translating large projects using your favorite IDE has never been easier!**
 
-This plugin offers a wide range of [configuration options](configuration/index.md) to adapt to the specific requirements of the project.
-However, to help you get started quickly, there are a variety of [presets](configuration/presets.md) for common use cases.
+This plugin offers a wide range of [configuration options](docs/configuration/index.md) to adapt to the specific requirements of the project.
+However, to help you get started quickly, there are a variety of [presets](docs/configuration/presets.md) for common use cases.
 
 ___
 
 ## Features
 
 - Support for Multi-Module projects, ideally for monorepos
-- [Translations Tool Window](components/tool-window.md) to manage all your translations in a single place
+- [Translations Tool Window](docs/components/tool-window.md) to manage all your translations in a single place
     - Visualize as _tree_ or _table_ view
     - Filter by _full-text-search_ query
     - Filter and highlighting of _duplicate_ or _missing_ translation values
-- Easily **Add** / **Edit** or **Delete** translations via the [Translation Dialog](components/dialog.md) or [Tool Window](components/tool-window.md)
-- Configuring of translation sources using a powerful [template syntax](configuration/template-syntax.md)
-- Fine-grained editor assistance using user-defined [rules](configuration/editor-rules.md)
-    - Referencing of translation keys to quickly jump the [Translation Dialog](components/dialog.md)
+- Easily **Add** / **Edit** or **Delete** translations via the [Translation Dialog](docs/components/dialog.md) or [Tool Window](docs/components/tool-window.md)
+- Configuring of translation sources using a powerful [template syntax](docs/configuration/template-syntax.md)
+- Fine-grained editor assistance using user-defined [rules](docs/configuration/editor-rules.md)
+    - Referencing of translation keys to quickly jump the [Translation Dialog](docs/components/dialog.md)
     - Inspection to find unresolved translation keys
     - Quickfix intention action to add translations
     - Extract translation action to localize hard-coded literals
@@ -80,14 +79,14 @@ Download the [latest release](https://github.com/marhali/easy-i18n/releases/late
 
 ### Configuration
 
-- Show the [Translations Tool Window](components/tool-window.md) if not already in displayed via <kbd>View</kbd> > <kbd>Tool Windows</kbd> > <kbd>Translations</kbd>
+- Show the [Translations Tool Window](docs/components/tool-window.md) if not already in displayed via <kbd>View</kbd> > <kbd>Tool Windows</kbd> > <kbd>Translations</kbd>
 - Go to the plugin configuration via the <kbd>⚙️</kbd> action inside the tool window or by visiting <kbd>Settings / Preferences</kbd> > <kbd>Tools</kbd> > <kbd>Easy I18n</kbd>
 - Configure common options like sorting or preview locale
 - Add your first module and optionally select one of the existing presets to get started easily
 
 **Hurray 🎉🥳 You are now ready to manage your translations**
 
-Fore more detailed instructions see the [configuration overview](configuration/index.md).
+Fore more detailed instructions see the [configuration overview](docs/configuration/index.md).
 
 ## Screenshots
 
@@ -97,7 +96,7 @@ Fore more detailed instructions see the [configuration overview](configuration/i
 ![Add Translation Dialog](docs/assets/snippets/translation-dialog-add.png "Add Translation Dialog")
 ![Edit Translation Dialog](docs/assets/snippets/translation-dialog-edit.png "Edit Translation Dialog")
 
-_For more examples, please refer to the [examples](https://github.com/marhali/easy-i18n/tree/main/examples)._
+_For more examples, please refer to the [examples](examples/README.md)._
 
 <!-- ROADMAP -->
 ## Roadmap
@@ -124,7 +123,7 @@ Don't forget to give the project a star! Thanks again!
 <!-- LICENSE -->
 ## License
 
-Distributed under the MIT License. See `LICENSE` for more information.
+Distributed under the MIT License. See [LICENSE](LICENSE) for more information.
 
 <!-- CONTACT -->
 ## Contact
