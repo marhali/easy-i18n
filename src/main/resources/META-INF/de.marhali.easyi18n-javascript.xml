@@ -1,42 +1,55 @@
 <idea-plugin>
-    <extensions defaultExtensionNs="com.intellij">
-        <psi.referenceContributor
-                language="JavaScript"
-                implementation="de.marhali.easyi18n.assistance.reference.JsKeyReferenceContributor"
-        />
+  <extensions defaultExtensionNs="com.intellij">
+    <!-- JavaScript & JS like Support -->
+    <psi.referenceContributor
+      language="JavaScript"
+      implementation="de.marhali.easyi18n.idea.assistance.javascript.JavaScriptI18nPsiReferenceContributor"
+    />
 
-        <lang.documentationProvider
-                language="JavaScript"
-                implementationClass="de.marhali.easyi18n.assistance.documentation.CommonDocumentationProvider"
-        />
+    <completion.contributor
+      language="JavaScript"
+      implementationClass="de.marhali.easyi18n.idea.assistance.javascript.JavaScriptI18nCompletionContributor"
+    />
 
-        <lang.documentationProvider
-                language="TypeScript"
-                implementationClass="de.marhali.easyi18n.assistance.documentation.CommonDocumentationProvider"
-        />
+    <lang.foldingBuilder
+      language="JavaScript"
+      implementationClass="de.marhali.easyi18n.idea.assistance.javascript.JavaScriptI18nFoldingBuilder"
+    />
 
-        <lang.foldingBuilder
-                language="JavaScript"
-                implementationClass="de.marhali.easyi18n.assistance.folding.JsFoldingBuilder"
-        />
+    <localInspection
+      language="JavaScript"
+      shortName="UnresolvedI18nKeyJavaScript"
+      enabledByDefault="true"
+      level="ERROR"
+      implementationClass="de.marhali.easyi18n.idea.assistance.javascript.JavaScriptI18nKeyLocalInspection"
+      bundle="messages.PluginBundle"
+      groupKey="editor.intention.family"
+      key="editor.intention.unresolved.title"
+    />
 
-        <lang.foldingBuilder
-                language="TypeScript"
-                implementationClass="de.marhali.easyi18n.assistance.folding.JsFoldingBuilder"
-        />
+    <intentionAction>
+      <className>de.marhali.easyi18n.idea.assistance.javascript.JavaScriptExtractTranslationIntention</className>
+      <language>JavaScript</language>
+      <bundleName>messages.PluginBundle</bundleName>
+      <skipBeforeAfter>true</skipBeforeAfter>
+      <categoryKey>editor.intention.family</categoryKey>
+      <descriptionDirectoryName>extract</descriptionDirectoryName>
+    </intentionAction>
 
-        <lang.foldingBuilder
-                language="TypeScript JSX"
-                implementationClass="de.marhali.easyi18n.assistance.folding.JsFoldingBuilder"
-        />
+    <!-- TypeScript needs additional folding registrations -->
+    <lang.foldingBuilder
+      language="TypeScript"
+      implementationClass="de.marhali.easyi18n.idea.assistance.javascript.JavaScriptI18nFoldingBuilder"
+    />
 
-        <intentionAction>
-            <className>de.marhali.easyi18n.assistance.intention.JsTranslationIntention</className>
-        </intentionAction>
+    <lang.foldingBuilder
+      language="TypeScript JSX"
+      implementationClass="de.marhali.easyi18n.idea.assistance.javascript.JavaScriptI18nFoldingBuilder"
+    />
 
-        <completion.contributor
-                language="JavaScript"
-                implementationClass="de.marhali.easyi18n.assistance.completion.JsCompletionContributor"
-        />
-    </extensions>
+    <!-- Documentation Provider (handles JavaScript, TypeScript, Vue, Svelte) -->
+    <platform.backend.documentation.targetProvider
+      implementation="de.marhali.easyi18n.idea.assistance.javascript.JavaScriptI18nDocumentationTargetProvider"
+    />
+  </extensions>
 </idea-plugin>

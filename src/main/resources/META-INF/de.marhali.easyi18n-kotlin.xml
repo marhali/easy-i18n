@@ -1,27 +1,42 @@
 <idea-plugin>
-    <extensions defaultExtensionNs="com.intellij">
-        <intentionAction>
-            <className>de.marhali.easyi18n.assistance.intention.KtTranslationIntention</className>
-        </intentionAction>
+  <extensions defaultExtensionNs="com.intellij">
+    <psi.referenceContributor
+      language="kotlin"
+      implementation="de.marhali.easyi18n.idea.assistance.kotlin.KotlinI18nPsiReferenceContributor"
+    />
 
-        <psi.referenceContributor
-                language="kotlin"
-                implementation="de.marhali.easyi18n.assistance.reference.KtKeyReferenceContributor"
-        />
+    <completion.contributor
+      language="kotlin"
+      implementationClass="de.marhali.easyi18n.idea.assistance.kotlin.KotlinI18nCompletionContributor"
+    />
 
-        <lang.documentationProvider
-                language="kotlin"
-                implementationClass="de.marhali.easyi18n.assistance.documentation.CommonDocumentationProvider"
-        />
+    <platform.backend.documentation.targetProvider
+      implementation="de.marhali.easyi18n.idea.assistance.kotlin.KotlinI18nDocumentationTargetProvider"
+    />
 
-        <completion.contributor
-                language="kotlin"
-                implementationClass="de.marhali.easyi18n.assistance.completion.KtCompletionContributor"
-        />
+    <lang.foldingBuilder
+      language="kotlin"
+      implementationClass="de.marhali.easyi18n.idea.assistance.kotlin.KotlinI18nFoldingBuilder"
+    />
 
-        <lang.foldingBuilder
-                language="kotlin"
-                implementationClass="de.marhali.easyi18n.assistance.folding.KtFoldingBuilder"
-        />
-    </extensions>
+    <localInspection
+      language="kotlin"
+      shortName="UnresolvedI18nKeyKotlin"
+      enabledByDefault="true"
+      level="ERROR"
+      implementationClass="de.marhali.easyi18n.idea.assistance.kotlin.KotlinI18nKeyLocalInspection"
+      bundle="messages.PluginBundle"
+      groupKey="editor.intention.family"
+      key="editor.intention.unresolved.title"
+    />
+
+    <intentionAction>
+      <className>de.marhali.easyi18n.idea.assistance.kotlin.KotlinExtractTranslationIntention</className>
+      <language>kotlin</language>
+      <bundleName>messages.PluginBundle</bundleName>
+      <skipBeforeAfter>true</skipBeforeAfter>
+      <categoryKey>editor.intention.family</categoryKey>
+      <descriptionDirectoryName>extract</descriptionDirectoryName>
+    </intentionAction>
+  </extensions>
 </idea-plugin>

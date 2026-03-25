@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectConfigService">
+    <option name="keyComment" value="false" />
+    <option name="sorting" value="true" />
+    <option name="previewLocale" value="de_DE" />
+    <option name="modules">
+      <map>
+        <entry key="json:locale_dir">
+          <value>
+            <ProjectConfigModuleState>
+              <option name="id" value="json:locale_dir" />
+              <option name="pathTemplate" value="$PROJECT_DIR$/json/locale_dir/locales/{locale}/{pathNamespace}.json" />
+              <option name="fileCodec" value="JSON" />
+              <option name="fileTemplate" value="[{fileKey}]" />
+              <option name="keyTemplate" value="{pathNamespace}:{fileKey:.}" />
+              <option name="rootDirectory" value="" />
+              <option name="defaultKeyPrefixes">
+                <set />
+              </option>
+              <option name="editorFlavorTemplate" value="$i18n.t(&quot;{i18nKey}&quot;)" />
+              <option name="editorRules">
+                <list>
+                  <EditorRuleState>
+                    <option name="id" value="js" />
+                    <option name="languages">
+                      <set>
+                        <option value="JAVASCRIPT" />
+                        <option value="TYPESCRIPT" />
+                      </set>
+                    </option>
+                    <option name="triggerKind" value="DECLARATION_TARGET" />
+                    <option name="priority" value="0" />
+                    <option name="excludeRule" value="false" />
+                    <option name="constraints">
+                      <list>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="DECLARATION_NAME" />
+                          <option name="value" value="i18nKey" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                      </list>
+                    </option>
+                  </EditorRuleState>
+                </list>
+              </option>
+            </ProjectConfigModuleState>
+          </value>
+        </entry>
+        <entry key="json:namespace_dir">
+          <value>
+            <ProjectConfigModuleState>
+              <option name="id" value="json:namespace_dir" />
+              <option name="pathTemplate" value="$PROJECT_DIR$/json/namespace_dir/locales/{pathNamespace}/{locale}.json" />
+              <option name="fileCodec" value="JSON" />
+              <option name="fileTemplate" value="[{fileKey}]" />
+              <option name="keyTemplate" value="{pathNamespace}:{fileKey:.}" />
+              <option name="rootDirectory" value="$PROJECT_DIR$/json/namespace_dir/src" />
+              <option name="defaultKeyPrefixes">
+                <set />
+              </option>
+              <option name="editorFlavorTemplate" value="$i18n.t(&quot;{i18nKey}&quot;)" />
+              <option name="editorRules">
+                <list />
+              </option>
+            </ProjectConfigModuleState>
+          </value>
+        </entry>
+        <entry key="json:single_dir">
+          <value>
+            <ProjectConfigModuleState>
+              <option name="id" value="json:single_dir" />
+              <option name="pathTemplate" value="$PROJECT_DIR$/json/single_dir/locales/{locale}.json" />
+              <option name="fileCodec" value="JSON" />
+              <option name="fileTemplate" value="[{fileKey}]" />
+              <option name="keyTemplate" value="{fileKey:.}" />
+              <option name="rootDirectory" value="$PROJECT_DIR$/json/single_dir/src" />
+              <option name="defaultKeyPrefixes">
+                <set />
+              </option>
+              <option name="editorFlavorTemplate" value="$i18n.t(&quot;{i18nKey}&quot;)" />
+              <option name="editorRules">
+                <list />
+              </option>
+            </ProjectConfigModuleState>
+          </value>
+        </entry>
+        <entry key="json:single_file">
+          <value>
+            <ProjectConfigModuleState>
+              <option name="id" value="json:single_file" />
+              <option name="pathTemplate" value="$PROJECT_DIR$/json/single_file/locales/translations.json" />
+              <option name="fileCodec" value="JSON" />
+              <option name="fileTemplate" value="[{locale}][{fileKey}]" />
+              <option name="keyTemplate" value="{fileKey:.}" />
+              <option name="rootDirectory" value="$PROJECT_DIR$/json/single_file/src" />
+              <option name="defaultKeyPrefixes">
+                <set />
+              </option>
+              <option name="editorFlavorTemplate" value="$i18n.t(&quot;{i18nKey}&quot;)" />
+              <option name="editorRules">
+                <list />
+              </option>
+            </ProjectConfigModuleState>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

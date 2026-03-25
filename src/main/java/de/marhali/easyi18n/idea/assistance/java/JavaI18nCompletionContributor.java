@@ -1,0 +1,133 @@
+package de.marhali.easyi18n.idea.assistance.java;
+
+import com.intellij.codeInsight.completion.*;
+import com.intellij.codeInsight.lookup.LookupElementBuilder;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.util.TextRange;
+import com.intellij.patterns.PlatformPatterns;
+import com.intellij.psi.*;
+import com.intellij.psi.util.PsiTreeUtil;
+import com.intellij.util.ProcessingContext;
+import de.marhali.easyi18n.core.application.cqrs.PossiblyUnavailable;
+import de.marhali.easyi18n.core.application.query.AllModuleI18nEntryPreviewQuery;
+import de.marhali.easyi18n.core.application.query.MatchEditorElementQuery;
+import de.marhali.easyi18n.core.application.query.ModuleIdByEditorFilePathQuery;
+import de.marhali.easyi18n.core.domain.model.I18nEntryPreview;
+import de.marhali.easyi18n.core.domain.model.ModuleId;
+import de.marhali.easyi18n.core.domain.rules.EditorElement;
+import de.marhali.easyi18n.core.domain.rules.EditorFilePath;
+import de.marhali.easyi18n.idea.assistance.AbstractI18nCompletionContributor;
+import de.marhali.easyi18n.idea.assistance.EditorFilePathExtractor;
+import de.marhali.easyi18n.idea.icons.PluginIcon;
+import de.marhali.easyi18n.idea.service.I18nProjectService;
+import de.marhali.easyi18n.idea.service.ScheduledModuleLoaderService;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
+import java.util.Optional;
+
+/**
+ * @author marhali
+ */
+public class JavaI18nCompletionContributor extends AbstractI18nCompletionContributor {
+    public JavaI18nCompletionContributor() {
+        extend(
+            CompletionType.BASIC,
+            PlatformPatterns.psiElement().withParent(PsiLiteralExpression.class),
+            new CompletionProvider<>() {
+
+                @Override
+                protected void addCompletions(
+                    @NotNull CompletionParameters completionParameters,
+                    @NotNull ProcessingContext processingContext,
+                    @NotNull CompletionResultSet completionResultSet
+                ) {
+                    PsiLiteralExpression literal = PsiTreeUtil
+                        .getParentOfType(completionParameters.getPosition(), PsiLiteralExpression.class, false);
+
+                    if (literal == null) {
+                        return;
+                    }
+
+                    Project project = literal.getProject();
+
+                    I18nProjectService projectService = project.getService(I18nProjectService.class);
+
+                    EditorFilePath editorFilePath = EditorFilePathExtractor.extract(completionParameters.getOriginalFile());
+
+                    Optional<ModuleId> moduleIdResponse = projectService.query(new ModuleIdByEditorFilePathQuery(editorFilePath));
+
+                    if (moduleIdResponse.isEmpty()) {
+                        return;
+                    }
+
+                    ModuleId moduleId = moduleIdResponse.get();
+
+                    JavaEditorElementExtractor extractor = new JavaEditorElementExtractor();
+                    EditorElement editorElement = extractor.extract(literal, completionParameters.getOriginalFile());
+
+                    if (editorElement == null) {
+                        return;
+                    }
+
+                    Boolean editorElementMatched = projectService.query(new MatchEditorElementQuery(moduleId, editorElement));
+
+                    if (!editorElementMatched) {
+                        // Not targeted by editor rules
+                        return;
+                    }
+
+                    PossiblyUnavailable<List<I18nEntryPreview>> entriesResponse
+                        = projectService.query(new AllModuleI18nEntryPreviewQuery(moduleId));
+
+                    if (!entriesResponse.available()) {
+                        // Response is not available - module is not loaded yet
+                        project.getService(ScheduledModuleLoaderService.class).loadModule(moduleId);
+                        return;
+                    }
+
+                    if (entriesResponse.result() == null || entriesResponse.result().isEmpty()) {
+                        return;
+                    }
+
+                    List<I18nEntryPreview> suggestions = entriesResponse.result();
+
+                    Object rawValue = literal.getValue();
+
+                    if (!(rawValue instanceof String currentValue)) {
+                        return;
+                    }
+
+                    TextRange valueRangeInLiteral = ElementManipulators.getValueTextRange(literal);
+                    TextRange absoluteValueRange = valueRangeInLiteral.shiftRight(literal.getTextRange().getStartOffset());
+
+                    int caretOffset = completionParameters.getOffset();
+                    if (caretOffset < absoluteValueRange.getStartOffset()) {
+                        return;
+                    }
+
+                    int relativeCaretOffset = Math.min(
+                        Math.max(0, caretOffset - absoluteValueRange.getStartOffset()),
+                        currentValue.length()
+                    );
+                    String prefix = currentValue.substring(0, relativeCaretOffset);
+
+                    CompletionResultSet prefixed = completionResultSet.withPrefixMatcher(prefix);
+
+                    for (I18nEntryPreview suggestion : suggestions) {
+                        LookupElementBuilder builder = LookupElementBuilder.create(suggestion.key().canonical())
+                            .withInsertHandler(AbstractI18nCompletionContributor::replaceCompletionRange)
+                            .withPresentableText(suggestion.key().canonical())
+                            .withIcon(PluginIcon.TRANSLATE_ICON);
+
+                        if (suggestion.previewValue() != null) {
+                            builder = builder.withTailText(" = " + suggestion.previewValue().toInputString(), true);
+                        }
+
+                        prefixed.addElement(builder);
+                    }
+                }
+            }
+        );
+    }
+}

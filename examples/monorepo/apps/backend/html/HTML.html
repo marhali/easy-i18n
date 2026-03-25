@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Easy I18n — HTML example</title>
+</head>
+<body>
+
+  <!--
+    Property value (rule-05: data-i18n attribute on any element).
+    The value of data-i18n is treated as an i18n key.
+    Folding, hover documentation, Ctrl+Click reference, and completion work
+    on the attribute value.
+  -->
+
+  <!-- Resolved keys → folding, hover documentation, and Ctrl+Click reference work -->
+  <h1 data-i18n="common:primitive.string.sample"></h1>
+  <p data-i18n="user:object.deeply.nested.structure.description"></p>
+  <p data-i18n="billing:object.deeply.nested.structure.description"></p>
+  <p data-i18n="common:object.hybrid\.flat\.structure"></p>
+
+  <!-- Unresolved keys → inspection error -->
+  <span data-i18n="common:does.not.exist"></span>
+  <span data-i18n="user:unknown.key"></span>
+
+</body>
+</html>

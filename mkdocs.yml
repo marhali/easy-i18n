@@ -1,0 +1,25 @@
+# Documentation based on https://www.mkdocs.org/
+site_name: Easy I18n
+site_dir: docs-build
+theme:
+  name: material
+  language: en
+  logo: assets/favicon.svg
+  favicon: assets/favicon.svg
+  palette:
+    primary: black
+  features:
+    - content.action.view
+    - content.action.edit
+repo_url: https://github.com/marhali/easy-i18n
+repo_name: marhali/easy-i18n
+edit_uri: edit/main/docs/
+copyright: Build with ❤️ – Copyright &copy; 2021 - 2026 marhali
+extra:
+  social:
+    - icon: material/contacts
+      link: https://marhali.de
+      name: marhali.de
+    - icon: material/basket
+      link: https://plugins.jetbrains.com/plugin/16316
+      name: JetBrains Marketplace

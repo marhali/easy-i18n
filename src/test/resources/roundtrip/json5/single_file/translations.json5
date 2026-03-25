@@ -1,0 +1,106 @@
+{
+  de: {
+    primitive: {
+      boolean: {
+        truthy: true,
+        falsy: false,
+      },
+      number: {
+        zero: 0,
+        neutral: 187,
+        negative: -187,
+        float: 1.87,
+        hex: 0xabcdef,
+        infinity: Infinity,
+        negateIninfity: -Infinity,
+      },
+      string: {
+        sample: "Eine beispielhafte Zeichenkette.",
+        escaped: "\nIch bin eine Zeichenkette mit Escape-Sequenzen\"",
+        multiline: "\nIch bin eine\nmehrzeilige\nZeichenkette\n\n",
+      },
+      nullish: null,
+    },
+    object: {
+      deeply: {
+        nested: {
+          structure: {
+            description: "Eine tief verschachtelte Zeichenkette.",
+          },
+        },
+      },
+      "hybrid.flat.structure": "Eine teils verschachtelte & teils flache Zeichenkette",
+      array: [
+        true,
+        false,
+        0,
+        187,
+        -187,
+        1.87,
+        "Eine andere Zeichenkette",
+      ],
+      "only.flat.structure": "Eine super flache Zeichenkette",
+      duplicated: {
+        alpha: "Ein doppelter Wert.",
+        bravo: "Ein doppelter Wert.",
+      },
+      missingValues: {
+        only: {
+          de_DE: "Ein Wert, der nur bei de_DE gesetzt ist.",
+        },
+      },
+    },
+  },
+  en: {
+    primitive: {
+      boolean: {
+        truthy: true,
+        falsy: false,
+      },
+      number: {
+        zero: 0,
+        neutral: 187,
+        negative: -187,
+        float: 1.87,
+        hex: 0xabcdef,
+        infinity: Infinity,
+        negateIninfity: -Infinity,
+      },
+      string: {
+        sample: "A sample string.",
+        escaped: "\nI am a string with escape sequences\"",
+        multiline: "\nI am a\nmultiline\nstring\n\n",
+      },
+      nullish: null,
+    },
+    object: {
+      deeply: {
+        nested: {
+          structure: {
+            description: "A deeply nested string.",
+          },
+        },
+      },
+      "hybrid.flat.structure": "A partially nested & partially flat string",
+      array: [
+        true,
+        false,
+        0,
+        187,
+        -187,
+        1.87,
+        "Another string",
+      ],
+      "only.flat.structure": "A super flat string",
+      duplicated: {
+        alpha: "A duplicate value.",
+        bravo: "A duplicate value.",
+      },
+      missingValues: {
+        only: {
+          de_DE: "A value that is only set for de_DE.",
+        },
+      },
+    },
+  },
+}

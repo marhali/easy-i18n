@@ -1,27 +1,42 @@
 <idea-plugin>
-    <extensions defaultExtensionNs="com.intellij">
-        <intentionAction>
-            <className>de.marhali.easyi18n.assistance.intention.JavaTranslationIntention</className>
-        </intentionAction>
+  <extensions defaultExtensionNs="com.intellij">
+    <psi.referenceContributor
+      language="JAVA"
+      implementation="de.marhali.easyi18n.idea.assistance.java.JavaI18nPsiReferenceContributor"
+    />
 
-        <psi.referenceContributor
-                language="JAVA"
-                implementation="de.marhali.easyi18n.assistance.reference.JavaKeyReferenceContributor"
-        />
+    <completion.contributor
+      language="JAVA"
+      implementationClass="de.marhali.easyi18n.idea.assistance.java.JavaI18nCompletionContributor"
+    />
 
-        <lang.foldingBuilder
-                language="JAVA"
-                implementationClass="de.marhali.easyi18n.assistance.folding.JavaFoldingBuilder"
-        />
+    <platform.backend.documentation.targetProvider
+      implementation="de.marhali.easyi18n.idea.assistance.java.JavaI18nDocumentationTargetProvider"
+    />
 
-        <lang.documentationProvider
-                language="JAVA"
-                implementationClass="de.marhali.easyi18n.assistance.documentation.CommonDocumentationProvider"
-        />
+    <lang.foldingBuilder
+      language="JAVA"
+      implementationClass="de.marhali.easyi18n.idea.assistance.java.JavaI18nFoldingBuilder"
+    />
 
-        <completion.contributor
-                language="JAVA"
-                implementationClass="de.marhali.easyi18n.assistance.completion.JavaCompletionContributor"
-        />
-    </extensions>
+    <localInspection
+      language="JAVA"
+      shortName="UnresolvedI18nKeyJava"
+      enabledByDefault="true"
+      level="ERROR"
+      implementationClass="de.marhali.easyi18n.idea.assistance.java.JavaI18nKeyLocalInspection"
+      bundle="messages.PluginBundle"
+      groupKey="editor.intention.family"
+      key="editor.intention.unresolved.title"
+    />
+
+    <intentionAction>
+      <className>de.marhali.easyi18n.idea.assistance.java.JavaIExtractTranslationIntention</className>
+      <language>JAVA</language>
+      <bundleName>messages.PluginBundle</bundleName>
+      <skipBeforeAfter>true</skipBeforeAfter>
+      <categoryKey>editor.intention.family</categoryKey>
+      <descriptionDirectoryName>extract</descriptionDirectoryName>
+    </intentionAction>
+  </extensions>
 </idea-plugin>

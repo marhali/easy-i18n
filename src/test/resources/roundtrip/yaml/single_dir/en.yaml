@@ -1,0 +1,40 @@
+primitive:
+  boolean:
+    truthy: true
+    falsy: false
+  non_boolean:
+    yes: yes
+    no: no
+    on: on
+    off: off
+  number:
+    zero: 0
+    positive: 187
+    negative: -187
+    float: 187
+  string:
+    sample: A sample string.
+    escaped: \nI am a string with escape sequences\"
+    multiline: \nI am a\nmultiline\nstring\n\n
+  nullish: null
+object:
+  deeply:
+    nested:
+      structure:
+        description: A deeply nested string.
+  hybrid.flat.structure: A partly nested & partly flat string
+array:
+  - true
+  - false
+  - 0
+  - 187
+  - -187
+  - 1.87
+  - Another string
+only.flat.structure: A super flat string
+duplicated:
+  alpha: A duplicate value.
+  bravo: A duplicate value.
+missingValues:
+  only:
+    en_GB: A value that is only set for en_GB.

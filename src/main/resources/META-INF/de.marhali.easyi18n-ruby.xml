@@ -1,0 +1,42 @@
+<idea-plugin>
+  <extensions defaultExtensionNs="com.intellij">
+    <psi.referenceContributor
+      language="ruby"
+      implementation="de.marhali.easyi18n.idea.assistance.ruby.RubyI18nPsiReferenceContributor"
+    />
+
+    <completion.contributor
+      language="ruby"
+      implementationClass="de.marhali.easyi18n.idea.assistance.ruby.RubyI18nCompletionContributor"
+    />
+
+    <platform.backend.documentation.targetProvider
+      implementation="de.marhali.easyi18n.idea.assistance.ruby.RubyI18nDocumentationTargetProvider"
+    />
+
+    <lang.foldingBuilder
+      language="ruby"
+      implementationClass="de.marhali.easyi18n.idea.assistance.ruby.RubyI18nFoldingBuilder"
+    />
+
+    <localInspection
+      language="ruby"
+      shortName="UnresolvedI18nKeyRuby"
+      enabledByDefault="true"
+      level="ERROR"
+      implementationClass="de.marhali.easyi18n.idea.assistance.ruby.RubyI18nKeyLocalInspection"
+      bundle="messages.PluginBundle"
+      groupKey="editor.intention.family"
+      key="editor.intention.unresolved.title"
+    />
+
+    <intentionAction>
+      <className>de.marhali.easyi18n.idea.assistance.ruby.RubyExtractTranslationIntention</className>
+      <language>ruby</language>
+      <bundleName>messages.PluginBundle</bundleName>
+      <skipBeforeAfter>true</skipBeforeAfter>
+      <categoryKey>editor.intention.family</categoryKey>
+      <descriptionDirectoryName>extract</descriptionDirectoryName>
+    </intentionAction>
+  </extensions>
+</idea-plugin>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<messages>
+
+  <!--
+    Property value (rule-06: key attribute on <message> elements).
+    The value of key is treated as an i18n key.
+    Folding, hover documentation, Ctrl+Click reference, and completion work
+    on the attribute value.
+  -->
+
+  <!-- Resolved keys → folding, hover documentation, and Ctrl+Click reference work -->
+  <message key="common:primitive.string.sample" />
+  <message key="user:object.deeply.nested.structure.description" />
+  <message key="billing:object.deeply.nested.structure.description" />
+  <message key="common:object.hybrid\.flat\.structure" />
+
+  <!-- Unresolved keys → inspection error -->
+  <message key="common:does.not.exist" />
+  <message key="user:unknown.key" />
+
+</messages>

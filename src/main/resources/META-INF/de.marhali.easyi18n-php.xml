@@ -1,27 +1,42 @@
 <idea-plugin>
-    <extensions defaultExtensionNs="com.intellij">
-        <intentionAction>
-            <className>de.marhali.easyi18n.assistance.intention.PhpTranslationIntention</className>
-        </intentionAction>
+  <extensions defaultExtensionNs="com.intellij">
+    <psi.referenceContributor
+      language="PHP"
+      implementation="de.marhali.easyi18n.idea.assistance.php.PhpI18nPsiReferenceContributor"
+    />
 
-        <psi.referenceContributor
-                language="PHP"
-                implementation="de.marhali.easyi18n.assistance.reference.PhpKeyReferenceContributor"
-        />
+    <completion.contributor
+      language="PHP"
+      implementationClass="de.marhali.easyi18n.idea.assistance.php.PhpI18nCompletionContributor"
+    />
 
-        <lang.foldingBuilder
-                language="PHP"
-                implementationClass="de.marhali.easyi18n.assistance.folding.PhpFoldingBuilder"
-        />
+    <platform.backend.documentation.targetProvider
+      implementation="de.marhali.easyi18n.idea.assistance.php.PhpI18nDocumentationTargetProvider"
+    />
 
-        <lang.documentationProvider
-                language="PHP"
-                implementationClass="de.marhali.easyi18n.assistance.documentation.CommonDocumentationProvider"
-        />
+    <lang.foldingBuilder
+      language="PHP"
+      implementationClass="de.marhali.easyi18n.idea.assistance.php.PhpI18nFoldingBuilder"
+    />
 
-        <completion.contributor
-                language="PHP"
-                implementationClass="de.marhali.easyi18n.assistance.completion.PhpCompletionContributor"
-        />
-    </extensions>
+    <localInspection
+      language="PHP"
+      shortName="UnresolvedI18nKeyPhp"
+      enabledByDefault="true"
+      level="ERROR"
+      implementationClass="de.marhali.easyi18n.idea.assistance.php.PhpI18nKeyLocalInspection"
+      bundle="messages.PluginBundle"
+      groupKey="editor.intention.family"
+      key="editor.intention.unresolved.title"
+    />
+
+    <intentionAction>
+      <className>de.marhali.easyi18n.idea.assistance.php.PhpExtractTranslationIntention</className>
+      <language>PHP</language>
+      <bundleName>messages.PluginBundle</bundleName>
+      <skipBeforeAfter>true</skipBeforeAfter>
+      <categoryKey>editor.intention.family</categoryKey>
+      <descriptionDirectoryName>extract</descriptionDirectoryName>
+    </intentionAction>
+  </extensions>
 </idea-plugin>

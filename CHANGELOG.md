@@ -4,6 +4,29 @@
 
 ## [Unreleased]
 
+THIS IS A MAJOR RELEASE. MOST OF THE PLUGIN COMPONENTS HAVE BEEN REWRITTEN.
+PLEASE CHECK THE MIGRATION GUIDE ON https://easy-i18n.github.io/migration/v5/ BEFORE UPDATING.
+
+### Added
+
+- Highly customizable configuration options using a templating system
+- Support for multiple translation modules within a single project
+- Configuration support to define target editor elements to apply fine-grained i18n assistance
+- Quick fix intention action to create a new translation
+- Check if translation key exists in add translation dialog
+- Language support for: Svelte, Ruby, Rust, Go, Dart, Python
+- Remember last size for translation dialogs
+
+### Changed
+
+- Optimized translation value type mapping (used in translation dialog & tool window)
+
+### Fixed
+
+- Various exceptions on virtual file system operations
+
+## [4.9.0] - 2025-09-09
+
 ### Changed
 
 - Use textarea component for translation dialog locale values (#477)
@@ -499,7 +522,8 @@
 
 - README.md
 
-[Unreleased]: https://github.com/marhali/easy-i18n/compare/v4.8.0...HEAD
+[Unreleased]: https://github.com/marhali/easy-i18n/compare/v4.9.0...HEAD
+[4.9.0]: https://github.com/marhali/easy-i18n/compare/v4.8.0...v4.9.0
 [4.8.0]: https://github.com/marhali/easy-i18n/compare/v4.7.0...v4.8.0
 [4.7.0]: https://github.com/marhali/easy-i18n/compare/v4.6.0...v4.7.0
 [4.6.0]: https://github.com/marhali/easy-i18n/compare/v4.5.2...v4.6.0

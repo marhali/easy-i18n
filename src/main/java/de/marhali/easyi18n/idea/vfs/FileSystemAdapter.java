@@ -1,0 +1,152 @@
+package de.marhali.easyi18n.idea.vfs;
+
+import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.application.ReadAction;
+import com.intellij.openapi.command.WriteCommandAction;
+import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.editor.Document;
+import com.intellij.openapi.fileEditor.FileDocumentManager;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.vfs.*;
+import com.intellij.psi.PsiDocumentManager;
+import com.intellij.psi.PsiFile;
+import com.intellij.psi.PsiManager;
+import com.intellij.psi.codeStyle.CodeStyleManager;
+import de.marhali.easyi18n.core.ports.FileSystemPort;
+import org.jetbrains.annotations.NotNull;
+
+import java.io.IOException;
+import java.nio.file.Path;
+import java.util.Collections;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+/**
+ * IntelliJ file system adapter.
+ *
+ * @author marhali
+ */
+public class FileSystemAdapter implements FileSystemPort {
+
+    private static final Logger LOGGER = Logger.getInstance(FileSystemAdapter.class);
+
+    private final @NotNull Project project;
+
+    public FileSystemAdapter(@NotNull Project project) {
+        this.project = project;
+    }
+
+    @Override
+    public @NotNull String read(@NotNull String path) throws IOException {
+        Path nioPath = Path.of(path);
+
+        return ReadAction.compute(() -> {
+            VirtualFile vf = LocalFileSystem.getInstance().findFileByNioFile(nioPath);
+
+            if (vf == null || !vf.isValid() || vf.isDirectory()) {
+                throw new IOException("Could not find VirtualFile from path: " + path);
+            }
+
+            Document cachedDocument = FileDocumentManager.getInstance().getCachedDocument(vf);
+
+            if (cachedDocument != null) {
+                return cachedDocument.getText();
+            }
+
+            return VfsUtilCore.loadText(vf);
+        });
+    }
+
+    @Override
+    public void write(@NotNull String path, @NotNull String content) throws IOException {
+        Path nioPath = Path.of(path);
+        String fileName = nioPath.getFileName().toString();
+        Path nioParent = Objects.requireNonNull(nioPath.getParent(), "Path has no parent: " + path);
+
+        ApplicationManager.getApplication().invokeLater(() -> {
+            if (project.isDisposed()) return;
+
+            WriteCommandAction.writeCommandAction(project)
+                .withName("Update Translation File")
+                .run(() -> {
+                    try {
+                        VirtualFile vfDir = VfsUtil.createDirectoryIfMissing(nioParent.toString());
+
+                        if (vfDir == null) {
+                            throw new IOException("Could not create parent directory: " + nioParent);
+                        }
+
+                        VirtualFile vf = vfDir.findChild(nioPath.getFileName().toString());
+
+                        if (vf == null) {
+                            vf = vfDir.createChildData(FileSystemAdapter.class, fileName);
+                        }
+
+                        ReadonlyStatusHandler.OperationStatus status = ReadonlyStatusHandler.getInstance(project)
+                            .ensureFilesWritable(Collections.singleton(vf));
+
+                        if (status.hasReadonlyFiles()) {
+                            throw new IllegalStateException("Cannot apply changes on files in read-only mode");
+                        }
+
+                        FileDocumentManager fdm =  FileDocumentManager.getInstance();
+                        Document document = fdm.getDocument(vf);
+
+                        if (document == null) {
+                            throw new IllegalStateException("Document is not available");
+                        }
+
+                        if (Objects.equals(document.getText(), content)) {
+                            // Nothing changed
+                            return;
+                        }
+
+                        document.setText(content);
+
+                        PsiDocumentManager pdm = PsiDocumentManager.getInstance(project);
+                        pdm.commitDocument(document);
+
+                        PsiFile psi = PsiManager.getInstance(project).findFile(vf);
+
+                        if (psi != null) {
+                            CodeStyleManager.getInstance(project).reformat(psi);
+                            pdm.doPostponedOperationsAndUnblockDocument(document);
+                        }
+
+                        fdm.saveDocument(document);
+
+                    } catch (IOException e) {
+                        LOGGER.error(e);
+                    }
+                });
+        });
+    }
+
+    @Override
+    public void bulkDelete(@NotNull Set<@NotNull String> paths) throws IOException {
+        Set<Path> nioPaths = paths.stream().map(Path::of).collect(Collectors.toSet());
+
+        ApplicationManager.getApplication().invokeLater(() -> {
+            if (project.isDisposed()) return;
+
+            WriteCommandAction.writeCommandAction(project)
+                .withName("Delete Translation Files")
+                .run(() -> {
+                    try {
+                        for (Path nioPath : nioPaths) {
+                            VirtualFile vf = LocalFileSystem.getInstance().findFileByNioFile(nioPath);
+
+                            if (vf == null || !vf.isValid()) {
+                                continue;
+                            }
+
+                            vf.delete(FileSystemAdapter.class);
+                        }
+                    } catch (IOException e) {
+                        LOGGER.error(e);
+                    }
+                });
+        });
+    }
+}

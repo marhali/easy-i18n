@@ -1,0 +1,14 @@
+de:
+  $: Sonderzeichen
+  0: Null
+  9: Neun
+  apple: Apfel
+  mango: Mango
+  zebra: Zebra
+en:
+  $: Special char
+  0: zero
+  9: Neun
+  apple: Apple
+  mango: Mango
+  zebra: Zebra

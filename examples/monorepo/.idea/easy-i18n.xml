@@ -1,0 +1,1186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectConfigService">
+    <option name="keyComment" value="false" />
+    <option name="sorting" value="true" />
+    <option name="previewLocale" value="en_GB" />
+    <option name="modules">
+      <map>
+        <entry key="backend">
+          <value>
+            <ProjectConfigModuleState>
+              <option name="id" value="backend" />
+              <option name="pathTemplate" value="$PROJECT_DIR$/apps/backend/__locales__/{locale}/{pathNamespace}.properties" />
+              <option name="fileCodec" value="PROPERTIES" />
+              <option name="fileTemplate" value="[{fileKey:.}]" />
+              <option name="keyTemplate" value="{pathNamespace}:{fileKey:.}" />
+              <option name="rootDirectory" value="$PROJECT_DIR$/apps/backend" />
+              <option name="defaultKeyPrefixes">
+                <set />
+              </option>
+              <option name="editorFlavorTemplate" value="$i18n.t(&quot;{i18nKey}&quot;)" />
+              <option name="editorRules">
+                <list>
+                  <EditorRuleState>
+                    <option name="id" value="rule-01" />
+                    <option name="languages">
+                      <set>
+                        <option value="JAVA" />
+                        <option value="KOTLIN" />
+                      </set>
+                    </option>
+                    <option name="triggerKind" value="CALL_ARGUMENT" />
+                    <option name="priority" value="0" />
+                    <option name="excludeRule" value="false" />
+                    <option name="constraints">
+                      <list>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="RECEIVER_TYPE_FQN" />
+                          <option name="value" value="java.util.ResourceBundle" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="CALLABLE_NAME" />
+                          <option name="value" value="getString" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="ARGUMENT_INDEX" />
+                          <option name="value" value="0" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                      </list>
+                    </option>
+                  </EditorRuleState>
+                  <EditorRuleState>
+                    <option name="id" value="rule-02" />
+                    <option name="languages">
+                      <set>
+                        <option value="KOTLIN" />
+                        <option value="JAVASCRIPT" />
+                        <option value="TYPESCRIPT" />
+                      </set>
+                    </option>
+                    <option name="triggerKind" value="DECLARATION_TARGET" />
+                    <option name="priority" value="0" />
+                    <option name="excludeRule" value="false" />
+                    <option name="constraints">
+                      <list>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="DECLARATION_NAME" />
+                          <option name="value" value="i18nKey" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                      </list>
+                    </option>
+                  </EditorRuleState>
+                  <EditorRuleState>
+                    <option name="id" value="rule-03" />
+                    <option name="languages">
+                      <set>
+                        <option value="JAVASCRIPT" />
+                        <option value="TYPESCRIPT" />
+                        <option value="VUE" />
+                        <option value="SVELTE" />
+                      </set>
+                    </option>
+                    <option name="triggerKind" value="CALL_ARGUMENT" />
+                    <option name="priority" value="10" />
+                    <option name="excludeRule" value="false" />
+                    <option name="constraints">
+                      <list>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="CALLABLE_NAME" />
+                          <option name="value" value="t" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="ARGUMENT_INDEX" />
+                          <option name="value" value="0" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                      </list>
+                    </option>
+                  </EditorRuleState>
+                  <EditorRuleState>
+                    <option name="id" value="rule-04" />
+                    <option name="languages">
+                      <set>
+                        <option value="JAVASCRIPT" />
+                        <option value="TYPESCRIPT" />
+                        <option value="VUE" />
+                        <option value="SVELTE" />
+                      </set>
+                    </option>
+                    <option name="triggerKind" value="CALL_ARGUMENT" />
+                    <option name="priority" value="0" />
+                    <option name="excludeRule" value="false" />
+                    <option name="constraints">
+                      <list>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="CALLABLE_NAME" />
+                          <option name="value" value="$t" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="ARGUMENT_INDEX" />
+                          <option name="value" value="0" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                      </list>
+                    </option>
+                  </EditorRuleState>
+                  <EditorRuleState>
+                    <option name="id" value="rule-ruby-t" />
+                    <option name="languages">
+                      <set>
+                        <option value="RUBY" />
+                      </set>
+                    </option>
+                    <option name="triggerKind" value="CALL_ARGUMENT" />
+                    <option name="priority" value="10" />
+                    <option name="excludeRule" value="false" />
+                    <option name="constraints">
+                      <list>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="CALLABLE_NAME" />
+                          <option name="value" value="t" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="ARGUMENT_INDEX" />
+                          <option name="value" value="0" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                      </list>
+                    </option>
+                  </EditorRuleState>
+                  <EditorRuleState>
+                    <option name="id" value="rule-ruby-translate" />
+                    <option name="languages">
+                      <set>
+                        <option value="RUBY" />
+                      </set>
+                    </option>
+                    <option name="triggerKind" value="CALL_ARGUMENT" />
+                    <option name="priority" value="0" />
+                    <option name="excludeRule" value="false" />
+                    <option name="constraints">
+                      <list>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="CALLABLE_NAME" />
+                          <option name="value" value="translate" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="ARGUMENT_INDEX" />
+                          <option name="value" value="0" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                      </list>
+                    </option>
+                  </EditorRuleState>
+                  <EditorRuleState>
+                    <option name="id" value="rule-go-i18n-get" />
+                    <option name="languages">
+                      <set>
+                        <option value="GO" />
+                      </set>
+                    </option>
+                    <option name="triggerKind" value="CALL_ARGUMENT" />
+                    <option name="priority" value="10" />
+                    <option name="excludeRule" value="false" />
+                    <option name="constraints">
+                      <list>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="RECEIVER_TYPE_FQN" />
+                          <option name="value" value="i18n" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="CALLABLE_NAME" />
+                          <option name="value" value="Get" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="ARGUMENT_INDEX" />
+                          <option name="value" value="0" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                      </list>
+                    </option>
+                  </EditorRuleState>
+                  <EditorRuleState>
+                    <option name="id" value="rule-go-localizer-localize" />
+                    <option name="languages">
+                      <set>
+                        <option value="GO" />
+                      </set>
+                    </option>
+                    <option name="triggerKind" value="CALL_ARGUMENT" />
+                    <option name="priority" value="0" />
+                    <option name="excludeRule" value="false" />
+                    <option name="constraints">
+                      <list>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="RECEIVER_TYPE_FQN" />
+                          <option name="value" value="localizer" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="CALLABLE_NAME" />
+                          <option name="value" value="Localize" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="ARGUMENT_INDEX" />
+                          <option name="value" value="0" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                      </list>
+                    </option>
+                  </EditorRuleState>
+                  <EditorRuleState>
+                    <option name="id" value="rule-python-underscore" />
+                    <option name="languages">
+                      <set>
+                        <option value="PYTHON" />
+                      </set>
+                    </option>
+                    <option name="triggerKind" value="CALL_ARGUMENT" />
+                    <option name="priority" value="10" />
+                    <option name="excludeRule" value="false" />
+                    <option name="constraints">
+                      <list>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="CALLABLE_NAME" />
+                          <option name="value" value="_" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="ARGUMENT_INDEX" />
+                          <option name="value" value="0" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                      </list>
+                    </option>
+                  </EditorRuleState>
+                  <EditorRuleState>
+                    <option name="id" value="rule-python-gettext" />
+                    <option name="languages">
+                      <set>
+                        <option value="PYTHON" />
+                      </set>
+                    </option>
+                    <option name="triggerKind" value="CALL_ARGUMENT" />
+                    <option name="priority" value="5" />
+                    <option name="excludeRule" value="false" />
+                    <option name="constraints">
+                      <list>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="CALLABLE_NAME" />
+                          <option name="value" value="gettext" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="ARGUMENT_INDEX" />
+                          <option name="value" value="0" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                      </list>
+                    </option>
+                  </EditorRuleState>
+                  <EditorRuleState>
+                    <option name="id" value="rule-python-lazy-gettext" />
+                    <option name="languages">
+                      <set>
+                        <option value="PYTHON" />
+                      </set>
+                    </option>
+                    <option name="triggerKind" value="CALL_ARGUMENT" />
+                    <option name="priority" value="0" />
+                    <option name="excludeRule" value="false" />
+                    <option name="constraints">
+                      <list>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="CALLABLE_NAME" />
+                          <option name="value" value="lazy_gettext" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="ARGUMENT_INDEX" />
+                          <option name="value" value="0" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                      </list>
+                    </option>
+                  </EditorRuleState>
+                  <EditorRuleState>
+                    <option name="id" value="rule-php-double-underscore" />
+                    <option name="languages">
+                      <set>
+                        <option value="PHP" />
+                      </set>
+                    </option>
+                    <option name="triggerKind" value="CALL_ARGUMENT" />
+                    <option name="priority" value="10" />
+                    <option name="excludeRule" value="false" />
+                    <option name="constraints">
+                      <list>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="CALLABLE_NAME" />
+                          <option name="value" value="__" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="ARGUMENT_INDEX" />
+                          <option name="value" value="0" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                      </list>
+                    </option>
+                  </EditorRuleState>
+                  <EditorRuleState>
+                    <option name="id" value="rule-php-trans" />
+                    <option name="languages">
+                      <set>
+                        <option value="PHP" />
+                      </set>
+                    </option>
+                    <option name="triggerKind" value="CALL_ARGUMENT" />
+                    <option name="priority" value="5" />
+                    <option name="excludeRule" value="false" />
+                    <option name="constraints">
+                      <list>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="CALLABLE_NAME" />
+                          <option name="value" value="trans" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="ARGUMENT_INDEX" />
+                          <option name="value" value="0" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                      </list>
+                    </option>
+                  </EditorRuleState>
+                  <EditorRuleState>
+                    <option name="id" value="rule-php-trans-choice" />
+                    <option name="languages">
+                      <set>
+                        <option value="PHP" />
+                      </set>
+                    </option>
+                    <option name="triggerKind" value="CALL_ARGUMENT" />
+                    <option name="priority" value="0" />
+                    <option name="excludeRule" value="false" />
+                    <option name="constraints">
+                      <list>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="CALLABLE_NAME" />
+                          <option name="value" value="trans_choice" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="ARGUMENT_INDEX" />
+                          <option name="value" value="0" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                      </list>
+                    </option>
+                  </EditorRuleState>
+                  <EditorRuleState>
+                    <option name="id" value="rule-rust-t" />
+                    <option name="languages">
+                      <set>
+                        <option value="RUST" />
+                      </set>
+                    </option>
+                    <option name="triggerKind" value="CALL_ARGUMENT" />
+                    <option name="priority" value="10" />
+                    <option name="excludeRule" value="false" />
+                    <option name="constraints">
+                      <list>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="CALLABLE_NAME" />
+                          <option name="value" value="t" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="ARGUMENT_INDEX" />
+                          <option name="value" value="0" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                      </list>
+                    </option>
+                  </EditorRuleState>
+                  <EditorRuleState>
+                    <option name="id" value="rule-rust-localizer-get" />
+                    <option name="languages">
+                      <set>
+                        <option value="RUST" />
+                      </set>
+                    </option>
+                    <option name="triggerKind" value="CALL_ARGUMENT" />
+                    <option name="priority" value="0" />
+                    <option name="excludeRule" value="false" />
+                    <option name="constraints">
+                      <list>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="RECEIVER_TYPE_FQN" />
+                          <option name="value" value="localizer" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="CALLABLE_NAME" />
+                          <option name="value" value="get" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="ARGUMENT_INDEX" />
+                          <option name="value" value="0" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                      </list>
+                    </option>
+                  </EditorRuleState>
+                  <EditorRuleState>
+                    <option name="id" value="rule-dart-tr" />
+                    <option name="languages">
+                      <set>
+                        <option value="DART" />
+                      </set>
+                    </option>
+                    <option name="triggerKind" value="CALL_ARGUMENT" />
+                    <option name="priority" value="10" />
+                    <option name="excludeRule" value="false" />
+                    <option name="constraints">
+                      <list>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="CALLABLE_NAME" />
+                          <option name="value" value="tr" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="ARGUMENT_INDEX" />
+                          <option name="value" value="0" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                      </list>
+                    </option>
+                  </EditorRuleState>
+                  <EditorRuleState>
+                    <option name="id" value="rule-dart-localizations-translate" />
+                    <option name="languages">
+                      <set>
+                        <option value="DART" />
+                      </set>
+                    </option>
+                    <option name="triggerKind" value="CALL_ARGUMENT" />
+                    <option name="priority" value="0" />
+                    <option name="excludeRule" value="false" />
+                    <option name="constraints">
+                      <list>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="RECEIVER_TYPE_FQN" />
+                          <option name="value" value="localizations" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="CALLABLE_NAME" />
+                          <option name="value" value="translate" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="ARGUMENT_INDEX" />
+                          <option name="value" value="0" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                      </list>
+                    </option>
+                  </EditorRuleState>
+                  <EditorRuleState>
+                    <option name="id" value="rule-05" />
+                    <option name="languages">
+                      <set>
+                        <option value="HTML" />
+                      </set>
+                    </option>
+                    <option name="triggerKind" value="PROPERTY_VALUE" />
+                    <option name="priority" value="0" />
+                    <option name="excludeRule" value="false" />
+                    <option name="constraints">
+                      <list>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="PROPERTY_NAME" />
+                          <option name="value" value="data-i18n" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                      </list>
+                    </option>
+                  </EditorRuleState>
+                  <EditorRuleState>
+                    <option name="id" value="rule-06" />
+                    <option name="languages">
+                      <set>
+                        <option value="XML" />
+                      </set>
+                    </option>
+                    <option name="triggerKind" value="PROPERTY_VALUE" />
+                    <option name="priority" value="0" />
+                    <option name="excludeRule" value="false" />
+                    <option name="constraints">
+                      <list>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="CALLABLE_NAME" />
+                          <option name="value" value="message" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="PROPERTY_NAME" />
+                          <option name="value" value="key" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                      </list>
+                    </option>
+                  </EditorRuleState>
+                </list>
+              </option>
+            </ProjectConfigModuleState>
+          </value>
+        </entry>
+        <entry key="frontend">
+          <value>
+            <ProjectConfigModuleState>
+              <option name="id" value="frontend" />
+              <option name="pathTemplate" value="$PROJECT_DIR$/apps/frontend/__locales__/{locale}/{pathNamespace}.json" />
+              <option name="fileCodec" value="JSON" />
+              <option name="fileTemplate" value="[{fileKey}]" />
+              <option name="keyTemplate" value="{pathNamespace}:{fileKey:.}" />
+              <option name="rootDirectory" value="$PROJECT_DIR$/apps/frontend" />
+              <option name="defaultKeyPrefixes">
+                <set />
+              </option>
+              <option name="editorFlavorTemplate" value="$i18n.t(&quot;{i18nKey}&quot;)" />
+              <option name="editorRules">
+                <list>
+                  <EditorRuleState>
+                    <option name="id" value="rule-01" />
+                    <option name="languages">
+                      <set>
+                        <option value="JAVA" />
+                        <option value="KOTLIN" />
+                      </set>
+                    </option>
+                    <option name="triggerKind" value="CALL_ARGUMENT" />
+                    <option name="priority" value="0" />
+                    <option name="excludeRule" value="false" />
+                    <option name="constraints">
+                      <list>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="RECEIVER_TYPE_FQN" />
+                          <option name="value" value="java.util.ResourceBundle" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="CALLABLE_NAME" />
+                          <option name="value" value="getString" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="ARGUMENT_INDEX" />
+                          <option name="value" value="0" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                      </list>
+                    </option>
+                  </EditorRuleState>
+                  <EditorRuleState>
+                    <option name="id" value="rule-02" />
+                    <option name="languages">
+                      <set>
+                        <option value="KOTLIN" />
+                        <option value="JAVASCRIPT" />
+                        <option value="TYPESCRIPT" />
+                      </set>
+                    </option>
+                    <option name="triggerKind" value="DECLARATION_TARGET" />
+                    <option name="priority" value="0" />
+                    <option name="excludeRule" value="false" />
+                    <option name="constraints">
+                      <list>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="DECLARATION_NAME" />
+                          <option name="value" value="i18nKey" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                      </list>
+                    </option>
+                  </EditorRuleState>
+                  <EditorRuleState>
+                    <option name="id" value="rule-03" />
+                    <option name="languages">
+                      <set>
+                        <option value="JAVASCRIPT" />
+                        <option value="TYPESCRIPT" />
+                        <option value="VUE" />
+                        <option value="SVELTE" />
+                      </set>
+                    </option>
+                    <option name="triggerKind" value="CALL_ARGUMENT" />
+                    <option name="priority" value="10" />
+                    <option name="excludeRule" value="false" />
+                    <option name="constraints">
+                      <list>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="CALLABLE_NAME" />
+                          <option name="value" value="t" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="ARGUMENT_INDEX" />
+                          <option name="value" value="0" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                      </list>
+                    </option>
+                  </EditorRuleState>
+                  <EditorRuleState>
+                    <option name="id" value="rule-04" />
+                    <option name="languages">
+                      <set>
+                        <option value="JAVASCRIPT" />
+                        <option value="TYPESCRIPT" />
+                        <option value="VUE" />
+                        <option value="SVELTE" />
+                      </set>
+                    </option>
+                    <option name="triggerKind" value="CALL_ARGUMENT" />
+                    <option name="priority" value="0" />
+                    <option name="excludeRule" value="false" />
+                    <option name="constraints">
+                      <list>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="CALLABLE_NAME" />
+                          <option name="value" value="$t" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="ARGUMENT_INDEX" />
+                          <option name="value" value="0" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                      </list>
+                    </option>
+                  </EditorRuleState>
+                  <EditorRuleState>
+                    <option name="id" value="rule-ruby-t" />
+                    <option name="languages">
+                      <set>
+                        <option value="RUBY" />
+                      </set>
+                    </option>
+                    <option name="triggerKind" value="CALL_ARGUMENT" />
+                    <option name="priority" value="10" />
+                    <option name="excludeRule" value="false" />
+                    <option name="constraints">
+                      <list>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="CALLABLE_NAME" />
+                          <option name="value" value="t" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="ARGUMENT_INDEX" />
+                          <option name="value" value="0" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                      </list>
+                    </option>
+                  </EditorRuleState>
+                  <EditorRuleState>
+                    <option name="id" value="rule-ruby-translate" />
+                    <option name="languages">
+                      <set>
+                        <option value="RUBY" />
+                      </set>
+                    </option>
+                    <option name="triggerKind" value="CALL_ARGUMENT" />
+                    <option name="priority" value="0" />
+                    <option name="excludeRule" value="false" />
+                    <option name="constraints">
+                      <list>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="CALLABLE_NAME" />
+                          <option name="value" value="translate" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="ARGUMENT_INDEX" />
+                          <option name="value" value="0" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                      </list>
+                    </option>
+                  </EditorRuleState>
+                  <EditorRuleState>
+                    <option name="id" value="rule-go-i18n-get" />
+                    <option name="languages">
+                      <set>
+                        <option value="GO" />
+                      </set>
+                    </option>
+                    <option name="triggerKind" value="CALL_ARGUMENT" />
+                    <option name="priority" value="10" />
+                    <option name="excludeRule" value="false" />
+                    <option name="constraints">
+                      <list>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="RECEIVER_TYPE_FQN" />
+                          <option name="value" value="i18n" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="CALLABLE_NAME" />
+                          <option name="value" value="Get" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="ARGUMENT_INDEX" />
+                          <option name="value" value="0" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                      </list>
+                    </option>
+                  </EditorRuleState>
+                  <EditorRuleState>
+                    <option name="id" value="rule-go-localizer-localize" />
+                    <option name="languages">
+                      <set>
+                        <option value="GO" />
+                      </set>
+                    </option>
+                    <option name="triggerKind" value="CALL_ARGUMENT" />
+                    <option name="priority" value="0" />
+                    <option name="excludeRule" value="false" />
+                    <option name="constraints">
+                      <list>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="RECEIVER_TYPE_FQN" />
+                          <option name="value" value="localizer" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="CALLABLE_NAME" />
+                          <option name="value" value="Localize" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="ARGUMENT_INDEX" />
+                          <option name="value" value="0" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                      </list>
+                    </option>
+                  </EditorRuleState>
+                  <EditorRuleState>
+                    <option name="id" value="rule-python-underscore" />
+                    <option name="languages">
+                      <set>
+                        <option value="PYTHON" />
+                      </set>
+                    </option>
+                    <option name="triggerKind" value="CALL_ARGUMENT" />
+                    <option name="priority" value="10" />
+                    <option name="excludeRule" value="false" />
+                    <option name="constraints">
+                      <list>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="CALLABLE_NAME" />
+                          <option name="value" value="_" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="ARGUMENT_INDEX" />
+                          <option name="value" value="0" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                      </list>
+                    </option>
+                  </EditorRuleState>
+                  <EditorRuleState>
+                    <option name="id" value="rule-python-gettext" />
+                    <option name="languages">
+                      <set>
+                        <option value="PYTHON" />
+                      </set>
+                    </option>
+                    <option name="triggerKind" value="CALL_ARGUMENT" />
+                    <option name="priority" value="5" />
+                    <option name="excludeRule" value="false" />
+                    <option name="constraints">
+                      <list>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="CALLABLE_NAME" />
+                          <option name="value" value="gettext" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="ARGUMENT_INDEX" />
+                          <option name="value" value="0" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                      </list>
+                    </option>
+                  </EditorRuleState>
+                  <EditorRuleState>
+                    <option name="id" value="rule-python-lazy-gettext" />
+                    <option name="languages">
+                      <set>
+                        <option value="PYTHON" />
+                      </set>
+                    </option>
+                    <option name="triggerKind" value="CALL_ARGUMENT" />
+                    <option name="priority" value="0" />
+                    <option name="excludeRule" value="false" />
+                    <option name="constraints">
+                      <list>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="CALLABLE_NAME" />
+                          <option name="value" value="lazy_gettext" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="ARGUMENT_INDEX" />
+                          <option name="value" value="0" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                      </list>
+                    </option>
+                  </EditorRuleState>
+                  <EditorRuleState>
+                    <option name="id" value="rule-php-double-underscore" />
+                    <option name="languages">
+                      <set>
+                        <option value="PHP" />
+                      </set>
+                    </option>
+                    <option name="triggerKind" value="CALL_ARGUMENT" />
+                    <option name="priority" value="10" />
+                    <option name="excludeRule" value="false" />
+                    <option name="constraints">
+                      <list>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="CALLABLE_NAME" />
+                          <option name="value" value="__" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="ARGUMENT_INDEX" />
+                          <option name="value" value="0" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                      </list>
+                    </option>
+                  </EditorRuleState>
+                  <EditorRuleState>
+                    <option name="id" value="rule-php-trans" />
+                    <option name="languages">
+                      <set>
+                        <option value="PHP" />
+                      </set>
+                    </option>
+                    <option name="triggerKind" value="CALL_ARGUMENT" />
+                    <option name="priority" value="5" />
+                    <option name="excludeRule" value="false" />
+                    <option name="constraints">
+                      <list>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="CALLABLE_NAME" />
+                          <option name="value" value="trans" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="ARGUMENT_INDEX" />
+                          <option name="value" value="0" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                      </list>
+                    </option>
+                  </EditorRuleState>
+                  <EditorRuleState>
+                    <option name="id" value="rule-php-trans-choice" />
+                    <option name="languages">
+                      <set>
+                        <option value="PHP" />
+                      </set>
+                    </option>
+                    <option name="triggerKind" value="CALL_ARGUMENT" />
+                    <option name="priority" value="0" />
+                    <option name="excludeRule" value="false" />
+                    <option name="constraints">
+                      <list>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="CALLABLE_NAME" />
+                          <option name="value" value="trans_choice" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="ARGUMENT_INDEX" />
+                          <option name="value" value="0" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                      </list>
+                    </option>
+                  </EditorRuleState>
+                  <EditorRuleState>
+                    <option name="id" value="rule-rust-t" />
+                    <option name="languages">
+                      <set>
+                        <option value="RUST" />
+                      </set>
+                    </option>
+                    <option name="triggerKind" value="CALL_ARGUMENT" />
+                    <option name="priority" value="10" />
+                    <option name="excludeRule" value="false" />
+                    <option name="constraints">
+                      <list>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="CALLABLE_NAME" />
+                          <option name="value" value="t" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="ARGUMENT_INDEX" />
+                          <option name="value" value="0" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                      </list>
+                    </option>
+                  </EditorRuleState>
+                  <EditorRuleState>
+                    <option name="id" value="rule-rust-localizer-get" />
+                    <option name="languages">
+                      <set>
+                        <option value="RUST" />
+                      </set>
+                    </option>
+                    <option name="triggerKind" value="CALL_ARGUMENT" />
+                    <option name="priority" value="0" />
+                    <option name="excludeRule" value="false" />
+                    <option name="constraints">
+                      <list>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="RECEIVER_TYPE_FQN" />
+                          <option name="value" value="localizer" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="CALLABLE_NAME" />
+                          <option name="value" value="get" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="ARGUMENT_INDEX" />
+                          <option name="value" value="0" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                      </list>
+                    </option>
+                  </EditorRuleState>
+                  <EditorRuleState>
+                    <option name="id" value="rule-dart-tr" />
+                    <option name="languages">
+                      <set>
+                        <option value="DART" />
+                      </set>
+                    </option>
+                    <option name="triggerKind" value="CALL_ARGUMENT" />
+                    <option name="priority" value="10" />
+                    <option name="excludeRule" value="false" />
+                    <option name="constraints">
+                      <list>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="CALLABLE_NAME" />
+                          <option name="value" value="tr" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="ARGUMENT_INDEX" />
+                          <option name="value" value="0" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                      </list>
+                    </option>
+                  </EditorRuleState>
+                  <EditorRuleState>
+                    <option name="id" value="rule-dart-localizations-translate" />
+                    <option name="languages">
+                      <set>
+                        <option value="DART" />
+                      </set>
+                    </option>
+                    <option name="triggerKind" value="CALL_ARGUMENT" />
+                    <option name="priority" value="0" />
+                    <option name="excludeRule" value="false" />
+                    <option name="constraints">
+                      <list>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="RECEIVER_TYPE_FQN" />
+                          <option name="value" value="localizations" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="CALLABLE_NAME" />
+                          <option name="value" value="translate" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="ARGUMENT_INDEX" />
+                          <option name="value" value="0" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                      </list>
+                    </option>
+                  </EditorRuleState>
+                  <EditorRuleState>
+                    <option name="id" value="rule-05" />
+                    <option name="languages">
+                      <set>
+                        <option value="HTML" />
+                      </set>
+                    </option>
+                    <option name="triggerKind" value="PROPERTY_VALUE" />
+                    <option name="priority" value="0" />
+                    <option name="excludeRule" value="false" />
+                    <option name="constraints">
+                      <list>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="PROPERTY_NAME" />
+                          <option name="value" value="data-i18n" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                      </list>
+                    </option>
+                  </EditorRuleState>
+                  <EditorRuleState>
+                    <option name="id" value="rule-06" />
+                    <option name="languages">
+                      <set>
+                        <option value="XML" />
+                      </set>
+                    </option>
+                    <option name="triggerKind" value="PROPERTY_VALUE" />
+                    <option name="priority" value="0" />
+                    <option name="excludeRule" value="false" />
+                    <option name="constraints">
+                      <list>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="CALLABLE_NAME" />
+                          <option name="value" value="message" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                        <EditorRuleConstraintState>
+                          <option name="type" value="PROPERTY_NAME" />
+                          <option name="value" value="key" />
+                          <option name="matchMode" value="EXACT" />
+                          <option name="negated" value="false" />
+                        </EditorRuleConstraintState>
+                      </list>
+                    </option>
+                  </EditorRuleState>
+                </list>
+              </option>
+            </ProjectConfigModuleState>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

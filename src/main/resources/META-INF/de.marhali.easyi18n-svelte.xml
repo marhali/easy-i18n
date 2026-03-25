@@ -1,0 +1,38 @@
+<idea-plugin>
+  <extensions defaultExtensionNs="com.intellij">
+    <psi.referenceContributor
+      language="Svelte"
+      implementation="de.marhali.easyi18n.idea.assistance.svelte.SvelteI18nPsiReferenceContributor"
+    />
+
+    <completion.contributor
+      language="Svelte"
+      implementationClass="de.marhali.easyi18n.idea.assistance.svelte.SvelteI18nCompletionContributor"
+    />
+
+    <lang.foldingBuilder
+      language="Svelte"
+      implementationClass="de.marhali.easyi18n.idea.assistance.svelte.SvelteI18nFoldingBuilder"
+    />
+
+    <localInspection
+      language="Svelte"
+      shortName="UnresolvedI18nKeySvelte"
+      enabledByDefault="true"
+      level="ERROR"
+      implementationClass="de.marhali.easyi18n.idea.assistance.svelte.SvelteI18nKeyLocalInspection"
+      bundle="messages.PluginBundle"
+      groupKey="editor.intention.family"
+      key="editor.intention.unresolved.title"
+    />
+
+    <intentionAction>
+      <className>de.marhali.easyi18n.idea.assistance.svelte.SvelteExtractTranslationIntention</className>
+      <language>Svelte</language>
+      <bundleName>messages.PluginBundle</bundleName>
+      <skipBeforeAfter>true</skipBeforeAfter>
+      <categoryKey>editor.intention.family</categoryKey>
+      <descriptionDirectoryName>extract</descriptionDirectoryName>
+    </intentionAction>
+  </extensions>
+</idea-plugin>
