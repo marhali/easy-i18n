@@ -16,7 +16,7 @@ Download the [latest release](https://github.com/marhali/easy-i18n/releases/late
 
 ## Configuration
 
-- Show the [Translations Tool Window](components/tool-window.md) if not already in displayed via <kbd>View</kbd> > <kbd>Tool Windows</kbd> > <kbd>Translations</kbd>
+- Show the [Translations Tool Window](components/tool-window.md) if not already displayed via <kbd>View</kbd> > <kbd>Tool Windows</kbd> > <kbd>Translations</kbd>
 - Go to the plugin configuration via the <kbd>⚙️</kbd> action inside the tool window or by visiting <kbd>Settings / Preferences</kbd> > <kbd>Tools</kbd> > <kbd>Easy I18n</kbd> 
 - Configure common options like sorting or preview locale
 - Add your first module and optionally select one of the existing presets to get started easily
