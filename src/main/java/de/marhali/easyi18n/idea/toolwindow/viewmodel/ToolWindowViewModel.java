@@ -119,7 +119,10 @@ public final class ToolWindowViewModel implements PluginTopics.DomainListener {
             () -> projectService.query(query),
             (moduleView) ->
                 dispatchEvent(moduleId, listener -> listener.onViewUpdated(moduleView, key)),
-            this::handleThrowable,
+            (throwable) -> {
+                dispatchEvent(moduleId, listener -> listener.onViewError(throwable));
+                handleThrowable(throwable);
+            },
             ModalityState.any(),
             (o) -> contentManager.isDisposed()
         );

@@ -27,4 +27,10 @@ public interface ViewListener {
      * Invalidates the rendered view for this panel.
      */
     void onViewInvalidated();
+
+    /**
+     * Indicates an error on the rendered view for this panel.
+     * @param throwable Thrown error
+     */
+    void onViewError(Throwable throwable);
 }
