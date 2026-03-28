@@ -46,7 +46,7 @@ public class UpdatePartialI18nKeyCommandHandlerTest {
         fixture.store().mutate(project -> {
             var module = project.getOrCreateModule(MODULE_ID);
             module.addLocale(EN);
-            module.getOrCreateTranslation(key).put(EN, I18nValue.fromQuotedPrimitive("value"));
+            module.getOrCreateTranslation(key).put(EN, I18nValue.fromEscaped("value"));
         });
     }
 
@@ -84,14 +84,14 @@ public class UpdatePartialI18nKeyCommandHandlerTest {
         fixture.store().mutate(project -> {
             var module = project.getOrCreateModule(MODULE_ID);
             module.addLocale(EN);
-            module.getOrCreateTranslation(key).put(EN, I18nValue.fromQuotedPrimitive("My Title"));
+            module.getOrCreateTranslation(key).put(EN, I18nValue.fromEscaped("My Title"));
         });
 
         fixture.handler().handle(new UpdatePartialI18nKeyCommand(MODULE_ID, List.of("ns."), "old", "new"));
 
         var content = fixture.store().getSnapshot().getModuleOrThrow(MODULE_ID)
             .getTranslationOrThrow(I18nKey.of("ns.new.title"));
-        Assert.assertEquals("My Title", content.values().get(EN).getAsPrimitive().getText());
+        Assert.assertEquals("My Title", content.values().get(EN).raw());
     }
 
     @Test

@@ -53,7 +53,7 @@ public class UpdateI18nKeyCommandHandlerTest {
         var fixture = buildFixture();
         var oldKey = I18nKey.of("old.greeting");
         var newKey = I18nKey.of("new.greeting");
-        populateTranslation(fixture, oldKey, I18nValue.fromQuotedPrimitive("Hello"));
+        populateTranslation(fixture, oldKey, I18nValue.fromEscaped("Hello"));
 
         fixture.handler().handle(new UpdateI18nKeyCommand(MODULE_ID, oldKey, newKey));
 
@@ -66,13 +66,13 @@ public class UpdateI18nKeyCommandHandlerTest {
         var fixture = buildFixture();
         var oldKey = I18nKey.of("old.greeting");
         var newKey = I18nKey.of("new.greeting");
-        var value = I18nValue.fromQuotedPrimitive("Hello");
+        var value = I18nValue.fromEscaped("Hello");
         populateTranslation(fixture, oldKey, value);
 
         fixture.handler().handle(new UpdateI18nKeyCommand(MODULE_ID, oldKey, newKey));
 
         var content = fixture.store().getSnapshot().getModuleOrThrow(MODULE_ID).getTranslationOrThrow(newKey);
-        Assert.assertEquals("Hello", content.values().get(EN).getAsPrimitive().getText());
+        Assert.assertEquals("Hello", content.values().get(EN).raw());
     }
 
     @Test(expected = IllegalStateException.class)
@@ -87,7 +87,7 @@ public class UpdateI18nKeyCommandHandlerTest {
         var fixture = buildFixture();
         var oldKey = I18nKey.of("old");
         var newKey = I18nKey.of("new");
-        populateTranslation(fixture, oldKey, I18nValue.fromQuotedPrimitive("Hello"));
+        populateTranslation(fixture, oldKey, I18nValue.fromEscaped("Hello"));
 
         fixture.handler().handle(new UpdateI18nKeyCommand(MODULE_ID, oldKey, newKey));
 

@@ -6,8 +6,6 @@ import de.marhali.easyi18n.infra.FileReader;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -40,39 +38,15 @@ public final class YamlReader extends FileReader {
 
             if (value instanceof Map) {
                 readMap((Map<Object, Object>) value, childProducer);
-            } else if (value instanceof List) {
-                readArray((List<Object>) value, childProducer);
             } else {
-                readPrimitive(value, childProducer);
+                readValue(value, childProducer);
             }
         }
     }
 
-    private void readArray(@NotNull List<@Nullable Object> array, @NotNull TranslationProducer producer) {
-        var arrayElements = new ArrayList<I18nValue.Primitive>();
-
-        for (Object element : array) {
-            if (element instanceof Map || element instanceof List) {
-                // We only focus on primitives inside an array for now
-                throw new UnsupportedOperationException("A YAML-List element may only consist of primitive elements");
-            }
-
-            arrayElements.add(readPrimitiveValue(element));
-        }
-
-        var value = I18nValue.fromArray(arrayElements.toArray(new I18nValue.Primitive[0]));
-        finallyProduceWithValue(producer, value);
-    }
-
-    private void readPrimitive(@Nullable Object value, @NotNull TranslationProducer producer) {
-        finallyProduceWithValue(producer, readPrimitiveValue(value));
-    }
-
-    private @NotNull I18nValue.Primitive readPrimitiveValue(@Nullable Object value) {
-        if (value instanceof String str) {
-            return I18nValue.fromQuotedPrimitive(str);
-        } else {
-            return I18nValue.fromBarePrimitive(String.valueOf(value));
-        }
+    private void readValue(@Nullable Object value, @NotNull TranslationProducer producer) {
+        String dumpedValue = YamlFileProcessor.YAML_MINIFY.dump(value);
+        dumpedValue = dumpedValue.replaceFirst("\\n$", ""); // Replace unnecessary last \n
+        finallyProduceWithValue(producer, I18nValue.fromUnescaped(dumpedValue));
     }
 }

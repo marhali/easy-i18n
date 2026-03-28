@@ -2,7 +2,6 @@
 package de.marhali.easyi18n.idea.ui.components;
 
 import com.intellij.openapi.util.NlsContexts;
-import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.ui.Expandable;
 import com.intellij.ui.components.JBScrollBar;
 import com.intellij.ui.components.JBScrollPane;
@@ -22,7 +21,6 @@ import javax.swing.text.JTextComponent;
 import java.awt.*;
 import java.util.List;
 
-import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static javax.swing.BorderFactory.createEmptyBorder;
 import static javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS;
@@ -40,7 +38,7 @@ public class FixedExpandableTextField extends ExtendableTextField implements Exp
      */
     public FixedExpandableTextField() {
         Function<? super String, String> onShow = text -> text.replace("\\n", "\n");
-        Function<? super String, String> onHide = text -> String.join("\\n", asList(StringUtil.splitByLines(text, false)));
+        Function<? super String, String> onHide = text -> text.replace("\n", "\\n");
         support = new ExpandableSupport<JTextComponent>(this, onShow, onHide) {
             @Override
             protected @NotNull Content prepare(@NotNull JTextComponent field, @NotNull Function<? super String, @Nls String> onShow) {

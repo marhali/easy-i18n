@@ -49,7 +49,7 @@ public class AllModuleI18nEntryPreviewQueryHandlerTest {
             module.addLocale(EN);
             MutableI18nContent translation = module.getOrCreateTranslation(key);
             translation.put(EN, value);
-            translation.put(DE, I18nValue.fromQuotedPrimitive("Any not relevant value for non preview locale"));
+            translation.put(DE, I18nValue.fromEscaped("Any not relevant value for non preview locale"));
         });
     }
 
@@ -67,8 +67,8 @@ public class AllModuleI18nEntryPreviewQueryHandlerTest {
     @Test
     public void test_returns_all_entry_previews() {
         var fixture = buildFixture();
-        populateTranslation(fixture, I18nKey.of("greeting"), I18nValue.fromQuotedPrimitive("Hello"));
-        populateTranslation(fixture, I18nKey.of("farewell"), I18nValue.fromQuotedPrimitive("Bye"));
+        populateTranslation(fixture, I18nKey.of("greeting"), I18nValue.fromEscaped("Hello"));
+        populateTranslation(fixture, I18nKey.of("farewell"), I18nValue.fromEscaped("Bye"));
 
         PossiblyUnavailable<List<I18nEntryPreview>> response = fixture.handler().handle(
             new AllModuleI18nEntryPreviewQuery(MODULE_ID)
@@ -82,7 +82,7 @@ public class AllModuleI18nEntryPreviewQueryHandlerTest {
     @Test
     public void test_preview_value_uses_configured_preview_locale() {
         var fixture = buildFixture();
-        populateTranslation(fixture, I18nKey.of("greeting"), I18nValue.fromQuotedPrimitive("Hello"));
+        populateTranslation(fixture, I18nKey.of("greeting"), I18nValue.fromEscaped("Hello"));
 
         PossiblyUnavailable<List<I18nEntryPreview>> response = fixture.handler().handle(
             new AllModuleI18nEntryPreviewQuery(MODULE_ID)
@@ -93,6 +93,6 @@ public class AllModuleI18nEntryPreviewQueryHandlerTest {
         Assert.assertEquals(1, response.result().size());
         var preview = response.result().getFirst();
         Assert.assertNotNull(preview.previewValue());
-        Assert.assertEquals("Hello", preview.previewValue().getAsPrimitive().getText());
+        Assert.assertEquals("Hello", preview.previewValue().raw());
     }
 }

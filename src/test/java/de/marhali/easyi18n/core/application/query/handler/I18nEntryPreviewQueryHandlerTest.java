@@ -64,7 +64,7 @@ public class I18nEntryPreviewQueryHandlerTest {
     @Test
     public void test_existing_key_returns_preview_with_value() {
         var fixture = buildFixture();
-        populateTranslation(fixture, I18nKey.of("greeting"), I18nValue.fromQuotedPrimitive("Hello"));
+        populateTranslation(fixture, I18nKey.of("greeting"), I18nValue.fromEscaped("Hello"));
 
         PossiblyUnavailable<Optional<I18nEntryPreview>> response = fixture.handler().handle(
             new I18nEntryPreviewQuery(MODULE_ID, I18nKeyCandidate.of("greeting"))
@@ -74,13 +74,13 @@ public class I18nEntryPreviewQueryHandlerTest {
         Assert.assertNotNull(response.result());
         Assert.assertTrue(response.result().isPresent());
         Assert.assertNotNull(response.result().get().previewValue());
-        Assert.assertEquals("Hello", response.result().get().previewValue().getAsPrimitive().getText());
+        Assert.assertEquals("Hello", response.result().get().previewValue().raw());
     }
 
     @Test
     public void test_missing_key_returns_available_empty_optional() {
         var fixture = buildFixture();
-        populateTranslation(fixture, I18nKey.of("other"), I18nValue.fromQuotedPrimitive("Hello"));
+        populateTranslation(fixture, I18nKey.of("other"), I18nValue.fromEscaped("Hello"));
 
         PossiblyUnavailable<Optional<I18nEntryPreview>> response = fixture.handler().handle(
             new I18nEntryPreviewQuery(MODULE_ID, I18nKeyCandidate.of("nonExistent"))

@@ -67,45 +67,12 @@ public final class Json5Writer extends FileWriter {
     }
 
     private @NotNull Json5Element toJson5Element(@NotNull I18nValue value) {
-        return switch (value) {
-            case I18nValue.Primitive primitive -> toJson5Primitive(primitive);
-            case I18nValue.Array array -> toJson5Array(array);
-        };
-    }
-
-    private @NotNull Json5Array toJson5Array(@NotNull I18nValue.Array array) {
-        Json5Array jsonArray = new Json5Array(array.elements().length);
-
-        for (I18nValue.Primitive element : array.elements()) {
-            jsonArray.add(toJson5Primitive(element));
+        // Quickfix to properly parse Json5Primitive from a string value
+        try (StringReader reader = new StringReader(value.raw().endsWith(",") ? value.raw() : value.raw() + ",")) {
+            var lexer = new Json5Lexer(reader, Json5FileProcessor.JSON5_OPTIONS);
+            return lexer.nextValue();
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
         }
-
-        return jsonArray;
-    }
-
-    private @NotNull Json5Element toJson5Primitive(@NotNull I18nValue.Primitive primitive) {
-        return switch (primitive) {
-            case I18nValue.Quoted quoted -> Json5Primitive.fromString(quoted.text());
-            case I18nValue.Bare bare -> {
-                Json5Element element;
-
-                try {
-                    // Quickfix to properly parse Json5Primitive from a string value
-                    var reader = new StringReader(bare.text() + ",");
-                    var lexer = new Json5Lexer(reader, Json5FileProcessor.JSON5_OPTIONS);
-                    element = lexer.nextValue();
-                    reader.close();
-                } catch (Exception ex) {
-                    throw new RuntimeException(ex);
-                }
-
-                if (element == null || !(element.isJson5Primitive() || element.isJson5Null())
-                    || (element.isJson5Primitive() && element.getAsJson5Primitive().isString())) {
-                    throw new IllegalArgumentException("Invalid bare value '" + bare.text() + "'. Must be Boolean, Number, Array, null or quoted String");
-                }
-
-                yield element;
-            }
-        };
     }
 }

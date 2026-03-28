@@ -36,7 +36,7 @@ public class ReloadCommandHandlerTest {
         fixture.store().mutate(project -> {
             var module = project.getOrCreateModule(moduleId);
             module.addLocale(EN);
-            module.getOrCreateTranslation(I18nKey.of("key")).put(EN, I18nValue.fromQuotedPrimitive("value"));
+            module.getOrCreateTranslation(I18nKey.of("key")).put(EN, I18nValue.fromEscaped("value"));
         });
     }
 

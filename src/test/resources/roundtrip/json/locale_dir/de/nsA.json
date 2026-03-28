@@ -34,7 +34,24 @@
     187,
     -187,
     1.87,
-    "Eine andere Zeichenkette"
+    null,
+    "Eine andere Zeichenkette",
+    [
+      true,
+      false,
+      0,
+      187,
+      -187,
+      1.87,
+      [
+        {
+          "key": "Mein Wert."
+        }
+      ],
+      {
+        "otherKey": "Anderer Wert."
+      }
+    ]
   ],
   "only.flat.structure": "Eine super flache Zeichenkette",
   "duplicated": {

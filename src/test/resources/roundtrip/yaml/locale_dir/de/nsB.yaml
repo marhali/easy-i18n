@@ -16,6 +16,16 @@ primitive:
     sample: Eine beispielhafte Zeichenkette.
     escaped: \nIch bin eine Zeichenkette mit Escape-Sequenzen\"
     multiline: \nIch bin eine\nmehrzeilige\nZeichenkette\n\n
+    multirow: |-
+      first
+      second
+      third
+    multirowTrailing: |+
+      first
+      second
+      thrid
+
+
   nullish: null
 object:
   deeply:
@@ -35,6 +45,21 @@ only.flat.structure: Eine super flache Zeichenkette
 duplicated:
   alpha: Ein doppelter Wert.
   bravo: Ein doppelter Wert.
+objectList:
+  - martin:
+      name: Martin D'vloper
+      job: Developer
+      skills:
+        - python
+        - perl
+        - pascal
+  - tabitha:
+      name: Tabitha Bitumen
+      job: Developer
+      skills:
+        - lisp
+        - fortran
+        - erlang
 missingValues:
   only:
     de_DE: Ein Wert, der nur bei de_DE gesetzt ist.

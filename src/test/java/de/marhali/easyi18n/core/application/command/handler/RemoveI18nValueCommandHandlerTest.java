@@ -53,8 +53,8 @@ public class RemoveI18nValueCommandHandlerTest {
     public void test_locale_value_is_removed() {
         var fixture = buildFixture();
         var key = I18nKey.of("greeting");
-        populateTranslation(fixture, key, EN, I18nValue.fromQuotedPrimitive("Hello"));
-        populateTranslation(fixture, key, DE, I18nValue.fromQuotedPrimitive("Hallo"));
+        populateTranslation(fixture, key, EN, I18nValue.fromEscaped("Hello"));
+        populateTranslation(fixture, key, DE, I18nValue.fromEscaped("Hallo"));
 
         fixture.handler().handle(new RemoveI18nValueCommand(MODULE_ID, key, EN));
 
@@ -74,7 +74,7 @@ public class RemoveI18nValueCommandHandlerTest {
     public void test_module_changed_event_is_published() {
         var fixture = buildFixture();
         var key = I18nKey.of("greeting");
-        populateTranslation(fixture, key, EN, I18nValue.fromQuotedPrimitive("Hello"));
+        populateTranslation(fixture, key, EN, I18nValue.fromEscaped("Hello"));
 
         fixture.handler().handle(new RemoveI18nValueCommand(MODULE_ID, key, EN));
 

@@ -65,23 +65,8 @@ public final class YamlWriter extends FileWriter {
     }
 
     private @Nullable Object toYamlElement(@NotNull I18nValue value) {
-        return switch (value) {
-            case I18nValue.Primitive primitive -> toYamlPrimitive(primitive);
-            case I18nValue.Array array -> toYamlArray(array);
-        };
-    }
-
-    private @NotNull List<@NotNull Object> toYamlArray(@NotNull I18nValue.Array array) {
-        List<Object> yamlArray = new ArrayList<>(array.elements().length);
-
-        for (I18nValue.Primitive element : array.elements()) {
-            yamlArray.add(toYamlPrimitive(element));
-        }
-
-        return yamlArray;
-    }
-
-    private Object toYamlPrimitive(@NotNull I18nValue.Primitive primitive) {
-        return YamlFileProcessor.YAML.load(primitive.getText());
+        String unescapedValue = value.toUnescaped();
+        unescapedValue = unescapedValue + "\n"; // Add \n again as it has been cut out in YamlReader
+        return YamlFileProcessor.YAML_MINIFY.load(unescapedValue);
     }
 }

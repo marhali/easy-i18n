@@ -16,6 +16,16 @@ primitive:
     sample: A sample string.
     escaped: \nI am a string with escape sequences\"
     multiline: \nI am a\nmultiline\nstring\n\n
+    multirow: |-
+      first
+      second
+      third
+    multirowTrailing: |+
+      first
+      second
+      thrid
+
+
   nullish: null
 object:
   deeply:
@@ -35,6 +45,21 @@ only.flat.structure: A super flat string
 duplicated:
   alpha: A duplicate value.
   bravo: A duplicate value.
+objectList:
+  - martin:
+      name: Martin D'vloper
+      job: Developer
+      skills:
+        - python
+        - perl
+        - pascal
+  - tabitha:
+      name: Tabitha Bitumen
+      job: Developer
+      skills:
+        - lisp
+        - fortran
+        - erlang
 missingValues:
   only:
     en_GB: A value that is only set for en_GB.

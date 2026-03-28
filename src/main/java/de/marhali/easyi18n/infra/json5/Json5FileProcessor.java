@@ -37,6 +37,19 @@ public class Json5FileProcessor implements FileProcessorPort {
         .quoteless()
         .build();
 
+    protected static final @NotNull Json5Options JSON5_MINIFY_OPTIONS = Json5Options.builder()
+        .allowInvalidSurrogates()
+        .allowBinaryLiterals()
+        .allowOctalLiterals()
+        .allowNaN()
+        .allowInfinity()
+        .allowLongUnicodeEscapes()
+        .allowHexFloatingLiterals()
+        .trailingComma()
+        .indentFactor(0)
+        .quoteless()
+        .build();
+
     private static final @NotNull Json5 JSON5 = new Json5(JSON5_OPTIONS);
 
     private final @NotNull FileSystemPort fileSystemPort;

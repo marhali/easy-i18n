@@ -47,7 +47,7 @@ public class AddI18nRecordCommandHandlerTest {
     public void test_translation_is_added_to_store() {
         var fixture = buildFixture();
         var key = I18nKey.of("greeting");
-        var content = new I18nContent(Map.of(EN, I18nValue.fromQuotedPrimitive("Hello")), null);
+        var content = new I18nContent(Map.of(EN, I18nValue.fromEscaped("Hello")), null);
 
         fixture.handler().handle(new AddI18nRecordCommand(MODULE_ID, key, content));
 
@@ -60,15 +60,15 @@ public class AddI18nRecordCommandHandlerTest {
         var fixture = buildFixture();
         var key = I18nKey.of("greeting");
         var content = new I18nContent(Map.of(
-            EN, I18nValue.fromQuotedPrimitive("Hello"),
-            DE, I18nValue.fromQuotedPrimitive("Hallo")
+            EN, I18nValue.fromEscaped("Hello"),
+            DE, I18nValue.fromEscaped("Hallo")
         ), null);
 
         fixture.handler().handle(new AddI18nRecordCommand(MODULE_ID, key, content));
 
         var stored = fixture.store().getSnapshot().getModuleOrThrow(MODULE_ID).getTranslationOrThrow(key);
-        Assert.assertEquals("Hello", stored.values().get(EN).getAsPrimitive().getText());
-        Assert.assertEquals("Hallo", stored.values().get(DE).getAsPrimitive().getText());
+        Assert.assertEquals("Hello", stored.values().get(EN).raw());
+        Assert.assertEquals("Hallo", stored.values().get(DE).raw());
     }
 
     @Test
@@ -77,19 +77,19 @@ public class AddI18nRecordCommandHandlerTest {
         var key = I18nKey.of("greeting");
 
         fixture.handler().handle(new AddI18nRecordCommand(MODULE_ID, key,
-            new I18nContent(Map.of(EN, I18nValue.fromQuotedPrimitive("Hello")), null)));
+            new I18nContent(Map.of(EN, I18nValue.fromEscaped("Hello")), null)));
         fixture.handler().handle(new AddI18nRecordCommand(MODULE_ID, key,
-            new I18nContent(Map.of(EN, I18nValue.fromQuotedPrimitive("Hi")), null)));
+            new I18nContent(Map.of(EN, I18nValue.fromEscaped("Hi")), null)));
 
         var stored = fixture.store().getSnapshot().getModuleOrThrow(MODULE_ID).getTranslationOrThrow(key);
-        Assert.assertEquals("Hi", stored.values().get(EN).getAsPrimitive().getText());
+        Assert.assertEquals("Hi", stored.values().get(EN).raw());
     }
 
     @Test
     public void test_module_changed_event_is_published() {
         var fixture = buildFixture();
         var key = I18nKey.of("greeting");
-        var content = new I18nContent(Map.of(EN, I18nValue.fromQuotedPrimitive("Hello")), null);
+        var content = new I18nContent(Map.of(EN, I18nValue.fromEscaped("Hello")), null);
 
         fixture.handler().handle(new AddI18nRecordCommand(MODULE_ID, key, content));
 

@@ -5,9 +5,6 @@ import de.marhali.easyi18n.core.domain.template.Templates;
 import de.marhali.easyi18n.infra.FileReader;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Properties specific reader.
  *
@@ -37,16 +34,6 @@ public final class PropertiesReader extends FileReader {
     }
 
     private void readValue(@NotNull Object value, @NotNull TranslationProducer producer) {
-        if (value instanceof String[] stringArray) {
-            List<I18nValue.Primitive> arrayElements = new ArrayList<>();
-
-            for (String stringElement : stringArray) {
-                arrayElements.add(I18nValue.fromBarePrimitive(stringElement));
-            }
-
-            finallyProduceWithValue(producer, I18nValue.fromArray(arrayElements.toArray(new I18nValue.Primitive[0])));
-        } else {
-            finallyProduceWithValue(producer, I18nValue.fromBarePrimitive(String.valueOf(value)));
-        }
+        finallyProduceWithValue(producer, I18nValue.fromUnescaped(String.valueOf(value)));
     }
 }

@@ -7,94 +7,72 @@ import org.junit.Test;
  * @author marhali
  */
 public class I18nValueTest {
-    @Test
-    public void test_fromBarePrimitive_returns_Bare() {
-        var primitive = I18nValue.fromBarePrimitive(" my bare primitive ");
 
-        Assert.assertFalse(primitive.isArray());
-        Assert.assertTrue(primitive.isPrimitive());
-        Assert.assertTrue(primitive.isBare());
-        Assert.assertFalse(primitive.isQuoted());
-        Assert.assertEquals(" my bare primitive ", primitive.getText());
+    @Test
+    public void testFromEscapedPreservesRaw() {
+        I18nValue value = I18nValue.fromEscaped("hello\\nworld");
+        Assert.assertEquals("hello\\nworld", value.raw());
     }
 
     @Test
-    public void test_fromQuotedPrimitive_returns_Quoted() {
-        var primitive = I18nValue.fromQuotedPrimitive(" my quoted primitive ");
-
-        Assert.assertFalse(primitive.isArray());
-        Assert.assertTrue(primitive.isPrimitive());
-        Assert.assertFalse(primitive.isBare());
-        Assert.assertTrue(primitive.isQuoted());
-        Assert.assertEquals(" my quoted primitive ", primitive.getText());
+    public void testFromUnescapedEscapesNewline() {
+        I18nValue value = I18nValue.fromUnescaped("hello\nworld");
+        Assert.assertEquals("hello\\nworld", value.raw());
     }
 
     @Test
-    public void test_fromArray_returns_Array() {
-        var array = I18nValue.fromArray(
-            I18nValue.fromBarePrimitive(" my bare primitive "),
-            I18nValue.fromQuotedPrimitive(" my quoted primitive ")
-        );
-
-        Assert.assertTrue(array.isArray());
-        Assert.assertFalse(array.isPrimitive());
-        Assert.assertArrayEquals(new I18nValue.Primitive[]{
-            I18nValue.fromBarePrimitive(" my bare primitive "),
-            I18nValue.fromQuotedPrimitive(" my quoted primitive ")
-        }, array.elements());
+    public void testFromUnescapedEscapesTab() {
+        I18nValue value = I18nValue.fromUnescaped("hello\tworld");
+        Assert.assertEquals("hello\\tworld", value.raw());
     }
 
     @Test
-    public void test_bare_toInputString() {
-        Assert.assertEquals(
-            "my bare text",
-            I18nValue.fromBarePrimitive("my bare text").toInputString()
-        );
+    public void testFromUnescapedEscapesCarriageReturn() {
+        I18nValue value = I18nValue.fromUnescaped("hello\rworld");
+        Assert.assertEquals("hello\\rworld", value.raw());
     }
 
     @Test
-    public void test_quoted_toInputString() {
-        Assert.assertEquals(
-            "\"my quoted text\"",
-            I18nValue.fromQuotedPrimitive("my quoted text").toInputString()
-        );
+    public void testFromUnescapedEscapesBackslash() {
+        I18nValue value = I18nValue.fromUnescaped("hello\\world");
+        Assert.assertEquals("hello\\\\world", value.raw());
     }
 
     @Test
-    public void test_array_toInputString() {
-        Assert.assertEquals(
-            "[my bare text; \"my quoted text\"]",
-            I18nValue.fromArray(
-                I18nValue.fromBarePrimitive("my bare text"),
-                I18nValue.fromQuotedPrimitive("my quoted text")
-            ).toInputString()
-        );
+    public void testFromInputStringPreservesRaw() {
+        I18nValue value = I18nValue.fromInputString("hello\\nworld");
+        Assert.assertEquals("hello\\nworld", value.raw());
     }
 
     @Test
-    public void test_fromInputString_returns_Bare() {
-        Assert.assertEquals(
-            I18nValue.fromBarePrimitive("my bare text"),
-            I18nValue.fromInputString("my bare text")
-        );
+    public void testToInputStringReturnsRaw() {
+        I18nValue value = I18nValue.fromEscaped("hello\\nworld");
+        Assert.assertEquals("hello\\nworld", value.toInputString());
     }
 
     @Test
-    public void test_fromInputString_returns_Quoted() {
-        Assert.assertEquals(
-            I18nValue.fromQuotedPrimitive("my quoted text"),
-            I18nValue.fromInputString("\"my quoted text\"")
-        );
+    public void testToUnescapedUnescapesNewline() {
+        I18nValue value = I18nValue.fromEscaped("hello\\nworld");
+        Assert.assertEquals("hello\nworld", value.toUnescaped());
     }
 
     @Test
-    public void test_fromInputString_returns_Array() {
-        Assert.assertEquals(
-            I18nValue.fromArray(
-                I18nValue.fromBarePrimitive("my bare text"),
-                I18nValue.fromQuotedPrimitive("my quoted text")
-            ),
-            I18nValue.fromInputString("[my bare text; \"my quoted text\"]")
-            );
+    public void testToUnescapedUnescapesTab() {
+        I18nValue value = I18nValue.fromEscaped("hello\\tworld");
+        Assert.assertEquals("hello\tworld", value.toUnescaped());
+    }
+
+    @Test
+    public void testRoundTripUnescapedToEscapedAndBack() {
+        String original = "line1\nline2\ttabbed\r\nwindows";
+        I18nValue value = I18nValue.fromUnescaped(original);
+        Assert.assertEquals(original, value.toUnescaped());
+    }
+
+    @Test
+    public void testPlainTextUnchanged() {
+        I18nValue value = I18nValue.fromUnescaped("simple text");
+        Assert.assertEquals("simple text", value.raw());
+        Assert.assertEquals("simple text", value.toUnescaped());
     }
 }

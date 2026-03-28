@@ -54,7 +54,7 @@ public class ModuleViewQueryHandlerTest {
     @Test
     public void test_returns_module_view_with_correct_module_id() {
         var fixture = buildFixture();
-        populateTranslation(fixture, I18nKey.of("greeting"), I18nValue.fromQuotedPrimitive("Hello"));
+        populateTranslation(fixture, I18nKey.of("greeting"), I18nValue.fromEscaped("Hello"));
 
         ModuleView result = fixture.handler().handle(new ModuleViewQuery(MODULE_ID, TABLE_OPTIONS));
 
@@ -64,7 +64,7 @@ public class ModuleViewQueryHandlerTest {
     @Test
     public void test_table_view_contains_locales() {
         var fixture = buildFixture();
-        populateTranslation(fixture, I18nKey.of("greeting"), I18nValue.fromQuotedPrimitive("Hello"));
+        populateTranslation(fixture, I18nKey.of("greeting"), I18nValue.fromEscaped("Hello"));
 
         ModuleView result = fixture.handler().handle(new ModuleViewQuery(MODULE_ID, TABLE_OPTIONS));
 
@@ -74,8 +74,8 @@ public class ModuleViewQueryHandlerTest {
     @Test
     public void test_table_view_contains_all_translations() {
         var fixture = buildFixture();
-        populateTranslation(fixture, I18nKey.of("greeting"), I18nValue.fromQuotedPrimitive("Hello"));
-        populateTranslation(fixture, I18nKey.of("farewell"), I18nValue.fromQuotedPrimitive("Bye"));
+        populateTranslation(fixture, I18nKey.of("greeting"), I18nValue.fromEscaped("Hello"));
+        populateTranslation(fixture, I18nKey.of("farewell"), I18nValue.fromEscaped("Bye"));
 
         ModuleView.Table result = (ModuleView.Table) fixture.handler().handle(new ModuleViewQuery(MODULE_ID, TABLE_OPTIONS));
 

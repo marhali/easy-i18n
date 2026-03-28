@@ -11,7 +11,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.io.StringWriter;
-import java.util.Arrays;
 import java.util.Set;
 
 /**
@@ -47,16 +46,7 @@ public final class PropertiesWriter extends FileWriter {
         properties.put(key, toPropertiesValue(target.value()));
     }
 
-    private @NotNull Object toPrimitiveValue(@NotNull I18nValue.Primitive primitive) {
-        return StringUtil.escapeStringCharacters(primitive.getText());
-    }
-
     private @NotNull Object toPropertiesValue(@NotNull I18nValue value) {
-        return switch (value) {
-            case I18nValue.Array array -> Arrays.stream(array.elements())
-                .map(this::toPrimitiveValue)
-                .toArray();
-            case I18nValue.Primitive primitive -> toPrimitiveValue(primitive);
-        };
+        return value.raw();
     }
 }

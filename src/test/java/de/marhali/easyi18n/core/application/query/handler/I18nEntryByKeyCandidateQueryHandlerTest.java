@@ -65,7 +65,7 @@ public class I18nEntryByKeyCandidateQueryHandlerTest {
     public void test_existing_key_returns_available_entry() {
         var fixture = buildFixture();
         var key = I18nKey.of("greeting");
-        populateTranslation(fixture, key, I18nValue.fromQuotedPrimitive("Hello"));
+        populateTranslation(fixture, key, I18nValue.fromEscaped("Hello"));
 
         PossiblyUnavailable<Optional<I18nEntry>> response = fixture.handler().handle(
             new I18nEntryByKeyCandidateQuery(MODULE_ID, I18nKeyCandidate.of("greeting"))
@@ -80,7 +80,7 @@ public class I18nEntryByKeyCandidateQueryHandlerTest {
     @Test
     public void test_missing_key_returns_available_empty_optional() {
         var fixture = buildFixture();
-        populateTranslation(fixture, I18nKey.of("other"), I18nValue.fromQuotedPrimitive("Hello"));
+        populateTranslation(fixture, I18nKey.of("other"), I18nValue.fromEscaped("Hello"));
 
         PossiblyUnavailable<Optional<I18nEntry>> response = fixture.handler().handle(
             new I18nEntryByKeyCandidateQuery(MODULE_ID, I18nKeyCandidate.of("nonExistent"))
@@ -94,7 +94,7 @@ public class I18nEntryByKeyCandidateQueryHandlerTest {
     @Test
     public void test_prefixed_keys_returns_available_entry() {
         var fixture = buildFixture();
-        populateTranslation(fixture, I18nKey.of("common:anyCommonKey"), I18nValue.fromQuotedPrimitive("Hello"));
+        populateTranslation(fixture, I18nKey.of("common:anyCommonKey"), I18nValue.fromEscaped("Hello"));
 
         PossiblyUnavailable<Optional<I18nEntry>> response = fixture.handler().handle(
             new I18nEntryByKeyCandidateQuery(MODULE_ID, I18nKeyCandidate.of("anyCommonKey"))

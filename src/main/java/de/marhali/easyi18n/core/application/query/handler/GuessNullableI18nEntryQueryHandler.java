@@ -62,6 +62,6 @@ public class GuessNullableI18nEntryQueryHandler
         return isLikeI18nKey
             ? new NullableI18nEntry(I18nKey.of(input), null)
             : new NullableI18nEntry(null,
-                new I18nContent(Map.of(previewLocaleId, I18nValue.fromQuotedPrimitive(input)), null));
+                new I18nContent(Map.of(previewLocaleId, I18nValue.fromInputString(input)), null));
     }
 }

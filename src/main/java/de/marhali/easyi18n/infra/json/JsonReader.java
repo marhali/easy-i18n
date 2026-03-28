@@ -6,8 +6,6 @@ import de.marhali.easyi18n.core.domain.template.Templates;
 import de.marhali.easyi18n.infra.FileReader;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-
 /**
  * JSON specific reader.
  * Responsible for converting {@link JsonElement}'s to {@link TranslationProducer}'s.
@@ -25,12 +23,10 @@ public final class JsonReader extends FileReader {
     }
 
     private void read(@NotNull JsonElement element, @NotNull TranslationProducer producer) {
-        switch (element) {
-            case JsonObject object -> readObject(object, producer);
-            case JsonArray array -> readArray(array, producer);
-            case JsonPrimitive primitive -> readPrimitive(primitive, producer);
-            case JsonNull nullValue -> readNull(nullValue, producer);
-            default -> throw new UnsupportedOperationException("Unsupported JsonElement with class: " + element.getClass().getSimpleName());
+        if (element.isJsonObject()) {
+            readObject(element.getAsJsonObject(), producer);
+        } else {
+            readValue(element, producer);
         }
     }
 
@@ -48,39 +44,8 @@ public final class JsonReader extends FileReader {
         }
     }
 
-    private void readArray(@NotNull JsonArray array, @NotNull TranslationProducer producer) {
-        var arrayElements = new ArrayList<I18nValue.Primitive>();
-
-        for (JsonElement element : array) {
-            if (!element.isJsonPrimitive()) {
-                // We only focus on primitives inside an array for now
-                throw new UnsupportedOperationException("A JsonArray element may only consist of primitive elements");
-            }
-
-            arrayElements.add(readPrimitiveValue(element.getAsJsonPrimitive()));
-        }
-
-        var value = I18nValue.fromArray(arrayElements.toArray(new I18nValue.Primitive[0]));
-        finallyProduceWithValue(producer, value);
-    }
-
-    private void readPrimitive(@NotNull JsonPrimitive primitive, @NotNull TranslationProducer producer) {
-        finallyProduceWithValue(producer, readPrimitiveValue(primitive));
-    }
-
-    private @NotNull I18nValue.Primitive readPrimitiveValue(@NotNull JsonPrimitive primitive) {
-        if (primitive.isBoolean()) {
-            return I18nValue.fromBarePrimitive(String.valueOf(primitive.getAsBoolean()));
-        } else if (primitive.isString()) {
-            return I18nValue.fromQuotedPrimitive(primitive.getAsString());
-        } else if (primitive.isNumber()) {
-            return I18nValue.fromBarePrimitive(String.valueOf(primitive.getAsNumber()));
-        }
-
-        throw new UnsupportedOperationException("Unsupported JsonPrimitive: " + primitive);
-    }
-
-    private void readNull(@NotNull JsonNull ignoredNull, @NotNull TranslationProducer producer) {
-        finallyProduceWithValue(producer, I18nValue.fromBarePrimitive("null"));
+    private void readValue(@NotNull JsonElement element, @NotNull TranslationProducer producer) {
+        String dumpedElement = element.toString(); // JsonElement#toString() already provides escaped characters
+        finallyProduceWithValue(producer, new I18nValue(dumpedElement));
     }
 }

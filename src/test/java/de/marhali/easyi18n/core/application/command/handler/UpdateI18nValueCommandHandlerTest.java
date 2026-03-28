@@ -52,28 +52,28 @@ public class UpdateI18nValueCommandHandlerTest {
     public void test_locale_value_is_updated() {
         var fixture = buildFixture();
         var key = I18nKey.of("greeting");
-        populateTranslation(fixture, key, I18nValue.fromQuotedPrimitive("Hello"));
+        populateTranslation(fixture, key, I18nValue.fromEscaped("Hello"));
 
-        fixture.handler().handle(new UpdateI18nValueCommand(MODULE_ID, key, EN, I18nValue.fromQuotedPrimitive("Hi")));
+        fixture.handler().handle(new UpdateI18nValueCommand(MODULE_ID, key, EN, I18nValue.fromEscaped("Hi")));
 
         var content = fixture.store().getSnapshot().getModuleOrThrow(MODULE_ID).getTranslationOrThrow(key);
-        Assert.assertEquals("Hi", content.values().get(EN).getAsPrimitive().getText());
+        Assert.assertEquals("Hi", content.values().get(EN).raw());
     }
 
     @Test(expected = IllegalStateException.class)
     public void test_missing_translation_throws() {
         var fixture = buildFixture();
 
-        fixture.handler().handle(new UpdateI18nValueCommand(MODULE_ID, I18nKey.of("nonExistent"), EN, I18nValue.fromQuotedPrimitive("Hi")));
+        fixture.handler().handle(new UpdateI18nValueCommand(MODULE_ID, I18nKey.of("nonExistent"), EN, I18nValue.fromEscaped("Hi")));
     }
 
     @Test
     public void test_module_changed_event_is_published() {
         var fixture = buildFixture();
         var key = I18nKey.of("greeting");
-        populateTranslation(fixture, key, I18nValue.fromQuotedPrimitive("Hello"));
+        populateTranslation(fixture, key, I18nValue.fromEscaped("Hello"));
 
-        fixture.handler().handle(new UpdateI18nValueCommand(MODULE_ID, key, EN, I18nValue.fromQuotedPrimitive("Hi")));
+        fixture.handler().handle(new UpdateI18nValueCommand(MODULE_ID, key, EN, I18nValue.fromEscaped("Hi")));
 
         var event = (ModuleChanged) fixture.eventPublisher().getLastEvent();
         Assert.assertEquals(MODULE_ID, event.moduleId());

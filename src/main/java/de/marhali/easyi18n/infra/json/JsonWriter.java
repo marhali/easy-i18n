@@ -66,41 +66,10 @@ public final class JsonWriter extends FileWriter {
     }
 
     private @NotNull JsonElement toJsonElement(@NotNull I18nValue value) {
-        return switch (value) {
-            case I18nValue.Primitive primitive -> toJsonPrimitive(primitive);
-            case I18nValue.Array array -> toJsonArray(array);
-        };
-    }
-
-    private @NotNull JsonArray toJsonArray(@NotNull I18nValue.Array array) {
-        JsonArray jsonArray = new JsonArray(array.elements().length);
-
-        for (I18nValue.Primitive element : array.elements()) {
-            jsonArray.add(toJsonPrimitive(element));
+        try {
+            return JsonParser.parseString(value.raw());
+        } catch (JsonSyntaxException ex) {
+            throw new RuntimeException(ex);
         }
-
-        return jsonArray;
-    }
-
-    private @NotNull JsonElement toJsonPrimitive(@NotNull I18nValue.Primitive primitive) {
-        return switch (primitive) {
-            case I18nValue.Quoted quoted -> new JsonPrimitive(quoted.text());
-            case I18nValue.Bare bare -> {
-                JsonElement element;
-
-                try {
-                    element = JsonParser.parseString(bare.text());
-                } catch (JsonSyntaxException ex) {
-                    throw new RuntimeException(ex);
-                }
-
-                if (element == null || !(element.isJsonPrimitive() || element.isJsonNull())
-                    || (element.isJsonPrimitive() && element.getAsJsonPrimitive().isString())) {
-                    throw new IllegalArgumentException("Invalid bare value '" + bare.text() + "'. Must be Boolean, Number, Array, null or quoted String");
-                }
-
-                yield element;
-            }
-        };
     }
 }

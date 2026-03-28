@@ -30,32 +30,37 @@ import java.util.Set;
  */
 public class YamlFileProcessor implements FileProcessorPort {
 
-    private static @NotNull DumperOptions dumperOptions() {
+    private static @NotNull Yaml buildYaml(int indent) {
         DumperOptions options = new DumperOptions();
 
         options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
-        options.setIndicatorIndent(2);
+        options.setIndicatorIndent(indent);
         options.setIndentWithIndicator(true);
         options.setLineBreak(DumperOptions.LineBreak.UNIX);
         options.setSplitLines(false);
         options.setAllowUnicode(true);
 
-        return options;
-    }
+        SafeConstructor constructor = new SafeConstructor(new LoaderOptions());
 
-    private static @NotNull Resolver resolver() {
-        return new Resolver() {
+        Representer representer = new Representer(options);
+
+        Resolver resolver = new Resolver() {
             @Override
-            protected void addImplicitResolvers() {} // Disable implicit resolvers (e.g. yes|no|on|off, ...)
+            public void addImplicitResolvers() {
+                // Disable all implicit resolvers (e.g. yes|no|on|off, ...)
+            }
         };
+
+        return new Yaml(
+            constructor,
+            representer,
+            options,
+            resolver
+        );
     }
 
-    protected static final @NotNull Yaml YAML = new Yaml(
-        new SafeConstructor(new LoaderOptions()),
-        new Representer(dumperOptions()),
-        dumperOptions(),
-        resolver()
-    );
+    protected static final @NotNull Yaml YAML = buildYaml(2);
+    protected static final @NotNull Yaml YAML_MINIFY = buildYaml(0);
 
     private final @NotNull FileSystemPort fileSystemPort;
 

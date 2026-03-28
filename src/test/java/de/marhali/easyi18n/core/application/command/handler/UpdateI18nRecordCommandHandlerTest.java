@@ -58,13 +58,13 @@ public class UpdateI18nRecordCommandHandlerTest {
     public void test_record_content_is_replaced() {
         var fixture = buildFixture();
         var key = I18nKey.of("greeting");
-        populateTranslation(fixture, key, I18nValue.fromQuotedPrimitive("Hello"));
+        populateTranslation(fixture, key, I18nValue.fromEscaped("Hello"));
 
-        var updatedContent = new I18nContent(Map.of(EN, I18nValue.fromQuotedPrimitive("Hi")), null);
+        var updatedContent = new I18nContent(Map.of(EN, I18nValue.fromEscaped("Hi")), null);
         fixture.handler().handle(new UpdateI18nRecordCommand(MODULE_ID, key, key, updatedContent));
 
         var content = fixture.store().getSnapshot().getModuleOrThrow(MODULE_ID).getTranslationOrThrow(key);
-        Assert.assertEquals("Hi", content.values().get(EN).getAsPrimitive().getText());
+        Assert.assertEquals("Hi", content.values().get(EN).raw());
     }
 
     @Test
@@ -72,9 +72,9 @@ public class UpdateI18nRecordCommandHandlerTest {
         var fixture = buildFixture();
         var originKey = I18nKey.of("old.greeting");
         var newKey = I18nKey.of("new.greeting");
-        populateTranslation(fixture, originKey, I18nValue.fromQuotedPrimitive("Hello"));
+        populateTranslation(fixture, originKey, I18nValue.fromEscaped("Hello"));
 
-        var content = new I18nContent(Map.of(EN, I18nValue.fromQuotedPrimitive("Hello")), null);
+        var content = new I18nContent(Map.of(EN, I18nValue.fromEscaped("Hello")), null);
         fixture.handler().handle(new UpdateI18nRecordCommand(MODULE_ID, originKey, newKey, content));
 
         var module = fixture.store().getSnapshot().getModuleOrThrow(MODULE_ID);
@@ -86,10 +86,10 @@ public class UpdateI18nRecordCommandHandlerTest {
     public void test_module_changed_event_is_published_with_new_key() {
         var fixture = buildFixture();
         var key = I18nKey.of("greeting");
-        populateTranslation(fixture, key, I18nValue.fromQuotedPrimitive("Hello"));
+        populateTranslation(fixture, key, I18nValue.fromEscaped("Hello"));
 
         var newKey = I18nKey.of("farewell");
-        var content = new I18nContent(Map.of(EN, I18nValue.fromQuotedPrimitive("Bye")), null);
+        var content = new I18nContent(Map.of(EN, I18nValue.fromEscaped("Bye")), null);
         fixture.handler().handle(new UpdateI18nRecordCommand(MODULE_ID, key, newKey, content));
 
         var event = (ModuleChanged) fixture.eventPublisher().getLastEvent();

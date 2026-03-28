@@ -3,226 +3,56 @@ package de.marhali.easyi18n.core.domain.model;
 import de.marhali.easyi18n.core.domain.misc.I18nValueEscaper;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
-import java.util.Objects;
-
 /**
- * Single localized translation value. A translation value can be either:
- * <ul>
- *     <li>{@link I18nValue.Primitive}: {@link Bare} or {@link Quoted}</li>
- *     <li>{@link I18nValue.Array}: consisting of primitive elements</li>
- * </ul>
+ * Single localized translation value.
+ * The value might or should be formatted as the configured file codec expects these values.
  *
- * @author marhali
+ * @param raw Raw translation value which should be escaped
  */
-public sealed interface I18nValue permits I18nValue.Primitive, I18nValue.Array {
+public record I18nValue(
+    @NotNull String raw
+) {
 
     /**
-     * Marker for primitive translation values.
+     * Shorthand to construct a translation value from an already escaped value.
+     * @param value Escaped translation value
+     * @return {@link I18nValue}
      */
-    sealed interface Primitive extends I18nValue permits I18nValue.Bare, I18nValue.Quoted {
-        default boolean isBare() {
-            return this instanceof Bare;
-        }
-
-        default boolean isQuoted() {
-            return this instanceof Quoted;
-        }
-
-        default @NotNull String getText() {
-            return isBare() ? ((Bare) this).text : ((Quoted) this).text;
-        }
+    public static @NotNull I18nValue fromEscaped(@NotNull String value) {
+        return new I18nValue(value);
     }
 
     /**
-     * @param text Bare translation value text
+     * Shorthand to construct a translation value from a unescaped value.
+     * @param value Unescaped translation value
+     * @return {@link I18nValue}
      */
-    record Bare(@NotNull String text) implements I18nValue.Primitive {
-        @Override
-        public @NotNull String toInputString() {
-            return I18nValueEscaper.escape(text);
-        }
-
-        @Override
-        public @NotNull String toString() {
-            return "Bare{" +
-                "text='" + text + '\'' +
-                '}';
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (o == null || getClass() != o.getClass()) return false;
-            Bare bare = (Bare) o;
-            return Objects.equals(text, bare.text);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hashCode(text);
-        }
+    public static @NotNull I18nValue fromUnescaped(@NotNull String value) {
+        return new I18nValue(I18nValueEscaper.escape(value));
     }
 
     /**
-     * @param text Quoted translation value text
-     */
-    record Quoted(@NotNull String text) implements I18nValue.Primitive {
-        @Override
-        public @NotNull String toInputString() {
-            return "\"" + I18nValueEscaper.escape(text) + "\"";
-        }
-
-        @Override
-        public @NotNull String toString() {
-            return "Quoted{" +
-                "text='" + text + '\'' +
-                '}';
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (o == null || getClass() != o.getClass()) return false;
-            Quoted quoted = (Quoted) o;
-            return Objects.equals(text, quoted.text);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hashCode(text);
-        }
-    }
-
-    /**
-     * @param elements Primitive translation value elements
-     */
-    record Array(@NotNull I18nValue.Primitive[] elements) implements I18nValue {
-        @Override
-        public @NotNull String toInputString() {
-            StringBuilder builder = new StringBuilder();
-            builder.append("[");
-
-            for (int i = 0; i < elements.length; i++) {
-                builder.append(elements[i].toInputString());
-                if (i < elements.length - 1) {
-                    builder.append("; ");
-                }
-            }
-
-            builder.append("]");
-            return builder.toString();
-        }
-
-        @Override
-        public @NotNull String toString() {
-            return "Array{" +
-                "elements=" + Arrays.toString(elements) +
-                '}';
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (o == null || getClass() != o.getClass()) return false;
-            Array array = (Array) o;
-            return Objects.deepEquals(elements, array.elements);
-        }
-
-        @Override
-        public int hashCode() {
-            return Arrays.hashCode(elements);
-        }
-    }
-
-    /**
-     * Constructs a bare primitive from the provided text.
-     * @param text Bare translation value text
-     * @return {@link I18nValue.Bare}
-     */
-    static @NotNull Bare fromBarePrimitive(@NotNull String text) {
-        return new Bare(text);
-    }
-
-    /**
-     * Constructs a quoted primitive from the provided text.
-     * @param text Quoted translation value text
-     * @return {@link I18nValue.Quoted}
-     */
-    static @NotNull Quoted fromQuotedPrimitive(@NotNull String text) {
-        return new Quoted(text);
-    }
-
-    /**
-     * Constructs an array of primitive elements.
-     * @param elements Primitive translation value elements
-     * @return {@link I18nValue.Array}
-     */
-    static @NotNull Array fromArray(@NotNull Primitive ...elements) {
-        return new Array(elements);
-    }
-
-    /**
-     * Helper function to parse the translation value from an input string.
+     * Constructs a translation value from a user given input string.
      * @param input Input string
      * @return {@link I18nValue}
      */
-    static @NotNull I18nValue fromInputString(@NotNull String input) {
-        // Someone might be missing trailing or leading whitespace - but for that cases use quoted primitives
-        input = input.trim();
-
-        // Array
-        if (input.startsWith("[") && input.endsWith("]")) {
-            var elements = Arrays.stream(input.substring(1, input.length() - 1).split(";"))
-                .map(I18nValue::fromInputString)
-                .filter(I18nValue::isPrimitive)
-                .map(I18nValue::getAsPrimitive)
-                .toArray(Primitive[]::new);
-
-            return fromArray(elements);
-        }
-
-        // Quoted primitive
-        if (input.startsWith("\"") && input.endsWith("\"")) {
-            return fromQuotedPrimitive(I18nValueEscaper.unescape(input.substring(1, input.length() - 1)));
-        }
-
-        // Bare primitive
-        return fromBarePrimitive(I18nValueEscaper.unescape(input));
+    public static @NotNull I18nValue fromInputString(@NotNull String input) {
+        return new I18nValue(input);
     }
 
     /**
-     * Helper function to transform this value into an input string.
+     * Returns this translation value for a user presented input string
      * @return {@link String}
      */
-    @NotNull String toInputString();
-
-    /**
-     * Indicates whether this value is a primitive.
-     * @return true if primitive otherwise false
-     */
-    default boolean isPrimitive() {
-        return this instanceof I18nValue.Primitive;
+    public @NotNull String toInputString() {
+        return raw;
     }
 
     /**
-     * Retrieves this value as a primitive.
-     * @return {@link Primitive}
+     * Returns this translation value with unescaped control characters.
+     * @return {@link String}
      */
-    default @NotNull Primitive getAsPrimitive() {
-        return (Primitive) this;
-    }
-
-    /**
-     * Indicates whether this value is an array of primitive elements.
-     * @return true if array otherwise false
-     */
-    default boolean isArray() {
-        return this instanceof I18nValue.Array;
-    }
-
-    /**
-     * Retrieves this value as an array of primitive elements.
-     * @return {@link Array}
-     */
-    default @NotNull Array getAsArray() {
-        return (Array) this;
+    public @NotNull String toUnescaped() {
+        return I18nValueEscaper.unescape(raw);
     }
 }

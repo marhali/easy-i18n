@@ -60,6 +60,6 @@ public class GuessNullableI18nEntryQueryHandlerTest {
         Assert.assertNull("Expected key to be null for value guess", result.key());
         Assert.assertNotNull("Expected content to be set", result.content());
         Assert.assertTrue(result.content().hasLocale(PREVIEW_LOCALE));
-        Assert.assertEquals("Hello World", result.content().values().get(PREVIEW_LOCALE).getAsPrimitive().getText());
+        Assert.assertEquals("Hello World", result.content().values().get(PREVIEW_LOCALE).raw());
     }
 }

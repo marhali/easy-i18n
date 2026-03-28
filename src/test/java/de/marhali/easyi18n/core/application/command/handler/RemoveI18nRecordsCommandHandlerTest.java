@@ -46,7 +46,7 @@ public class RemoveI18nRecordsCommandHandlerTest {
         fixture.store().mutate(project -> {
             var module = project.getOrCreateModule(MODULE_ID);
             module.addLocale(EN);
-            module.getOrCreateTranslation(key).put(EN, I18nValue.fromQuotedPrimitive("value"));
+            module.getOrCreateTranslation(key).put(EN, I18nValue.fromEscaped("value"));
         });
     }
 

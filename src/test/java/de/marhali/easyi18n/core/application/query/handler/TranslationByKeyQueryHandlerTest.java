@@ -42,7 +42,7 @@ public class TranslationByKeyQueryHandlerTest {
     public void test_existing_key_returns_content() {
         var fixture = buildFixture();
         var key = I18nKey.of("greeting");
-        populateTranslation(fixture, key, EN, I18nValue.fromQuotedPrimitive("Hello"));
+        populateTranslation(fixture, key, EN, I18nValue.fromEscaped("Hello"));
 
         Optional<I18nContent> result = fixture.handler().handle(new TranslationByKeyQuery(MODULE_ID, key));
 
@@ -53,20 +53,20 @@ public class TranslationByKeyQueryHandlerTest {
     public void test_existing_key_returns_correct_locale_values() {
         var fixture = buildFixture();
         var key = I18nKey.of("greeting");
-        populateTranslation(fixture, key, EN, I18nValue.fromQuotedPrimitive("Hello"));
-        populateTranslation(fixture, key, DE, I18nValue.fromQuotedPrimitive("Hallo"));
+        populateTranslation(fixture, key, EN, I18nValue.fromEscaped("Hello"));
+        populateTranslation(fixture, key, DE, I18nValue.fromEscaped("Hallo"));
 
         Optional<I18nContent> result = fixture.handler().handle(new TranslationByKeyQuery(MODULE_ID, key));
 
         Assert.assertTrue(result.isPresent());
-        Assert.assertEquals("Hello", result.get().values().get(EN).getAsPrimitive().getText());
-        Assert.assertEquals("Hallo", result.get().values().get(DE).getAsPrimitive().getText());
+        Assert.assertEquals("Hello", result.get().values().get(EN).raw());
+        Assert.assertEquals("Hallo", result.get().values().get(DE).raw());
     }
 
     @Test
     public void test_missing_key_returns_empty_optional() {
         var fixture = buildFixture();
-        populateTranslation(fixture, I18nKey.of("other.key"), EN, I18nValue.fromQuotedPrimitive("Hello"));
+        populateTranslation(fixture, I18nKey.of("other.key"), EN, I18nValue.fromEscaped("Hello"));
 
         Optional<I18nContent> result = fixture.handler().handle(
             new TranslationByKeyQuery(MODULE_ID, I18nKey.of("does.not.exist"))

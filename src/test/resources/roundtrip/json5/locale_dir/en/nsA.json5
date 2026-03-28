@@ -36,7 +36,24 @@
       187,
       -187,
       1.87,
-      "Another string",
+      null,
+      "Any other string",
+      [
+        true,
+        false,
+        0,
+        187,
+        -187,
+        1.87,
+        [
+          {
+            key: "My value.",
+          },
+        ],
+        {
+          otherKey: "Another value.",
+        },
+      ],
     ],
     "only.flat.structure": "A super flat string",
     duplicated: {
