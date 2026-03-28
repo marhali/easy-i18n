@@ -17,6 +17,8 @@
 
   <p align="center">
     ·
+    <a href="https://marhali.github.io/easy-i18n/">Documentation</a>
+    ·
     <a href="https://github.com/marhali/easy-i18n/tree/main/examples">Examples</a>
     ·
     <a href="https://github.com/marhali/easy-i18n/issues/new?labels=bug">Report Bug</a>
