@@ -16,9 +16,14 @@ import java.util.stream.Collectors;
  */
 public final class ModuleViewProjector {
 
+    private final @NotNull LocalesOrderService localesOrderService;
     private final @NotNull CachedModuleTemplates cachedModuleTemplates;
 
-    public ModuleViewProjector(@NotNull CachedModuleTemplates cachedModuleTemplates) {
+    public ModuleViewProjector(
+        @NotNull LocalesOrderService localesOrderService,
+        @NotNull CachedModuleTemplates cachedModuleTemplates
+    ) {
+        this.localesOrderService = localesOrderService;
         this.cachedModuleTemplates = cachedModuleTemplates;
     }
 
@@ -28,7 +33,7 @@ public final class ModuleViewProjector {
         @NotNull ModuleViewOptions options
     ) {
         Templates templates = cachedModuleTemplates.resolve(moduleId);
-        List<@NotNull LocaleId> locales = module.locales().stream().sorted().toList();
+        List<@NotNull LocaleId> locales = new ArrayList<>(localesOrderService.orderByPreviewLocale(module.locales()));
 
         DuplicateValueIndex duplicateValueIndex = new DuplicateValueIndex();
         duplicateValueIndex.rebuild(module.translations());

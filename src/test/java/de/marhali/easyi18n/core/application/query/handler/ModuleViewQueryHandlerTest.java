@@ -38,7 +38,8 @@ public class ModuleViewQueryHandlerTest {
             ProjectConfig.fromDefaultPreset().toBuilder().modules(List.of(module)).build()
         );
         var store = new InMemoryI18nStore(new SortableImplementationProvider(projectConfigPort));
-        var projector = new ModuleViewProjector(new CachedModuleTemplates(projectConfigPort));
+        var localesOrderService = new LocalesOrderService(projectConfigPort);
+        var projector = new ModuleViewProjector(localesOrderService, new CachedModuleTemplates(projectConfigPort));
         var handler = new ModuleViewQueryHandler(new DummyEnsureLoadedService(), store, projector);
         return new Fixture(handler, store);
     }

@@ -58,6 +58,7 @@ public final class CoreWiring {
         I18nStore store = new InMemoryI18nStore(implementationProvider);
 
         // Services
+        LocalesOrderService localesOrderService = new LocalesOrderService(projectConfigPort);
         CachedModuleTemplates cachedModuleTemplates = new CachedModuleTemplates(projectConfigPort);
         CachedModuleRules cachedModuleRules = new CachedModuleRules(projectConfigPort);
         I18nPathDetector i18nPathDetector = new I18nPathDetector(store, cachedModuleTemplates);
@@ -66,7 +67,7 @@ public final class CoreWiring {
         ModulePersistor modulePersistor = new DefaultModulePersistor(cachedModuleTemplates, fileProcessorRegistryPort, trackedI18nPathsService, fileSystemPort);
         EnsureLoadedService ensureLoadedService = new DefaultEnsureLoadedService(store, projectConfigPort, moduleLoader);
         EnsurePersistService ensurePersistService = new DefaultEnsurePersistService(store, projectConfigPort, modulePersistor);
-        ModuleViewProjector moduleViewProjector = new ModuleViewProjector(cachedModuleTemplates);
+        ModuleViewProjector moduleViewProjector = new ModuleViewProjector(localesOrderService, cachedModuleTemplates);
         ModuleIdByEditorFilePathResolver moduleIdByEditorFilePathResolver = new ModuleIdByEditorFilePathResolver(projectConfigPort);
         I18nKeyCandidateResolver keyResolver = new I18nKeyCandidateResolver(projectConfigPort, store);
         new FileSystemListener(project, parentDisposable, i18nPathDetector);
@@ -90,7 +91,7 @@ public final class CoreWiring {
         var queries = new QueryDispatcher();
         queries.register(PreviewLocaleIdQuery.class, new PreviewLocaleIdQueryHandler(projectConfigPort));
         queries.register(ConfiguredModulesQuery.class, new ConfiguredModulesQueryHandler(projectConfigPort));
-        queries.register(ModuleLocalesQuery.class, new ModuleLocalesQueryHandler(ensureLoadedService, store));
+        queries.register(ModuleLocalesQuery.class, new ModuleLocalesQueryHandler(localesOrderService, ensureLoadedService, store));
         queries.register(TranslationByKeyQuery.class, new TranslationByKeyQueryHandler(ensureLoadedService, store));
         queries.register(ModuleViewQuery.class, new ModuleViewQueryHandler(ensureLoadedService, store, moduleViewProjector));
         queries.register(I18nEntryByKeyCandidateQuery.class, new I18nEntryByKeyCandidateQueryHandler(store, keyResolver));
