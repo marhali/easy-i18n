@@ -4,6 +4,8 @@
 
 ## [Unreleased]
 
+## [5.0.0-alpha.3] - 2026-03-28
+
 THIS IS A MAJOR RELEASE. MOST OF THE PLUGIN COMPONENTS HAVE BEEN REWRITTEN.
 PLEASE CHECK THE MIGRATION GUIDE ON https://marhali.github.io/easy-i18n/migration/v5/ BEFORE UPDATING.
 
@@ -522,44 +524,46 @@ PLEASE CHECK THE MIGRATION GUIDE ON https://marhali.github.io/easy-i18n/migratio
 
 - README.md
 
-[Unreleased]: https://github.com/marhali/easy-i18n/compare/v4.9.0...HEAD
-[4.9.0]: https://github.com/marhali/easy-i18n/compare/v4.8.0...v4.9.0
-[4.8.0]: https://github.com/marhali/easy-i18n/compare/v4.7.0...v4.8.0
-[4.7.0]: https://github.com/marhali/easy-i18n/compare/v4.6.0...v4.7.0
-[4.6.0]: https://github.com/marhali/easy-i18n/compare/v4.5.2...v4.6.0
-[4.5.2]: https://github.com/marhali/easy-i18n/compare/v4.5.1...v4.5.2
-[4.5.1]: https://github.com/marhali/easy-i18n/compare/v4.5.0...v4.5.1
-[4.5.0]: https://github.com/marhali/easy-i18n/compare/v4.4.4...v4.5.0
-[4.4.4]: https://github.com/marhali/easy-i18n/compare/v4.4.3...v4.4.4
-[4.4.3]: https://github.com/marhali/easy-i18n/compare/v4.4.2...v4.4.3
-[4.4.2]: https://github.com/marhali/easy-i18n/compare/v4.4.1...v4.4.2
-[4.4.1]: https://github.com/marhali/easy-i18n/compare/v4.4.0...v4.4.1
-[4.4.0]: https://github.com/marhali/easy-i18n/compare/v4.3.1...v4.4.0
-[4.3.1]: https://github.com/marhali/easy-i18n/compare/v4.3.0...v4.3.1
-[4.3.0]: https://github.com/marhali/easy-i18n/compare/v4.2.4...v4.3.0
-[4.2.4]: https://github.com/marhali/easy-i18n/compare/v4.2.3...v4.2.4
-[4.2.3]: https://github.com/marhali/easy-i18n/compare/v4.2.2...v4.2.3
-[4.2.2]: https://github.com/marhali/easy-i18n/compare/v4.2.1...v4.2.2
-[4.2.1]: https://github.com/marhali/easy-i18n/compare/v4.2.0...v4.2.1
-[4.2.0]: https://github.com/marhali/easy-i18n/compare/v4.1.1...v4.2.0
-[4.1.1]: https://github.com/marhali/easy-i18n/compare/v4.1.0...v4.1.1
-[4.1.0]: https://github.com/marhali/easy-i18n/compare/v4.0.0...v4.1.0
-[4.0.0]: https://github.com/marhali/easy-i18n/compare/v3.2.0...v4.0.0
-[3.2.0]: https://github.com/marhali/easy-i18n/compare/v3.1.0...v3.2.0
-[3.1.0]: https://github.com/marhali/easy-i18n/compare/v3.0.1...v3.1.0
-[3.0.1]: https://github.com/marhali/easy-i18n/compare/v3.0.0...v3.0.1
-[3.0.0]: https://github.com/marhali/easy-i18n/compare/v2.0.0...v3.0.0
-[2.0.0]: https://github.com/marhali/easy-i18n/compare/v1.7.1...v2.0.0
-[1.7.1]: https://github.com/marhali/easy-i18n/compare/v1.7.0...v1.7.1
-[1.7.0]: https://github.com/marhali/easy-i18n/compare/v1.6.0...v1.7.0
-[1.6.0]: https://github.com/marhali/easy-i18n/compare/v1.5.1...v1.6.0
-[1.5.1]: https://github.com/marhali/easy-i18n/compare/v1.5.0...v1.5.1
-[1.5.0]: https://github.com/marhali/easy-i18n/compare/v1.4.1...v1.5.0
-[1.4.1]: https://github.com/marhali/easy-i18n/compare/v1.4.0...v1.4.1
-[1.4.0]: https://github.com/marhali/easy-i18n/compare/v1.3.0...v1.4.0
-[1.3.0]: https://github.com/marhali/easy-i18n/compare/v1.2.0...v1.3.0
-[1.2.0]: https://github.com/marhali/easy-i18n/compare/v1.1.1...v1.2.0
-[1.1.1]: https://github.com/marhali/easy-i18n/compare/v1.1.0...v1.1.1
-[1.1.0]: https://github.com/marhali/easy-i18n/compare/v1.0.1...v1.1.0
-[1.0.1]: https://github.com/marhali/easy-i18n/compare/v1.0.0...v1.0.1
-[1.0.0]: https://github.com/marhali/easy-i18n/commits/v1.0.0
+[Unreleased]: https://github.com/JetBrains/intellij-platform-plugin-template/compare/5.0.0-alpha.3...HEAD
+[5.0.0-alpha.3]: https://github.com/JetBrains/intellij-platform-plugin-template/compare/4.9.0...5.0.0-alpha.3
+[4.9.0]: https://github.com/JetBrains/intellij-platform-plugin-template/compare/4.8.1...4.9.0
+[4.8.1]: https://github.com/JetBrains/intellij-platform-plugin-template/compare/4.8.0...4.8.1
+[4.8.0]: https://github.com/JetBrains/intellij-platform-plugin-template/compare/4.7.0...4.8.0
+[4.7.0]: https://github.com/JetBrains/intellij-platform-plugin-template/compare/4.6.0...4.7.0
+[4.6.0]: https://github.com/JetBrains/intellij-platform-plugin-template/compare/4.5.2...4.6.0
+[4.5.2]: https://github.com/JetBrains/intellij-platform-plugin-template/compare/4.5.1...4.5.2
+[4.5.1]: https://github.com/JetBrains/intellij-platform-plugin-template/compare/4.5.0...4.5.1
+[4.5.0]: https://github.com/JetBrains/intellij-platform-plugin-template/compare/4.4.4...4.5.0
+[4.4.4]: https://github.com/JetBrains/intellij-platform-plugin-template/compare/4.4.3...4.4.4
+[4.4.3]: https://github.com/JetBrains/intellij-platform-plugin-template/compare/4.4.2...4.4.3
+[4.4.2]: https://github.com/JetBrains/intellij-platform-plugin-template/compare/4.4.1...4.4.2
+[4.4.1]: https://github.com/JetBrains/intellij-platform-plugin-template/compare/4.4.0...4.4.1
+[4.4.0]: https://github.com/JetBrains/intellij-platform-plugin-template/compare/4.3.1...4.4.0
+[4.3.1]: https://github.com/JetBrains/intellij-platform-plugin-template/compare/4.3.0...4.3.1
+[4.3.0]: https://github.com/JetBrains/intellij-platform-plugin-template/compare/4.2.4...4.3.0
+[4.2.4]: https://github.com/JetBrains/intellij-platform-plugin-template/compare/4.2.3...4.2.4
+[4.2.3]: https://github.com/JetBrains/intellij-platform-plugin-template/compare/4.2.2...4.2.3
+[4.2.2]: https://github.com/JetBrains/intellij-platform-plugin-template/compare/4.2.1...4.2.2
+[4.2.1]: https://github.com/JetBrains/intellij-platform-plugin-template/compare/4.2.0...4.2.1
+[4.2.0]: https://github.com/JetBrains/intellij-platform-plugin-template/compare/4.1.1...4.2.0
+[4.1.1]: https://github.com/JetBrains/intellij-platform-plugin-template/compare/4.1.0...4.1.1
+[4.1.0]: https://github.com/JetBrains/intellij-platform-plugin-template/compare/4.0.0...4.1.0
+[4.0.0]: https://github.com/JetBrains/intellij-platform-plugin-template/compare/3.2.0...4.0.0
+[3.2.0]: https://github.com/JetBrains/intellij-platform-plugin-template/compare/3.1.0...3.2.0
+[3.1.0]: https://github.com/JetBrains/intellij-platform-plugin-template/compare/3.0.1...3.1.0
+[3.0.1]: https://github.com/JetBrains/intellij-platform-plugin-template/compare/3.0.0...3.0.1
+[3.0.0]: https://github.com/JetBrains/intellij-platform-plugin-template/compare/2.0.0...3.0.0
+[2.0.0]: https://github.com/JetBrains/intellij-platform-plugin-template/compare/1.7.1...2.0.0
+[1.7.1]: https://github.com/JetBrains/intellij-platform-plugin-template/compare/1.7.0...1.7.1
+[1.7.0]: https://github.com/JetBrains/intellij-platform-plugin-template/compare/1.6.0...1.7.0
+[1.6.0]: https://github.com/JetBrains/intellij-platform-plugin-template/compare/1.5.1...1.6.0
+[1.5.1]: https://github.com/JetBrains/intellij-platform-plugin-template/compare/1.5.0...1.5.1
+[1.5.0]: https://github.com/JetBrains/intellij-platform-plugin-template/compare/1.4.1...1.5.0
+[1.4.1]: https://github.com/JetBrains/intellij-platform-plugin-template/compare/1.4.0...1.4.1
+[1.4.0]: https://github.com/JetBrains/intellij-platform-plugin-template/compare/1.3.0...1.4.0
+[1.3.0]: https://github.com/JetBrains/intellij-platform-plugin-template/compare/1.2.0...1.3.0
+[1.2.0]: https://github.com/JetBrains/intellij-platform-plugin-template/compare/1.1.1...1.2.0
+[1.1.1]: https://github.com/JetBrains/intellij-platform-plugin-template/compare/1.1.0...1.1.1
+[1.1.0]: https://github.com/JetBrains/intellij-platform-plugin-template/compare/1.0.1...1.1.0
+[1.0.1]: https://github.com/JetBrains/intellij-platform-plugin-template/compare/1.0.0...1.0.1
+[1.0.0]: https://github.com/JetBrains/intellij-platform-plugin-template/commits/1.0.0
