@@ -5,6 +5,7 @@ import de.marhali.easyi18n.core.domain.model.I18nValue;
 import de.marhali.easyi18n.core.domain.model.TranslationConsumer;
 import de.marhali.easyi18n.core.domain.model.TranslationTarget;
 import de.marhali.easyi18n.core.domain.template.Templates;
+import de.marhali.easyi18n.core.ports.ProjectConfigPort;
 import de.marhali.easyi18n.infra.FileWriter;
 import de.marhali.json5.*;
 import de.marhali.json5.stream.Json5Lexer;
@@ -23,8 +24,8 @@ public final class Json5Writer extends FileWriter {
 
     private final @NotNull Json5Object rootElement;
 
-    Json5Writer(@NotNull I18nPath path, @NotNull Templates templates) {
-        super(path, templates);
+    Json5Writer(@NotNull I18nPath path, @NotNull Templates templates, @NotNull ProjectConfigPort projectConfigPort) {
+        super(path, templates, projectConfigPort);
         this.rootElement = new Json5Object();
     }
 

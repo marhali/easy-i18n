@@ -4,6 +4,10 @@
 
 ## [Unreleased]
 
+### Fixed
+
+- Properly sort translation file output if sorting is enabled
+
 ## [5.0.0] - 2026-04-05
 
 THIS IS A MAJOR RELEASE. MOST OF THE PLUGIN COMPONENTS HAVE BEEN REWRITTEN.

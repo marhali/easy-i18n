@@ -7,6 +7,7 @@ import de.marhali.easyi18n.core.domain.model.TranslationConsumer;
 import de.marhali.easyi18n.core.domain.template.Templates;
 import de.marhali.easyi18n.core.ports.FileProcessorPort;
 import de.marhali.easyi18n.core.ports.FileSystemPort;
+import de.marhali.easyi18n.core.ports.ProjectConfigPort;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -22,9 +23,11 @@ import java.util.Set;
 public class PropertiesFileProcessor implements FileProcessorPort {
 
     private final @NotNull FileSystemPort fileSystemPort;
+    private final @NotNull ProjectConfigPort projectConfigPort;
 
-    public PropertiesFileProcessor(@NotNull FileSystemPort fileSystemPort) {
+    public PropertiesFileProcessor(@NotNull FileSystemPort fileSystemPort, @NotNull ProjectConfigPort projectConfigPort) {
         this.fileSystemPort = fileSystemPort;
+        this.projectConfigPort = projectConfigPort;
     }
 
     @Override
@@ -44,7 +47,7 @@ public class PropertiesFileProcessor implements FileProcessorPort {
 
     @Override
     public void writeFrom(@NotNull ProjectConfigModule config, @NotNull Templates templates, @NotNull I18nPath path, @NotNull Set<@NotNull TranslationConsumer> translations) throws IOException {
-        PropertiesWriter writer = new PropertiesWriter(path, templates);
+        PropertiesWriter writer = new PropertiesWriter(path, templates, projectConfigPort);
 
         writer.write(translations);
 

@@ -7,6 +7,7 @@ import de.marhali.easyi18n.core.domain.model.TranslationConsumer;
 import de.marhali.easyi18n.core.domain.template.Templates;
 import de.marhali.easyi18n.core.ports.FileProcessorPort;
 import de.marhali.easyi18n.core.ports.FileSystemPort;
+import de.marhali.easyi18n.core.ports.ProjectConfigPort;
 import de.marhali.json5.Json5;
 import de.marhali.json5.Json5Element;
 import de.marhali.json5.config.Json5Options;
@@ -53,9 +54,11 @@ public class Json5FileProcessor implements FileProcessorPort {
     private static final @NotNull Json5 JSON5 = new Json5(JSON5_OPTIONS);
 
     private final @NotNull FileSystemPort fileSystemPort;
+    private final @NotNull ProjectConfigPort projectConfigPort;
 
-    public Json5FileProcessor(@NotNull FileSystemPort fileSystemPort) {
+    public Json5FileProcessor(@NotNull FileSystemPort fileSystemPort, @NotNull ProjectConfigPort projectConfigPort) {
         this.fileSystemPort = fileSystemPort;
+        this.projectConfigPort = projectConfigPort;
     }
 
     @Override
@@ -80,7 +83,7 @@ public class Json5FileProcessor implements FileProcessorPort {
 
     @Override
     public void writeFrom(@NotNull ProjectConfigModule config, @NotNull Templates templates, @NotNull I18nPath path, @NotNull Set<@NotNull TranslationConsumer> translations) throws IOException {
-        Json5Writer writer = new Json5Writer(path, templates);
+        Json5Writer writer = new Json5Writer(path, templates, projectConfigPort);
 
         writer.write(translations);
 

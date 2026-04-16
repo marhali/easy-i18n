@@ -5,6 +5,10 @@
     "apple": "Apfel",
     "0": "Null",
     "mango": "Mango",
+    "alpha": {
+      "key": "Beispiel"
+    },
+    "alpha-more": "Mehr"
   },
   "en": {
     "zebra": "Zebra",
@@ -12,5 +16,9 @@
     "apple": "Apple",
     "0": "Zero",
     "mango": "Mango",
+    "alpha": {
+      "key": "Sample"
+    },
+    "alpha-more": "More"
   },
 }

@@ -50,10 +50,10 @@ public class IntegrationTestWiring {
         eventPublisher = new InMemoryDomainEventPublisherAdapter();
 
         FileProcessorRegistryPort fileProcessorRegistry = new InMemoryFileProcessorRegistry(Map.of(
-            FileCodec.JSON, () -> new JsonFileProcessor(fileSystem),
-            FileCodec.JSON5, () -> new Json5FileProcessor(fileSystem),
-            FileCodec.YAML, () -> new YamlFileProcessor(fileSystem),
-            FileCodec.PROPERTIES, () -> new PropertiesFileProcessor(fileSystem)
+            FileCodec.JSON, () -> new JsonFileProcessor(fileSystem, projectConfig),
+            FileCodec.JSON5, () -> new Json5FileProcessor(fileSystem, projectConfig),
+            FileCodec.YAML, () -> new YamlFileProcessor(fileSystem, projectConfig),
+            FileCodec.PROPERTIES, () -> new PropertiesFileProcessor(fileSystem, projectConfig)
         ));
 
         ImplementationProvider implementationProvider = new SortableImplementationProvider(projectConfig);

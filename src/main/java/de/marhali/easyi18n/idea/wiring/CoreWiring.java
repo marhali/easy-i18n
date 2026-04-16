@@ -46,10 +46,10 @@ public final class CoreWiring {
         FileSystemPort fileSystemPort = new FileSystemAdapter(project);
         FileProcessorRegistryPort fileProcessorRegistryPort = new InMemoryFileProcessorRegistry(
             Map.of(
-                FileCodec.JSON, () -> new JsonFileProcessor(fileSystemPort),
-                FileCodec.JSON5, () -> new Json5FileProcessor(fileSystemPort),
-                FileCodec.YAML, () -> new YamlFileProcessor(fileSystemPort),
-                FileCodec.PROPERTIES, () -> new PropertiesFileProcessor(fileSystemPort)
+                FileCodec.JSON, () -> new JsonFileProcessor(fileSystemPort, projectConfigPort),
+                FileCodec.JSON5, () -> new Json5FileProcessor(fileSystemPort, projectConfigPort),
+                FileCodec.YAML, () -> new YamlFileProcessor(fileSystemPort, projectConfigPort),
+                FileCodec.PROPERTIES, () -> new PropertiesFileProcessor(fileSystemPort, projectConfigPort)
             )
         );
 

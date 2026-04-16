@@ -11,6 +11,7 @@ import de.marhali.easyi18n.core.domain.model.TranslationConsumer;
 import de.marhali.easyi18n.core.domain.template.Templates;
 import de.marhali.easyi18n.core.ports.FileProcessorPort;
 import de.marhali.easyi18n.core.ports.FileSystemPort;
+import de.marhali.easyi18n.core.ports.ProjectConfigPort;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -31,9 +32,11 @@ public class JsonFileProcessor implements FileProcessorPort {
         .create();
 
     private final @NotNull FileSystemPort fileSystemPort;
+    private final @NotNull ProjectConfigPort projectConfigPort;
 
-    public JsonFileProcessor(@NotNull FileSystemPort fileSystemPort) {
+    public JsonFileProcessor(@NotNull FileSystemPort fileSystemPort, @NotNull ProjectConfigPort projectConfigPort) {
         this.fileSystemPort = fileSystemPort;
+        this.projectConfigPort = projectConfigPort;
     }
 
     @Override
@@ -58,7 +61,7 @@ public class JsonFileProcessor implements FileProcessorPort {
 
     @Override
     public void writeFrom(@NotNull ProjectConfigModule config, @NotNull Templates templates, @NotNull I18nPath path, @NotNull Set<@NotNull TranslationConsumer> translations) throws IOException {
-        JsonWriter writer = new JsonWriter(path, templates);
+        JsonWriter writer = new JsonWriter(path, templates, projectConfigPort);
 
         writer.write(translations);
 

@@ -5,6 +5,7 @@ import de.marhali.easyi18n.core.domain.model.I18nValue;
 import de.marhali.easyi18n.core.domain.model.TranslationConsumer;
 import de.marhali.easyi18n.core.domain.model.TranslationTarget;
 import de.marhali.easyi18n.core.domain.template.Templates;
+import de.marhali.easyi18n.core.ports.ProjectConfigPort;
 import de.marhali.easyi18n.infra.FileWriter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -20,8 +21,8 @@ public final class YamlWriter extends FileWriter {
 
     private final @NotNull Map<@NotNull String, @Nullable Object> rootElement;
 
-    YamlWriter(@NotNull I18nPath path, @NotNull Templates templates) {
-        super(path, templates);
+    YamlWriter(@NotNull I18nPath path, @NotNull Templates templates, @NotNull ProjectConfigPort projectConfigPort) {
+        super(path, templates, projectConfigPort);
         this.rootElement = new LinkedHashMap<>();
     }
 

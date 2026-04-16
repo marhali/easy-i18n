@@ -7,6 +7,7 @@ import de.marhali.easyi18n.core.domain.model.TranslationConsumer;
 import de.marhali.easyi18n.core.domain.template.Templates;
 import de.marhali.easyi18n.core.ports.FileProcessorPort;
 import de.marhali.easyi18n.core.ports.FileSystemPort;
+import de.marhali.easyi18n.core.ports.ProjectConfigPort;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.yaml.snakeyaml.DumperOptions;
@@ -63,9 +64,11 @@ public class YamlFileProcessor implements FileProcessorPort {
     protected static final @NotNull Yaml YAML_MINIFY = buildYaml(0);
 
     private final @NotNull FileSystemPort fileSystemPort;
+    private final @NotNull ProjectConfigPort projectConfigPort;
 
-    public YamlFileProcessor(@NotNull FileSystemPort fileSystemPort) {
+    public YamlFileProcessor(@NotNull FileSystemPort fileSystemPort, @NotNull ProjectConfigPort projectConfigPort) {
         this.fileSystemPort = fileSystemPort;
+        this.projectConfigPort = projectConfigPort;
     }
 
     @Override
@@ -90,7 +93,7 @@ public class YamlFileProcessor implements FileProcessorPort {
 
     @Override
     public void writeFrom(@NotNull ProjectConfigModule config, @NotNull Templates templates, @NotNull I18nPath path, @NotNull Set<@NotNull TranslationConsumer> translations) throws IOException {
-        YamlWriter writer = new YamlWriter(path, templates);
+        YamlWriter writer = new YamlWriter(path, templates, projectConfigPort);
 
         writer.write(translations);
 

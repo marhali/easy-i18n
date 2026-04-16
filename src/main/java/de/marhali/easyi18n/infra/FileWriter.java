@@ -5,6 +5,7 @@ import de.marhali.easyi18n.core.domain.template.TemplateElement;
 import de.marhali.easyi18n.core.domain.template.TemplateValue;
 import de.marhali.easyi18n.core.domain.template.Templates;
 import de.marhali.easyi18n.core.domain.template.file.LevelledFileTemplate;
+import de.marhali.easyi18n.core.ports.ProjectConfigPort;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -18,10 +19,12 @@ public abstract class FileWriter {
 
     protected final @NotNull I18nPath path;
     protected final @NotNull Templates templates;
+    private final @NotNull ProjectConfigPort projectConfigPort;
 
-    protected FileWriter(@NotNull I18nPath path, @NotNull Templates templates) {
+    protected FileWriter(@NotNull I18nPath path, @NotNull Templates templates, @NotNull ProjectConfigPort projectConfigPort) {
         this.path = path;
         this.templates = templates;
+        this.projectConfigPort = projectConfigPort;
     }
 
     /**
@@ -30,9 +33,15 @@ public abstract class FileWriter {
      * @return List of {@link TranslationTarget}'s
      */
     protected @NotNull List<@NotNull TranslationTarget> mapConsumersToSortedTargets(@NotNull Set<@NotNull TranslationConsumer> consumers) {
-        return consumers.stream()
-            .map(this::resolveTarget)
-            .toList();
+        var stream = consumers.stream().map(this::resolveTarget);
+
+        // If sorting is enabled also sort TranslationTarget to ensure that the files are also properly sorted
+        // Uses the file path (List<String>) for ordering under the hood. See TranslationTarget#compareTo
+        if (projectConfigPort.read().sorting()) {
+            stream = stream.sorted();
+        }
+
+        return stream.toList();
     }
 
     /**

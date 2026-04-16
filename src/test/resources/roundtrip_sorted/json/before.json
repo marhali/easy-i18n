@@ -5,7 +5,11 @@
     "apple": "Apfel",
     "0": "Null",
     "$": "Sonderzeichen",
-    "mango": "Mango"
+    "mango": "Mango",
+    "alpha": {
+      "key": "Beispiel"
+    },
+    "alpha-more": "Mehr"
   },
   "en": {
     "zebra": "Zebra",
@@ -13,6 +17,10 @@
     "apple": "Apple",
     "0": "Zero",
     "$": "Special char",
-    "mango": "Mango"
+    "mango": "Mango",
+    "alpha": {
+      "key": "Sample"
+    },
+    "alpha-more": "More"
   }
 }

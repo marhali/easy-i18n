@@ -1,4 +1,7 @@
 de:
+  alpha-more: Mehr
+  alpha:
+    key: Beispiel
   primitive:
     boolean:
       truthy: true
@@ -40,6 +43,9 @@ de:
     only:
       de_DE: Ein Wert, der nur bei de_DE gesetzt ist.
 en:
+  alpha-more: More
+  alpha:
+    key: Sample
   primitive:
     boolean:
       truthy: true

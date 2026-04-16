@@ -1,5 +1,9 @@
 {
   de: {
+    "alpha-more": "Mehr",
+    alpha: {
+      key: "Beispiel",
+    },
     primitive: {
       boolean: {
         truthy: true,
@@ -52,6 +56,10 @@
     },
   },
   en: {
+    "alpha-more": "More",
+    alpha: {
+      key: "Sample",
+    },
     primitive: {
       boolean: {
         truthy: true,

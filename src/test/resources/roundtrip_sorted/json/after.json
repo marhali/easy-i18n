@@ -3,6 +3,10 @@
     "$": "Sonderzeichen",
     "0": "Null",
     "9": "Neun",
+    "alpha": {
+      "key": "Beispiel"
+    },
+    "alpha-more": "Mehr",
     "apple": "Apfel",
     "mango": "Mango",
     "zebra": "Zebra"
@@ -11,6 +15,10 @@
     "$": "Special char",
     "0": "Zero",
     "9": "Nine",
+    "alpha": {
+      "key": "Sample"
+    },
+    "alpha-more": "More",
     "apple": "Apple",
     "mango": "Mango",
     "zebra": "Zebra"
