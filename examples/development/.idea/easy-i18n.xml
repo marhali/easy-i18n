@@ -10,7 +10,7 @@
           <value>
             <ProjectConfigModuleState>
               <option name="id" value="json:locale_dir" />
-              <option name="pathTemplate" value="$PROJECT_DIR$/json/locale_dir/locales/{locale}/{pathNamespace}.json" />
+              <option name="pathTemplate" value="$PROJECT_DIR$/__locales__/json/locale_dir/{locale}/{pathNamespace}.json" />
               <option name="fileCodec" value="JSON" />
               <option name="fileTemplate" value="[{fileKey}]" />
               <option name="keyTemplate" value="{pathNamespace}:{fileKey:.}" />
@@ -52,7 +52,7 @@
           <value>
             <ProjectConfigModuleState>
               <option name="id" value="json:namespace_dir" />
-              <option name="pathTemplate" value="$PROJECT_DIR$/json/namespace_dir/locales/{pathNamespace}/{locale}.json" />
+              <option name="pathTemplate" value="$PROJECT_DIR$/__locales__/json/namespace_dir/{pathNamespace}/{locale}.json" />
               <option name="fileCodec" value="JSON" />
               <option name="fileTemplate" value="[{fileKey}]" />
               <option name="keyTemplate" value="{pathNamespace}:{fileKey:.}" />
@@ -71,7 +71,7 @@
           <value>
             <ProjectConfigModuleState>
               <option name="id" value="json:single_dir" />
-              <option name="pathTemplate" value="$PROJECT_DIR$/json/single_dir/locales/{locale}.json" />
+              <option name="pathTemplate" value="$PROJECT_DIR$/__locales__/json/single_dir/{locale}.json" />
               <option name="fileCodec" value="JSON" />
               <option name="fileTemplate" value="[{fileKey}]" />
               <option name="keyTemplate" value="{fileKey:.}" />
@@ -90,7 +90,7 @@
           <value>
             <ProjectConfigModuleState>
               <option name="id" value="json:single_file" />
-              <option name="pathTemplate" value="$PROJECT_DIR$/json/single_file/locales/translations.json" />
+              <option name="pathTemplate" value="$PROJECT_DIR$/__locales__/json/single_file/translations.json" />
               <option name="fileCodec" value="JSON" />
               <option name="fileTemplate" value="[{locale}][{fileKey}]" />
               <option name="keyTemplate" value="{fileKey:.}" />
