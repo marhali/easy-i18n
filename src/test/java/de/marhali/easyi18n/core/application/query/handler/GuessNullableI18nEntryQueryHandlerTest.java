@@ -26,6 +26,7 @@ public class GuessNullableI18nEntryQueryHandlerTest {
         var module = ProjectConfigModule.fromDefaultPreset().toBuilder()
             .id(MODULE_ID)
             .pathTemplate("translations.json")
+            .fileTemplate("[{fileKey}]")
             .keyTemplate(keyTemplate)
             .build();
         var projectConfigPort = new InMemoryProjectConfigAdapter(

@@ -4,6 +4,10 @@
 
 ## [Unreleased]
 
+### Changed
+
+- Throw exception with proper description if an invalid file template is configured
+
 ### Fixed
 
 - Properly sort translation file output if sorting is enabled

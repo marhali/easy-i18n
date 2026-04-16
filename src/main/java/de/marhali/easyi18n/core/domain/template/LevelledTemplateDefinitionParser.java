@@ -27,6 +27,11 @@ public final class LevelledTemplateDefinitionParser {
     private LevelledTemplateDefinitionParser() {}
 
     public static @NotNull LevelledTemplate parse(@NotNull String templateDefinition) {
+
+        if (!templateDefinition.startsWith("[") || !templateDefinition.endsWith("]")) {
+            throw new IllegalArgumentException("Invalid levelled template definition: \"" + templateDefinition + "\". At least one level needs to be defined.");
+        }
+
         List<Template> levels = new ArrayList<>();
         List<String> delimiters = new ArrayList<>();
 

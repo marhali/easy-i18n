@@ -32,6 +32,7 @@ public class ModuleViewQueryHandlerTest {
         var module = ProjectConfigModule.fromDefaultPreset().toBuilder()
             .id(MODULE_ID)
             .pathTemplate("locales.json")
+            .fileTemplate("[{fileKey}]")
             .keyTemplate("{fileKey:.}")
             .build();
         var projectConfigPort = new InMemoryProjectConfigAdapter(

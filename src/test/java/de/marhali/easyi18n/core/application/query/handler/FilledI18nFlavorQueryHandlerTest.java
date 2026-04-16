@@ -26,6 +26,7 @@ public class FilledI18nFlavorQueryHandlerTest {
         var module = ProjectConfigModule.fromDefaultPreset().toBuilder()
             .id(MODULE_ID)
             .editorFlavorTemplate(editorFlavorTemplate)
+            .fileTemplate("[{fileKey}]")
             .pathTemplate("locales.json")
             .build();
         var projectConfigPort = new InMemoryProjectConfigAdapter(
