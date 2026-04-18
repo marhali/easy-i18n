@@ -9,6 +9,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiFile;
 import de.marhali.easyi18n.core.application.cqrs.PossiblyUnavailable;
 import de.marhali.easyi18n.core.application.query.I18nEntryPreviewQuery;
 import de.marhali.easyi18n.core.application.query.ModuleIdByEditorFilePathQuery;
@@ -24,6 +25,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
@@ -65,7 +67,9 @@ public abstract class AbstractI18nFoldingBuilder extends FoldingBuilderEx implem
         Project project = root.getProject();
         I18nProjectService projectService = project.getService(I18nProjectService.class);
 
-        EditorFilePath editorFilePath = EditorFilePathExtractor.extract(root.getContainingFile());
+        PsiFile containingFile = root.getContainingFile();
+        EditorFilePath editorFilePath = EditorFilePathExtractor.extract(containingFile);
+
         Optional<ModuleId> moduleIdOpt = projectService.query(new ModuleIdByEditorFilePathQuery(editorFilePath));
         if (moduleIdOpt.isEmpty()) {
             return FoldingDescriptor.EMPTY_ARRAY;
@@ -81,14 +85,15 @@ public abstract class AbstractI18nFoldingBuilder extends FoldingBuilderEx implem
             PossiblyUnavailable<Optional<I18nEntryPreview>> entryResponse =
                 projectService.query(new I18nEntryPreviewQuery(moduleId, I18nKeyCandidate.of(key)));
 
-            if (!entryResponse.available() || entryResponse.result() == null) {
+            if (!entryResponse.available()) {
                 project.getService(ScheduledModuleLoaderService.class).loadModule(moduleId);
                 return;
             }
 
-            if (entryResponse.result().isEmpty()) return;
+            Optional<I18nEntryPreview> entryOpt = entryResponse.result();
+            if (Objects.isNull(entryOpt) || entryOpt.isEmpty()) return;
 
-            I18nEntryPreview entryPreview = entryResponse.result().get();
+            I18nEntryPreview entryPreview = entryOpt.get();
             if (entryPreview.previewValue() == null) return;
 
             String placeholder = sanitizePlaceholder(entryPreview.previewValue().toInputString());

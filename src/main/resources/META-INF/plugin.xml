@@ -18,7 +18,6 @@
   <depends optional="true" config-file="de.marhali.easyi18n-rust.xml">com.jetbrains.rust</depends>
   <depends optional="true" config-file="de.marhali.easyi18n-ruby.xml">org.jetbrains.plugins.ruby</depends>
   <depends optional="true" config-file="de.marhali.easyi18n-kotlin.xml">org.jetbrains.kotlin</depends>
-  <depends optional="true" config-file="de.marhali.easyi18n-vue.xml">org.jetbrains.plugins.vue</depends>
   <depends optional="true" config-file="de.marhali.easyi18n-go.xml">org.jetbrains.plugins.go</depends>
   <depends optional="true" config-file="de.marhali.easyi18n-svelte.xml">dev.blachut.svelte.lang</depends>
 

@@ -11,6 +11,7 @@
 ### Fixed
 
 - Properly sort translation file output if sorting is enabled
+- Folding builder for Vue.js files
 
 ## [5.0.0] - 2026-04-05
 

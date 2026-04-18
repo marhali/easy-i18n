@@ -2,7 +2,6 @@ package de.marhali.easyi18n.idea.assistance.javascript;
 
 import com.intellij.lang.javascript.psi.JSLiteralExpression;
 import com.intellij.lang.javascript.psi.JSRecursiveWalkingElementVisitor;
-import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
 import de.marhali.easyi18n.core.domain.rules.EditorLanguage;
 import de.marhali.easyi18n.idea.assistance.AbstractI18nFoldingBuilder;
@@ -25,10 +24,13 @@ public class JavaScriptI18nFoldingBuilder extends AbstractI18nFoldingBuilder {
 
     @Override
     protected void collectLiterals(@NotNull PsiElement root, @NotNull LiteralConsumer consumer) {
-        // Skip injected language fragments (synthetic VirtualFiles) because those are handled by
-        // VueTemplateI18nFoldingBuilder to avoid coordinate-space mismatches.
-        VirtualFile vf = root.getContainingFile().getVirtualFile();
-        if (vf != null && !vf.isInLocalFileSystem()) return;
+        // VueI18nFoldingBuilder handles Vue template injections (VueJS/VueTS) with
+        // host-document coordinates so fold state persists across reopens. Skip here
+        // to avoid duplicate descriptors at the same location.
+        String langId = root.getContainingFile().getLanguage().getID();
+        if ("VueTS".equals(langId) || "VueJS".equals(langId)) {
+            return;
+        }
 
         root.accept(new JSRecursiveWalkingElementVisitor() {
             @Override
