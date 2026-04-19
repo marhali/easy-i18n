@@ -4,6 +4,8 @@
 
 ## [Unreleased]
 
+## [5.0.1] - 2026-04-19
+
 ### Changed
 
 - Throw exception with proper description if an invalid file template is configured
@@ -535,7 +537,8 @@ PLEASE CHECK THE MIGRATION GUIDE ON https://marhali.github.io/easy-i18n/migratio
 
 - README.md
 
-[Unreleased]: https://github.com/marhali/easy-i18n/compare/5.0.0...HEAD
+[Unreleased]: https://github.com/marhali/easy-i18n/compare/5.0.1...HEAD
+[5.0.1]: https://github.com/marhali/easy-i18n/compare/5.0.0...5.0.1
 [5.0.0]: https://github.com/marhali/easy-i18n/compare/4.9.0...5.0.0
 [4.9.0]: https://github.com/marhali/easy-i18n/compare/4.8.1...4.9.0
 [4.8.1]: https://github.com/marhali/easy-i18n/compare/4.8.0...4.8.1
