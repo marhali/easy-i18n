@@ -117,7 +117,7 @@ public class DefaultPathTemplate implements PathTemplate {
             if (element.isLiteral()) {
                 builder.append(element.getAsLiteral().text());
             } else {
-                // Break until we reach any non-literal template element
+                // Break at first non-literal (placeholder) element
                 break;
             }
         }
@@ -126,6 +126,17 @@ public class DefaultPathTemplate implements PathTemplate {
 
         if (path.isEmpty()) {
             throw new IllegalArgumentException("Most common parent path for template is empty: \"" + template + "\"");
+        }
+
+        // If the placeholder falls inside a filename rather than a directory segment
+        // (e.g. "…/messages_{locale}.properties"), trim back to the last directory separator
+        // so that the result always points to the containing directory.
+        if (!path.endsWith("/")) {
+            int lastSlash = path.lastIndexOf('/');
+            if (lastSlash >= 0) {
+                path = path.substring(0, lastSlash + 1);
+            }
+            // No slash at all: template has no directory structure — keep full literal prefix.
         }
 
         return path;

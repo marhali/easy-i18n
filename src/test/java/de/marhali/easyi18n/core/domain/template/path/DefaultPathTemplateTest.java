@@ -14,6 +14,24 @@ import java.util.Set;
  */
 public class DefaultPathTemplateTest {
     @Test
+    public void test_most_common_parent_path_placeholder_in_directory() {
+        var template = DefaultPathTemplate.compile("$PROJECT_DIR$/locales/{locale}/{ns}.json");
+        Assert.assertEquals("$PROJECT_DIR$/locales/", template.getMostCommonParentPath());
+    }
+
+    @Test
+    public void test_most_common_parent_path_placeholder_in_filename() {
+        var template = DefaultPathTemplate.compile("$PROJECT_DIR$/src/main/resources/messages_{locale}.properties");
+        Assert.assertEquals("$PROJECT_DIR$/src/main/resources/", template.getMostCommonParentPath());
+    }
+
+    @Test
+    public void test_most_common_parent_path_no_directory() {
+        var template = DefaultPathTemplate.compile("myPath.json");
+        Assert.assertEquals("myPath.json", template.getMostCommonParentPath());
+    }
+
+    @Test
     public void test_match_unknown_path_returns_null() {
         var template = DefaultPathTemplate.compile("myPath.json");
 

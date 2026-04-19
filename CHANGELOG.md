@@ -13,6 +13,7 @@
 
 - Properly sort translation file output if sorting is enabled
 - Folding builder for Vue.js files
+- Most common parent path extraction for path hybrid folder segments
 
 ## [5.0.0] - 2026-04-05
 
