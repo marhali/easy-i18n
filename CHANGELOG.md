@@ -7,6 +7,7 @@
 ### Changed
 
 - Throw exception with proper description if an invalid file template is configured
+- Enhance React preset and properly document composed translation key handling
 
 ### Fixed
 

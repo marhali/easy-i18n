@@ -58,7 +58,7 @@ Ruby on Rails with the standard [I18n gem](https://guides.rubyonrails.org/i18n.h
 
 - **File format**: JSON
 - **File layout**: `public/locales/{locale}/{namespace}.json`
-- **Key format**: `namespace:subKey` (e.g. `common:greeting`)
+- **Key format**: `namespace:subKey` (e.g. `common:greeting`) — the namespace is constrained to exclude `:` so that parsing is unambiguous
 - **Flavor template**: `t('{i18nKey}')`
 - **Editor rules**:
   - `t('key')` — `useTranslation` hook (JavaScript, TypeScript)

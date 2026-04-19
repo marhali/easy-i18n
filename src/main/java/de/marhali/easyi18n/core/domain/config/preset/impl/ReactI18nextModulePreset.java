@@ -31,7 +31,7 @@ public class ReactI18nextModulePreset implements PresetProvider<ProjectConfigMod
             .fileCodec(FileCodec.JSON)
             .fileTemplate("[{fileKey}]")
             // namespace prefix separates files: "common:greeting"
-            .keyTemplate("{pathNamespace}:{fileKey:.}")
+            .keyTemplate("{pathNamespace::[^:]+}:{fileKey:.}")
             .rootDirectory("$PROJECT_DIR$/src")
             .defaultKeyPrefixes()
             .editorFlavorTemplate("t('{i18nKey}')")

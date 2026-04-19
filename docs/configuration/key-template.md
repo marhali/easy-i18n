@@ -26,9 +26,15 @@ In general, the translation key template should reflect the translation keys exa
 
 ### Namespace key structure
 
-`{pathNamespace}:{fileKey:.}`
+`{pathNamespace::[^:]+}:{fileKey:.}`
 
-`pathNamespace=[common] fileKy=[user, account, title]` becomes `common:user.account.tile`
+`pathNamespace=[common] fileKey=[user, account, title]` becomes `common:user.account.title`
+
+> **Note**: The `[^:]+` constraint on `pathNamespace` is required whenever `:` is used as a
+> separator between template parts. Without it, a key like `a:b:c` would be parsed
+> ambiguously — the constraint tells the parser that the namespace must not itself contain `:`.
+> In general, any literal separator used between placeholders should be excluded from the
+> preceding placeholder via a regex constraint to avoid ambiguous parsing.
 
 ---
 

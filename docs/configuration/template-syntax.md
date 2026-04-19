@@ -42,3 +42,11 @@ If the split values contain the delimiter, it will be escaped there then unescap
 ##### `optionalConstraint`
 
 Optional constraint string to provide more control. Mostly used to define [regular expressions](https://en.wikipedia.org/wiki/Regular_expression) that are used for parsing.
+
+**Important**: When a literal separator appears between two placeholders (e.g. `{ns}:{key}`),
+the preceding placeholder must be constrained to exclude that separator character. Without the
+constraint, parsing is ambiguous for inputs that contain the separator more than once.
+
+Example: `{pathNamespace::[^:]+}:{fileKey:.}` — the `[^:]+` constraint ensures `pathNamespace`
+never captures a `:`, so `common:user.name` is always split as `namespace=common`, `key=user.name`
+rather than `namespace=common:user`, `key=name`.
