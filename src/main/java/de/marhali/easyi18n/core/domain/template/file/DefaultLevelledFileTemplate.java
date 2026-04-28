@@ -34,7 +34,7 @@ public class DefaultLevelledFileTemplate implements LevelledFileTemplate {
 
         // Only check if resolver matches. Actual params might be empty if template contains only literal elements
         if (params == null) {
-            throw new IllegalArgumentException("Cannot parse canonical file level against template: " + template.canonical());
+            throw new IllegalArgumentException("Cannot parse canonical file level \"" + canonical + "\" against template \"" + template.canonical() + "\"");
         }
 
         return params;

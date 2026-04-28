@@ -49,7 +49,7 @@ public class DefaultKeyTemplate implements KeyTemplate {
 
         // Other than file or path template, we can guarantee that a translation key has parameters
         if (params == null || params.isEmpty()) {
-            throw new IllegalArgumentException("Cannot parse key against key template: " + key);
+            throw new IllegalArgumentException("Cannot parse canonical key \"" + key.canonical() + "\" against key template \"" + template.canonical() + "\"");
         }
 
         return params;

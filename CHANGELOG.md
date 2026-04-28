@@ -7,6 +7,7 @@
 ### Changed
 
 - Fallback to primitive string type for malformed JSON and JSON5 inputs
+- Add more details to exception messages
 
 ## [5.0.1] - 2026-04-19
 
