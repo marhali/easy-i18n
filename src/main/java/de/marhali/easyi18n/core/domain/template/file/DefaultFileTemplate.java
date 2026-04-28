@@ -13,7 +13,8 @@ import java.util.stream.Collectors;
  */
 public class DefaultFileTemplate implements FileTemplate {
     /**
-     * Shorthand to construct the file template by the template definition.* @param fileTemplateDefinition Template definition
+     * Shorthand to construct the file template by the template definition.
+     * @param fileTemplateDefinition Template definition
      * @return {@link DefaultFileTemplate}
      */
     public static @NotNull DefaultFileTemplate compile(@NotNull String fileTemplateDefinition) {
