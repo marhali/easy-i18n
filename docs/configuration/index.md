@@ -31,7 +31,7 @@ _Resource Configuration_
 
 #### File template
 - **Description**: Template syntax to parse and construct translation file contents and selection of the translation file content type.
-- **Example**: `[{fileKey}]``
+- **Example**: `[{fileKey}]`
 - See also [File Template](file-template.md).
 
 #### Key template
