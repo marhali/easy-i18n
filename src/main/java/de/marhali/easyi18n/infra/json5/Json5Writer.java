@@ -72,8 +72,10 @@ public final class Json5Writer extends FileWriter {
         try (StringReader reader = new StringReader(value.raw().endsWith(",") ? value.raw() : value.raw() + ",")) {
             var lexer = new Json5Lexer(reader, Json5FileProcessor.JSON5_OPTIONS);
             return lexer.nextValue();
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
+        } catch (Exception ignored) {
+            // Fallback to primitive String value if raw input is kinda malformed
+            // and to support string values without explicit quotes
+            return Json5Primitive.fromString(value.raw());
         }
     }
 }

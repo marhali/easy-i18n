@@ -69,8 +69,10 @@ public final class JsonWriter extends FileWriter {
     private @NotNull JsonElement toJsonElement(@NotNull I18nValue value) {
         try {
             return JsonParser.parseString(value.raw());
-        } catch (JsonSyntaxException ex) {
-            throw new RuntimeException(ex);
+        } catch (JsonSyntaxException ignored) {
+            // Fallback to primitive String value if raw input is kinda malformed
+            // and to support string values without explicit quotes
+            return new JsonPrimitive(value.raw());
         }
     }
 }
