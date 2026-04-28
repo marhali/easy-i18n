@@ -10,6 +10,7 @@ import com.intellij.openapi.roots.ProjectFileIndex;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
+import com.intellij.psi.PsiInvalidElementAccessException;
 import de.marhali.easyi18n.core.domain.rules.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -133,8 +134,15 @@ public class JavaScriptEditorElementExtractor implements EditorElementExtractor<
             String callableName = refExpr.getReferenceName();
             builder.callableName(callableName);
 
-            // Try to resolve for FQN
-            PsiElement resolved = refExpr.resolve();
+            // Try to resolve for FQN — wrap in try/catch because resolving JS/TS references in Vue
+            // components can trigger Vue's type system, which may access PSI nodes that were
+            // already invalidated by a concurrent file reload (onContentReload).
+            PsiElement resolved;
+            try {
+                resolved = refExpr.resolve();
+            } catch (PsiInvalidElementAccessException ignored) {
+                resolved = null;
+            }
             if (resolved instanceof JSFunction resolvedFunction) {
                 JSClass containingClass = findParentOfType(resolvedFunction, JSClass.class);
                 if (containingClass != null) {
@@ -163,8 +171,12 @@ public class JavaScriptEditorElementExtractor implements EditorElementExtractor<
         if (variable != null && isDescendant(literal, variable.getInitializer())) {
             builder.declarationName(variable.getName());
             if (variable instanceof TypeScriptVariable tsVar) {
-                JSType type = tsVar.getJSType();
-                builder.declarationType(type != null ? type.getTypeText() : null);
+                try {
+                    JSType type = tsVar.getJSType();
+                    builder.declarationType(type != null ? type.getTypeText() : null);
+                } catch (PsiInvalidElementAccessException ignored) {
+                    // type info is optional — skip on stale PSI
+                }
             }
             builder.declarationMarkers(extractAttributeNames(variable));
             return;
@@ -194,8 +206,12 @@ public class JavaScriptEditorElementExtractor implements EditorElementExtractor<
             builder.callableFqn(containingClass.getQualifiedName() + "." + function.getName());
         }
 
-        JSType returnType = function.getReturnType();
-        builder.declarationType(returnType != null ? returnType.getTypeText() : null);
+        try {
+            JSType returnType = function.getReturnType();
+            builder.declarationType(returnType != null ? returnType.getTypeText() : null);
+        } catch (PsiInvalidElementAccessException ignored) {
+            // type info is optional — skip on stale PSI
+        }
     }
 
     private void fillPropertyFacts(@NotNull JSLiteralExpression literal, @NotNull EditorElement.Builder builder) {
