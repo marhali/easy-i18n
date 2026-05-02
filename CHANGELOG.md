@@ -12,6 +12,7 @@
 ### Fixed
 
 - PsiInvalidElementAccessException on content reload
+- IllegalArgumentException on EditorFilePathExtractor with null values
 
 ## [5.0.1] - 2026-04-19
 

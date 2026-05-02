@@ -5,6 +5,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import de.marhali.easyi18n.core.domain.rules.EditorFilePath;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Extractor to retrieve {@link EditorFilePath} from psi elements.
@@ -19,8 +20,13 @@ public final class EditorFilePathExtractor {
         return extract(psiElement.getContainingFile());
     }
 
-    public static @NotNull EditorFilePath extract(@NotNull PsiFile psiFile) {
+    public static @NotNull EditorFilePath extract(@Nullable PsiFile psiFile) {
+        if (psiFile == null) {
+            return EditorFilePath.empty();
+        }
+
         VirtualFile virtualFile = psiFile.getVirtualFile();
+
         if (virtualFile == null || !virtualFile.isInLocalFileSystem()) {
             // PsiFile may be an injected language fragment whose VirtualFile is synthetic
             // (e.g. Vue template {{ }} expressions produce a LightVirtualFile at "/Vue.vue.int").
