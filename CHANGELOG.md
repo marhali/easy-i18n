@@ -13,6 +13,7 @@
 
 - PsiInvalidElementAccessException on content reload
 - IllegalArgumentException on EditorFilePathExtractor with null values
+- Module removal inconsistency in plugin settings dialog
 
 ## [5.0.1] - 2026-04-19
 

@@ -176,7 +176,6 @@ public class ProjectConfigModulesUi extends ConfigComponent<FormBuilder, Project
         var index = modules.indexOf(moduleUi);
 
         modules.remove(moduleUi);
-        modulesPanel.remove(index + 1); // Don't forget to remove the spacer
         modulesPanel.remove(index);
         updateUI();
     }
@@ -194,9 +193,13 @@ public class ProjectConfigModulesUi extends ConfigComponent<FormBuilder, Project
         builder.addComponentToRightColumn(removeButton, 1);
 
         // Titled border
-        var border = BorderFactory.createCompoundBorder(
-            new TitledBorder(moduleUi.getModuleId().name()),
-            BorderFactory.createEmptyBorder(10, 10, 10, 10)
+        var border = JBUI.Borders.merge(
+            JBUI.Borders.compound(
+                new TitledBorder(moduleUi.getModuleId().name()),
+                JBUI.Borders.empty(10)
+            ),
+            JBUI.Borders.emptyBottom(12),
+            true
         );
         builder.getPanel().setBorder(border);
 
@@ -209,7 +212,6 @@ public class ProjectConfigModulesUi extends ConfigComponent<FormBuilder, Project
 
         modules.add(moduleUi);
         modulesPanel.add(builder.getPanel());
-        modulesPanel.add(Box.createVerticalStrut(12)); // Spacer between modules
     }
 
     private void updateUI() {
